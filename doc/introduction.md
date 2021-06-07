@@ -166,3 +166,7 @@ The SCEJSON may be implemented in the following manners:
 1. ![Hosted](https://img.shields.io/badge/Hosted-orange?style=flat&logo=amazon-aws) - The SCEJSON is hosted by JLS on [AWS](https://aws.amazon.com/) for you. You are provided with a URL and API key that will allow you to access the functionality of the SCEJSON, without having to setup and maintain your own microservice. As new releases of the SCEJSON are made available, you will be notified of these changes and we will upgrade the Hosted version at your request. The only requirement for the application calling the hosted instance of the SCEJSON is being able to execute a network API request to the provided URL, and to be able to process the data returned in the JSON format.
 
 2. ![Docker](https://img.shields.io/badge/Docker-green?style=flat&logo=docker) - The SCEJSON HTTPD API server and all support files will be electronically delivered to you ready to be deployed in [Docker](https://www.docker.com/). You are provided with an API key that will allow you to access the functionality of the SCEJSON, which will need to be updated periodically. As new releases of the SCEJSON are made available, you will be notified of the changes and will be able to download the updated versions as they become generally available. The SCEJSON Docker distribution can be hosted on x86_64 bit Linux systems which support Docker.
+
+| ⬅️ Back | ⬆️ Up | Forward ➡️ |
+| :--- | :---: | ---: |
+| [SCEJSON Reference Manual](README.md) | [SCEJSON Reference Manual](README.md) | [API Overview](api-overview.md) |

@@ -67,7 +67,7 @@ by the module handling the request. The most common warnings returned by modules
 the calling application that the module does not recognize a specified field (which may
 help to isolate a field name spelling error in the calling application's code).
 
-**Example - Request and response illustrating warnings when passing unrecognized fields**
+**Example - Request and response illustrating warnings when passing unrecognized fields** *(hosted on AWS)*
 ```json
 {
   "Module" : "Version",
@@ -90,8 +90,8 @@ help to isolate a field name spelling error in the calling application's code).
       "Request field 'Data.How' not recognized."
     ],
     "Product" : "SCEJSON",
-    "Version" : "2021.05.25",
-    "Rootpath" : "",
+    "Version" : "2021.07.0",
+    "Rootpath" : "/var/task",
     "Copyright" : "(c) 2021 J. L. Sherman and Associates, Inc."
   }
 }

@@ -1,8 +1,7 @@
 # SCEJSON Documentation and Samples
 
 This repository contains the documentation and samples for the 
-[Sherman Calculation Engine with JSON interface](https://www.shermanloan.com/products/scejson)
-([SCEJSON](https://www.shermanloan.com/products/scejson)).
+Sherman Calculation Engine with JSON interface (SCEJSON).
 
 ## Documentation
 

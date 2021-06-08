@@ -2,10 +2,10 @@
 
 Version 2021-06-01
 
-1. [Introduction](introduction.md)
-2. [API Overview](api-overview.md)
-3. [Version Module](module-version.md)
-4. [Loan Module](module-loan.md)
+* [Introduction](introduction.md)
+* [API Overview](api-overview.md)
+* [Version Module](module-version.md)
+* [Loan Module](module-loan.md)
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |

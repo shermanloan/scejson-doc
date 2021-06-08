@@ -178,7 +178,7 @@ As mentioned above, if the SCEJSON was not able to successfully dispatch a reque
 
 ## API Error Response Data Object Field Definition
 
-The Data Object for an API Error Response contains a single field which returns a description of the API Error.
+The `Data` object for an API Error Response contains a single field which returns a description of the API Error.
 
 🟥 **Errors[]** - *JArray of JString : { required }*
 

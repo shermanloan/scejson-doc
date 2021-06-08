@@ -44,7 +44,7 @@ The `Data` object in the version module request should be empty (e.g `{}`) but p
 }
 ```
 
-The Data Object for a response from the version module is defined below:
+The `Data` object for a response from the version module is defined below:
 
 🟥 **Errors[]** - *JArray of JString : { required }*
 

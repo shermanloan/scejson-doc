@@ -1,5 +1,11 @@
 # API Overview
 
+> "It cannot be denied that he (*Pierre de Fermat*) has had many exceptional ideas,  
+>  and that he is a highly intelligent man. For my part, however, I have always been  
+>  taught to take a broad overview of things, in order to be able to deduce from  
+>  them general rules, which might be applicable elsewhere."  
+>                                         --- Rene Descartes
+
 The SCEJSON offers different functionality in distinct *modules*, which are described below:
 
 | Module | Description |

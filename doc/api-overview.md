@@ -92,7 +92,7 @@ The `Result` field indicates the status of the API request. Please see the follo
 
 **Module** - *JString : (Apr, Error, Hcm, Hpml, Loan, Version) {❗required }*
 
-The value of the `Module` field determines which module within the SCEJSON generated the response. If the value `Result` field is `200` (API_OK), then the value of `Module` will be the same as the value of the `Module` field in the request envelope. If the value `Result` field is other than `200` (API_OK), then the SCEJSON has encountered an API ERROR condition, and the value of the this field will be set to `"Error"` to indicate that the `Data` field should be parsed as an [API Error response](#api-error-response).
+The value of the `Module` field determines which module within the SCEJSON generated the response. If the value of the `Result` field is `200` (API_OK), then the value of `Module` will be the same as the value of the `Module` field in the request envelope. If the value `Result` field is something other than `200` (API_OK), then the SCEJSON has encountered an API ERROR condition, and the value of the this field will be set to `"Error"` to indicate that the `Data` field should be parsed as an [API Error response](#api-error-response).
 
 **Data** - *JObject : (see documentation for the desired module) {❗required }*
 

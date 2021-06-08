@@ -46,7 +46,7 @@ The `Data` object in the version module request should be empty (e.g `{}`) but p
 
 The Data Object for a response from the version module is defined below:
 
-**Errors[]** - *JArray of JString : {❗required }*
+🟥 **Errors[]** - *JArray of JString : { required }*
 
 The `Errors[]` field contains an array of JStrings which describe any errors encountered
 while handling the request. If the length of the `Errors[]` JArray is zero (0), then the
@@ -58,9 +58,9 @@ this indicates that an error condition has been detected, and the calling applic
 should *not* process the respons Data object further. In this case, the contents of the
 `Errors[]` array will describe the error(s) encountered.
 
-Typical errors include the omission of *❗required* fields, invalid field values, etc.
+Typical errors include the omission of *🟥  required* fields, invalid field values, etc.
 
-**Warnings[]** - *JArray of JString : {❗required }*
+🟥 **Warnings[]** - *JArray of JString : { required }*
 
 The `Warning[]` field contains an array of JStrings which describe any warnings generated
 by the module handling the request. The most common warnings returned by modules inform
@@ -97,11 +97,11 @@ help to isolate a field name spelling error in the calling application's code).
 }
 ```
 
-**Product** - *JString : {❗required }*
+🟥 **Product** - *JString : { required }*
 
 For the SCEJSON, the value of this field will always be set to `"SCEJSON"`.
 
-**Version** - *JString : {❗required }*
+🟥 **Version** - *JString : { required }*
 
 Holds the version information for the SCEJSON.
 
@@ -118,13 +118,13 @@ Hence, a version number of 2022-01-0 refers to the first release of the SCEJSON 
 January, 2022 quarter. Similarly, a version number of 2021-07-02 refers to the third release
 of the SCEJSON in the July, 2021 quarter.
 
-**Rootpath** - *JString : {❗required }*
+🟥 **Rootpath** - *JString : { required }*
 
 Contains the fully qualified path for the default directory in which the
 SCEJSON will look for a `data/` folder containing setup files, if required
 by the request.
 
-**Copyright** - *JString : {❗required }*
+🟥 **Copyright** - *JString : { required }*
 
 Describes the copyright information for the SCEJSON.
 

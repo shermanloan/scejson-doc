@@ -46,23 +46,23 @@ The `Data` object in the version module request should be empty (e.g `{}`) but p
 
 The `Data` object for a response from the version module is defined below:
 
-🟥 **Errors[]** - *JArray of JString : { required }*
+🟥 **Errors[]** - *Array of String : { required }*
 
-The `Errors[]` field contains an array of JStrings which describe any errors encountered
-while handling the request. If the length of the `Errors[]` JArray is zero (0), then the
+The `Errors[]` field contains an array of Strings which describe any errors encountered
+while handling the request. If the length of the `Errors[]` Array is zero (0), then the
 module processed the request successfully, and the Data object can be further processed
 by the calling application for the returned data.
 
-On the other hand, if the length of the `Errors[]` JArray is greater than zero (0), then
+On the other hand, if the length of the `Errors[]` Array is greater than zero (0), then
 this indicates that an error condition has been detected, and the calling application
 should *not* process the respons Data object further. In this case, the contents of the
 `Errors[]` array will describe the error(s) encountered.
 
 Typical errors include the omission of *🟥  required* fields, invalid field values, etc.
 
-🟥 **Warnings[]** - *JArray of JString : { required }*
+🟥 **Warnings[]** - *Array of String : { required }*
 
-The `Warning[]` field contains an array of JStrings which describe any warnings generated
+The `Warning[]` field contains an array of Strings which describe any warnings generated
 by the module handling the request. The most common warnings returned by modules inform
 the calling application that the module does not recognize a specified field (which may
 help to isolate a field name spelling error in the calling application's code).
@@ -97,11 +97,11 @@ help to isolate a field name spelling error in the calling application's code).
 }
 ```
 
-🟥 **Product** - *JString : { required }*
+🟥 **Product** - *String : { required }*
 
 For the SCEJSON, the value of this field will always be set to `"SCEJSON"`.
 
-🟥 **Version** - *JString : { required }*
+🟥 **Version** - *String : { required }*
 
 Holds the version information for the SCEJSON.
 
@@ -118,13 +118,13 @@ Hence, a version number of 2022-01-0 refers to the first release of the SCEJSON 
 January, 2022 quarter. Similarly, a version number of 2021-07-02 refers to the third release
 of the SCEJSON in the July, 2021 quarter.
 
-🟥 **Rootpath** - *JString : { required }*
+🟥 **Rootpath** - *String : { required }*
 
 Contains the fully qualified path for the default directory in which the
 SCEJSON will look for a `data/` folder containing setup files, if required
 by the request.
 
-🟥 **Copyright** - *JString : { required }*
+🟥 **Copyright** - *String : { required }*
 
 Describes the copyright information for the SCEJSON.
 

@@ -93,7 +93,7 @@ The SCEJSON uses the same Sherman Calculation Engine behind a new JSON interface
         "Amount" : "10000.00"
       }
     ],
-    "InterestEvents" : [
+    "AccrualConfigs" : [
       {
         "Date" : "2019-01-01",
         "IntRate" : "10.000",

@@ -546,7 +546,7 @@ fields of this object.
 
 ---
 
-#### 🟦 EditOutput.EarlyPayoffDate
+🟦 **EditOutput.EarlyPayoffDate**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -573,7 +573,9 @@ to end an early payoff date on July 1, 2021, the field would be specified as
 coinsides with the 60th payment, the field would be specified as
 `"EarlyPayoffDate" : "0060-00-00"`.
 
-#### 🟦 EditOutput.KeepSlush
+---
+
+🟦 **EditOutput.KeepSlush**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -582,6 +584,130 @@ coinsides with the 60th payment, the field would be specified as
 Rounding interest each period numerically eliminates values beyond two decimal places. This amount
 is referred to as slush. To keep this amount and add it to next period's unrounded interest, set
 the value of this field `true`.
+
+---
+
+🟦 **EditOutput.Merge**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | true |
+
+If the value of this field is set to `true`, then payment elements will be
+merged together whenever possible. For example, if one event is of type
+`CalcPmt`, and another on the same day is `PayPrin`, then this field determines
+whether or not these two events will be combined into a single payment event or
+left as separate and distinct events.
+
+---
+
+🟦 **EditOutput.PmtDollarRound**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+Payments are normally rounded to the penny, according to the method specified by
+the `EditInterest.PmtRound` field. If the payment should be rounded to the
+dollar instead of the penny, then set the value of this field to `true`.
+
+Note that for some loans (such as those with longer terms or relatively small
+proceeds), rounding the payment up or to the nearest dollar may require a
+shortened loan term to prevent one or more negative payments at the end of the
+loan.
+
+---
+
+🟦 **EditOutput.ShowAmTable**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | true |
+
+To supress the entire amortization schedule from the response, set value of this
+field to `false`; otherwise, the amortization schedule will be returned.
+
+---
+
+🟦 **EditOutput.ShowFees**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If this field is set to `false`, then fees will not explicitly appear in the amortizaton
+schedule, unless they do not occur on the date of an advance or the date of a payment. They will
+also not be individually listed under the `Moneys` object of the response.
+
+A value of `true` means that all fees will be explicitly accounted for, both in the
+`Moneys` response object as child elements and in the amortization table. The
+`Type` field will have the name of the fee as its value.
+
+---
+
+🟦 **EditOutput.ShowGrandTot**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+To show the amortization schedule grand totals in the response, set this field's value to `true`;
+otherwise, the grand totals will not be returned.
+
+---
+
+🟦 **EditOutput.ShowSubTot**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+To show the amortization schedule annual subtotals in the XML output, set this field's value to `true`;
+otherwise, annual subtotals will not be returned.
+
+---
+
+🟦 **EditOutput.ShowTap**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | see below |
+
+If not specified, the default value of this field is determined by the
+`Country` specified. If the `Country` is `GB` (United Kingdom), then the default
+value is `true`. All other country values will default this field to
+`false`.
+
+The value of this field determines if the total amount payable response field
+(i.e. `TAP`) will be computed and disclosed. This quantity is broadly defined as
+the total of payments plus fees that do not enter into the amortization table in
+any way.
+
+---
+
+🟦 **EditOutput.ShowType**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+Each line of the amortization schedule is characterized by a type, which describes the particular
+amortization event. An `EditInterest` event is different from a `FixedPmt` event, for example. Set
+this field to `true` to report the `Type` of each amortization event. A value of `false`
+will suppress output of the `Type` field in the amortization schedule.
+
+---
+
+🟦 **EditOutput.TagPmts**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the value of this field is set to `true`, then each `PmtStream` response object will
+include an `Idx` field which identifies the input payment stream object which gave rise to it.
+If this field is set to `true`, then the `EditOutput.Merge` field must be set to `false`. If
+both are set to `true`, then an error will be returned.
 
 ---
 </details>

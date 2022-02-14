@@ -169,6 +169,49 @@ basis will be added to the interest computed on a 366 day basis, and then
 rounded.
   
 ---
+
+🟦 **BusinessRules.MYED** - *String (MM-DD) {optional}*
+
+The `MYED` field represents the Mortgage Year End Date when computing an annual
+rest loan, a loan which is commonly encountered in the United Kingdom. If you do
+not need to compute an annual rest loan, then this field need not be included in
+the request.
+
+If included in the request, then the value of the attribute must be in the
+format of `"MM-DD"` when `MM` is a valid month number from 1 to 12, and `DD` is
+a valid day number in the month specified. The month and day specified is the
+annual date on which escrowed payments and interest are applied to the
+outstanding principal balance.
+
+When the `MYED` is specified, you must also specify a `PmtStream` object with a
+`PmtType` field value of `PmtEsc`, which indicates an escrowed payment.
+
+---
+
+🟦 **BusinessRules.PmtAccrualCode**
+
+| Type | String |
+| Values | default, 201, 202, 203, 204, 205, 206, 210, 211, 220, 221, 230, 231,
+ 250, 301, 302, 303, 304, 305, 306, 308, 309, 310, 311, 320, 321, 330, 331, 350 |
+| Default | default |
+| Required? | no |
+
+In rare instances, the calculated payment for a given loan is based upon a
+different accrual calendar than the one used to amortize interest in the
+amortization schedule. This is most commonly encountered when a system is not
+able to compute the "best" payment, and instead uses a simpler accrual
+calendar with a closed form equation (such as unit period simple). An
+estimated payment is computed, then used in the amortization schedule where
+interest is accrued on a different calendar. Note that this will almost
+always generate an ending balance of greater magnitude that the "correct"
+payment, unless the `BusinessRules.AmError` field is used to adjust the final
+payment.
+
+A value of `default` means that the payment will be computed using the same
+accrual calendar as interest. Any other value will cause the computed payment
+to be calculated using the accrual code specified.
+
+---
 </details>
 
 ### 🟦 Country - *String : (Alpha-2 or Numeric-3 code) : "US" { optional }*

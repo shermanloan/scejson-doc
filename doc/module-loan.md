@@ -70,7 +70,8 @@ The `Data` object in the loan module request is defined below:
 Many loan calculation business rules may be toggled using the fields of this
 object.
 </summary>
-  
+
+---  
 🟦 **BusinessRules.AmError** - *String (Allow, AdjPmt, AdjPrin, AdjInt) : "Allow" { optional }*
 
 When amortizing a loan, often times there is a non-zero ending balance due to
@@ -115,6 +116,7 @@ and interest payments.
 Furthermore, the output for an `AmortizeOnly : true`} Loan request will omit
 the `FedBox` and `Moneys` response elements.
 
+---
 </details>
 
 🟦 **Country** - *String : (Alpha-2 or Numeric-3 code) : "US" { optional }*
@@ -127,7 +129,8 @@ the list of supported countries and their associated codes.
 Specifying the `Country` will also set the default value for the `APR.Code`
 and `BusinessRules.CurrencyDP` fields, as appropriate for the country specified.
 
-🟦 **Construction** - *Object { optional }*
+<details>
+  <summary>🟦 **Construction** - *Object { optional }*
 
 If the requested loan calculation features a construction period, during which
 time interest only payments are made by the borrower, then the request need to
@@ -150,14 +153,45 @@ begins during the construction period, with the final interest only payment
 occurring on the construction period's ending date. The interest only payments
 will then appear in the resulting amortization schedule, and the total
 construction interest will be returned in the `ConInterest` response object
-with the `IsPrepaid` field set to `false`.
+with the `IsPrepaid` field set to `false`.</summary>
 
-🟦 **ODI** - *Object { optional }*
+---
+
+🟦 **Construction.HalfCommitment** - *Boolean : false {optional}*
+
+During the construction period, if estimated interest should be disclosed based
+upon half of the commitment amount, then set the value of this field to `true`.
+If interest is due on the entire commitment amount during the construction
+period, then set this value to `false`. Multiple advance construction loans are
+computed with this attribute set as `true`.
+
+🟥 **Construction.EndDate** - *String (Date) {required}*
+
+The date on which the construction period terminates.
+
+All dates must be in the form of "YYYY-MM-DD", and be 10 characters long.
+Hence, to end the construction period on July 4, 2021, the attribute would be
+specified as `"EndDate" : "2021-07-04"`.
+
+If the calling application sets up discrete interest only payments during the
+construction period, then the `EndDate` may also be specified as occurring on
+a given payment number (`NNNN`) as `"EndDate" : "NNNN-00-00"`.
+
+---
+</details>
+
+<details>
+  <summary>🟦 **ODI** - *Object { optional }*
 
 If odd days should be treated as a prepaid finance charge *or* added to the
 first payment in a manner different from how interest is accruing (see 
 `BusinessRules.OddFirstPmt`), then the request needs to define how odd days
-interest is computed and handled using the fields of this object.
+interest is computed and handled using the fields of this object.</summary>
+
+---
+
+---
+</details>
 
 ## Loan Response Data Object Field Definition
 

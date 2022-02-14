@@ -65,7 +65,11 @@ payments. The final payment will be adjusted for perfect amortization.
 
 The `Data` object in the loan module request is defined below:
 
-### 🟦 BusinessRules - *Object { optional }*
+### 🟦 BusinessRules
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
 
 Many loan calculation *business rules* may be toggled using the fields of this
 object.
@@ -73,7 +77,11 @@ object.
 <details><summary><b>BusinessRules fields</b></summary>
 
 ---  
-🟦 **BusinessRules.AmError** - *String (Allow, AdjPmt, AdjPrin, AdjInt) : "Allow" { optional }*
+🟦 **BusinessRules.AmError**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Allow, AdjPmt, AdjPrin, AdjInt | Allow |
 
 When amortizing a loan, often times there is a non-zero ending balance due to
 rounding. This attribute determines what to do (if anything) with a non-zero
@@ -96,7 +104,11 @@ amortization schedule.
   
 ---
   
-🟦 **BusinessRules.AmortizeOnly** - *Boolean : false { optional }*
+🟦 **BusinessRules.AmortizeOnly**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
 
 If the calling application sets the value of this field to `true`, then instead
 of computing a loan with payments that best amortize the principal balance to
@@ -121,21 +133,33 @@ the `FedBox` and `Moneys` response elements.
   
 ---
   
-🟦 **BusinessRules.CanSkipFirst** - *Boolean : false {optional}*
+🟦 **BusinessRules.CanSkipFirst**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
 
 Set this field to `true` to allow the first payment of a loan to be skipped.
 The default value of `false` does not allow a skipped first payment.
   
 ---
   
-🟦 **BusinessRules.CanSkipLast** - *Boolean : false {optional}*
+🟦 **BusinessRules.CanSkipLast**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
 
 Set this attribute to `true` to allow the last payment of a loan to be skipped.
 The default value of `false` does not allow a skipped final payment.
   
 ---
   
-🟦 **BusinessRules.ClosedFormEqn** - *Boolean : true {optional}*
+🟦 **BusinessRules.ClosedFormEqn**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | true |
 
 When searching for the payment that best amortizes the loan to zero, this setting
 determines whether or not interest is rounded during the payment search algorithm.
@@ -146,7 +170,11 @@ algorithm.
   
 ---
   
-🟦 **BusinessRules.CurrencyDP** - *String (0, 2) : see below {optional}*
+🟦 **BusinessRules.CurrencyDP**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 0, 2 | 2 |
 
 The number of decimal places allowed for currency values is defined by this
 attribute. If this attribute is not set up, the default value will be 
@@ -156,7 +184,11 @@ default value for this attribute is `"2"`.
   
 ---
   
-🟦 **BusinessRules.LeapYearRound** - *Boolean : false {optional}*
+🟦 **BusinessRules.LeapYearRound**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
 
 If the value of this field is `true` and one of the actual/actual 
 interest accrual calendars (including Midnight366) is used in the requested
@@ -170,7 +202,11 @@ rounded.
   
 ---
 
-🟦 **BusinessRules.MYED** - *String (MM-DD) {optional}*
+🟦 **BusinessRules.MYED**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | MM-DD | n/a |
 
 The `MYED` field represents the Mortgage Year End Date when computing an annual
 rest loan, a loan which is commonly encountered in the United Kingdom. If you do
@@ -190,11 +226,9 @@ When the `MYED` is specified, you must also specify a `PmtStream` object with a
 
 🟦 **BusinessRules.PmtAccrualCode**
 
-| Type | String |
-| Values | default, 201, 202, 203, 204, 205, 206, 210, 211, 220, 221, 230, 231,
- 250, 301, 302, 303, 304, 305, 306, 308, 309, 310, 311, 320, 321, 330, 331, 350 |
-| Default | default |
-| Required? | no |
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | default, 201, 202, 203, 204, 205, 206, 210, 211, 220, 221, 230, 231, 250, 301, 302, 303, 304, 305, 306, 308, 309, 310, 311, 320, 321, 330, 331, 350 | default |
 
 In rare instances, the calculated payment for a given loan is based upon a
 different accrual calendar than the one used to amortize interest in the
@@ -214,7 +248,11 @@ to be calculated using the accrual code specified.
 ---
 </details>
 
-### 🟦 Country - *String : (Alpha-2 or Numeric-3 code) : "US" { optional }*
+### 🟦 Country
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Alpha-2 or Numeric-3 code | US |
 
 This field allows the calling application to specify a two (2) character or
 three (3) digit country code. If none is provided, then a default value of `US`
@@ -224,7 +262,11 @@ the list of supported countries and their associated codes.
 Specifying the `Country` will also set the default value for the `APR.Code`
 and `BusinessRules.CurrencyDP` fields, as appropriate for the country specified.
 
-### 🟦 Construction - *Object { optional }*
+### 🟦 Construction
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
 
 If the requested loan calculation features a construction period, during which
 time interest only payments are made by the borrower, then the request need to
@@ -254,7 +296,11 @@ with the `IsPrepaid` field set to `false`.
 
 ---
 
-🟦 **Construction.HalfCommitment** - *Boolean : false {optional}*
+🟦 **Construction.HalfCommitment**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
 
 During the construction period, if estimated interest should be disclosed based
 upon half of the commitment amount, then set the value of this field to `true`.
@@ -264,7 +310,11 @@ computed with this attribute set as `true`.
 
 ---
 
-🟥 **Construction.EndDate** - *String (Date) {required}*
+🟥 **Construction.EndDate**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | YYYY-MM-DD | n/a |
 
 The date on which the construction period terminates.
 
@@ -279,7 +329,11 @@ a given payment number (`NNNN`) as `"EndDate" : "NNNN-00-00"`.
 ---
 </details>
 
-### 🟦 ODI - *Object { optional }*
+### 🟦 ODI
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
 
 If odd days should be treated as a prepaid finance charge *or* added to the
 first payment in a manner different from how interest is accruing (see 
@@ -359,7 +413,11 @@ provided at the beginning of the previous section.
 
 The `Data` object for a response from the loan module is defined below:
 
-### 🟥 Errors[] - *Array of String : { required }*
+### 🟥 Errors
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of String | yes |
 
 The `Errors[]` field contains an array of Strings which describe any errors encountered
 while handling the request. If the length of the `Errors[]` Array is zero (0), then the
@@ -373,7 +431,11 @@ should *not* process the respons Data object further. In this case, the contents
 
 Typical errors include the omission of *🟥 required* fields, invalid field values, etc.
 
-### 🟥 Warnings[] - *Array of String : { required }*
+### 🟥 Warnings
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of String | yes |
 
 The `Warnings[]` field contains an array of Strings which describe any warnings generated
 by the module handling the request. The most common warnings returned by modules inform
@@ -412,7 +474,11 @@ no warnings will be generated for these unrecognized fields.
 }
 ```
 
-### 🟥 Notes[] - *Array of String : { required }*
+### 🟥 Notes
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of String | yes |
 
 The `Notes[]` field contains an array of Strings which present important
 calculation comments to more fully explain the loan calculation results that

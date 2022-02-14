@@ -532,6 +532,60 @@ the list of supported countries and their associated codes.
 Specifying the `Country` will also set the default value for the `APR.Code`
 and `BusinessRules.CurrencyDP` fields, as appropriate for the country specified.
 
+### 🟦 EditOutput
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+Changes to the presentation of the output data are contained in the
+fields of this object.
+
+<details>
+<summary><b>EditOutput fields</b></summary>
+
+---
+
+🟦 EditOutput.EarlyPayoffDate
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | YYYY-MM-DD or NNNN-00-00 | n/a |
+
+If an early payoff date is specified and is in the format of a valid date (i.e.
+`YYYY-MM-DD`), then the loan will first be computed normally, ignoring this
+value. Once this first step is done, the loan will then be amortized and the
+early payoff date applied by removing all loan events after the early payoff
+date, ensuring that a final payment date falls on the specified date.
+
+If the early payoff date is specified and is in the format of `NNNN-00-00`, then
+the early payoff date will be set to the date of the N'th payment, and the loan
+will be computed as described above.
+
+One common use of this field is to generate computed regular payments based upon
+a longer amortization term, with a final balloon payment made on the early
+payoff date (commonly called a balloon loan with a long term amortization and
+short term call).
+
+All dates must be in the form of YYYY-MM-DD, and be 10 characters long. Hence,
+to end an early payoff date on July 1, 2021, the field would be specified as
+`"EarlyPayoffDate" : "2021-07-01"`. To specify an early payoff date that
+coinsides with the 60th payment, the field would be specified as
+`"EarlyPayoffDate" : "0060-00-00"`.
+
+🟦 EditOutput.KeepSlush
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+Rounding interest each period numerically eliminates values beyond two decimal places. This amount
+is referred to as slush. To keep this amount and add it to next period's unrounded interest, set
+the value of this field `true`.
+
+---
+</details>
+
 ### 🟦 ODI
 
 | Type  | Required |

@@ -117,6 +117,33 @@ and interest payments.
 Furthermore, the output for an `"AmortizeOnly" : true` Loan request will omit
 the `FedBox` and `Moneys` response elements.
 
+🟦 **BusinessRules.CanSkipFirst** - *Boolean : false {optional}*
+
+Set this field to `true` to allow the first payment of a loan to be skipped.
+The default value of `false` does not allow a skipped first payment.
+
+🟦 **BusinessRules.CanSkipLast** - *Boolean : false {optional}*
+
+Set this attribute to `true` to allow the last payment of a loan to be skipped.
+The default value of `false` does not allow a skipped final payment.
+
+🟦 **BusinessRules.ClosedFormEqn** - *Boolean : true {optional}*
+
+When searching for the payment that best amortizes the loan to zero, this setting
+determines whether or not interest is rounded during the payment search algorithm.
+The default value of `true` indicates that the closed form equation should be matched,
+and interest will be left unrounded during the payment search algorithm. Setting this
+attribute value to `false` will cause interest to be rounded during the payment search
+algorithm.
+
+🟦 **BusinessRules.CurrencyDP** - *String (0, 2) : see below' {optional}*
+
+The number of decimal places allowed for currency values is defined by this
+attribute. If this attribute is not set up, the default value will be 
+determined by the value of the `Country` fiwld. For most countries,
+the default value is `"2"`. If no country code is specified, then the
+default value for this attribute is `"2"`.
+
 ---
 </details>
 

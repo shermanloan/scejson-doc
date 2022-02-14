@@ -84,8 +84,8 @@ in the fields of this object.
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | 10, 20, 30, 40, 41, 50, 60, 100, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 320, 321, 330, 331, 340 | see below |
 
-The method of APR computation is defined by this attribute. If
-this attribute is not set up, the default method depends upon the
+The method of APR computation is defined by this field. If
+this field is not included, the default method depends upon the
 value of the `Country` field. For the United States of America,
 the default value is `100` (Actuarial). For a country in the European Union, the
 default value is `50` (European Union APR). For Canada, the default value
@@ -142,7 +142,7 @@ this field. The default value of this field is `3`.
 
 If you are computing the Military APR (see `UseMAPR` below) and wish to override
 the default maximum APR value of 36%, then specify the desired maximum as the
-value of this attribute.
+value of this field.
 
 ---
 
@@ -152,7 +152,7 @@ value of this attribute.
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | InDays, InMonths | InDays |
 
- This attribute only applies to single advance, single payment transactions of term
+ This field only applies to single advance, single payment transactions of term
  less than one year. For these loans, when the term of the loan is a number of months,
  Appendix J allows for the term of the loan to be expressed as either a number of months
  over twelve, or the number of actual 24-hour days in the loan over 365. For the former,
@@ -217,7 +217,7 @@ object.
 | String | no | Allow, AdjPmt, AdjPrin, AdjInt | Allow |
 
 When amortizing a loan, often times there is a non-zero ending balance due to
-rounding. This attribute determines what to do (if anything) with a non-zero
+rounding. This field determines what to do (if anything) with a non-zero
 ending balance. This non-zero balance is referred to as the amortization error.
 
 * **Allow** - Do not do anything with the non-zero ending balance.
@@ -283,7 +283,7 @@ The default value of `false` does not allow a skipped first payment.
 | :---: |   :---:  |  ---   |  :---:  |
 | Boolean | no | true, false | false |
 
-Set this attribute to `true` to allow the last payment of a loan to be skipped.
+Set this field to `true` to allow the last payment of a loan to be skipped.
 The default value of `false` does not allow a skipped final payment.
   
 ---
@@ -298,7 +298,7 @@ When searching for the payment that best amortizes the loan to zero, this settin
 determines whether or not interest is rounded during the payment search algorithm.
 The default value of `true` indicates that the closed form equation should be matched,
 and interest will be left unrounded during the payment search algorithm. Setting this
-attribute value to `false` will cause interest to be rounded during the payment search
+field value to `false` will cause interest to be rounded during the payment search
 algorithm.
   
 ---
@@ -310,10 +310,10 @@ algorithm.
 | String | no | 0, 2 | 2 |
 
 The number of decimal places allowed for currency values is defined by this
-attribute. If this attribute is not set up, the default value will be 
+field. If this field is not included, the default value will be 
 determined by the value of the `Country` field. For most countries,
 the default value is `"2"`. If no country code is specified, then the
-default value for this attribute is `"2"`.
+default value for this field is `"2"`.
   
 ---
   
@@ -329,7 +329,7 @@ loan, then the interest accrued on a 365 days basis is rounded separately from
 the interest accrued on a 366 days basis. Note that this option is encountered
 *very* rarely in the marketplace.
 
-If the value of this attribute is `false`, then interest computed on a 365 day
+If the value of this field is `false`, then interest computed on a 365 day
 basis will be added to the interest computed on a 366 day basis, and then
 rounded.
   
@@ -346,7 +346,7 @@ rest loan, a loan which is commonly encountered in the United Kingdom. If you do
 not need to compute an annual rest loan, then this field need not be included in
 the request.
 
-If included in the request, then the value of the attribute must be in the
+If included in the request, then the value of the field must be in the
 format of `"MM-DD"` when `MM` is a valid month number from 1 to 12, and `DD` is
 a valid day number in the month specified. The month and day specified is the
 annual date on which escrowed payments and interest are applied to the
@@ -402,7 +402,7 @@ The US Rule APR Exception is an option used by some financial institutions that
 accrue interest in a US Rule manner, and also disclose the US Rule APR. If this
 field is omitted or set to `false`, the US Rule APR will always be computed.
 
-If the value of this attribute is set to `true` and the following conditions are
+If the value of this field is set to `true` and the following conditions are
 met: (i) interest is accrued via a US Rule method, (ii) A US Rule APR method
 matching the acrual method has been specified, (iii) the Regulation Z Finance
 Charge is equal to the interest charge, and (iv) there is only a single
@@ -437,10 +437,10 @@ term of the loan is 0%, or (ii) the computed interest charge for the loan is
 less than zero, then the interest charge will be set to a value of zero, and the
 Regulation Z Finance Charge will be adjusted in an identical manner.
 
-Note that setting the value of this attribute to `true` will likely cause the
+Note that setting the value of this field to `true` will likely cause the
 sum of the principal and interest to no longer equal the total of payments
 (similarly for the Amount Financed and Finance Charge). J. L. Sherman and
-Associates does not recommend that you set the value of this attribute to `true`
+Associates does not recommend that you set the value of this field to `true`
 before consulting with your legal counsel in regards to these and other
 unforseen consequences.
 
@@ -509,7 +509,7 @@ During the construction period, if estimated interest should be disclosed based
 upon half of the commitment amount, then set the value of this field to `true`.
 If interest is due on the entire commitment amount during the construction
 period, then set this value to `false`. Multiple advance construction loans are
-computed with this attribute set as `true`.
+computed with this field set as `true`.
 
 ---
 
@@ -522,7 +522,7 @@ computed with this attribute set as `true`.
 The date on which the construction period terminates.
 
 All dates must be in the form of "YYYY-MM-DD", and be 10 characters long.
-Hence, to end the construction period on July 4, 2021, the attribute would be
+Hence, to end the construction period on July 4, 2021, the field would be
 specified as `"EndDate" : "2021-07-04"`.
 
 If the calling application sets up discrete interest only payments during the

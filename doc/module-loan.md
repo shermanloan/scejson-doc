@@ -65,7 +65,7 @@ payments. The final payment will be adjusted for perfect amortization.
 
 The `Data` object in the loan module request is defined below:
 
-🟦 **BusinessRules** - *Object { optional }*
+### 🟦 BusinessRules - *Object { optional }*
 
 Many loan calculation *business rules* may be toggled using the fields of this
 object.
@@ -159,7 +159,7 @@ rounded.
 ---
 </details>
 
-🟦 **Country** - *String : (Alpha-2 or Numeric-3 code) : "US" { optional }*
+### 🟦 Country - *String : (Alpha-2 or Numeric-3 code) : "US" { optional }*
 
 This field allows the calling application to specify a two (2) character or
 three (3) digit country code. If none is provided, then a default value of `US`
@@ -169,7 +169,7 @@ the list of supported countries and their associated codes.
 Specifying the `Country` will also set the default value for the `APR.Code`
 and `BusinessRules.CurrencyDP` fields, as appropriate for the country specified.
 
-🟦 **Construction** - *Object { optional }*
+### 🟦 Construction - *Object { optional }*
 
 If the requested loan calculation features a construction period, during which
 time interest only payments are made by the borrower, then the request need to
@@ -222,7 +222,7 @@ a given payment number (`NNNN`) as `"EndDate" : "NNNN-00-00"`.
 ---
 </details>
 
-🟦 **ODI** - *Object { optional }*
+### 🟦 ODI - *Object { optional }*
 
 If odd days should be treated as a prepaid finance charge *or* added to the
 first payment in a manner different from how interest is accruing (see 
@@ -297,11 +297,12 @@ provided at the beginning of the previous section.
       "AmLines" : [...]
     }
   }
-}```
+}
+```
 
 The `Data` object for a response from the loan module is defined below:
 
-🟥 **Errors[]** - *Array of String : { required }*
+### 🟥 Errors[] - *Array of String : { required }*
 
 The `Errors[]` field contains an array of Strings which describe any errors encountered
 while handling the request. If the length of the `Errors[]` Array is zero (0), then the
@@ -315,7 +316,7 @@ should *not* process the respons Data object further. In this case, the contents
 
 Typical errors include the omission of *🟥 required* fields, invalid field values, etc.
 
-🟥 **Warnings[]** - *Array of String : { required }*
+### 🟥 Warnings[] - *Array of String : { required }*
 
 The `Warnings[]` field contains an array of Strings which describe any warnings generated
 by the module handling the request. The most common warnings returned by modules inform
@@ -351,9 +352,10 @@ no warnings will be generated for these unrecognized fields.
       "Request field Data.How (String) not recognized."
     ]
   }
-}```
+}
+```
 
-🟥 **Notes[]** - *Array of String : { required }*
+### 🟥 Notes[] - *Array of String : { required }*
 
 The `Notes[]` field contains an array of Strings which present important
 calculation comments to more fully explain the loan calculation results that

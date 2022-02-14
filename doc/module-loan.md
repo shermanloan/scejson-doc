@@ -246,6 +246,74 @@ accrual calendar as interest. Any other value will cause the computed payment
 to be calculated using the accrual code specified.
 
 ---
+
+🟦 **BusinessRules.ProtMandatory**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the value of this field is set to `true`, then protection premiums/fees
+will be considered to be a part of the Finance Charge, and thus affect the Regulation
+Z APR. 
+
+---
+
+🟦 **BusinessRules.UsRuleAprException**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+The US Rule APR Exception is an option used by some financial institutions that
+accrue interest in a US Rule manner, and also disclose the US Rule APR. If this
+field is omitted or set to `false`, the US Rule APR will always be computed.
+
+If the value of this attribute is set to `true` and the following conditions are
+met: (i) interest is accrued via a US Rule method, (ii) A US Rule APR method
+matching the acrual method has been specified, (iii) the Regulation Z Finance
+Charge is equal to the interest charge, and (iv) there is only a single
+`AccrualConfig` object, then the US Rule APR will be disclosed as the interest
+rate.
+
+---
+
+🟦 **BusinessRules.YieldPPY** 
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 0, 2, 4, 6, 12 | 0 |
+
+Canadian mortgages may compute periodic interest using a fractional power of a
+periodic yield. If set to a value other than "0", this value determines the
+period. Please contact us for further information if you support mortgage
+calculations in Canada. Note that when using this field with a value other
+than zero, the calling application *must* include an odd days prepaid fee
+in the request.
+
+🟦 **BusinessRules.ZeroInterestRule**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the value of this field is `true` and (i) the interest rate for the entire
+term of the loan is 0%, or (ii) the computed interest charge for the loan is
+less than zero, then the interest charge will be set to a value of zero, and the
+Regulation Z Finance Charge will be adjusted in an identical manner.
+
+Note that setting the value of this attribute to `true` will likely cause the
+sum of the principal and interest to no longer equal the total of payments
+(similarly for the Amount Financed and Finance Charge). J. L. Sherman and
+Associates does not recommend that you set the value of this attribute to `true`
+before consulting with your legal counsel in regards to these and other
+unforseen consequences.
+
+Lastly, all payment rounding is forced to be rounded down to the nearest penny.
+This adjustment ensures that the sum of payments never exceeds the Principal
+Balance of the loan.
+
+---
 </details>
 
 ### 🟦 Country

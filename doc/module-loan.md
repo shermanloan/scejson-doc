@@ -1,10 +1,10 @@
 # Loan Module
 
-> Debt is part of the human condition. Civilization
-> is based on exchanges - on gifts, trades, loans -
-> and the revenges and insults that come when they
-> are not paid back.  
->  --- Margaret Atwood
+> "Debt is part of the human condition. Civilization  
+>  is based on exchanges - on gifts, trades, loans -  
+>  and the revenges and insults that come when they  
+>  are not paid back"  
+>                           --- Margaret Atwood
 
 The SCEJSON's loan module may be used to compute almost any loan imaginable -
 from the simplest equal payment loan to loans that have exotic
@@ -17,7 +17,7 @@ this module by a slightly different name - "Loan Builder".
 **Example - Request Envelope for Loan Module**
 
 The following example is a request for an equal payment loan with an advance
-of $1,000, interest will accrue at a 10% rate using an Actual/365 day U.S.
+of $1,000, interest will accrue at a 10% rate using an actual day / 365 U.S.
 Rule accrual method (code `320`), and with a repayment schedule of 12 monthly
 payments. The final payment will be adjusted for perfect amortization.
 
@@ -64,12 +64,13 @@ payments. The final payment will be adjusted for perfect amortization.
 ```
 
 The `Data` object in the loan module request is defined below:
-
-🟦 **BusinessRules** - *Object { optional }*
+<details>
+  <summary>🟦 **BusinessRules** - *Object { optional }*
 
 Many loan calculation business rules may be toggled using the fields of this
 object.
-
+</summary>
+  
 🟦 **BusinessRules.AmError** - *String (Allow, AdjPmt, AdjPrin, AdjInt) : "Allow" { optional }*
 
 When amortizing a loan, often times there is a non-zero ending balance due to
@@ -104,12 +105,17 @@ To use this functionality, there are a few requirements that must be met:
 * All specified payment streams must have a `PmtType` of other than `CalcPmt`.
 In `AmortizeOnly` mode, the Loan Builder will not compute "regular" principal
 and interest payments.
+
 * No protection products may be requested.
+
 * All advances must be specified, and not computed.
+
 * `AmError` (see above) must be set to `Allow`.
 
 Furthermore, the output for an `AmortizeOnly : true`} Loan request will omit
-the `FedBox` and `Moneys` response objets.
+the `FedBox` and `Moneys` response elements.
+
+</details>
 
 🟦 **Country** - *String : (Alpha-2 or Numeric-3 code) : "US" { optional }*
 

@@ -65,6 +65,140 @@ payments. The final payment will be adjusted for perfect amortization.
 
 The `Data` object in the loan module request is defined below:
 
+### 🟦 Apr
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+Settings related to the computed effective rate returned by the SCE (most
+commonly, the Regulation Z APR in the United States of America) are contained
+in the fields of this object.
+
+<details><summary><b>Apr fields</b></summary>
+
+---
+🟦 **Apr.Code**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 10, 20, 30, 40, 41, 50, 60, 100, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310,
+ 311, 320, 321, 330, 331, 340 | see below |
+
+The method of APR computation is defined by this attribute. If
+this attribute is not set up, the default method depends upon the
+value of the `Country` field. For the United States of America,
+the default value is `100` (Actuarial). For a country in the European Union, the
+default value is `50` (European Union APR). For Canada, the default value
+is `60`.
+
+| Apr Code | Description |
+| :---:    |   :---      |
+|   10  | Account opening disclosure of open-end Loan |
+|       | (APR will equal the Interest Rate) |
+|   20  | Microsoft\textregistered Excel extended internal rate of return (XIRR) |
+|   30  | Unit period 360 internal rate of return (XIRR360) |
+|   40  | Unit period internal rate of return (IRR) |
+|   41  | Yield unit period internal rate of return (IRR) |
+|   50  | European Union APR |
+|   60  | Canadian APR |
+|  100  | Actuarial |
+|  301  | UnitPeriod/360 US Rule |
+|  302  | UnitPeriod/365 US Rule |
+|  303  | UnitPeriod/DaysPerPeriod US Rule |
+|       | (e.g. 91 for quarterly payment frequencies) |
+|  304  | UnitPeriod True360/360 US Rule. |
+|  305  | UnitPeriod True360/365 US Rule. |
+|  306  | UnitPeriod True360/DaysPerPeriod (e.g. 91 for |
+|       | quarterly payment frequencies) |
+|  307  | UnitPeriod/Federal Calendar US Rule |
+|  308  | UnitPeriod/365.25 US Rule |
+|  309  | UnitPeriod True360/365.25 US Rule |
+|  310  | Actual/360 US Rule |
+|  311  | True365/360 US Rule |
+|  320  | Actual/365 US Rule |
+|  321  | True365/365 US Rule |
+|  330  | Actual/Actual US Rule |
+|  331  | Midnight366 US Rule |
+|  340  | Actual/365.25 US Rule |
+
+---
+
+🟦 **Apr.Decimals**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 1, 2, 3, 4, 5 | see below |
+
+The number of decimal places of accuracy for the disclosed APR is determined by
+this field. The default value of this field is `3`.
+
+---
+
+🟦 **Apr.MAPR_Max**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | number | 36 |
+
+If you are computing the Military APR (see `UseMAPR` below) and wish to override
+the default maximum APR value of 36%, then specify the desired maximum as the
+value of this attribute.
+
+---
+
+🟦 **Apr.SinglePayFraction**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | InDays, InMonths | InDays |
+
+ This attribute only applies to single advance, single payment transactions of term
+ less than one year. For these loans, when the term of the loan is a number of months,
+ Appendix J allows for the term of the loan to be expressed as either a number of months
+ over twelve, or the number of actual 24-hour days in the loan over 365. For the former,
+ use "InMonths". For the latter, use "InDays".
+
+---
+
+🟦 **Apr.StrictTime**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+When monthly payments are intended for the 29th or 30th of the month, how should
+the number of unit periods and fraction be calculated in February, when the day
+of the payment cannot be the intended day? (e.g. A non-leap year February where
+payments are meant for the 29th, but end up on the 28th). The `StrictTime` field
+acknowledges and disambiguates the calculation. Regular payments generally hold
+the fraction of a unit period constant, based on the date of the first payment.
+The SCE allows for a constant fraction of a unit period or a strict time
+accounting, acknowledging that in February, the fraction of a unit period
+changes.
+
+When the value of this field is `true`, the SCE will calculate the fraction of a
+unit period strictly according to the rules of Appendix J of Regulation Z.
+
+A value of `false` instructs the SCE to keep the fraction of a unit period
+constant, equal to the fraction obtained by the time calculated from the date of
+the first payment to the transaction date.
+
+---
+
+🟦 **Apr.UseMAPR**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If this field is set to a value of `true`, then the SCE will compute the
+Military APR in addition to the Regulation Z APR. The `MAPR` object will be
+included in the loan response.
+
+---
+</details>
+
 ### 🟦 BusinessRules
 
 | Type  | Required |
@@ -290,6 +424,8 @@ period. Please contact us for further information if you support mortgage
 calculations in Canada. Note that when using this field with a value other
 than zero, the calling application *must* include an odd days prepaid fee
 in the request.
+
+---
 
 🟦 **BusinessRules.ZeroInterestRule**
 

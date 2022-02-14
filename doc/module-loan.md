@@ -65,15 +65,12 @@ payments. The final payment will be adjusted for perfect amortization.
 
 The `Data` object in the loan module request is defined below:
 
-<details>
-<summary>
-
 🟦 **BusinessRules** - *Object { optional }*
 
-Many loan calculation business rules may be toggled using the fields of this
+Many loan calculation *business rules* may be toggled using the fields of this
 object.
 
-</summary>
+<details><summary><b>BusinessRules fields</b></summary>
 
 ---  
 🟦 **BusinessRules.AmError** - *String (Allow, AdjPmt, AdjPrin, AdjInt) : "Allow" { optional }*
@@ -133,9 +130,6 @@ the list of supported countries and their associated codes.
 Specifying the `Country` will also set the default value for the `APR.Code`
 and `BusinessRules.CurrencyDP` fields, as appropriate for the country specified.
 
-<details>
-<summary>
-
 🟦 **Construction** - *Object { optional }*
 
 If the requested loan calculation features a construction period, during which
@@ -161,7 +155,8 @@ will then appear in the resulting amortization schedule, and the total
 construction interest will be returned in the `ConInterest` response object
 with the `IsPrepaid` field set to `false`.
 
-</summary>
+<details>
+<summary><b>Construction fields</b></summary>
 
 ---
 
@@ -188,9 +183,6 @@ a given payment number (`NNNN`) as `"EndDate" : "NNNN-00-00"`.
 ---
 </details>
 
-<details>
-<summary>
-
 🟦 **ODI** - *Object { optional }*
 
 If odd days should be treated as a prepaid finance charge *or* added to the
@@ -198,7 +190,8 @@ first payment in a manner different from how interest is accruing (see
 `BusinessRules.OddFirstPmt`), then the request needs to define how odd days
 interest is computed and handled using the fields of this object.
 
-</summary>
+<details>
+<summary><b>ODI fields</b></summary>
 
 ---
 

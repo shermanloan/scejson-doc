@@ -46,7 +46,12 @@ The `Data` object in the version module request should be empty (e.g `{}`) but p
 
 The `Data` object for a response from the version module is defined below:
 
-### 🟥 Errors[] - *Array of String : { required }*
+### 🟥 Errors
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of String | yes |
+
 
 The `Errors[]` field contains an array of Strings which describe any errors encountered
 while handling the request. If the length of the `Errors[]` Array is zero (0), then the
@@ -60,7 +65,12 @@ should *not* process the respons Data object further. In this case, the contents
 
 Typical errors include the omission of *🟥 required* fields, invalid field values, etc.
 
-### 🟥 Warnings[] - *Array of String : { required }*
+### 🟥 Warnings
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of String | yes |
+
 
 The `Warnings[]` field contains an array of Strings which describe any warnings generated
 by the module handling the request. The most common warnings returned by modules inform
@@ -100,11 +110,19 @@ no warnings will be generated for these unrecognized fields.
 }
 ```
 
-### 🟥 Product - *String : { required }*
+### 🟥 Product
+
+| Type  | Required |
+| :---: |   :---:  |
+| String | yes |
 
 For the SCEJSON, the value of this field will always be set to `"SCEJSON"`.
 
-### 🟥 Version - *String : { required }*
+### 🟥 Version
+
+| Type  | Required |
+| :---: |   :---:  |
+| String | yes |
 
 Holds the version information for the SCEJSON.
 
@@ -121,13 +139,21 @@ Hence, a version number of 2022-01-0 refers to the first release of the SCEJSON 
 January, 2022 quarter. Similarly, a version number of 2021-07-02 refers to the third release
 of the SCEJSON in the July, 2021 quarter.
 
-### 🟥 Rootpath - *String : { required }*
+### 🟥 Rootpath
+
+| Type  | Required |
+| :---: |   :---:  |
+| String | yes |
 
 Contains the fully qualified path for the default directory in which the
 SCEJSON will look for a `data/` folder containing setup files, if required
 by the request.
 
-### 🟥 Copyright - *String : { required }*
+### 🟥 Copyright
+
+| Type  | Required |
+| :---: |   :---:  |
+| String | yes |
 
 Describes the copyright information for the SCEJSON.
 

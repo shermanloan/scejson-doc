@@ -451,20 +451,6 @@ Balance of the loan.
 ---
 </details>
 
-### 🟦 Country
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | Alpha-2 or Numeric-3 code | US |
-
-This field allows the calling application to specify a two (2) character or
-three (3) digit country code. If none is provided, then a default value of `US`
-will be used. Please see the [Countries Appendix](appendix-countries.md) for
-the list of supported countries and their associated codes.
-
-Specifying the `Country` will also set the default value for the `APR.Code`
-and `BusinessRules.CurrencyDP` fields, as appropriate for the country specified.
-
 ### 🟦 Construction
 
 | Type  | Required |
@@ -531,6 +517,20 @@ a given payment number (`NNNN`) as `"EndDate" : "NNNN-00-00"`.
 
 ---
 </details>
+
+### 🟦 Country
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Alpha-2 or Numeric-3 code | US |
+
+This field allows the calling application to specify a two (2) character or
+three (3) digit country code. If none is provided, then a default value of `US`
+will be used. Please see the [Countries Appendix](appendix-countries.md) for
+the list of supported countries and their associated codes.
+
+Specifying the `Country` will also set the default value for the `APR.Code`
+and `BusinessRules.CurrencyDP` fields, as appropriate for the country specified.
 
 ### 🟦 ODI
 

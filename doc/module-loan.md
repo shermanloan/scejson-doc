@@ -93,7 +93,9 @@ perfect amortization, which will then result in an ending balance of zero.
 Note that using `AdjPrin` or `AdjInt` will cause the final payment to not equal
 the sum of the principal reduction amount and amount to interest in the
 amortization schedule.
-
+  
+---
+  
 🟦 **BusinessRules.AmortizeOnly** - *Boolean : false { optional }*
 
 If the calling application sets the value of this field to `true`, then instead
@@ -116,17 +118,23 @@ and interest payments.
 
 Furthermore, the output for an `"AmortizeOnly" : true` Loan request will omit
 the `FedBox` and `Moneys` response elements.
-
+  
+---
+  
 🟦 **BusinessRules.CanSkipFirst** - *Boolean : false {optional}*
 
 Set this field to `true` to allow the first payment of a loan to be skipped.
 The default value of `false` does not allow a skipped first payment.
-
+  
+---
+  
 🟦 **BusinessRules.CanSkipLast** - *Boolean : false {optional}*
 
 Set this attribute to `true` to allow the last payment of a loan to be skipped.
 The default value of `false` does not allow a skipped final payment.
-
+  
+---
+  
 🟦 **BusinessRules.ClosedFormEqn** - *Boolean : true {optional}*
 
 When searching for the payment that best amortizes the loan to zero, this setting
@@ -135,7 +143,9 @@ The default value of `true` indicates that the closed form equation should be ma
 and interest will be left unrounded during the payment search algorithm. Setting this
 attribute value to `false` will cause interest to be rounded during the payment search
 algorithm.
-
+  
+---
+  
 🟦 **BusinessRules.CurrencyDP** - *String (0, 2) : see below {optional}*
 
 The number of decimal places allowed for currency values is defined by this
@@ -143,7 +153,9 @@ attribute. If this attribute is not set up, the default value will be
 determined by the value of the `Country` field. For most countries,
 the default value is `"2"`. If no country code is specified, then the
 default value for this attribute is `"2"`.
-
+  
+---
+  
 🟦 **BusinessRules.LeapYearRound** - *Boolean : false {optional}*
 
 If the value of this field is `true` and one of the actual/actual 
@@ -155,7 +167,7 @@ the interest accrued on a 366 days basis. Note that this option is encountered
 If the value of this attribute is `false`, then interest computed on a 365 day
 basis will be added to the interest computed on a 366 day basis, and then
 rounded.
-
+  
 ---
 </details>
 
@@ -206,6 +218,8 @@ upon half of the commitment amount, then set the value of this field to `true`.
 If interest is due on the entire commitment amount during the construction
 period, then set this value to `false`. Multiple advance construction loans are
 computed with this attribute set as `true`.
+
+---
 
 🟥 **Construction.EndDate** - *String (Date) {required}*
 

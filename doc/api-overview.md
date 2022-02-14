@@ -88,7 +88,11 @@ The response envelope is simply a JSON object which identifies the numeric `Resu
 
 ## Response Envelope Object Field Definitions
 
-### 🟥 Result - *Integer : (200, 400, 403) { required }*
+### 🟥 Result
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Integer | yes | 200, 400, 403 |
 
 The `Result` field indicates the status of the API request. Please see the following table for what the API Result code mean. A successful call will result in a Result field value of 200 (API_OK). Any other value indicates that an error was encountered.
 

@@ -112,7 +112,7 @@ and interest payments.
 
 * All advances must be specified, and not computed.
 
-* `AmError` (see above) must be set to `Allow`.
+* `AmError` (see above) must be set to `"Allow"`.
 
 Furthermore, the output for an `"AmortizeOnly" : true` Loan request will omit
 the `FedBox` and `Moneys` response elements.
@@ -136,13 +136,25 @@ and interest will be left unrounded during the payment search algorithm. Setting
 attribute value to `false` will cause interest to be rounded during the payment search
 algorithm.
 
-🟦 **BusinessRules.CurrencyDP** - *String (0, 2) : see below' {optional}*
+🟦 **BusinessRules.CurrencyDP** - *String (0, 2) : see below {optional}*
 
 The number of decimal places allowed for currency values is defined by this
 attribute. If this attribute is not set up, the default value will be 
-determined by the value of the `Country` fiwld. For most countries,
+determined by the value of the `Country` field. For most countries,
 the default value is `"2"`. If no country code is specified, then the
 default value for this attribute is `"2"`.
+
+🟦 **BusinessRules.LeapYearRound** - *Boolean : false {optional}*
+
+If the value of this field is `true` and one of the actual/actual 
+interest accrual calendars (including Midnight366) is used in the requested
+loan, then the interest accrued on a 365 days basis is rounded separately from
+the interest accrued on a 366 days basis. Note that this option is encountered
+*very* rarely in the marketplace.
+
+If the value of this attribute is `false`, then interest computed on a 365 day
+basis will be added to the interest computed on a 366 day basis, and then
+rounded.
 
 ---
 </details>

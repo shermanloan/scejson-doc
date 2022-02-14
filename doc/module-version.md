@@ -58,20 +58,23 @@ this indicates that an error condition has been detected, and the calling applic
 should *not* process the respons Data object further. In this case, the contents of the
 `Errors[]` array will describe the error(s) encountered.
 
-Typical errors include the omission of *🟥  required* fields, invalid field values, etc.
+Typical errors include the omission of *🟥 required* fields, invalid field values, etc.
 
 🟥 **Warnings[]** - *Array of String : { required }*
 
-The `Warning[]` field contains an array of Strings which describe any warnings generated
+The `Warnings[]` field contains an array of Strings which describe any warnings generated
 by the module handling the request. The most common warnings returned by modules inform
 the calling application that the module does not recognize a specified field (which may
-help to isolate a field name spelling error in the calling application's code).
+help to isolate a field name spelling error in the calling application's code). Note that
+field names which start with "//" will bre treated as comment fields by the SCEJSON, and
+no warnings will be generated for these unrecognized fields.
 
 **Example - Request and response illustrating warnings when passing unrecognized fields** *(hosted on AWS)*
 ```json
 {
   "Module" : "Version",
   "Data" : {
+    "//" : "This is a comment.",
     "Hello" : "Friend!",
     "How" : "are you?"
   }

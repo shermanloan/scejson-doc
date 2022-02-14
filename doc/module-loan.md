@@ -64,11 +64,15 @@ payments. The final payment will be adjusted for perfect amortization.
 ```
 
 The `Data` object in the loan module request is defined below:
+
 <details>
-  <summary>🟦 **BusinessRules** - *Object { optional }*
+<summary>
+
+🟦 **BusinessRules** - *Object { optional }*
 
 Many loan calculation business rules may be toggled using the fields of this
 object.
+
 </summary>
 
 ---  
@@ -113,7 +117,7 @@ and interest payments.
 
 * `AmError` (see above) must be set to `Allow`.
 
-Furthermore, the output for an `AmortizeOnly : true`} Loan request will omit
+Furthermore, the output for an `"AmortizeOnly" : true` Loan request will omit
 the `FedBox` and `Moneys` response elements.
 
 ---
@@ -130,7 +134,9 @@ Specifying the `Country` will also set the default value for the `APR.Code`
 and `BusinessRules.CurrencyDP` fields, as appropriate for the country specified.
 
 <details>
-  <summary>🟦 **Construction** - *Object { optional }*
+<summary>
+
+🟦 **Construction** - *Object { optional }*
 
 If the requested loan calculation features a construction period, during which
 time interest only payments are made by the borrower, then the request need to
@@ -153,7 +159,9 @@ begins during the construction period, with the final interest only payment
 occurring on the construction period's ending date. The interest only payments
 will then appear in the resulting amortization schedule, and the total
 construction interest will be returned in the `ConInterest` response object
-with the `IsPrepaid` field set to `false`.</summary>
+with the `IsPrepaid` field set to `false`.
+
+</summary>
 
 ---
 
@@ -181,12 +189,16 @@ a given payment number (`NNNN`) as `"EndDate" : "NNNN-00-00"`.
 </details>
 
 <details>
-  <summary>🟦 **ODI** - *Object { optional }*
+<summary>
+
+🟦 **ODI** - *Object { optional }*
 
 If odd days should be treated as a prepaid finance charge *or* added to the
 first payment in a manner different from how interest is accruing (see 
 `BusinessRules.OddFirstPmt`), then the request needs to define how odd days
-interest is computed and handled using the fields of this object.</summary>
+interest is computed and handled using the fields of this object.
+
+</summary>
 
 ---
 

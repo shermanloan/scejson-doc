@@ -546,7 +546,7 @@ fields of this object.
 
 ---
 
-🟦 EditOutput.EarlyPayoffDate
+#### 🟦 EditOutput.EarlyPayoffDate
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -573,7 +573,7 @@ to end an early payoff date on July 1, 2021, the field would be specified as
 coinsides with the 60th payment, the field would be specified as
 `"EarlyPayoffDate" : "0060-00-00"`.
 
-🟦 EditOutput.KeepSlush
+#### 🟦 EditOutput.KeepSlush
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |

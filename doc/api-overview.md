@@ -41,11 +41,19 @@ The request envelope is simply a JSON object which identifies the requested `Mod
 
 ## Request Envelope Object Field Definitions
 
-### 🟥 Module - *String : (Apr, Hcm, Hpml, Loan, Version) { required }*
+### 🟥 Module
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Apr, Hcm, Hpml, Loan, Version | n/a |
 
 The value of the `Module` field determines which module within the SCEJSON is being requested.
 
-### 🟥 Data - *Object : (see documentation for the desired module) { required }*
+### 🟥 Data
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | yes |
 
 The `Data` field contains the module specific request data, and differs depending upon the desired `Module`. Please reference the chapter dedicated to the module for the required format of the `Data` object.
 
@@ -90,11 +98,19 @@ The `Result` field indicates the status of the API request. Please see the follo
 | 400 | API_ERR_BADREQUEST | One of the following occurred: (i) an exception was encountered while attempting to parse the request, (ii) could not parse the request into a valid JSON object, (iii) no `Module` field of type String was found in the envelope, or (iv) no `Data` field of type Object was found. An [API Error response](#api-error-response) will be returned to the calling application. |
 | 403 | API_ERR_NOTFOUND | The `Module` specified was not found. An [API Error response](#api-error-response) will be returned to the calling application. |
 
-### 🟥 Module - *String : (Apr, Error, Hcm, Hpml, Loan, Version) { required }*
+### 🟥 Module
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Apr, Hcm, Hpml, Loan, Version |
 
 The value of the `Module` field determines which module within the SCEJSON generated the response. If the value of the `Result` field is `200` (API_OK), then the value of `Module` will be the same as the value of the `Module` field in the request envelope. If the value `Result` field is something other than `200` (API_OK), then the SCEJSON has encountered an API ERROR condition, and the value of the this field will be set to `"Error"` to indicate that the `Data` field should be parsed as an [API Error response](#api-error-response).
 
-### 🟥 Data - *Object : (see documentation for the desired module) { required }*
+### 🟥 Data
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | yes |
 
 The `Data` field contains the module specific response data, and differs depending upon the returned `Module`. Please reference the chapter dedicated to the module for the required format of the `Data` object.
 
@@ -180,7 +196,11 @@ As mentioned above, if the SCEJSON was not able to successfully dispatch a reque
 
 The `Data` object for an API Error Response contains a single field which returns a description of the API Error.
 
-### 🟥 Errors[] - *Array of String : { required }*
+### 🟥 Errors
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of String | yes |
 
 The `Errors[]` field contains an array of Strings which describe the error conditions which were encountered. For an API Error Response, the length of the `Errors[]` Array should always be one (1).
 

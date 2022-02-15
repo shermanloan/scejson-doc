@@ -294,6 +294,78 @@ Defines the interest rate that applies to this split rate tier.
 ---
 </details>
 
+### 🟥 Advances
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of Advance objects | yes |
+
+This array of `Advance` objects must have at least one member, and is used to
+specify the cash advances made to the borrower.
+
+<details><summary><b>Advances fields</b></summary>
+
+---
+🟥 **Advances.Amount**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number | n/a |
+
+The proceeds to be advanced to the borrower is defined using this field. If the
+calling application requests that the advance be computed (see the
+`Advance.Compute` field below), then the value of this attribute will be added
+to the computed advance amount, which can be useful in multiple advance loans.
+
+---
+
+🟦 **Advances.Compute**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+Some applications like to provide useful "what if?" calculations, such as "how
+much can I afford to borrow given a specified loan term, interest rate, and
+payment stream?" Here at J. L. Sherman and Associates, we call this a "Roll to
+Advance" calculation.
+
+If the value of this attribute is `true`, then the calling application is
+requesting that the SCE calculate one or more advances given a specified term,
+interest rate, and payment stream. With this in mind, all `PmtStream` objects
+(which define the specified payment streams in the loan) may not have a
+`PmtType` of `CalcPmt`. Usually, all payment streams will be defined using a
+`PmtType` of `FixedPmt`.
+
+We have provided several samples which illustrate various "Roll to Advance"
+calculations in the `/samples` directory, for your reference.
+
+---
+
+🟥 **Advance.Date** (Date)
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | YYYY-MM-DD | n/a |
+
+This field's value holds the date on which the advance is made. All dates must
+be in the form of YYYY-MM-DD, and be 10 characters long. Hence, an advance date
+of January 2, 2021 would be specified as `"Date" : "2021-01-02"'.
+
+---
+
+🟦 **Advance.ExtraDays**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Integer | 0 |
+
+Increase or decrease the number of days between this event and the next event by
+the value of this field. e.g. `1` will be considered one more day of interest.
+
+---
+</details>
+
 ### 🟦 Apr
 
 | Type  | Required |

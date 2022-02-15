@@ -260,17 +260,19 @@ As en example, assume that the calling application needs to charge 20% on the fi
 rate structure is:
 
 ```json
-AccrualConfigs : [
-  {
-  "AccrualCode" : "201",
-  "Date" : "2020-04-01",
-  "IntRate" : "10.000",
-  "Tiers" : [
-    { "Rate" : "20.0", "Ceiling" : "100.00" },
-    { "Rate" : "15.0", "Ceiling" : "250.00" }
+{
+  "AccrualConfigs" : [
+    {
+    "AccrualCode" : "201",
+    "Date" : "2020-04-01",
+    "IntRate" : "10.000",
+    "Tiers" : [
+      { "Rate" : "20.0", "Ceiling" : "100.00" },
+      { "Rate" : "15.0", "Ceiling" : "250.00" }
+    ]
+    }
   ]
-  }
-]
+}
 ```
 
 🟥  **AccrualConfig.Tier.Ceiling**

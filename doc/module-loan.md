@@ -65,6 +65,28 @@ payments. The final payment will be adjusted for perfect amortization.
 
 The `Data` object in the loan module request is defined below:
 
+### 🟥 AccrualConfigs
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of AccrualConfig objects | yes |
+
+This array of `AccrualConfig` objects must have at least one member, and
+is used to specify how interest is calculated.
+
+<details><summary><b>AccrualConfig fields</b></summary>
+
+---
+🟦 **AccrualConfig.Code**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | see table | see below |
+
+
+---
+</details>
+
 ### 🟦 Apr
 
 | Type  | Required |

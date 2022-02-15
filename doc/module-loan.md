@@ -306,7 +306,7 @@ specify the cash advances made to the borrower.
 <details><summary><b>Advances fields</b></summary>
 
 ---
-🟥 **Advances.Amount**
+🟥 **Advance.Amount**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -319,7 +319,7 @@ to the computed advance amount, which can be useful in multiple advance loans.
 
 ---
 
-🟦 **Advances.Compute**
+🟦 **Advance.Compute**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -350,7 +350,7 @@ calculations in the `/samples` directory, for your reference.
 
 This field's value holds the date on which the advance is made. All dates must
 be in the form of YYYY-MM-DD, and be 10 characters long. Hence, an advance date
-of January 2, 2021 would be specified as `"Date" : "2021-01-02"'.
+of January 2, 2021 would be specified as `"Date" : "2021-01-02"`.
 
 ---
 

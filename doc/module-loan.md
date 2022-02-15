@@ -77,12 +77,217 @@ is used to specify how interest is calculated.
 <details><summary><b>AccrualConfig fields</b></summary>
 
 ---
+🟦 **AccrualConfig.Capitalize**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If interest due is to be added to principal (capitalized) on the specified
+`Date`, then set this field's value to `true`.
+
+---
+
 🟦 **AccrualConfig.Code**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
 | String | yes | see table | see below |
 
+The method of interest accrual is defined by this field. A value of `default`
+means one of two things: if no accrual method has beend defined at all, use the
+system default of `201`. If an accrual code has been previously defined, then
+the SCE will continue to use that method. Please see the following table of
+accrual codes and their descriptions for the meanings of each code.
+
+Add-On interest methods 401...406 have restrictions that apply. Only equal
+payment loans with one AccrualConfig element may use add-on interest. In
+addition, construction loans may not be used with add-on interest. Also, any
+protection products requested must also be single premium.
+
+| Code | Description |
+| :---: | :--- |
+| 100 | UnitPeriod/Federal Calendar Actuarial |
+| 101 | UnitPeriod/Toyota Motor Credit Actuarial |
+| 201 | UnitPeriod/360 Simple |
+| 202 | UnitPeriod/365 Simple |
+| 203 | UnitPeriod/DaysPerPeriod Simple (e.g. 91 for quarterly payment frequencies) |
+| 204 | UnitPeriod True360/360 Simple |
+| 205 | UnitPeriod True360/365 Simple |
+| 206 | UnitPeriod True360/DaysPerPeriod Simple (e.g. 91 for quarterly payment frequencies) |
+| 207 | UnitPeriod/Federal Calendar Simple |
+| 208 | UnitPeriod/365.25 Simple |
+| 209 | UnitPeriod True360/365.25 Simple |
+| 210 | Actual/360 Simple |
+| 211 | True365/360 Simple |
+| 220 | Actual/365 Simple |
+| 221 | True365/365 Simple |
+| 230 | Actual/Actual Simple |
+| 231 | Midnight 366 Simple |
+| 240 | Actual/365.25 Simple |
+| 250 | UnitPeriod/VarDPY Simple |
+| 301 | UnitPeriod/360 US Rule |
+| 302 | UnitPeriod/365 US Rule |
+| 303 | UnitPeriod/DaysPerPeriod US Rule (e.g. 91 for quarterly payment frequencies) |
+| 304 | UnitPeriod True360/360 US Rule |
+| 305 | UnitPeriod True360/365 US Rule |
+| 306 | UnitPeriod True360/DaysPerPeriod US Rule (e.g. 91 for quarterly payment frequencies) |
+| 307 | UnitPeriod/Federal Calendar US Rule |
+| 308 | UnitPeriod/365.25 US Rule |
+| 309 | UnitPeriod True360/365.25 US Rule |
+| 310 | Actual/360 US Rule |
+| 311 | True365/360 US Rule |
+| 320 | Actual/365 US Rule |
+| 321 | True365/365 US Rule |
+| 330 | Actual/Actual US Rule |
+| 331 | Midnight 366 US Rule |
+| 340 | Actual/365.25 US Rule |
+| 350 | UnitPeriod/VarDPY US Rule |
+| 401 | UnitPeriod/360 Add-On |
+| 402 | UnitPeriod/365 Add-On |
+| 403 | UnitPeriod/DaysPerPeriod Add-On (e.g. 91 for quarterly payment frequencies) |
+| 404 | True360/360 Add-On |
+| 405 | True360/365 Add-On |
+| 406 | True360/DaysPerPeriod Add-On 91 for quarterly payment frequencies) |
+
+---
+
+🟦 **AccrualConfig.Date**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | YYYY-MM-DD or NNNN-00-00 | Date of the first Advance |
+
+Set the date of this event. If the date is omitted, the system will use
+the date of the first `Advance` object in the `Advances` array.
+
+All dates must be in the form of YYYY-MM-DD, and be 10 characters long.
+Hence, to change the interest rate on January 2, 2021, the field
+would be specified as `"Date" : "2021-01-02"'.
+
+However, to provide power and flexibility to the calling application, the SCE
+will also understand `Date` values in the following formats:
+
+- **NNNN-00-00** If you wish to change an interest accrual parameter on the
+ date of a specific payment number (N), use a value of NNNN-00-00. Thus, an
+ value of `0012-00-00` instructs the SCE to set the date of this
+ event equal to that of the 12'th payment. A vale of 0000-00-00 will set the
+ date of the event equal to the date of the first advance.
+
+---
+
+🟦 **AccrualConfig.ExtraDays**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Integer | 0 |
+
+Increase or decrease the number of days between this event and the next event by
+the value of this attribute. e.g. `1` will be considered one more day of
+interest.
+
+---
+
+🟦 **AccrualConfig.IntRate**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number | see below |
+
+Defines the interest rate that applies at and beyond this event. If no `IntRate`
+is specified, the previously defined interest rate is used. A value of zero will
+be used if no previous `IntRate` has been defined.
+
+---
+
+🟦 **AccrualConfig.IntRound***
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | nearest, up, down | nearest |
+
+Defines how interest is to be rounded.
+
+---
+
+🟦 **AccrualConfig.NewPmt**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the payment should change to reflect a new interest rate, set the value of
+this field to `true`; otherwise, the payment will not change after this event.
+If only one `AccrualConfig` object is being specified, then this attribute
+should be omitted altogether.
+
+---
+
+🟦 **AccrualConfig.PmtRound**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | nearest, up, down, best | nearest |
+
+How are calculated payments to be rounded at and beyond this event? `best` means
+to choose the payment that returns a minimal ending balance at the end of
+amortization. If two payments result in the same minimal error magnitude, the
+smaller payment is chosen.
+
+Note: If the `BusinessRules.ZeroInterestRule` field is set to 'true' and all
+interest rates are zero, payments are required to be rounded down. This rule
+ensures the total of payments never exceeds the amounts of the loan to pay off
+(principal balance).
+
+---
+
+🟦 **AccrualConfig.Tiers**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of Tier objects |
+
+To compute interest using a split rate method, where different rates are applied
+to different parts of the balance, the calling application will need to specify
+a `Tier` object with its associated `Rate` and `Ceiling`
+fields. Note that the interest rate which is used above the final `Ceiling`
+is the one specified in the `AccrualConfig` element. Furthermore, the 
+`Tier` objects must be ordered in ascending order based upon the
+`Ceiling` amount.
+
+As en example, assume that the calling application needs to charge 20% on the first $100,
+15% up to $250, and 10% for the remaining balance. The AccrualConfig object needed to implement this split
+rate structure is:
+
+```json
+AccrualConfigs : [
+  {
+  "AccrualCode" : "201",
+  "Date" : "2020-04-01",
+  "IntRate" : "10.000",
+  "Tiers" : [
+    { "Rate" : "20.0", "Ceiling" : "100.00" },
+    { "Rate" : "15.0", "Ceiling" : "250.00" }
+  ]
+  }
+]
+```
+
+🟥  **AccrualConfig.Tier.Ceiling**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number | n/a |
+
+Defines the upper bound to which the specified split rate tier will apply.
+
+🟥  **AccrualConfig.Tier.Rate**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number | n/a |
+
+Defines the interest rate that applies to this split rate tier.
 
 ---
 </details>

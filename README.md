@@ -11,8 +11,7 @@ manual for the SCEJSON.
 
 ## Samples
 
-Sample [SCEJSON requests and responses](samples/README.md) are provided that illustrate some of
-the functionality provided by the SCEJSON.
+The samples directory collects samples that illustrate some of the functionality provided by the SCEJSON.
 
 ## What is the SCEJSON?
 

@@ -786,20 +786,6 @@ with the `IsPrepaid` field set to `false`.
 
 ---
 
-🟦 **Construction.HalfCommitment**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | false |
-
-During the construction period, if estimated interest should be disclosed based
-upon half of the commitment amount, then set the value of this field to `true`.
-If interest is due on the entire commitment amount during the construction
-period, then set this value to `false`. Multiple advance construction loans are
-computed with this field set as `true`.
-
----
-
 🟥 **Construction.EndDate**
 
 | Type  | Required | Values | Default |
@@ -815,6 +801,20 @@ specified as `"EndDate" : "2021-07-04"`.
 If the calling application sets up discrete interest only payments during the
 construction period, then the `EndDate` may also be specified as occurring on
 a given payment number (`NNNN`) as `"EndDate" : "NNNN-00-00"`.
+
+---
+
+🟦 **Construction.HalfCommitment**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+During the construction period, if estimated interest should be disclosed based
+upon half of the commitment amount, then set the value of this field to `true`.
+If interest is due on the entire commitment amount during the construction
+period, then set this value to `false`. Multiple advance construction loans are
+computed with this field set as `true`.
 
 ---
 </details>

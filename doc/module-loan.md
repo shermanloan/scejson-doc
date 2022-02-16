@@ -1150,11 +1150,11 @@ This field specifies how the fee is to be computed, as described in the followin
 
 | Fee Calc Type | Description |
 | :--- | :--- |
-| Dollar        | The \texttt{Amount} field is understood as a flat dollar amount. |
-| OnProceeds    | The \texttt{Amount} field is understood as a percentage value, to be applied to the loan's proceeds, defined as the sum of advances. An \texttt{Amount} of `0.25' would represent a fee of 0.25\% of the total proceeds. |
-| OnPrincipal   | The \texttt{Amount} field is understood as a percentage value, to be applied to the loan's principal balance. An `Amount` of `0.125` would represent a fee of 0.125% of the principal balance. |
+| Dollar        | The `Amount` field is understood as a flat dollar amount. |
+| OnProceeds    | The `Amount` field is understood as a percentage value, to be applied to the loan's proceeds, defined as the sum of advances. An `Amount` of `0.25` would represent a fee of 0.25% of the total proceeds. |
+| OnPrincipal   | The `Amount` field is understood as a percentage value, to be applied to the loan's principal balance. An `Amount` of `0.125` would represent a fee of 0.125% of the principal balance. |
 | OnAmtFin      | The `Amount` field is understood as a percentage value, to be applied to the loan's Regulation Z Amount Financed. An `Amount` of `0.33` would represent a fee of 0.33% of the amount financed. |
-| OnBalance     | The `Amount` field is understood as an annual percentage value, to be applied to the current balance of the loan when the fee is assessed, and accrued using the interest accrual calendar in effect. An `Amount` of `12.01 would represent a fee accrued at an annual rate of 12.0% of the current balance. |
+| OnBalance     | The `Amount` field is understood as an annual percentage value, to be applied to the current balance of the loan when the fee is assessed, and accrued using the interest accrual calendar in effect. An `Amount` of `12.01` would represent a fee accrued at an annual rate of 12.0% of the current balance. |
 | OnBalanceFlat | The `Amount` field is understood as a flat percentage value, to be applied to the current balance of the loan when the fee is assessed. An `Amount` of `1.0` would represent a fee of 1.0% of the current balance.|
 
 ---
@@ -1217,8 +1217,8 @@ As an example, if the calling application specifies a `Date`
 of `2010-02-28`, then subsequent fee dates for a monthly
 fee frequency will be:
 
-- **on the 28th of each subsequent month** if `"LastDay" : "false"`.
-- **on the last day of each subsequent month** if `"LastDay" : "true"`.
+- **on the 28th of each subsequent month** if `"LastDay" : false`.
+- **on the last day of each subsequent month** if `"LastDay" : true`.
 
 ---
 
@@ -1295,19 +1295,14 @@ name your fees accordingly.
 Fees inflence a loan depending on when they are applied.
 
 - **OnAdvance** means that the fee is included in the application of an advance.
-
 - **BeforePmt** means that when the fee occurs on the same date as a payment, the
 fee is calculated before the payment amortizes the loan.
-
 - **InPmt** means that the fee is included as part of the payment.
-
 - **AfterPmt** means that when the fee occurs on the same date as a payment, the
 payment first amortizes the loan, then the fee is calculated and applied.
-
 - **NotInPmt** means that the fee is paid on the same date as a payment but
 is not reflected in that payment. If the fee has `"AddToFinChg" : true`,
 it is called a "Pocket APR" fee; otherwise, it is a straight "Pocket Fee".
-
 - **Default** means different things, depending on when the fee occurs:
   - A fee on an advance is treated as if `OnAdvance` were selected.
   - A fee on a payment is treated as if `InPmt` were selected.
@@ -1417,7 +1412,7 @@ ignored.
 
 If you wish to specify the day number on which even numbered fees fall
 (overriding the default method used in the SCEX), then set the value of this
-field to the desired day number. Setting the value of this field to `311
+field to the desired day number. Setting the value of this field to `31`
 will cause all even fees to fall on the last day of the month.
 
 As an example, if you want to specify a semi-monthly $10 fee stream beginning on
@@ -1454,7 +1449,6 @@ should be specified.
 
 - **ByTerm** means that the service charge is paid off by dividing the amount by the `Term`
 field of the same `Fee` object.
-
 - **ByDays** means that the service charge is paid off on payment dates. The amount of the fee
 is calculated as the number of days from the previous payment (or advance) divided by the
 total number of days in the term of the fee.

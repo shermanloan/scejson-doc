@@ -1271,7 +1271,7 @@ then no minimum will be enforced. Please note that this field is applied to
 *before* enforcing a specified maximum value, and hence a specified maximum
 value trumps a specified minimum.
 
---
+---
 
 🟦 **Fee.Name**
 

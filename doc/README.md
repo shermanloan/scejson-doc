@@ -1,6 +1,6 @@
 # SCEJSON Reference Manual
 
-Version 2021-06-01
+Version 2022-02-16
 
 ## Introduction and Overview
 * [Introduction](introduction.md)

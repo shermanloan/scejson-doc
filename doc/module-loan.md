@@ -101,7 +101,7 @@ the SCE will continue to use that method. Please see the following table of
 accrual codes and their descriptions for the meanings of each code.
 
 Add-On interest methods 401...406 have restrictions that apply. Only equal
-payment loans with one AccrualConfig element may use add-on interest. In
+payment loans with one AccrualConfig object may use add-on interest. In
 addition, construction loans may not be used with add-on interest. Also, any
 protection products requested must also be single premium.
 
@@ -156,10 +156,10 @@ protection products requested must also be single premium.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | YYYY-MM-DD or NNNN-00-00 | Date of the first Advance |
+| String | no | YYYY-MM-DD or NNNN-00-00 | Date of the last Advance |
 
 Set the date of this event. If the date is omitted, the system will use
-the date of the first `Advance` object in the `Advances` array.
+the date of the last `Advance` object in the `Advances` array.
 
 All dates must be in the form of YYYY-MM-DD, and be 10 characters long.
 Hence, to change the interest rate on January 2, 2021, the field
@@ -183,7 +183,7 @@ will also understand `Date` values in the following formats:
 | String | no | Integer | 0 |
 
 Increase or decrease the number of days between this event and the next event by
-the value of this attribute. e.g. `1` will be considered one more day of
+the value of this field. e.g. `1` will be considered one more day of
 interest.
 
 ---
@@ -218,7 +218,7 @@ Defines how interest is to be rounded.
 
 If the payment should change to reflect a new interest rate, set the value of
 this field to `true`; otherwise, the payment will not change after this event.
-If only one `AccrualConfig` object is being specified, then this attribute
+If only one `AccrualConfig` object is being specified, then this field
 should be omitted altogether.
 
 ---
@@ -251,7 +251,7 @@ To compute interest using a split rate method, where different rates are applied
 to different parts of the balance, the calling application will need to specify
 a `Tier` object with its associated `Rate` and `Ceiling`
 fields. Note that the interest rate which is used above the final `Ceiling`
-is the one specified in the `AccrualConfig` element. Furthermore, the 
+is the one specified in the `AccrualConfig` object. Furthermore, the 
 `Tier` objects must be ordered in ascending order based upon the
 `Ceiling` amount.
 
@@ -314,7 +314,7 @@ specify the cash advances made to the borrower.
 
 The proceeds to be advanced to the borrower is defined using this field. If the
 calling application requests that the advance be computed (see the
-`Advance.Compute` field below), then the value of this attribute will be added
+`Advance.Compute` field below), then the value of this field will be added
 to the computed advance amount, which can be useful in multiple advance loans.
 
 ---
@@ -330,7 +330,7 @@ much can I afford to borrow given a specified loan term, interest rate, and
 payment stream?" Here at J. L. Sherman and Associates, we call this a "Roll to
 Advance" calculation.
 
-If the value of this attribute is `true`, then the calling application is
+If the value of this field is `true`, then the calling application is
 requesting that the SCE calculate one or more advances given a specified term,
 interest rate, and payment stream. With this in mind, all `PmtStream` objects
 (which define the specified payment streams in the loan) may not have a
@@ -563,7 +563,7 @@ and interest payments.
 * `AmError` (see above) must be set to `"Allow"`.
 
 Furthermore, the output for an `"AmortizeOnly" : true` Loan request will omit
-the `FedBox` and `Moneys` response elements.
+the `FedBox` and `Moneys` response objects.
   
 ---
   
@@ -894,7 +894,7 @@ the value of this field `true`.
 | :---: |   :---:  |  ---   |  :---:  |
 | Boolean | no | true, false | true |
 
-If the value of this field is set to `true`, then payment elements will be
+If the value of this field is set to `true`, then payment objects will be
 merged together whenever possible. For example, if one event is of type
 `CalcPmt`, and another on the same day is `PayPrin`, then this field determines
 whether or not these two events will be combined into a single payment event or
@@ -941,7 +941,7 @@ schedule, unless they do not occur on the date of an advance or the date of a pa
 also not be individually listed under the `Moneys` object of the response.
 
 A value of `true` means that all fees will be explicitly accounted for, both in the
-`Moneys` response object as child elements and in the amortization table. The
+`Moneys` response object as child objects and in the amortization table. The
 `Type` field will have the name of the fee as its value.
 
 ---
@@ -1009,6 +1009,468 @@ If the value of this field is set to `true`, then each `PmtStream` response obje
 include an `Idx` field which identifies the input payment stream object which gave rise to it.
 If this field is set to `true`, then the `EditOutput.Merge` field must be set to `false`. If
 both are set to `true`, then an error will be returned.
+
+---
+</details>
+
+### 🟦 Fees
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of Fee objects | no |
+
+This array of `Feee` objects allows the calling application to specify one ore
+more Fee objects to be added to the loan.
+
+<details>
+<summary><b>Fee fields</b></summary>
+
+---
+
+🟦 **Fee.AddToFinChg**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If this fee should be included in the computed Finance Charge (and hence, affect
+the APR), then set this field to `true`. The default value of `false` indicates
+that the fee does not affect the Finance Charge nor APR.
+
+---
+
+🟦 **Fee.AddToPrin**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If this fee should be added to the principal balance (e.g. the fee is financed
+along with the advance(s)), then set this field to `true`. If set to `false`,
+then the fee is paid up front out of the borrower's pocket.
+
+---
+
+🟦 **Fee.Adjust**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number | 0 |
+
+The optional `Adjust` field allows the calling application
+to increase or decrease the base amount on which a fee is calculated.
+If a negative value is specified and this adjustment would produce a
+negative base amount, then a value of zero is returned for the given fee.
+This field has no effect on fees with a `CalcType` of `Dollar`.
+
+As an example, in Tennessee you may need to define a financed, non-APR
+affecting fee to be computed by decreasing the amount financed by $2,000,
+and then multiplying this reduced amount by 0.115. The way to accomplish
+this in the SCEX is as follows:
+
+
+```json
+{
+  "Fees" : [
+    {
+      "Name" : "TN Fee",
+      "CalcType" : "OnAmtFin",
+      "Adjust" : "-2000.00",
+      "Amount" : "0.115",
+      "AddToPrin" : true,
+      "AddToFinChg" : false
+    }
+  ]
+}
+```
+
+---
+
+🟦 **Fee.AllowFeb29**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | true |
+
+This field is used when generating fee dates in a fee stream (if any) beyond the
+specified `Date` date of the `Fee` object. If the value of this field is
+`true`, then February 29th is an allowed fee date.
+
+On the other hand, if the value of this field is set to `false` and a
+computed date in the given fee stream is scheduled to fall on February 29th,
+then the scheduled fee date will be altered in one of the following manners:
+
+- **If the number of payments per year is 1, 2, 4, 6, 12, or 24** then the
+ scheduled fee date of February 29 will be moved back one day to February 28.
+ This is the only date that will be adjusted.
+- **If the number of payments per year is 26 or 52** then the scheduled fee date
+ of February 29 will be moved forward one day to March 1, and all subsequent fee
+ dates will be a multiple of 7 or 14 days from this date (depending upon the
+ specified payment frequency).
+
+---
+
+🟥 **Fee.Amount**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number | 0 |
+
+How this field is interpreted depends upon the `Fee.CalcType` field.
+Please see the documentation for this field for further information.
+
+---
+
+🟦 **Fee.Blended** (true, false, 1, 0) `false' \{optional\}}
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+The `Blended` field determines how the SCE will include the fee with a payment
+or advance.
+
+A value of `true` in an advance tells the SCEX that the amount of the advance
+already includes the fee. A value of `false` means to add the fee on top of the
+existing advance.
+
+Similarly, if the Fee occurs on a payment date, then `true` means that the
+payment has the fee already included in it, whereas a value of `false` means the
+fee is to be added on top of the payment.
+
+---
+
+🟦 **Fee.CalcType**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Dollar, OnProceeds, OnPrincipal, OnAmtFin, OnBalance, OnBalanceFlat | Dollar |
+
+This field specifies how the fee is to be computed, as described in the following table.
+
+| Fee Calc Type | Description |
+| :--- | :--- |
+| Dollar        | The \texttt{Amount} field is understood as a flat dollar amount. |
+| OnProceeds    | The \texttt{Amount} field is understood as a percentage value, to be applied to the loan's proceeds, defined as the sum of advances. An \texttt{Amount} of `0.25' would represent a fee of 0.25\% of the total proceeds. |
+| OnPrincipal   | The \texttt{Amount} field is understood as a percentage value, to be applied to the loan's principal balance. An `Amount` of `0.125` would represent a fee of 0.125% of the principal balance. |
+| OnAmtFin      | The `Amount` field is understood as a percentage value, to be applied to the loan's Regulation Z Amount Financed. An `Amount` of `0.33` would represent a fee of 0.33% of the amount financed. |
+| OnBalance     | The `Amount` field is understood as an annual percentage value, to be applied to the current balance of the loan when the fee is assessed, and accrued using the interest accrual calendar in effect. An `Amount` of `12.01 would represent a fee accrued at an annual rate of 12.0% of the current balance. |
+| OnBalanceFlat | The `Amount` field is understood as a flat percentage value, to be applied to the current balance of the loan when the fee is assessed. An `Amount` of `1.0` would represent a fee of 1.0% of the current balance.|
+
+---
+
+🟦 **Fee.Date**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | YYYY-MM-DD or 0000-MM-00 | Date of the last Advance |
+
+The date on which a fee occurs. If this object defines a stream of more than one
+fee, then this field defines the date on which the first fee occurs. If the date
+is the same as an advance or payment, the fee is loaded into the advance or
+payment event; otherwise, the fee is a stand-alone event. All dates must be in
+the form of YYYY-MM-DD, and be 10 characters long. Hence, a fee date of January
+2, 2021 would be specified as `"Date" : "2021-01-02"`.
+
+A special format is accepted for annual fees (`Fee.PPY` value of `1`) paid on a
+specific calendar month of the year. Using `0000-MM-00` as a value for `Date`
+instructs the SCEX to pay the fee on the MM payment of the payment stream. For
+example, `0000-06-00` instructs the system to pay this fee on June Payments.
+
+If the `Date` field is not specified, then it will default to the last specified
+Advance `Date`.
+
+---
+
+🟦 **Fee.EqualServChg**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+When a fee is set up as a service charge of type `ByTerm` (see `Fee.ServChgType`
+field), this field determines if all the service charge fee payments should be
+forced to be equal (a value of `true`), or if the final service charge fee
+payment can be different from the others due to rounding (a value of `false`).
+
+---
+
+🟦 **Fee.LastDay**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+This field is used to resolve ambiguitiess in subsequent fee
+dates when the `Date` falls on the last day of a month
+with fewer than 31 days. If the value of the `Date` field
+is not a valid date, then the value of this field is ignored. If
+the value of the `Term` field is `1`, then the value of
+this field is ignored.
+
+Set this field's value to `true` if the intent was to make
+subsequent fees occur on the last day of the month. A value of
+`false` indicates that subsequent fee dates will fall on the
+day number specified by the `Date` field.
+
+As an example, if the calling application specifies a `Date`
+of `2010-02-28`, then subsequent fee dates for a monthly
+fee frequency will be:
+
+- **on the 28th of each subsequent month** if `"LastDay" : "false"`.
+- **on the last day of each subsequent month** if `"LastDay" : "true"`.
+
+---
+
+🟦 **Fee.MAPR***
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If you wish to compute the Military APR, then certain fees may not be considered
+Regulation Z APR affecting fees, but are considered Military APR affecting fees.
+In this case, you will need to set the value of this field to true.
+
+Fees which are added to the finance charge (e.g. `"AddToFinChg" : true` are
+always considered MAPR fees, regardless of the stated value of this field.
+
+Note that debt protection products are automatically included in the calculation
+of the Military APR, no matter what method is used for payment (e.g. single
+premium vs. monthly outstanding balance).
+
+---
+
+🟦 **Fee.Max**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number | 0 |
+
+If a maximum value for the fee is specified and is greater than zero, then if
+the computed fee exceeds this maximum value, then the maximum value will be used
+instead. If no maximum value is specified or is set to a value of zero, then no
+maximum will be enforced. Please note that this field is applied to *all* fee
+types supported. Also, note that a specified maximum value is checked *after*
+enforcing a specified minimum value, and hence a specified maximum value trumps
+a specified minimum.
+
+---
+
+🟦 **Fee.Min**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number | 0 |
+
+If a minimum value for the fee is specified and is greater than zero, then if
+the computed fee is less than this minimum value, then the minimum value will be
+used instead. If no minimum value is specified or is set to a value of zero,
+then no minimum will be enforced. Please note that this field is applied to
+*all* fee types supported. Also, note that a specified minimum value is checked
+*before* enforcing a specified maximum value, and hence a specified maximum
+value trumps a specified minimum.
+
+--
+
+🟦 **Fee.Name**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | any | empty |
+
+This field is for convenience purposes only, and does not affect the calculation
+of the fee in any manner. However, the value of this field *will* be used to
+identify the fee in the response, and hence it is highly recommended that you
+name your fees accordingly.
+
+---
+
+🟦 **Fee.Position**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Default, OnAdvance, BeforePmt, InPmt, AfterPmt, NotInPmt | Default |
+
+Fees inflence a loan depending on when they are applied.
+
+- **OnAdvance** means that the fee is included in the application of an advance.
+
+- **BeforePmt** means that when the fee occurs on the same date as a payment, the
+fee is calculated before the payment amortizes the loan.
+
+- **InPmt** means that the fee is included as part of the payment.
+
+- **AfterPmt** means that when the fee occurs on the same date as a payment, the
+payment first amortizes the loan, then the fee is calculated and applied.
+
+- **NotInPmt** means that the fee is paid on the same date as a payment but
+is not reflected in that payment. If the fee has `"AddToFinChg" : true`,
+it is called a "Pocket APR" fee; otherwise, it is a straight "Pocket Fee".
+
+- **Default** means different things, depending on when the fee occurs:
+  - A fee on an advance is treated as if `OnAdvance` were selected.
+  - A fee on a payment is treated as if `InPmt` were selected.
+
+---
+
+🟦 **Fee.PPY**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 1, 2, 4, 6, 12, 24, 26, 52 | 12 |
+
+PPY is an abbreviation for "payments per year", and in the case of the Field
+object, determines the frequency for the fee stream. If the value of the `Term`
+field is `1`, then the value of this field is ignored.
+
+---
+
+🟦 **Fee.Round**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | nearest, up, down | nearest |
+
+The value of this field, along with the with the `Fee.RoundBasis`
+field described below, determine how the amount on which the fee is
+based upon is to be rounded.
+
+For fee calculation types of `OnPrincipal`, `OnProceeds`, `OnAmtFin`, `OnBalance`, and
+`OnBalanceFlat`, the amount on which the fee is based is fairly self
+evident: the starting principal balance, proceeds, amount financed, or the outstanding balance at the time
+that the fee is assessed. Thus, if the calling application requires a fee to be
+computed based upon 0.35% of the principal balance rounded to the nearest $100,
+then the fee object would look something like this:
+
+```json
+{
+  "Fees" : [
+    {
+      "Name" : "Doc Stamp",
+      "CalcType" : "OnPrincipal",
+      "Amount" : "0.35",
+      "Round" : "nearest",
+      "RoundBasis" : "100.00",
+      "AddToPrin" : true,
+      "AddToFinChg" : false
+    }
+  ]
+}
+```
+
+For the `Dollar` fee calculation type, the amount on which the fee is
+based is defined as the fee amount passed into the engine. This allows the
+calling application to pass in a precomputed fee amount and have the SCE round
+it as directed. As an example, here is the definition of a dollar fee which is
+rounded up to the next dollar (the value of the fee below would then be $25
+after rounding):
+
+```json
+{
+  "Fees" : [
+    {
+      "Name" : "Doc Stamp",
+      "CalcType" : "Dollar",
+      "Amount" : "24.25",
+      "Round" : "up",
+      "RoundBasis" : "1.00",
+      "AddToPrin" : true,
+      "AddToFinChg" : false
+    }
+  ]
+}
+```
+
+For the `ServChg` fee calculation type, the amount on which the fee is
+based is defined as the computed service charge amount, as defined by the
+`Amount` and `ServChgType` fields.
+
+---
+
+🟦 **Fee.RoundBasis**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number | 0.01 |
+
+When rounding the amount on which the fee is based, the value of this field
+determines the precision to which rounding is performed. The default value of
+`0.01` indicates that the rounding should be done to the penny, whereas a value
+of `100.0` indicates that rounding should take place to the nearest hundred
+dollars.
+
+---
+
+🟦 **Fee.SemimonthlyDay**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 0...31 | 0 |
+
+When specifying a semimonthly fee stream, the day number on which the first fee
+is added determines the day number for all of the following odd numbered
+payments. If you omit this field or specify a value of `0`, then the even
+numbered fees will be generated using the default method within the SCEX. If the
+value of the `Term` field is `1`, then the value of this field is
+ignored.
+
+If you wish to specify the day number on which even numbered fees fall
+(overriding the default method used in the SCEX), then set the value of this
+field to the desired day number. Setting the value of this field to `311
+will cause all even fees to fall on the last day of the month.
+
+As an example, if you want to specify a semi-monthly $10 fee stream beginning on
+January 1, 2015 with fees that fall on the 1st and 15th of each month for 48
+fees, the object should look something like this:
+
+```json
+{
+  "Fees" : [
+    {
+      "Name" : "Test Fee",
+      "Date" : "2015-01-01",
+      "Amount" : "10.00",
+      "Term" : "48",
+      "PPY" : "24",
+      "SemimonthlyDay" : "15"
+    }
+  ]
+}
+```
+
+---
+
+🟦 **Fee.ServChgType**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | None, ByTerm, ByDays | None |
+
+This field dictates whether or not a fee is treated as a service charge, and if so,
+determines how the service charge dollar amount is paid off over the term of the loan.
+If a fee should not be treated as a service charge, then the default value of `None`
+should be specified.
+
+- **ByTerm** means that the service charge is paid off by dividing the amount by the `Term`
+field of the same `Fee` object.
+
+- **ByDays** means that the service charge is paid off on payment dates. The amount of the fee
+is calculated as the number of days from the previous payment (or advance) divided by the
+total number of days in the term of the fee.
+
+---
+
+🟦 **Fee.Term**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Integer > 1 | 1 |
+
+The `Term` field determines the the number of fees to be included at the
+specified frequency (see `Fee.PPY` above), after which the fee stream is
+completed. The default value is `1`. If the value of the `Date` field is not a
+valid date, then the value of this field is ignored.
 
 ---
 </details>

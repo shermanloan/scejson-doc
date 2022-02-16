@@ -1066,7 +1066,7 @@ This field has no effect on fees with a `CalcType` of `Dollar`.
 As an example, in Tennessee you may need to define a financed, non-APR
 affecting fee to be computed by decreasing the amount financed by $2,000,
 and then multiplying this reduced amount by 0.115. The way to accomplish
-this in the SCEX is as follows:
+this in the SCE is as follows:
 
 
 ```json
@@ -1130,7 +1130,7 @@ Please see the documentation for this field for further information.
 The `Blended` field determines how the SCE will include the fee with a payment
 or advance.
 
-A value of `true` in an advance tells the SCEX that the amount of the advance
+A value of `true` in an advance tells the SCE that the amount of the advance
 already includes the fee. A value of `false` means to add the fee on top of the
 existing advance.
 
@@ -1174,7 +1174,7 @@ the form of YYYY-MM-DD, and be 10 characters long. Hence, a fee date of January
 
 A special format is accepted for annual fees (`Fee.PPY` value of `1`) paid on a
 specific calendar month of the year. Using `0000-MM-00` as a value for `Date`
-instructs the SCEX to pay the fee on the MM payment of the payment stream. For
+instructs the SCE to pay the fee on the MM payment of the payment stream. For
 example, `0000-06-00` instructs the system to pay this fee on June Payments.
 
 If the `Date` field is not specified, then it will default to the last specified
@@ -1406,12 +1406,12 @@ dollars.
 When specifying a semimonthly fee stream, the day number on which the first fee
 is added determines the day number for all of the following odd numbered
 payments. If you omit this field or specify a value of `0`, then the even
-numbered fees will be generated using the default method within the SCEX. If the
+numbered fees will be generated using the default method within the SCE. If the
 value of the `Term` field is `1`, then the value of this field is
 ignored.
 
 If you wish to specify the day number on which even numbered fees fall
-(overriding the default method used in the SCEX), then set the value of this
+(overriding the default method used in the SCE), then set the value of this
 field to the desired day number. Setting the value of this field to `31`
 will cause all even fees to fall on the last day of the month.
 
@@ -1940,7 +1940,7 @@ prepaid fee is rounded after the computation is complete.
 
 If there are negative odd days in the loan, then the value of this field
 determines if a negative odd days interest fee is computed. If the value of this
-field is `false`, then negative odd days fees are not allowed, the SCEX will
+field is `false`, then negative odd days fees are not allowed, the SCE will
 return a value of zero in this situation, and the computed payment will be
 adjusted to take into account the negative odd days. A value of `true` will
 return a negative odd days interest fee (in effect, it then becomes and odd days

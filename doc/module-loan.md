@@ -1469,6 +1469,365 @@ valid date, then the value of this field is ignored.
 ---
 </details>
 
+### 🟦 PmtStreams
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+Payment streams are defined using the fields of this empty object,
+including individually defined payments.
+
+<details>
+<summary><b>PmtStream fields</b></summary>
+
+---
+
+🟦 **PmtStream.AllowFeb29**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | true |
+
+This field is used when generating payment dates (if any) beyond the specified
+`PmtStream.Date`. If the value of this field is `true`, then February 29th is an
+allowed payment date.
+
+On the other hand, if the value of this field is set to `false` and a computed
+date in the given payment stream is scheduled to fall on February 29th, then the
+scheduled payment date will be altered in one of the following manners:
+
+- **If the number of payments per year is 1, 2, 4, 6, 12, or 24** then the
+ scheduled payment date of February 29 will be moved back one day to February 28.
+ This is the only date that will be adjusted.
+- **If the number of payments per year is 26 or 52** then the scheduled payment
+ date of February 29 will be moved forward one day to March 1, and all
+ subsequent payment dates will be a multiple of 7 or 14 days from this date
+ (depending upon the specified payment frequency).
+
+---
+
+🟦 **PmtStream.Amount**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | number, number%, or number%B | 0 |
+
+The value of the `Amount` field has different meanings depending upon the
+`PmtType` selected. Please see the documentation on the `PmtType` field above
+for more information on how these two fields work together to define a payment
+stream.
+
+If the `PmtType` field is equal to `PayInt` or `PayPrin`, then the value of this
+field may be specified as a flat dollar amount (e.g. `"Amount" : "250.00"`), a
+percentage of the principal balance (e.g. `"Amount" : "5.25%"`), or a percentage
+of the outstanding balance at the time the payment is made (e.g. `"Amount" :
+"8.125%B"`).
+
+If the `PmtType` field is equal to `CalcPmt`, then the value of this field may
+be specified as a flat dollar amount (e.g. `"Amount" : "500.00"`) which will be
+added to the computed payment, or a percentage of the computed payment (e.g.
+`"Amount" : "200%"`), which allows the calling application to specify a double
+payment, half payment, etc.
+
+---
+
+🟦 **PmtStream.ComputeTerm**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If set to `true`, then the `ComputeTerm` field is used to inform the Loan module
+that the calling application is requesting an equal payment "roll to term" loan
+calculation. In this loan scenario, the calling application specifies the
+interest rate, amount requested, maximum desired payment amount, and maximum
+loan term. The Loan module will then compute the shortest loan term to produce
+an equal payment amount less than or equal to the specified maximum payment.
+
+As an example, the following partial JSON request would direct the Loan module
+to compute the term for an equal payment loan with an interest rate of 5.00%, an
+advance of $5,000, a maximum desired payment amount of $300, and a maximum
+allowed loan term of 60 monthly payments:
+
+```json
+{
+  "Advances" : [
+    {
+      "Date" : "2019-01-01",
+      "Amount" : "5000.00"
+    }
+  ],
+  "AccrualConfigs" : [
+    {
+      "Date" : "2019-01-01",
+      "IntRate" : "5.000",
+      "AccrualCode" : "301"
+    }
+  ],
+  "PmtStreams" : [
+    {
+      "Date" : "2019-02-01",
+      "PmtType" : "FixedPmt",
+      "Amount" : "300.00",
+      "Term" : "60",
+      "ComputeTerm" : true
+    }
+  ]
+}
+```
+
+Note that in the above partial JSON request, the `PmtType` must be set to
+`FixedPmt`, the value of the `Amount` field is set to the maximum desired
+payment amount, and the value of the `Term` field is set to the maximum term
+allowed.
+
+---
+
+🟦 **PmtStream.Date**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | YYYY-MM-DD, NNNN-00-00, 0000-MM-00, or YYYY-MM-00 | n/a |
+
+The `Date` field for the `PmtStream` object is generally used to specify the
+starting date for the payment stream in question. As an example, if the payment
+stream should begin on Feb. 1, 2021, then the field should be specified as
+`"Date" : "2021-02-01"`.
+
+However, to provide power and flexibility to the calling application, the SCE
+will also understand `Date` values in the following formats:
+
+- **NNNN-00-00** If you wish to replace a previously defined payment by
+ specifying the payment number (N), use a value of NNNN-00-00. An field value of
+ `0012-00-00` instructs the engine to replace the 12th payment. If the value of
+ the `Term` field (T) is specified and greater than one, then the Nth through
+ (N+T-1)th payments will be replaced.
+
+ *Example:* To define a stream of 12 interest only payments followed by 48
+ computed payments, the following JSON could be used:
+
+```json
+{
+  "PmtStreams" : [
+    {
+    "Date" : "2014-12-20",
+    "PmtType" : "CalcPmt",
+    "Term" : "60",
+    "PPY" : "12"
+    },
+    {
+    "Date" : "0001-00-00",
+    "PmtType" : "PayInt",
+    "Term" : "12"
+    }
+  ]
+}
+```
+
+- **0000-MM-00** If you wish to define monthly replacement payments, use a value
+ formatted as 0000-MM-00, where MM is a two digit month number from 01 through 12.
+ A value of `0000-06-00` instructs the SCE to use the defined payment for
+ every payment occurring in the month of June.
+
+*Example:* To define a stream of 60 payments with every payment in July and
+ August skipped, the following JSON could be used:
+
+```json
+{
+  "PmtStreams" : [
+    {
+    "Date" : "2014-12-20",
+    "PmtType" : "CalcPmt",
+    "Term" : "60",
+    "PPY" : "12"
+    },
+    {
+    "Date" : "0000-07-00",
+    "PmtType" : "FixedPmt",
+    "Amount" : "0"
+    },
+    {
+    "Date" : "0000-08-00",
+    "PmtType" : "FixedPmt",
+    "Amount" : "0"
+    }
+  ]
+}
+```
+
+- **YYYY-MM-00** If you wish to define replacement payments occurring in a
+ specified year and month, use a value formatted as YYYY-MM-00, where MM is a
+ two digit month number from 01 through 12, and YYYY is a four digit year. A
+ value of `2021-08-00` instructs the SCE to use the defined payment for every
+ payment occurring in August of 2021 (there can be more that one payment if the
+ payment frequency is greater than monthly).
+
+*NOTE - if the value of the `Date` field is not a valid date (i.e. it is instead
+of one of the three formats mentioned above), then the `LastDay`, `Term`, and
+`PPY` fields will be ignored, unless otherwise noted above.*
+
+---
+
+🟦 **PmtStream.LastDay**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+This field is used to resolve ambiguitiess in subsequent payment
+dates when the `Date` date falls on the last day of a month
+with fewer than 31 days. If the value of the `Date` field
+is not a valid date, then the value of this field is ignored.
+
+Set this field's value to `true` if the intent was to make
+subsequent payments occur on the last day of the month. A value of
+`false` indicates that subsequent payment dates will fall on the
+day number specified by the `Date`.
+
+As an example, if the calling application specifies a `Date`
+of `2010-02-281, then subsequent payment dates for a monthly
+payment frequency will be:
+
+- **on the 28th of each subsequent month** if `"LastDay" : false`.
+- **on the last day of each subsequent month** if "LastDay : true`.
+
+---
+
+🟦 **PmtStream.MinPmt** (number) \{optional\}}
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | number | 0 |
+
+If specified, this field will dictate a minimum payment. If a calculated payment
+falls below the specified minimum payment value, then the minimum payment value
+will be used instead.
+
+When a minimum payment is used, the principal reduction of the loan will be
+accelerated. In some loan scenarios, this will result in an early payoff of the
+loan before the specified `Term` of the payment stream. In this situation, the
+final payment will always pay off the loan, and will be smaller than the
+specified minimum payment.
+
+---
+
+🟦 **PmtStream.PmtType**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | FixedPmt, PayInt, PayPrin, CalcPmt | CalcPmt |
+
+Various types of payment streams may be requested by use of this field. Please
+note that the meaning of the `Amount` field changes according to the `PmtType`
+selected. Each payment type is detailed below.
+
+- **FixedPmt** - the `Amount` field represents the exact dollar amount of the
+ payment.
+- **PayInt** - all interest due is to be paid, and the value of the `Amount`
+ field determines the principal reduction to be applied in addition to the
+ payment of interest. If the value of `Amount` is zero, then this equates to an
+ interest only payment.
+- **PayPrin** - the value of `Amount` is treated as a pure principal reduction
+ amount.
+- **CalcPmt** - calculate the payment. If the value of the `Amount` field is
+ greater than zero (but not specified as a percentage), then it is treated as a
+ pickup amount to be paid in addition to the computed payment. If the `Amount`
+ is expressed as a percentage, then the payment amount will be multiplied by the
+ desired percentage (which allows for double or triple payments, etc.)
+- **PmtEsc** - When computing an annual rest loan (see the `BusinessRules.MYED`
+ field), the payment stream needs to specify a `PmtType` field value of `PmtEsc`
+ to indicate an escrowed payment.
+
+When two payments occur on the same date, they merge into one payment according
+to the following rules:
+
+- **PayInt and PayInt** - Add the two `Amount`s together, so long as one is an
+  interest only payment, or if both types use the same method to specify the
+  principal payment amount (e.g. both use fixed dollar amounts, or both us
+  percentages of principal).
+- **PayInt and PayPrin** - If the same conditions mentioned in the previous case
+  exist, then the `Amount` of the `PayInt` event will be increased by the
+  `PayPrin` `Amount`. Delete the `PayPrin` event.
+- **PayInt and CalcPmt** - Replace the `CalcPmt` event with the `PayInt` event.
+- **PayInt and FixedPmt** - Keep both events separate.
+- **CalcPmt and PayPrin** - If the `PayPrin` `Amount` is specified as a fixed
+  dollar amount, then increase the `Amount` of the `CalcPmt` by the `PayPrin`
+  `Amount` and delete the `PayPrin` event.
+- **CalcPmt and CalcPmt** - Add the `Amount`s together.
+- **CalcPmt and FixedPmt** - Replace the `CalcPmt` event with the `FixedPmt`
+  event.
+- **FixedPmt and PayPrin** - If the `PayPrin` `Amount` is specified as a fixed
+  dollar amount, then increase the `Amount` of the `FixedPmt` by the `PayPrin`
+  `Amount` and delete the `PayPrin` event.
+- **FixedPmt and FixedPmt** - Keep both events separate.
+- **PayPrin and PayPrin** - Keep both events separate.
+
+---
+
+🟦 **PmtStream.PPY**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 1, 2, 4, 6, 12, 24, 26, 52 | 12 |
+
+PPY is an abbreviation for "payments per year", and as one might surmise,
+determines the payment frequency for the payment stream. If the value of
+the `Date`` field is not a valid date, then the value of this
+field is ignored.
+
+---
+
+🟦 **PmtStream.SemimonthlyDay**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | number | 0 |
+
+When specifying a semimonthly payment stream, the day number on which the first
+payment is made determines the day number for all of the following odd numbered
+payments. If you omit this field or specify a value of `0`, then the even
+numbered payments will be generated using the default method within the SCE.
+
+If you wish to specify the day number on which even numbered payments fall
+(overriding the default method used in the SCE), then set the value of this
+field to the desired day number. Setting the value of this field
+to `31` will cause all even payments to fall on the last day of the month.
+
+As an example, if you want to specify a semi-monthly payment stream beginning
+on January 1, 2019 with payments that fall on the 1st and 15th of each month
+for 24 payments, the object should look something like this:
+
+```json
+{
+  "PmtStreams" : [
+    {
+      "Date" : "2019-01-01",
+      "Term" : "24",
+      "PPY" : "24",
+      "SemimonthlyDay" : "15"
+    }
+  ]
+}
+```
+
+---
+
+🟦 **PmtStream.Term**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | number | 1 |
+
+The term field indicates the the number of *payments* to be made at the
+specified payment frequency (see `PmtStream.PPY` above), after which the payment
+stream is completed. The default value is `1`. If the value of the
+`PmtStream.Date` field is not a valid date, then the value of this field is
+ignored, unless it is a replacement payment using the `NNNN-00-00` date format.
+
+---
+</details>
+
 ### 🟦 ODI
 
 | Type  | Required |

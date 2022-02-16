@@ -11,12 +11,12 @@ Version 2021-06-01
 
 ## Loan Calculation Modules
 * [Loan](module-loan.md)
-
+<!--
 ## Compliance Modules
 * [APR Calculation & Verification](module-apr.md)
 * [High Cost Mortgage (HCM)](module-hcm.md)
 * [Higher Priced Mortgage Loans (HPML)](module-hpml.md)
-
+-->
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |

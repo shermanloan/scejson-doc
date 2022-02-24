@@ -2472,10 +2472,10 @@ construction period, and how the construction interest is treated
 in the disclosure. If no construction period was specified, then
 this objectt will not be present in the output.
 
----
-
 <details>
 <summary><b>ConInterest fields</b></summary>
+
+---
 
 🟥 **Moneys.ConInterest.IsPrepaid**
 
@@ -2486,7 +2486,6 @@ this objectt will not be present in the output.
 If the construction interest is disclosed as interest only payments in the amortization
 schedule, then the value of this field will be set to `false`. Otherwise,
 the value of this field will be set to `true`.
-
 
 ---
 
@@ -2499,9 +2498,9 @@ the value of this field will be set to `true`.
 Discloses the total amount of estimated interest accrued during the construction
 period.
 
----
-
 </details>
+
+---
 
 🟦 **Moneys.ODI**
 

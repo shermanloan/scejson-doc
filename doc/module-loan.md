@@ -2346,7 +2346,7 @@ would be:
 | Object | no |
 
 This element groups together those other major cash result amounts not disclosed
-under the `FedBox` objectt, such as the principal balance, interest charge, and
+under the `FedBox` object, such as the principal balance, interest charge, and
 fee amounts. This object will not be present if `BusinessRules.AmortizeOnly` is
 set to `true` in the request.
 
@@ -2470,7 +2470,7 @@ requested.
 This object holds the total estimated interest accrued during the
 construction period, and how the construction interest is treated
 in the disclosure. If no construction period was specified, then
-this objectt will not be present in the output.
+this object will not be present in the output.
 
 <details>
 <summary><b>ConInterest fields</b></summary>
@@ -2761,7 +2761,7 @@ The `PmtStreams` array is made up of one or more `PmtStream` objects (there will
 always be at least one of these elements, and there may be more than one
 depending upon the loan type). The `PmtStream` objects describe the scheduled
 stream of payments for the computed loan. Instead of disclosing each and every
-payment individually (which can be done with the `AmTable` objectt), the payment
+payment individually (which can be done with the `AmTable` object), the payment
 stream groups together consecutive equal payments at the same interest rate to
 produce output along the lines of:
 
@@ -2800,7 +2800,7 @@ payment stream.
 | :---: |   :---:  |  ---   |
 | String | no | number |
 
-If the value of `EditOutputTagPmts` is set to `true` in the loan request, then
+If the value of `EditOutput.TagPmts` is set to `true` in the loan request, then
 this field will appear for each `PmtStream` object. The value of this field
 identifies which `PmtStreams[]` array member of the loan request gave rise to
 it.

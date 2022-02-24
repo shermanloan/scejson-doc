@@ -2012,7 +2012,8 @@ provided at the beginning of the previous section.
 }
 ```
 
-The `Data` object for a response from the loan module is defined below:
+The `Data` object for a response from the loan module is defined below, in the
+order the fields are returned:
 
 ### 🟥 Errors
 
@@ -2086,6 +2087,586 @@ calculation comments to more fully explain the loan calculation results that
 may either not be apparant in the inputs or have overriden input assumptions.
 These notes are thoroughly detailed in the [Calculation Notes Appendix](appendix-calcnotes.md).
 
+### 🟦 Country
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Alpha-2 or Numeric-3 code | US |
+
+If the request specified a two-character or three-digit `Country` code, then
+this field will be present and will contain the full name of the country
+associated with the specified code. Please see the [Countries
+Appendix](appendix-countries.md) for the list of supported countries and their
+associated codes.
+
+### 🟦 CurrencyDP
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 0, 2 | 2 |
+
+If the number of decimal places allowed for currency values used in the
+request is a value other than `2`, then this attribute will be
+present and will inform the application parsing the output of the correct value.
+If this attribute is *not* present, then the number of decimal places
+allowed for currency values used in the request is `2`.
+
+### 🟦 FedBox
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+This object groups together all fields which contain important numerical
+information, as defined in the Truth-In-Lending laws (Regulation Z). This object
+will not be present if `BusinessRules.AmortizeOnly` is set to `true` in the
+request.
+
+<details>
+<summary><b>FedBox fields</b></summary>
+
+---
+
+🟥 **FedBox.AmtFin**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The Regulation Z Amount Financed, which is defined as the amount of credit
+provided to the borrower or on their behalf.
+
+---
+
+🟥 **FedBox.FinChg**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+This element contains the Regulation Z Finance Charge, described as the dollar
+amount the credit extension will cost the borrower.
+
+---
+
+🟥 **FedBox.TotPmts**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The amount which the borrower will have paid when the borrower has made all
+scheduled payments.
+
+---
+
+🟦 **FedBox.TAP**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The `TAP` (total amount payable) object is only returned with the response if the
+value of the `EditOutput.ShowTap` request field is `true`.
+
+<details>
+<summary><b>TAP fields</b></summary>
+
+---
+
+🟥 **FedBox.TAP.Value**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The value of this field represents the total amount payable, and is computed as
+the sum of: (i) the total of payments, (ii) all non-financed APR affecting fees,
+(iii) all out-of-pocket non-APR affecting fees, and (iv) all out-of-pocket APR
+affecting fees.
+
+---
+
+🟦 **FedBox.TAP.PrepaidNF**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency|
+
+The value of this field is the sum of all non-financed APR prepaid fees
+(APR affecting fees paid on the same date as an advance). This field will
+only be present if the value is greater than zero.
+
+---
+
+🟦 **FedBox.TAP.Pocket**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+The value of this field is the sum of all out-of-pocket non-APR affecting
+fees. This field will only be present if the value is greater than zero.
+
+---
+
+🟦 **FedBox.TAP.PocketAPR**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+The value of this field is the sum of all out-of-pocket APR affecting fees
+not paid on an advance. This field will only be present if the value is
+greater than zero.
+
+---
+
+</details>
+
+🟥 **FedBox.APR**
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | yes |
+
+The `APR` object contains fields which return the value and APR method used.
+
+<details>
+<summary><b>APR fields</b></summary>
+
+---
+
+🟥 **FedBox.APR.Value**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - % |
+
+The computed APR, which is the cost of the extension of credit expressed as a
+yearly rate.
+
+---
+
+🟥 **FedBox.APR.Method**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | string |
+
+This field returns the APR method used to compute the reported APR.
+
+---
+
+</details>
+
+🟦 **FedBox.MAPR**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The `MAPR` (military APR) object is only returned with the response if the
+value of the `APR.UseMAPR` request field is `true`.
+
+<details>
+<summary><b>MAPR fields</b></summary>
+
+---
+
+🟥 **FedBox.MAPR.Value**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - % |
+
+The computed military APR.
+
+---
+
+🟥 **FedBox.MAPR.Advance**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+This field returns the equivalent of the Amount Financed for the Military APR.
+Specifically, it is the principal balance less any MAPR fees, debt protection,
+etc.
+
+---
+
+🟥 **FedBox.MAPR.Max**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - % |
+
+This field holds the maximum Military APR as specified in the
+input XML (see `APR.MAPR_Max`). If not specified, a default value
+of 36% is assumed. The value of this field should be displayed
+as a percentage. As an example, for `"Max" : "36.000"`, you would
+disclose a maximum Military APR of 36%.
+
+---
+
+🟥 **FedBox.MAPR.MaxExceeded**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| boolean | yes | true, false |
+
+The value of this field indicates whether or not the current
+loan exceeds the maximum allowed Military APR. As an example, if the
+maximum APR has been set to 36% and the Military APR for the
+returned loan was 37.125%, the `MAPR` object
+would be:
+
+```json
+{
+  "MAPR" : {
+    "Value" : "37.125",
+    "Advance" : "1350.00",
+    "Max" : "36.000",
+    "MaxExceeded" : true
+  }
+}
+```
+
+</details>
+
+---
+
+</details>
+
+### 🟦 Moneys
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+This element groups together those other major cash result amounts not disclosed
+under the `FedBox` objectt, such as the principal balance, interest charge, and
+fee amounts. This object will not be present if `BusinessRules.AmortizeOnly` is
+set to `true` in the request.
+
+<details>
+<summary><b>Moneys fields</b></summary>
+
+---
+
+🟥 **Moneys.Proceeds**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+This field represents the sum of all Advance amounts.
+
+---
+
+🟥 **Moneys.Principal**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The principal balance is the amount on which interest is accrued. The
+principal balance consists of all advances requested by the borrower,
+as well as any fees and/or protection products which are financed.
+
+---
+
+🟥 **Moneys.Interest**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+This value of this field holds the total interest accrued during the term of the
+loan, assuming the borrower will make all scheduled payments.
+
+---
+
+🟦 **Moneys.FinFees**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+This field contains the sum of all fees having `AddToPrin`
+set to `true` and occuring on the date of an advance. If this
+value is zero, the field will not appear in the response.
+
+---
+
+🟦 **Moneys.Prepaid**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+This field represents all prepaid finance charges and contains the sum of all
+fees occurring on an advance and having `AddToFinChg` set to `true`. If this
+value is zero, the field will not be found in the response.
+
+---
+
+🟦 **Moneys.OthNonAprFees**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+This field contains the sum of all fees having `AddToPrin`
+set to `true` *not* occuring on the date of an advance. If this
+value is zero, the field will not be present in the response.
+
+---
+
+🟦 **Moneys.ServiceChg**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+This field represents all service charge fees and contains the sum of all fees
+not occurring on an advance and having `AddToFinChg` set to `true`. If this
+value is zero, the field will be omitted from the response.
+
+---
+
+🟦 **Moneys.PocketFees**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+This field holds the sum of all fees which are neither financed, nor
+added to the finance charge. In essence, they are paid out of the
+borrower's pocket. If no out of pocket fees were requested, then this
+field will not show up in the response.
+
+---
+
+🟦 **Moneys.MAPRFees**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+This field holds the sum of all fees which are Military APR fees (including 
+protection products), and will only appear if the Military APR has been
+requested.
+
+---
+
+### 🟦 ConInterest
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+This object holds the total estimated interest accrued during the
+construction period, and how the construction interest is treated
+in the disclosure. If no construction period was specified, then
+this objectt will not be present in the output.
+
+<details>
+<summary><b>ConInterest fields</b></summary>
+
+---
+
+🟥 **Moneys.ConInterest.IsPrepaid**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Boolean | yes | true, false |
+
+If the construction interest is disclosed as interest only payments in the amortization
+schedule, then the value of this field will be set to `false`. Otherwise,
+the value of this field will be set to `true`.
+
+
+---
+
+🟥 **Moneys.ConInterest.Amount**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+Discloses the total amount of estimated interest accrued during the construction
+period.
+
+---
+
+</details>
+
+### 🟦 ODI
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+This object, if present, contains information regarding odd days interest. If no
+odd days interest was requested, then this object will not be present in the
+response.
+
+<details>
+<summary><b>ODI fields</b></summary>
+
+🟥 **Moneys.ODI.Count**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+Discloses the number of odd days computed by the SCE for the requested loan.
+
+---
+
+🟦 **Moneys.ODI.Months**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+This field holds the number of odd months computed by the SCE for the requested
+loan when using odd days accrual method `250`. If the odd days accrual method is
+a value other than `250`, then this field will not be present in the `ODI`
+object of the response.
+
+---
+
+🟦 **Moneys.ODI.DailyCost**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+If the odd days interest fee is computed using a rounded daily cost, then the
+value of this attribute will hold that value. If the odd days interest is *not*
+computed using a rounded daily cost, then this field will not be present in the
+response.
+
+---
+
+🟦 **Moneys.ODI.AddToPmt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Boolean | no | true, false |
+
+If the odd days interest has been added to the first payment, then this field will be
+present in the response with a value of `true`. If the odd days interest has been 
+treated as a prepaid finance charge, then this field will not be present and a default
+value of `false` should be assumed.
+
+---
+
+🟥 **Moneys.ODI.Fee**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+Discloses the total amount odd days interest charge.
+
+</details>
+
+---
+
+🟦 **Moneys.MortInt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+This field holds the total mortgage insurance fee, if not single premium. If
+mortgage insurance is not requested, or if it is requested but is not treated as
+single premium, then this field will not be included in the response.
+
+---
+
+🟦 **Moneys.Advances[]**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of Advance objects | no |
+
+If the requested loan computed any advance amounts (see the `Advance.Compute`
+field for more information), then for each advance in the loan there will be an
+Advances object in this array containing the date of the advance and the computed advance amount.
+
+If all of the loan's advances were specified and not computed, then the
+`Moneys.Advances[]` array will not be included in the response.
+
+<details>
+<summary><b>Advance fields</b></summary>
+
+🟥 **Moneys.Advance.Date**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | YYYY-MM-DD |
+
+The date on which the advance is made.
+
+---
+
+🟥 **Moneys.Advance.Amount**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number-currency |
+
+Discloses the computed advance amount.
+
+</details>
+
+---
+
+🟦 **Moneys.Fees[]**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of Fee objects | no |
+
+If the requested loan computed any requested fees with the loan, and if `EditOutput.ShowFees`
+is set to `true`, then for each fee in the loan there will be a
+Fees object in this array containing the name of the fee and the computed fee amount.
+
+If there were no fees requested with the loan, or if `EditOutput.ShowFees` is set to `false`,
+then the `Moneys.Fees[]` array will not be included in the response.
+
+<details>
+<summary><b>Fee fields</b></summary>
+
+🟦 **Moneys.Fee.Name**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | string |
+
+If a name was provided for the fee, then it will be included here in the
+disclosure for identification purposes.
+
+---
+
+🟥 **Moneys.Fee.Fee**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number-currency |
+
+Discloses the computed fee amount.
+
+</details>
+
+---
+
+</details>
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |

@@ -2106,9 +2106,9 @@ associated codes.
 | String | no | 0, 2 | 2 |
 
 If the number of decimal places allowed for currency values used in the
-request is a value other than `2`, then this attribute will be
+request is a value other than `2`, then this field will be
 present and will inform the application parsing the output of the correct value.
-If this attribute is *not* present, then the number of decimal places
+If this field is *not* present, then the number of decimal places
 allowed for currency values used in the request is `2`.
 
 ### 🟦 FedBox
@@ -2547,7 +2547,7 @@ object of the response.
 | String | no | number - currency |
 
 If the odd days interest fee is computed using a rounded daily cost, then the
-value of this attribute will hold that value. If the odd days interest is *not*
+value of this field will hold that value. If the odd days interest is *not*
 computed using a rounded daily cost, then this field will not be present in the
 response.
 
@@ -2746,6 +2746,141 @@ and `True365` methods use a 360/365 day calendar, respectively.
 Holds the maturity date of the loan, which is the date on which the last
 payment is scheduled. All dates are in the form of YYYY-MM-DD, and must
 be 10 characters long.
+
+---
+
+</details>
+
+### 🟥 PmtStreams[]
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | yes |
+
+The `PmtStreams` array is made up of one or more `PmtStream` objects (there will
+always be at least one of these elements, and there may be more than one
+depending upon the loan type). The `PmtStream` objects describe the scheduled
+stream of payments for the computed loan. Instead of disclosing each and every
+payment individually (which can be done with the `AmTable` objectt), the payment
+stream groups together consecutive equal payments at the same interest rate to
+produce output along the lines of:
+
+```json
+{
+  "PmtStreams" : [
+    {
+      "Term" : "11",
+      "Pmt" : "87.90",
+      "Rate" : "10.000",
+      "Begin" : "2019-02-01",
+      "PPY" : "12"
+    },
+    {
+      "Term" : "1",
+      "Pmt" : "87.85",
+      "Rate" : "10.000",
+      "Begin" : "2020-01-01"
+    }
+  ]
+}
+```
+
+Each object describes a single stream of equal payments at the same interest
+rate, using the following fields to define the important properties of each
+payment stream.
+
+<details>
+<summary><b>PmtStream fields</b></summary>
+
+---
+
+🟦 **PmtStream.Idx**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+If the value of `EditOutputTagPmts` is set to `true` in the loan request, then
+this field will appear for each `PmtStream` object. The value of this field
+identifies which `PmtStreams[]` array member of the loan request gave rise to
+it.
+
+If the value of this field is `-1`, then perfect amortization was enforced (e.g.
+the `BusinessRules.AmError` field of is set to `AdjPmt`).
+
+If the value of this field is `-2`, then an early payoff event was triggered,
+which is caused by (i) specifying the `EditOutput.EarlyPayoff` field, or (ii)
+using whole dollar rounding which can shorten the specified term of the loan, or
+(iii) specifying a minimum payment which also may shorten the specified term of
+the loan.
+
+---
+
+🟥 **PmtStream.Term**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The `Term` field holds the number of payments that make up the given payment
+stream.
+
+---
+
+🟥 **PmtStream.Pmt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The `Pmt` field holds the computed payment amount for this payment stream.
+
+---
+
+🟦 **PmtStream.IsSplitRate**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+If this payment stream accrued interest using split-rate tiers, then this field
+will be present and set to `true`. Otherwise, this field will not be
+returned and has an assumed default value of `false`.
+
+---
+
+🟦 **PmtStream.Rate**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+Contains the interest rate used for the duration of this payment stream. If this
+payment stream accrued interest using split-rate tiers, then this field will
+*not* be returned.
+
+---
+
+🟥 **PmtStream.Begin**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | YYYY-MM-DD |
+
+This field identifies the date on which the first payment for this given payment
+stream is scheduled to be made. All dates are in the form of `YYYY-MM-DD`, and
+must be 10 characters long.
+
+---
+
+🟦 **PmtStream.PPY**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+If the value of the `Term` field is greater than one, then the periodic payment
+frequency for this payment stream is also disclosed.
 
 ---
 

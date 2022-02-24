@@ -2673,6 +2673,84 @@ Discloses the computed fee amount.
 
 </details>
 
+### 🟥 Accrual
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | yes |
+
+This object groups together interest accrual information, such
+as the accrual method(s) used, days to the first payment and the
+loan's maturity date.
+
+<details>
+<summary><b>Accrual fields</b></summary>
+
+---
+
+🟥 **Accrual.Methods[]**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| array of String | yes | description of accrual method(s) used |
+
+Each array member contains a textual description
+of the interest accrual method used to compute the loan (e.g.
+"Unit Period 365 Simple").
+
+---
+
+🟦 **Accrual.YieldPPY**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | integer |
+
+If `BusinessRules.YieldPPY` in the loan's request is set to a value other than `0`,
+then this field will be returned in the response with the same value passed into
+the request.
+
+---
+
+🟥 **Accrual.Days1Pmt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+This field contains the number of days between the date of the first
+advance and the date of first payment, computed by one of three
+methods as specified in by `Accrual.DayCount` (below).
+
+---
+
+🟥 **Accrual.DayCount**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | True360, True365, Actual |
+
+This field specifies the method used to compute the number of days from the date
+of the first advance until the first payment date. `Actual` means that the
+actual number of days between these two dates are used, whereas the `True360`
+and `True365` methods use a 360/365 day calendar, respectively.
+
+---
+
+🟥 **Accrual.Maturity**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | YYYY-MM-DD |
+
+Holds the maturity date of the loan, which is the date on which the last
+payment is scheduled. All dates are in the form of YYYY-MM-DD, and must
+be 10 characters long.
+
+---
+
+</details>
+
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
 | [Version Module](module-version.md) | [SCEJSON Reference Manual](README.md) | [APR Calculation & Verification Module](module-apr.md) |

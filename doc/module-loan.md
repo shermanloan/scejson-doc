@@ -2622,7 +2622,7 @@ The date on which the advance is made.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | number - currency |
 
 Discloses the computed advance amount.
 
@@ -2663,7 +2663,7 @@ disclosure for identification purposes.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | number - currency |
 
 Discloses the computed fee amount.
 
@@ -2881,6 +2881,133 @@ must be 10 characters long.
 
 If the value of the `Term` field is greater than one, then the periodic payment
 frequency for this payment stream is also disclosed.
+
+---
+
+</details>
+
+### 🟦 MI
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+If mortgage insurance is present on the requested loan, then this
+objectt and all required child fieldss (documented below) will
+be included in the response.
+
+<details>
+<summary><b>MI fields</b></summary>
+
+---
+
+🟥 **MI.Rates[]**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of Rate objects | yes |
+
+Fields of each rate object disclose the rate, premium per
+year, and premium per period.
+
+<details>
+<summary><b>Rate fields</b></summary>
+
+---
+
+🟥 **MI.Rate.Rate**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - % |
+
+The percentage rate used in the mortgage insurance calculation.
+
+---
+
+🟥 **MI.Rate.PremPerYear**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The annual mortgage insurance premium amount.
+
+---
+
+🟥 **MI.Rate.PremPerPeriod**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The periodic mortgage insurance premium amount.
+
+</details>
+
+---
+
+🟦 **MI.UpFront**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+The value of this field represents the up front fee paid for
+mortgage insurance. If there is no up front fee, then this field
+will not be present in the response.
+
+---
+
+🟦 **MI.Periodic**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+Fields of this object provide the loan to value ratio, as well as the payment
+indexes when the principal balance falls below the `WarnLTV` and `DropLTV`
+percentage values specified in the request. This element is only present if a
+corresponding `Periodic` field is found in the request.
+
+<details>
+<summary><b>Periodic fields</b></summary>
+
+---
+
+🟥 **MI.Periodic.LTV**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - % |
+
+The loan to value ratio of the computed loan, expressed as a percentage.
+
+---
+
+🟥 **MI.Periodic.IndexToWarn**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The value of this field indicates the payment index on which the remaining
+principal balance to home value ratio drops below the specified `WarnLTV`
+percentage.
+
+---
+
+🟥 **MI.Periodic.IndexToDrop**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The value of this field indicates the payment index on which the remaining
+principal balance to home value ratio drops below the specified `DropLTV`
+percentage. Mortgage insurance coverage *stops* after this payment.
+
+</details>
 
 ---
 

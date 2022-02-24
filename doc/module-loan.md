@@ -2169,10 +2169,10 @@ scheduled payments.
 The `TAP` (total amount payable) object is only returned with the response if the
 value of the `EditOutput.ShowTap` request field is `true`.
 
+---
+
 <details>
 <summary><b>TAP fields</b></summary>
-
----
 
 🟥 **FedBox.TAP.Value**
 
@@ -2220,9 +2220,9 @@ The value of this field is the sum of all out-of-pocket APR affecting fees
 not paid on an advance. This field will only be present if the value is
 greater than zero.
 
----
-
 </details>
+
+---
 
 🟥 **FedBox.APR**
 
@@ -2232,10 +2232,10 @@ greater than zero.
 
 The `APR` object contains fields which return the value and APR method used.
 
+---
+
 <details>
 <summary><b>APR fields</b></summary>
-
----
 
 🟥 **FedBox.APR.Value**
 
@@ -2269,10 +2269,10 @@ This field returns the APR method used to compute the reported APR.
 The `MAPR` (military APR) object is only returned with the response if the
 value of the `APR.UseMAPR` request field is `true`.
 
+---
+
 <details>
 <summary><b>MAPR fields</b></summary>
-
----
 
 🟥 **FedBox.MAPR.Value**
 
@@ -2461,7 +2461,7 @@ requested.
 
 ---
 
-### 🟦 ConInterest
+🟦 **Moneys.ConInterest**
 
 | Type  | Required |
 | :---: |   :---:  |
@@ -2503,7 +2503,7 @@ period.
 
 </details>
 
-### 🟦 ODI
+🟦 **Moneys.ODI**
 
 | Type  | Required |
 | :---: |   :---:  |

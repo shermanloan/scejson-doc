@@ -2472,10 +2472,10 @@ construction period, and how the construction interest is treated
 in the disclosure. If no construction period was specified, then
 this objectt will not be present in the output.
 
+---
+
 <details>
 <summary><b>ConInterest fields</b></summary>
-
----
 
 🟥 **Moneys.ConInterest.IsPrepaid**
 
@@ -2515,6 +2515,8 @@ response.
 
 <details>
 <summary><b>ODI fields</b></summary>
+
+---
 
 🟥 **Moneys.ODI.Count**
 
@@ -2605,6 +2607,8 @@ If all of the loan's advances were specified and not computed, then the
 <details>
 <summary><b>Advance fields</b></summary>
 
+---
+
 🟥 **Moneys.Advance.Date**
 
 | Type  | Required | Values |
@@ -2642,6 +2646,8 @@ then the `Moneys.Fees[]` array will not be included in the response.
 
 <details>
 <summary><b>Fee fields</b></summary>
+
+---
 
 🟦 **Moneys.Fee.Name**
 

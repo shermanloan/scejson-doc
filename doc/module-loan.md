@@ -3613,7 +3613,7 @@ amounts, and ages associated with the requested product.
 | String | no | number - currency |
 
 Contains the maximum aggregate coverage amount, expressed in dollars. If no cap
-is present or applicable, then this attribute will not be present.
+is present or applicable, then this field will not be present.
 
 ---
 
@@ -3624,7 +3624,7 @@ is present or applicable, then this attribute will not be present.
 | String | no | number - currency |
 
 Contains the maximum monthly benefit amount. If no cap is present or applicable,
-then this attribute will not be present.
+then this field will not be present.
 
 ---
 
@@ -3636,7 +3636,7 @@ then this attribute will not be present.
 
 Contains the maximum periodic benefit amount. If no cap is present or
 applicable, or if the payment frequency of the requested loan is monthly, then
-this attribute will not be present.
+this field will not be present.
 
 ---
 
@@ -3647,7 +3647,7 @@ this attribute will not be present.
 | String | no | number |
 
 Contains the maximum coverage term, expressed in months. If no cap is present or
-applicable, then this attribute will not be present.
+applicable, then this field will not be present.
 
 ---
 
@@ -3659,7 +3659,7 @@ applicable, then this attribute will not be present.
 
 Contains the maximum coverage term, expressed as a number of payments. If no cap
 is present or applicable, or if the payment frequency of the requested loan is
-monthly, then this attribute will not be present.
+monthly, then this field will not be present.
 
 ---
 
@@ -3670,7 +3670,7 @@ monthly, then this attribute will not be present.
 | String | no | number |
 
 Contains the maximum age a borrower may be at loan inception, expressed in
-years. If no cap is present or applicable, then this attribute will not be
+years. If no cap is present or applicable, then this field will not be
 present.
 
 ---
@@ -3682,10 +3682,377 @@ present.
 | String | no | number |
 
 Contains the maximum age a borrower may attain during the term of the loan,
-expressed in years. If no cap is present or applicable, then then this attribute
+expressed in years. If no cap is present or applicable, then then this field
 will not be present.
 
 </details>
+
+</details>
+
+---
+
+</details>
+
+### 🟦 AmTable
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+This object contains fields which summarize and describe the loan's amortization
+schedule. If `EditOutput.ShowAmTable` is set to `false`, then this object will
+not be found in the response.
+
+<details>
+<summary><b>AmTable fields</b></summary>
+
+---
+
+🟦 **AmTable.AvgBal**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+This field will only appear if a Canadian APR is disclosed for the computed
+loan. The value of this field is the average balance of the loan used in the
+Canadian APR calculation.
+
+---
+
+🟦 **AmTable.Months**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+This field will only appear if a Canadian APR is disclosed for the computed
+loan. The value of this field is the whole number of months in the term of the
+loan used in the Canadian APR calculation. Note that the term is expressed in
+monthly or weekly units, but never both.
+
+---
+
+🟦 **AmTable.Weeks**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+This field will only appear if a Canadian APR is disclosed for the computed
+loan. The value of this field is the whole number of weeks in the term of the
+loan used in the Canadian APR calculation. Note that the term is expressed in
+monthly or weekly units, but never both.
+
+---
+
+🟦 **AmTable.OddDays**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+This field will only appear if a Canadian APR is disclosed for the computed
+loan. The value of this field is the number of odd days in the term of the loan
+used in the Canadian APR calculation. Odd days are computed by moving backwards
+from the maturity date the number of disclosed months or weeks, and then
+counting the additional number of days required to land on the loan date.
+
+---
+
+🟦 **AmTable.GrandTotals**
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | no |
+
+This object describes the total amounts of various categories throughout the life of the loan.
+As an example, the total amount paid to interest and principal, as well as the
+total of payments are all contained in fields of this object.
+
+<details>
+<summary><b>GrandTotals fields</b></summary>
+
+---
+
+🟥 **GrandTotals.PmtTot**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number-currency |
+
+The total of payments scheduled for the computed loan.
+
+---
+
+🟥 **GrandTotals.IntTot**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number-currency |
+
+The total amount paid to interest over the life of the loan, assuming all
+payments are made as scheduled.
+
+---
+
+🟥 **GrandTotals.PrinTot**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number-currency |
+
+This field contains the total amount paid to principal during the loan term,
+assuming all payments are made as scheduled.
+
+</details>
+
+---
+
+🟦 **AmTable.SubTotals[]**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of SubTotal objects | no |
+
+Describes the total amounts of various categories paid during a given calendar year.
+For each year in which the computed loan has scheduled payments, there will be
+a `SubTotal` object in the array.
+
+<details>
+<summary><b>SubTotal fields</b></summary>
+
+---
+
+🟥 **SubTotal.Year**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The calendar year for which the subtotal data is applicable.
+
+---
+
+🟥 **SubTotal.Start**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+This field defines the index of the first `AmLine` event in the `AmLines[]`
+array which falls in the specified calendar year.
+
+---
+
+🟥 **SubTotal.Events**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+This field defines the number of amortization events which belong to this
+calendar year.
+
+---
+
+🟥 **SubTotal.PmtSub**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number-currency |
+
+Contains the total of payments scheduled for the calendar year.
+
+---
+
+🟥 **SubTotal.IntSub**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number-currency |
+
+Holds the total amount paid to interest over the calendar year, assuming all
+payments are made as scheduled.
+
+---
+
+🟥 **SubTotal.PrinSub**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number-currency |
+
+Contains the total amount paid to principal during the calendar year, assuming
+all payments are made as scheduled.
+
+</details>
+
+---
+
+🟦 **AmTable.AmLines[]**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of AmLine objects | no |
+
+There is one `AmLine` objectt for each amortization event which occurs during
+the life of a loan. Most of the time, each event will describe a payment, and
+detail how that payment is applied (to interest, principal, loan protection
+products, etc.). Some events, such as capitalizing interest, will not have
+payments but will show how the loan amortizes.
+
+<details>
+<summary><b>AmLine fields</b></summary>
+
+---
+
+🟥 **AmLine.Idx**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The index of the amortization event, which is either the payment number, or
+zero. A value of zero designates an event that is either not a payment or is a
+skipped payment.
+
+---
+
+🟦 **AmLine.Type**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | text |
+
+The type of event is recorded in this field, such as `Advance` or `FixedPmt`. If
+any fees are included in the loan, then the value of this field for those fee
+events will be the `Name` of the fee, as specified in the request.
+
+---
+
+🟥 **AmLine.Date**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | YYYY-MM-DD |
+
+The date on which the amortization event is scheduled to occur. All dates are in
+the form of `YYYY-MM-DD`, and must be 10 characters long.
+
+---
+
+🟥 **AmLine.BegBal**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number-currency |
+
+The principal balance before the amortization event occurs.
+
+---
+
+🟥 **AmLine.Pmt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number-currency |
+
+The payment amount for this event.
+
+---
+
+🟥 **AmLine.Int**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number-currency |
+
+The amount of interest paid at this event.
+
+---
+
+🟥 **AmLine.Prin**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number-currency |
+
+The amount of principal paid at this event.
+
+---
+
+🟦  **AmLine.FeeTot**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number-currency |
+
+The total of all fees paid at this event.
+
+---
+
+🟦  **AmLine.ProtUnpaid**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number-currency |
+
+If the loan includes escrowed True MOB protection products, and if a payment is
+not sufficient to pay the accrued fees, then any unpaid protection fees will be
+carried forward in this field to be paid off as soon as possible in a future
+payment.
+
+---
+
+🟦  **AmLine.PmtEsc**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number-currency |
+
+If the computed loan is an annual rest mortgage, then the sum of escrowed
+payments for each amortization event will appear in this field. If the computed
+loan is *not* an annual rest mortgage, then this field will not be found in the
+response.
+
+---
+
+🟦  **AmLine.MI**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number-currency |
+
+The amount of mortgage insurance paid at this event.
+
+---
+
+🟦  **AmLine.UnpaidInt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number-currency |
+
+Any interest not paid after this event is logged in this field.
+
+If `EditOutput.KeepSlush` is set to `true` in the request, then the unpaid
+interest will always be displayed to four (4) decimal places.
+
+If `EditOutput.KeepSlush` is set to `false`, then if the interest accrued has
+not yet been rounded, then the unpaid interest will be displayed to four (4)
+decimal placed. If rounded, then the unpaid interest is displayed to two (2)
+decimal places.
+
+---
+
+🟥 **AmLine.EndBal**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number-currency |
+
+The principal balance amount, after the amortization event has taken place.
 
 </details>
 

@@ -2174,7 +2174,7 @@ value of the `EditOutput.ShowTap` request field is `true`.
 <details>
 <summary><b>TAP fields</b></summary>
 
-🟥 **FedBox.TAP.Value**
+🟥 **TAP.Value**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2187,7 +2187,7 @@ affecting fees.
 
 ---
 
-🟦 **FedBox.TAP.PrepaidNF**
+🟦 **TAP.PrepaidNF**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2199,7 +2199,7 @@ only be present if the value is greater than zero.
 
 ---
 
-🟦 **FedBox.TAP.Pocket**
+🟦 **TAP.Pocket**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2210,7 +2210,7 @@ fees. This field will only be present if the value is greater than zero.
 
 ---
 
-🟦 **FedBox.TAP.PocketAPR**
+🟦 **TAP.PocketAPR**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2237,7 +2237,7 @@ The `APR` object contains fields which return the value and APR method used.
 <details>
 <summary><b>APR fields</b></summary>
 
-🟥 **FedBox.APR.Value**
+🟥 **APR.Value**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2248,7 +2248,7 @@ yearly rate.
 
 ---
 
-🟥 **FedBox.APR.Method**
+🟥 **APR.Method**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2274,7 +2274,7 @@ value of the `APR.UseMAPR` request field is `true`.
 <details>
 <summary><b>MAPR fields</b></summary>
 
-🟥 **FedBox.MAPR.Value**
+🟥 **MAPR.Value**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2284,7 +2284,7 @@ The computed military APR.
 
 ---
 
-🟥 **FedBox.MAPR.Advance**
+🟥 **MAPR.Advance**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2296,7 +2296,7 @@ etc.
 
 ---
 
-🟥 **FedBox.MAPR.Max**
+🟥 **MAPR.Max**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2310,7 +2310,7 @@ disclose a maximum Military APR of 36%.
 
 ---
 
-🟥 **FedBox.MAPR.MaxExceeded**
+🟥 **MAPR.MaxExceeded**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2477,7 +2477,7 @@ this object will not be present in the output.
 
 ---
 
-🟥 **Moneys.ConInterest.IsPrepaid**
+🟥 **ConInterest.IsPrepaid**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2489,7 +2489,7 @@ the value of this field will be set to `true`.
 
 ---
 
-🟥 **Moneys.ConInterest.Amount**
+🟥 **ConInterest.Amount**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2517,7 +2517,7 @@ response.
 
 ---
 
-🟥 **Moneys.ODI.Count**
+🟥 **ODI.Count**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2527,7 +2527,7 @@ Discloses the number of odd days computed by the SCE for the requested loan.
 
 ---
 
-🟦 **Moneys.ODI.Months**
+🟦 **ODI.Months**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2540,7 +2540,7 @@ object of the response.
 
 ---
 
-🟦 **Moneys.ODI.DailyCost**
+🟦 **ODI.DailyCost**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2553,7 +2553,7 @@ response.
 
 ---
 
-🟦 **Moneys.ODI.AddToPmt**
+🟦 **ODI.AddToPmt**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2566,7 +2566,7 @@ value of `false` should be assumed.
 
 ---
 
-🟥 **Moneys.ODI.Fee**
+🟥 **ODI.Fee**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2608,7 +2608,7 @@ If all of the loan's advances were specified and not computed, then the
 
 ---
 
-🟥 **Moneys.Advance.Date**
+🟥 **Advance.Date**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2618,7 +2618,7 @@ The date on which the advance is made.
 
 ---
 
-🟥 **Moneys.Advance.Amount**
+🟥 **Advance.Amount**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2648,7 +2648,7 @@ then the `Moneys.Fees[]` array will not be included in the response.
 
 ---
 
-🟦 **Moneys.Fee.Name**
+🟦 **Fee.Name**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2659,7 +2659,7 @@ disclosure for identification purposes.
 
 ---
 
-🟥 **Moneys.Fee.Fee**
+🟥 **Fee.Fee**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2915,7 +2915,7 @@ year, and premium per period.
 
 ---
 
-🟥 **MI.Rate.Rate**
+🟥 **Rate.Rate**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2925,7 +2925,7 @@ The percentage rate used in the mortgage insurance calculation.
 
 ---
 
-🟥 **MI.Rate.PremPerYear**
+🟥 **Rate.PremPerYear**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2935,7 +2935,7 @@ The annual mortgage insurance premium amount.
 
 ---
 
-🟥 **MI.Rate.PremPerPeriod**
+🟥 **Rate.PremPerPeriod**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2975,7 +2975,7 @@ corresponding `Periodic` field is found in the request.
 
 ---
 
-🟥 **MI.Periodic.LTV**
+🟥 **Periodic.LTV**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2985,7 +2985,7 @@ The loan to value ratio of the computed loan, expressed as a percentage.
 
 ---
 
-🟥 **MI.Periodic.IndexToWarn**
+🟥 **Periodic.IndexToWarn**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -2997,7 +2997,7 @@ percentage.
 
 ---
 
-🟥 **MI.Periodic.IndexToDrop**
+🟥 **Periodic.IndexToDrop**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -3006,6 +3006,686 @@ percentage.
 The value of this field indicates the payment index on which the remaining
 principal balance to home value ratio drops below the specified `DropLTV`
 percentage. Mortgage insurance coverage *stops* after this payment.
+
+</details>
+
+---
+
+</details>
+
+### 🟦 Protection
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+If protection products are requested, then this object will be present
+in the response, along with the `Products` array which contains
+details on each requested protection product.
+
+<details>
+<summary><b>Protection fields</b></summary>
+
+---
+
+🟥 **Protection.LoanType**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Equal, SinglePay, Balloon, IntOnly, PrinPlus, SkipsIrregs, HighlyIrregular |
+
+Protection products are often limited to certain types of loan repayment
+schedules, such as regular equal and balloon payment loans. Also, different
+formulas and various other settings may be used for different loan repayment
+types.
+
+The value of this field returns the type of loan repayment schedule that the SCE
+determines after analyzing on the computed loan. Please see the samples provided
+with this documentation which illustrates how to create JSON requests which will
+fall under these loan repayment classifications.
+
+---
+
+🟦 **Protection.Path**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | diretory |
+
+This optional field will hold the value of the data path used by the
+SCE to find the required setup files for protection calculations. This
+field will only be present if the `Proetcion.ShowDataPath` field of
+the request is set to `true`.
+
+---
+
+🟥 **Protection.Products[]**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of Product objects | yes |
+
+For each distinct payment protection product that the calling application
+requested with a loan, a `Product` object will be returned.
+
+<details>
+<summary><b>Product fields</b></summary>
+
+---
+
+🟥 **Product.Code**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | LI, LL, AH, IU, PP |
+
+This field defines the type of payment protection product that this element, and
+all child fields, refers to. It mirrors the `Product.Code` field defined earlier
+in the request section, with the addition of the `LL` code which indicates a
+level credit life product.
+
+---
+
+🟥 **Product.Result**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Full, Partial, Drop |
+
+The value of this field informs the calling application if the requested
+coverage has been fully provided, partially provided (i.e. one or more coverage
+caps have been exceeded and partial coverage has been extended), or completely
+dropped. If coverage has been dropped, then the `Product` object will not have
+any child objects (e.g. `Product.Notes`, `Product.Notes`, `Product.Cost`, etc.).
+
+---
+
+🟥 **Product.Abbrev**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | string |
+
+This field holds the protection product's abbreviation, as configured in the
+appropraite setup file.
+
+---
+
+🟥 **Product.Name**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | string |
+
+This field holds the protection product's name, as configured in the appropraite
+setup file.
+
+---
+
+🟦 **Product.IsDP**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Boolean | no | true, false |
+
+This field indicates if the product has been set up as debt protection. If this
+field is not present, then the default value of `false` should be used
+(which indicates that the product has been set up as insurance instead).
+
+---
+
+🟦 **Product.Table**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - % |
+
+The `Table` field will only be present when a product is offered with differing
+tables of rates. If present, the value of this field is the table number used in
+the calculation.
+
+---
+
+🟦 **Product.Formula**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | string% |
+
+The `Formula` field contains an abbreviated description of the formula used to
+compute the desired protection product. The formula codes are for the use of the
+J. L. Sherman and Associates, Inc. support team.
+
+---
+
+🟦 **Product.RateType**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Fixed, Variable |
+
+This field will only be present in the output if the protection
+product has been configured to allow for coverage to switch from 
+joint to single during the term of coverage, should one of the borrowers
+exceed an age at termination cap. If the field is not present, then
+a value of `Fixed` should be assumed as only one rate has been
+used in the protection calculation.
+
+If this field is present, then there is the possibility that the
+rate used to compute the protection may have changed (in the case of
+coverage for one borrower ending while coverage for the other borrower
+continues). If this is the case, then the field will indicate this
+rate change with a value of `Variable`.
+
+---
+
+🟦 **Product.DropCode**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - % |
+
+If the requested protection was dropped by the SCEX for any reason, then the
+value of this field will be greater than zero. In this case, no child objects of
+`Product` object will be present.
+
+A value of zero indicates that the requested product was included with the loan,
+and as such, the child objects of `Product` which describe the coverage details,
+should be parsed.
+
+---
+
+🟦 **Product.DropReason**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - % |
+
+If the requested protection product was successfully included in the loan, then
+the value of this field will be `Valid Calculation` and corresponds to a
+`DropCode` value of `0`.
+
+If the requested protection was dropped by the SCE for any reason (and hence,
+`DropCode` > 0, then this field will provide a brief description of why the
+protection was dropped.
+
+---
+
+🟦 **Product.Notes[]**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of Note objects | no |
+
+The `Notes` array may appear in the response to further clarify the product
+calculation methodology. Each note is associated with a numeric code and text
+return value. Please see the documentation for the Note object below.
+
+<details>
+<summary><b>Note fields</b></summary>
+
+---
+
+🟥 **Note.Code**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The unique integer identifying the protection product `Note` in question.
+This `Code` may be useful if the calling application would like to
+override the default description or check for a given Note's `Code`. Please
+see the list of all codes, notes, and descriptions below.
+
+---
+
+🟥 **Note.Note**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | see table |
+
+A text description of the `Note`. Please see the list of codes, notes, and descriptions below.
+
+0. **Benefit is Minimum Payment over term of coverage.**
+
+  When computing a loan with skipped, pickup, or irregular payments,
+  there are a few different ways one can compute a benefit amount.
+  This method uses the minimum non-zero payment as the benefit.
+
+1. **Benefit is Average Payment over term of coverage (excludes zero payments).**
+
+  Similar to above, this method uses the average of all non-zero
+  payments over the term of coverage as the benefit.
+
+2. **Benefit is the Computed Payment.**
+
+	Similar to above, this method uses the computed payment as the benefit.
+
+3. **Benefit is True Average Payment over term of coverage (includes zero payments).**
+
+  Similar to above, this method uses the average of all payments over the
+  term of coverage, including skips, as the benefit.
+
+4. **Protection factor uses days per period conversion.**
+
+	The protection calculation has converted the periodic rate to a daily rate.
+
+5. **Switch to Rate Set two.**
+
+	The protection calculation has switched to the second set of rates.
+
+6. **Switch method to Net.**
+
+  The protection calculation has switched to net coverage.
+
+7. **Switch method to Ordinary Life.**
+
+	The protection calculation has switched to ordinary life coverage.
+
+8. **Benefit is Average Payment over term of coverage (excludes loan principal from final payment).**
+
+	This average benefit calculation method is most commonly seen with interest only loans.
+  It uses the average of all payments over the term of coverage (excluding the loan
+  principal amount from the final payment, if covered).
+
+</details>
+
+---
+
+🟦 **Product.Cost**
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | no |
+
+This object's fields detail the cost of the protection product in total, per
+payment, and per day. It also provides the rate used to compute the premiums.
+
+<details>
+<summary><b>Cost fields</b></summary>
+
+---
+
+🟥 **Cost.Premium**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The total cost for this protection over the term of the loan.
+
+---
+
+🟥 **Cost.PerPmt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The cost of coverage expressed as an amoun per payment.
+
+---
+
+🟥 **Cost.PerDay**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The cost of coverage expressed as an amoun per day.
+
+---
+
+🟥 **Cost.Rate**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The rate used to compute the premium for the requested protection product.
+
+---
+
+🟦 **Cost.Factor**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The rate factor used to compute the premium for the requested protection
+product. Note that this field is only present if the `Product.ShowFactor` field
+of the associated protection product `true`.
+
+</details>
+
+---
+
+🟦 **Product.Coverage**
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | no |
+
+The aggregate coverage amount, code, and note are provided
+in the fields of this object:
+
+<details>
+<summary><b>Coverage fields</b></summary>
+
+---
+
+🟥 **Coverage.Amount**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The aggregate coverage amount for this protection product.
+
+---
+
+🟥 **Coverage.Code**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+If the requested protection was capped by the SCE for any reason, then
+the value of this field will be greater than zero. A value of zero
+indicates that the requested product was included with the loan for the
+full coverage amount of the loan.
+
+---
+
+🟥 **Coverage.Note**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+This field will describe the type of coverage provided. If
+full coverage has been provided on the aggregate coverage, then the note will contain
+`Full Coverage`. Otherwise, the note will describe the type of partial
+coverage used.
+
+</details>
+
+---
+
+🟦 **Product.Benefit**
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | no |
+
+Disability and involuntary unemployment provide coverage based upon a computed
+benefit amount. This object collects the monthly and periodic benefit amounts,
+as well as the benefit coverage code and note.
+
+<details>
+<summary><b>Benefit fields</b></summary>
+
+---
+
+🟥 **Benefit.BenMon**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The computed monthly benefit amount.
+
+---
+
+🟥 **Benefit.BenPer**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The computed periodic benefit amount.
+
+---
+
+🟥 **Benefit.Code**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+If the benefit for the requested protection was capped by the SCE for any
+reason, then the value of this field will be greater than zero. A value of zero
+indicates that the requested product was included with the loan for the full
+benefit amount of the loan.
+
+---
+
+🟥 **Benefit.Note**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+This field will describe the type of benefit coverage provided. If full coverage
+has been provided on the benefit, then the note will contain `Full Coverage`.
+Otherwise, the note will describe the type of partial coverage used.
+
+</details>
+
+---
+
+🟦 **Product.Borrowers[]**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of Borrower objects | no |
+
+This array provides the calling application with data about the term of
+coverage for the specified borrower(s), for the requested product.
+
+<details>
+<summary><b>Borrower fields</b></summary>
+
+---
+
+🟥 **Borrower.Birthday**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | YYYY-MM-DD |
+
+The birthday associated with the borrower, as specified in the request. All
+dates are in the form of `YYYY-MM-DD`, and must be 10 characters long.
+
+---
+
+🟥 **Borrower.Pmts**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The term of coverage expressed as a number of payments.
+
+---
+
+🟥 **Borrower.Months**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The term of coverage expressed as a number of months.
+
+---
+
+🟦 **Borrower.AmMonths**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+This field is only be returned when the protection product is
+configured to use CUNA Mutual's single premium formula #5, and contains
+the computed amortization term used in the premium computation. 
+
+---
+
+🟥 **Borrower.AgeAtIssue**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | YYYY-MM-DD |
+
+The value of this field represents the age at issue of the borrower in a special
+date-like format of `YYYY-MM-DD`, where the borrower is YYYY years, MM months,
+and DD days old when coverage begins.
+
+---
+
+🟥 **Borrower.AgeAtMaturity**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | YYYY-MM-DD |
+
+The value of this field represents the age at maturity of the borrower in a
+special date-like format of `YYYY-MM-DD`, where the borrower is YYYY years, MM
+months, and DD days old when coverage terminates.
+
+---
+
+🟥 **Borrower.Maturity**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | YYYY-MM-DD |
+
+The coverage maturity date for this particular borrower.
+
+---
+
+🟥 **Borrower.Code**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+If the requested protection was truncated by the SCE for any reason, then the
+value of this field will be greater than zero. A value of zero indicates that
+the requested product was included with the loan for the full term of the loan.
+
+---
+
+🟥 **Borrower.Note**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+This field will describe the type of coverage provided. If full term coverage
+has been provided, then the note will contain `Full Coverage`. Otherwise, the
+note will describe the type of truncated coverage used.
+
+</details>
+
+---
+
+🟦 **Product.Caps**
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | no |
+
+This object provides the calling application with data about the maximum terms,
+amounts, and ages associated with the requested product.
+
+<details>
+<summary><b>Caps fields</b></summary>
+
+---
+
+🟦 **Caps.Coverage**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+Contains the maximum aggregate coverage amount, expressed in dollars. If no cap
+is present or applicable, then this attribute will not be present.
+
+---
+
+🟦 **Caps.Benefit**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+Contains the maximum monthly benefit amount. If no cap is present or applicable,
+then this attribute will not be present.
+
+---
+
+🟦 **Caps.BenPer**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+Contains the maximum periodic benefit amount. If no cap is present or
+applicable, or if the payment frequency of the requested loan is monthly, then
+this attribute will not be present.
+
+---
+
+🟦 **Caps.Term**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+Contains the maximum coverage term, expressed in months. If no cap is present or
+applicable, then this attribute will not be present.
+
+---
+
+🟦 **Caps.TermPer**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+Contains the maximum coverage term, expressed as a number of payments. If no cap
+is present or applicable, or if the payment frequency of the requested loan is
+monthly, then this attribute will not be present.
+
+---
+
+🟦 **Caps.InceptAge**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+Contains the maximum age a borrower may be at loan inception, expressed in
+years. If no cap is present or applicable, then this attribute will not be
+present.
+
+---
+
+🟦 **Caps.AttainAge**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+Contains the maximum age a borrower may attain during the term of the loan,
+expressed in years. If no cap is present or applicable, then then this attribute
+will not be present.
+
+</details>
 
 </details>
 

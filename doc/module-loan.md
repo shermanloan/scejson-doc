@@ -1469,6 +1469,288 @@ valid date, then the value of this field is ignored.
 ---
 </details>
 
+### 🟦 MI
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The `MI` objectt determines if this loan includes one of the supported types of
+mortgage insurance (MI) -- PMI or FHA. This object contains fields which further
+specify mortgage insurance options.
+
+*NOTE:* Mortgage insurance is only supported on equal, balloon, and interest
+only loan builder requests at this time.
+
+
+<details>
+<summary><b>MI fields</b></summary>
+
+---
+
+🟦 **MI.CashDown**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | number | 0 |
+
+The `CashDown` field represents a cash down payment made at closing. If
+specified and greater than zero, this amount will be deducted from the principal
+balance. If not specified, the cash down payment will default to zero.
+
+---
+
+🟦 **MI.LoanAmt**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | number | 0 |
+
+This field represents the amount by which the PMI rates are multiplied to
+produce a level PMI premium. If not specified, then the principal balance will
+be used to compute the annual premium.
+
+---
+
+🟦 **MI.Periodic**
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | no |
+
+The fields of this object determine the conditions when MI is no longer
+included.
+
+<details>
+<summary><b>Periodic fields</b></summary>
+
+---
+
+🟦 **Periodic.DropLTV**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | number - % | 0 |
+
+The value of this field determines the loan to value ratio at which
+MI should be removed, and is expressed as a percentage. For example,
+if you wish to automatically drop MI when the loan to value ratio first
+equals or falls below 78%, then you would specify
+`"DropLTV" : "78.0"`.
+
+---
+
+🟦 **Periodic.Term**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | number | 0 |
+
+The value of this field represents the the term (in payments) beyond 
+which MI will be removed.
+
+As an example, if mortgage insurance must be removed after the
+180th payment, then the calling application should specify
+
+```json
+{
+  "MI" : {
+    "Periodic" : { "Term" : "180" }
+  }
+}
+```
+
+---
+
+🟦 **Periodic.WarnLTV**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | number - % | 0 |
+
+The value of this field determines the loan to value ratio at which a
+warning should be issued, and is expressed as a percentage of LTV (loan to value).
+For example,if you wish to know when the loan to value ratio first equals or
+falls below 80%, then you would specify `"WarnLTV" : "80.0"`.
+
+</details> 
+
+---
+
+🟥 **MI.PropertyValue**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+This field's value represents the appraised property value, and will be used in
+the calculation of the loan to value ratio.
+
+---
+
+🟥 **MI.Rates[]**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of Rate objects | yes |
+
+This array if `Rate` objects defines the rates used to compute MI on the loan. There must
+be at least one `Rate` object in the `Rates[]` array, and there can be more than one if
+rates are set to switch at a specified payment number.
+
+<details>
+<summary><b>Rate fields</b></summary>
+
+---
+
+🟥 **Rate.Rate**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The value of this field specifies the cost of mortgage insurance per $100
+of the loan amount. As an example, a loan computed with a MI rate of $1.50  per $100 would be
+specified as 
+
+```json
+{
+  "MI" : {
+    "Rates" : [
+      { "Rate" : "1.50" }
+    ]
+  }
+}
+```
+
+---
+
+🟦 **Rate.Switch**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | number | 0 |
+
+This optional attribute defines the payment number beyond which the associated MI rate
+will apply. If not specified, the value will default to zero.
+
+Thus, if there is only a single MI rate, one may omit this attribute (see example above).
+
+Example of a MI multiple rate structure (use a rate of $1.50 for the first 10 years, with a rate
+of $0.20 for coverage beyond 10 years):
+
+```json
+{
+  "MI" : {
+    "Rates" : [
+      { "Rate" : "1.50" },
+      { "Rate" : "0.20" , "Switch" : "120" }
+    ]
+  }
+}
+```
+
+</details>
+
+---
+
+🟦 **MI.Type**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | fha, pmi | pmi |
+
+This field determines the type of mortgage insurance to include with the loan.
+If the value of this field is set to `fha`, then a different MI premium is
+computed every twelve months based upon the average outstanding principal
+balance during that same term. The MI calculation adheres strictly to the [HUD
+regulation](http://portal.hud.gov/hudportal/HUD?src=/program_offices/housing/comp/premiums/sfpcalc).
+
+If the value of this field is set to `pmi`, then each defined MI rate produces a
+level MI premium based upon the inital loan amount.
+
+---
+
+🟦 **MI.UpFront**
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | no |
+
+This object determines if there is an up front fee for mortgage insurance, and
+if so, how it is computer. If this object is not present in the request, then no
+up front fee will be computed. Note that ZOMP (zero option monthly premium)
+products do not have an up front fee, which means that this object should be
+omitted.
+
+<details>
+<summary><b>UpFront fields</b></summary>
+
+---
+
+🟦 **UpFront.Paid**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | atclosing, bylender, financed | atclosing |
+
+If the value of this field is set to `financed`, then the computed up front
+fee will be added to the principal balance and the finance charge. A value of `atclosing`
+will cause the value of the fee to be added to the finance charge alone. Finally, a value
+of `bylender` means that the up front fee is to be paid by the lender, hence the value
+of the fee is not added to either the principal balance nor the finance charge.
+
+---
+
+🟦 **UpFront.Reduce**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | true |
+
+If the specified number of periodic premiums to include as an up front fee is
+greater than zero, then this attribute determines if the term of coverage for
+PMI will be reduced by the same amount.
+
+---
+
+🟦 **UpFront.Units**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | months, points, years | months |
+
+If the `Units` field is set to `months`, then `UpFront.Value` represents the
+number of periodic MI premiums to be paid at closing.
+
+If the `Units` field is set to `Years`, then `UpFront.Value` represents the
+number of annual MI premiums to be paid at closing. Many single premium products
+define the up front fee as a number of years of MI to be paid up front.
+
+Finally, if the `Units` field is set to `Points`, then `UpFront.Value`
+represents the percentage of principal to be paid up front. As of October 3,
+2011, FHA loans use points.
+
+---
+
+🟦 **UpFront.Value**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | number | 0 |
+
+If part of the MI fees are to be paid up front, then value of this field must be
+grater than zero. How the value of this field is interpreted depends upon the
+`Units` field (see below).
+
+The default value of zero means that no up front fee will be computed.
+
+</details>
+
+---
+
+</details>
+
 ### 🟦 PmtStreams
 
 | Type  | Required |

@@ -1751,6 +1751,128 @@ The default value of zero means that no up front fee will be computed.
 
 </details>
 
+### 🟦 ODI
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+If odd days should be treated as a prepaid finance charge *or* added to the
+first payment in a manner different from how interest is accruing (see 
+`BusinessRules.OddFirstPmt`), then the request needs to define how odd days
+interest is computed and handled using the fields of this object.
+
+<details>
+<summary><b>ODI fields</b></summary>
+
+---
+
+🟦 **ODI.AccrualCode**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 204, 205, 210, 211, 220, 221, 230, 231, 250 | default |
+
+The accrual code defines how the odd days interest is computed. The meaning of the
+allowed accrual codes is defined below.
+
+Note that accrual code `250` ("Variable Days Per Year") defines the
+basis divisor days to be equal to 12 multiplied by the number of days in the month
+of the date on which interest begins to accrue. Thus, if the interest start date
+falls in November, then the number of basis days is 360. If the interest start
+date falls in a month with 31 days, then the number of basis days is 372. For
+an interest start date in February, the number of basis days will either be 336
+or 348, depending upon whether or not it is a leap year.
+
+| Accrual Code | Description |
+| :---: | :---- |
+| 204 | True360/360 |
+| 205 | True360/365 |
+| 210 | Actual/360 |
+| 211 | True365/360 |
+| 220 | Actual/365 |
+| 221 | True365/365 |
+| 230 | Actual/Actual |
+| 231 | Midnight 366 |
+| 250 | Actual/Variable Days Per Year |
+
+---
+
+🟦 **ODI.AddToPmt**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the calling application wants the odd days interest to be added to the first
+payment, then set the value of this field to `true`. A value of `false`
+indicates that the odd days interest will be treated as a prepaid finance
+charge.
+
+---
+
+🟦 **ODI.AnchorDate**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | BackUnitPeriod, BackDaysPerPeriod | BackUnitPeriod |
+
+The computed number of odd days is the number of days between the loan date and
+the anchor date. This field determines how to arrive at the anchor date. A value
+of `BackUnitPeriod` means that the anchor date is one unit period prior to the
+specified first payment date. A value of `BackDaysPerPeriod` means that the
+anchor date is the number of days per period prior to the first payment date.
+Please note that for both of these methods, the period used will be that
+associated with the payment stream in which the first payment occurs.
+
+---
+
+🟦 **ODI.ForceUnitPeriod**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+Some unit period methods will not use a strict unit period interest accrual
+factor in the period to the first payment. For example, code `302` will count
+the days to the first payment and divide by 365. For a monthly loan, setting
+this field to `true` will use a 1/12 factor instead of Days/365.
+
+---
+
+🟦 **ODI.UseDailyCost**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the total odd days prepaid fee is computed by first generating a rounded (to
+the nearest penny) daily cost and then multiplying this value by the computed
+number of odd days, then set the value of this property to `true`.
+
+A value of `false` means that the daily cost is left unrounded, and the total
+prepaid fee is rounded after the computation is complete.
+
+---
+
+🟦 **ODI.UseNegODI**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If there are negative odd days in the loan, then the value of this field
+determines if a negative odd days interest fee is computed. If the value of this
+field is `false`, then negative odd days fees are not allowed, the SCE will
+return a value of zero in this situation, and the computed payment will be
+adjusted to take into account the negative odd days. A value of `true` will
+return a negative odd days interest fee (in effect, it then becomes and odd days
+interest credit) when there are negative odd days in a loan.
+
+---
+
+</details>
+
 ### 🟦 PmtStreams
 
 | Type  | Required |
@@ -2110,125 +2232,311 @@ ignored, unless it is a replacement payment using the `NNNN-00-00` date format.
 ---
 </details>
 
-### 🟦 ODI
+### 🟦 Protection
 
 | Type  | Required |
 | :---: |   :---:  |
 | Object | no |
 
-If odd days should be treated as a prepaid finance charge *or* added to the
-first payment in a manner different from how interest is accruing (see 
-`BusinessRules.OddFirstPmt`), then the request needs to define how odd days
-interest is computed and handled using the fields of this object.
+If the calling application wishes to add any payment protection products
+to the loan (e.g. credit insurance or debt protection), then this object
+and at least one `Product` object in the `Products[]` array must be present.
 
 <details>
-<summary><b>ODI fields</b></summary>
+<summary><b>Protection fields</b></summary>
 
 ---
 
-🟦 **ODI.AccrualCode**
+🟦 **Protection.DataPath**
 
 | Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | 204, 205, 210, 211, 220, 221, 230, 231, 250 | default |
+| :---: |   :---:  |  ---   | :---: |
+| String | no | path | default data path |
 
-The accrual code defines how the odd days interest is computed. The meaning of the
-allowed accrual codes is defined below.
+If this field is set, the SCE will look for a `/data` folder containing the
+setup files in the path specified. Thus, if the `DataPath` is set to `/etc/sce`,
+the SCEX will look for the setup files in `/etc/sce/data`.
 
-Note that accrual code `250` ("Variable Days Per Year") defines the
-basis divisor days to be equal to 12 multiplied by the number of days in the month
-of the date on which interest begins to accrue. Thus, if the interest start date
-falls in November, then the number of basis days is 360. If the interest start
-date falls in a month with 31 days, then the number of basis days is 372. For
-an interest start date in February, the number of basis days will either be 336
-or 348, depending upon whether or not it is a leap year.
+If the calling application wishes to specify the data directory path in its
+entirety (e.g. the calling app does not want the SCE to append `/data` to the
+provided path), then simply terminate the specified `DataPath` with an asterisk
+(`*`). Thus, if the `DataPath` is set to `/etc/sce/bank1/*`, the SCE will look for
+the setup files in `/etc/sce/bank1/`.
 
-| Accrual Code | Description |
-| :---: | :---- |
-| 204 | True360/360 |
-| 205 | True360/365 |
-| 210 | Actual/360 |
-| 211 | True365/360 |
-| 220 | Actual/365 |
-| 221 | True365/365 |
-| 230 | Actual/Actual |
-| 231 | Midnight 366 |
-| 250 | Actual/Variable Days Per Year |
+If this field is not set, the SCE will attempt to located the `/data` folder in
+the default data directory path location, which can be retrieved using the
+`Version` module.
+
+This field is useful if you wish to use only a single installation of the SCE,
+but have many different setup file groupings. By specifying a different
+`DataPath` for each grouping, you can easily separate the groups from one
+another instead of grouping them all together in a single directory.
 
 ---
 
-🟦 **ODI.AddToPmt**
+🟦 **Protection.Products**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of Product objects | no |
+
+For each distinct payment protection product that the calling application wishes
+to add to the loan, a `Product` object is required.
+
+As an example, if a loan was requested with single decreasing life, single
+disability, single involuntary unemployment, and joint property insurances, then
+the input JSON detailing the protection requests would look similar to the
+following:
+
+```json
+{
+  "Protection" : {
+    "Products" : [
+      {
+        "Code" : "LI",
+        "Birthdays" : [
+          "1966-04-16"
+        ]
+      },
+      {
+        "Code" : "AH",
+        "Birthdays" : [
+          "1966-04-16"
+        ]
+      },
+      {
+        "Code" : "IU",
+        "Birthdays" : [
+          "1966-04-16"
+        ]
+      },
+      {
+        "Code" : "PP",
+        "Birthdays" : [
+          "1966-04-16",
+          "1969-11-21"
+        ]
+      }
+    ]
+  }
+}
+```
+
+<details>
+<summary><b>Product fields</b></summary>
+
+---
+
+🟦 **Product.Account**
 
 | Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
+| :---: |   :---:  |  ---   | :---: |
+| String | no | number | 1 |
+
+This field specifies the account number that will be used to define the
+requested product. Each account is numbered from 1 to 9,999, and each account
+corresponds to a set of setup file which define numerous settings which define
+the product and how it is calculated, such as the insurance rates, caps,
+formulas used, etc. If this field is not specified, a default value of `1` will
+be used.
+
+---
+
+🟦 **Product.Benefit**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   | :---: |
+| String | no | number - currency | 0 |
+
+If you wish to specify a benefit amount less than the maximum allowed, then do
+so with this field. Omitting this field will assure that the maximum benefit
+amount allowed will be used in the loan calculation. Note that if the specified
+account has not been set up to allow for user-specified benefit amounts for the
+product in question, or if the product itself does not have the notion of a
+monthly benefit (such as life and property products), then this attribute will
+be ignored.
+
+---
+
+🟥 **Product.Birthdays[]**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| array of String | yes | YYYY-MM-DD |
+
+This array contains the date of birth for one or two borrowers requesting a
+payment protection product. The type of coverage provided (e.g. single or joint)
+is determined by the number of members in the array. Thus, to request single
+accident and health coverage, the `Product` object (with `"Code" : "AH"`)
+requires a `Birthdays[]` array with a single birthday element containing the
+birthday of the borrower seeking coverage. Similarly, to request joint
+decreasing life coverage, the `Product` object (with `"Code" : "CL"`) requires a
+`Birthdays[]` array with two elements, each of which contains the birthday of a
+borrower seeking coverage.
+
+Since the type of coverage depends upon the number of elements present in the
+array, at lease one must appear and no more than two are allowed (as the only
+coverage options are single or joint).
+
+All dates must be in the form of YYYY-MM-DD, and be 10 characters long.
+
+---
+
+🟥 **Product.Code**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | LI, AH, IU, PP |
+
+This field defines the type of payment protection product, and which setup files
+are references for calculation, rate, and cap purposes. In the description of
+each product below, "NNNN" is the `Account` number (see above, an account number
+of 1 would thus be "0001").
+
+- **LI** - The requested product is treated as decreasing credit life and will
+  reference the `clNNNN.ini` setup file.
+- **AH** - The requested product is treated as accident and health and will
+  reference the `ahNNNN.ini` setup file.
+- **IU** - The requested product is treated as involuntary unemployment and will
+  reference the `iuNNNN.ini` setup file.
+- **PP** - The requested product is treated as property insurance and will
+  reference the `ppNNNN.ini setup file.
+
+---
+
+🟦 **Product.Coverage**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   | :---: |
+| String | no | number - currency | 0 |
+
+If you wish to specify a coverage amount less than the maximum allowed, then do
+so with this field. Omitting this field will assure that the maximum coverage
+amount allowed will be used in the loan calculation. Note that if the specified
+account has not been set up to allow for user specified coverage amounts for the
+product in question, then this attribute will be ignored.
+
+---
+
+🟦 **Product.Dismemberment**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   | :---: |
 | Boolean | no | true, false | false |
 
-If the calling application wants the odd days interest to be added to the first
-payment, then set the value of this field to `true`. A value of `false`
-indicates that the odd days interest will be treated as a prepaid finance
-charge.
+If the account specified has been set up to offer life protection products with
+optional dismemberment coverage, and if the optional dismemberment coverage is
+desired, then set this field's value to `true`. Otherwise, use the default value
+of `false`.
 
 ---
 
-🟦 **ODI.AnchorDate**
+🟦 **Product.Financed**
 
 | Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | BackUnitPeriod, BackDaysPerPeriod | BackUnitPeriod |
+| :---: |   :---:  |  ---   | :---: |
+| Boolean | no | true, false | true |
 
-The computed number of odd days is the number of days between the loan date and
-the anchor date. This field determines how to arrive at the anchor date. A value
-of `BackUnitPeriod` means that the anchor date is one unit period prior to the
-specified first payment date. A value of `BackDaysPerPeriod` means that the
-anchor date is the number of days per period prior to the first payment date.
-Please note that for both of these methods, the period used will be that
-associated with the payment stream in which the first payment occurs.
+Single premium protection products are typically financed (added to the
+principal balance). If you wish to have the premiums paid up front at loan
+cloasing, then set the value of this field to `false`.
 
 ---
 
-🟦 **ODI.ForceUnitPeriod**
+🟦 **Product.Method**
 
 | Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
+| :---: |   :---:  |  ---   | :---: |
+| String | no | Default, Gross, Net, Level, MOB, TrueMOB, CunaSP, OrdinaryLife | Default |
+
+Some accounts are configured to offer different types of credit life products
+(usually gross and net). In these accounts, this field allows the calling
+application to specify which method to use for a given loan. If no method is
+present in the request, then the default method will be used.
+
+---
+
+🟦 **Product.ShowFactor**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   | :---: |
 | Boolean | no | true, false | false |
 
-Some unit period methods will not use a strict unit period interest accrual
-factor in the period to the first payment. For example, code `302` will count
-the days to the first payment and divide by 365. For a monthly loan, setting
-this field to `true` will use a 1/12 factor instead of Days/365.
+If this field is set to `true`, then the `Product.Cost` response object (member
+of the `Products[]` array) will include a `Factor` field which is useful to J.
+L. Sherman and Associates when debugging protection calculations.
 
 ---
 
-🟦 **ODI.UseDailyCost**
+🟦 **Product.Table**
 
 | Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | false |
+| :---: |   :---:  |  ---   | :---: |
+| String | no | number | 0 |
 
-If the total odd days prepaid fee is computed by first generating a rounded (to
-the nearest penny) daily cost and then multiplying this value by the computed
-number of odd days, then set the value of this property to `true`.
+When requesting the accident and health product (e.g. the `Code` field is set to
+`AH`), if the specified account has been set up with multiple disability or debt
+cancellation plans, then this attribute determines which plan number will be
+used. If no table number is specified, the first table (table zero) will be
+used.
 
-A value of `false` means that the daily cost is left unrounded, and the total
-prepaid fee is rounded after the computation is complete.
+If the requested product `Code` is not `AH`, then this attribute is ignored.
 
 ---
 
-🟦 **ODI.UseNegODI**
+🟦 **Product.Term**
 
 | Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | false |
+| :---: |   :---:  |  ---   | :---: |
+| String | no | number | 0 |
 
-If there are negative odd days in the loan, then the value of this field
-determines if a negative odd days interest fee is computed. If the value of this
-field is `false`, then negative odd days fees are not allowed, the SCE will
-return a value of zero in this situation, and the computed payment will be
-adjusted to take into account the negative odd days. A value of `true` will
-return a negative odd days interest fee (in effect, it then becomes and odd days
-interest credit) when there are negative odd days in a loan.
+If you need to specify a coverage term (in months or payments) less than the
+maximum allowed, then do so using this field. If this field is omitted, then the
+loan will be covered for the maximum term allowed. Note that if the specified
+account has not been set up to allow for user specified coverage terms for this
+product, then this attribute will be ignored.
 
 ---
+
+🟦 **Product.TermUnits**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   | :---: |
+| String | no | Pmts, Months | 0 |
+
+The specified numeric coverage term (see `Term` field, above) will be
+interpreted as a number of payments or months, depending upon the value of this
+attribute.
+
+---
+
+🟦 **Product.UseLevelRates**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   | :---: |
+| Boolean | no | true, false | false |
+
+If the account specified has been set up to offer single premium credit life
+using level rates instead of the normal decreasing rates, and if you wish to use
+level rates instead of decreasing, then set this field's value to `true`.
+Otherwise, use the default value of `false`.
+
+</details>
+
+---
+
+🟦 **Protection.ShowDataPath**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   | :---: |
+| Boolean | no | true, false | false |
+
+This field determines if the data directory path used in the calculation
+of the loan will be disclosed in the response as a field of the
+`Protection` object.
+
+---
+
 </details>
 
 ## Loan Response Data Object Field Definition

@@ -1,6 +1,6 @@
 # SCEJSON Reference Manual
 
-Version 2022-02-16
+Version 2022-03-01
 
 ## Introduction and Overview
 * [Introduction](introduction.md)
@@ -17,6 +17,10 @@ Version 2022-02-16
 * [High Cost Mortgage (HCM)](module-hcm.md)
 * [Higher Priced Mortgage Loans (HPML)](module-hpml.md)
 -->
+
+## Appendices
+* [Calculation Notes](appendix-calcnotes.md)
+* [Countries](appendix-countries.md)
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |

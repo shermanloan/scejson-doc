@@ -126,7 +126,7 @@ For the SCEJSON, the value of this field will always be set to `"SCEJSON"`.
 
 Holds the version information for the SCEJSON.
 
-The SCEX is versioned with a number formatted
+The SCE is versioned with a number formatted
 as "YYYY.MM.RR". J. L. Sherman and Associates has chosen to base this number upon dates and
 releases, instead of arbitrary version numbers. Specifically, the first part of the version
 number (YYYY) refers to the year of the release. The second part of the version number (MM)

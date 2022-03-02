@@ -11,7 +11,7 @@ be expected by the end user.
 
 ## Calculation Notes
 
-All of the calculation notes that may be returned by the SCEX are documented
+All of the calculation notes that may be returned by the SCE are documented
 below. Each note is associated with a numeric code and text return value. Each
 will be further described in the list below:
 

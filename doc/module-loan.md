@@ -2255,7 +2255,7 @@ and at least one `Product` object in the `Products[]` array must be present.
 
 If this field is set, the SCE will look for a `/data` folder containing the
 setup files in the path specified. Thus, if the `DataPath` is set to `/etc/sce`,
-the SCEX will look for the setup files in `/etc/sce/data`.
+the SCE will look for the setup files in `/etc/sce/data`.
 
 If the calling application wishes to specify the data directory path in its
 entirety (e.g. the calling app does not want the SCE to append `/data` to the

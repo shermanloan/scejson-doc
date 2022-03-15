@@ -658,6 +658,24 @@ When the `MYED` is specified, you must also specify a `PmtStream` object with a
 
 ---
 
+🟦 **BusinessRules.OddFirstPmt**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | true, false, OnlyPositive | false |
+
+If the first payment should be adjusted (up or down) due to odd days interest
+in the same manner that interest is accruing in the loan, then set the value
+of this field `true`. A value of `OnlyPositive` instructs
+the SCE to only adjust the first payment due to odd days if there are positive
+odd days. Finally, a value of `false` instructs the SCE to not adjust
+the first payment using this method.
+
+Note that you can not specify an odd first payment using this attribute 
+*and* include `ODI` in the same request.
+
+---
+
 🟦 **BusinessRules.PmtAccrualCode**
 
 | Type  | Required | Values | Default |

@@ -1,6 +1,6 @@
 # Apr Verification and Calculation Module
 
-> "It is said that love makes the world go 'round -
+> "It is said that love makes the world go 'round -  
 >  the announcement lacks verification. It's  
 >  wind from the dinner horn that does it."  
 >                           --- O. Henry

@@ -789,31 +789,6 @@ before payments, `false` means payments are processed before premiums.
 ---
 </details>
 
-### 🟦 Premiums
-
-| Type  | Required |
-| :---: |   :---:  |
-| array of Premium objects | no |
-
-TODO
-
-<details>
-<summary><b>Premium fields</b></summary>
-
----
-
-🟦 **Premium.**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   | :---: |
-| String | no | path | default data path |
-
-TODO
-
----
-
-</details>
-
 ## Apr Response Data Object Field Definition
 
 The following example is the response returned from the SCEJSON for the request

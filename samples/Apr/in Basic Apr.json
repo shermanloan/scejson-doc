@@ -1,0 +1,22 @@
+{
+  "Module" : "Apr",
+  "Data" : {
+    "Decimals" : "3",
+    "TestApr" : "10.125",
+    "TestFinChg" : "1616.12",
+    "TestTotPmt" : "11616.12",
+    "Advances" : [
+      {
+        "Date" : "2022-03-16",
+        "AmtFin" : "10000.00"
+      }
+    ],
+    "PmtStreams" : [
+      {
+        "Begin" : "2022-04-16",
+        "Term" : "36",
+        "Pmt" : "322.67"
+      }
+    ]
+  }
+}

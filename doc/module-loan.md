@@ -1333,7 +1333,7 @@ it is called a "Pocket APR" fee; otherwise, it is a straight "Pocket Fee".
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | 1, 2, 4, 6, 12, 24, 26, 52 | 12 |
 
-PPY is an abbreviation for "payments per year", and in the case of the Field
+PPY is an abbreviation for "payments per year", and in the case of the Fee
 object, determines the frequency for the fee stream. If the value of the `Term`
 field is `1`, then the value of this field is ignored.
 
@@ -1895,7 +1895,7 @@ interest credit) when there are negative odd days in a loan.
 
 | Type  | Required |
 | :---: |   :---:  |
-| Object | no |
+| array of PmtStream objects | no |
 
 Payment streams are defined using the fields of this empty object,
 including individually defined payments.
@@ -2006,7 +2006,7 @@ allowed.
 
 ---
 
-🟦 **PmtStream.Date**
+🟥 **PmtStream.Date**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |

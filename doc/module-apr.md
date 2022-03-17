@@ -626,8 +626,8 @@ it to the value specified in this field. The magnitude of the difference between
 the computed and test values will be returned in the response.
 
 If this field is not present, or if it is present but contains a value less than
-or equal to zero, then the Total of Payments is still returned in the XML
-results, however no `Difference` or `TestValue` fields will be present.
+or equal to zero, then the Total of Payments is still returned in the results,
+however no `Difference` or `TestValue` fields will be present.
 
 ### 🟦 TransactionDate
 

@@ -941,6 +941,709 @@ no warnings will be generated for these unrecognized fields.
 }   
 ```
 
+### 🟥 Apr
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | yes |
+
+The APR data is contained in the fields of this object.
+
+<details><summary><b>Apr fields</b></summary>
+
+---  
+
+🟥 **Apr.Value**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - % |
+
+The numeric value of the computed Apr, expressed as a percentage.
+
+---
+
+🟥 **Apr.Method**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Actuarial, USRule, EU_APR, XIRR, XIRR360, IRR, YieldIRR |
+
+This field returns the Apr method used to compute the numeric Apr value.
+
+---
+
+🟦 **Apr.Accrual**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | see below |
+
+US Rule APR's will disclose the precise method of interest accrual in this
+element. All of the variation is in regards to "Term factors". All US Rule
+interest accrual is governed by the following formula: Interest = APR/100 * Term
+Factor * Balance. Each accrual method has its own rules for generating these
+term factors, which represent how many years interest has been accruing.
+
+---
+
+🟦 **Apr.UnitPeriod**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | see below |
+
+The value in this field concatenates the `Apr.UnitPeriodMult` and
+`Apr.UnitPeriodBase` into one value. For instance, when with `"Base : "Month"`
+and ` "Mult" : "1" `, this field's value will be is `{ "UnitPeriod" : "1_Month"
+}`.
+
+This field will only be present when the Apr method is Actuarial, EU, or US Rule
+with a unit period calendar.
+
+---
+
+🟦 **Apr.UnitPeriodBase**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Week, Month, Year |
+
+The Unit Period for Actuarial, EU, and US Rule (using a unit period calendar)
+APRs have a basic unit of measurement. The value of this field discloses the
+basic unit of measurement.
+
+This field will only be present when the Apr method is Actuarial, EU, or US Rule
+with a unit period calendar.
+
+---
+
+🟦 **Apr.UnitPeriodMult**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The unit multiple composing the Unit Period. For instance, if the unit period
+were 6 months, the Base is `Month`, the Mult is `6`.
+
+This field will only be present when the Apr method is Actuarial, EU, or US Rule
+with a unit period calendar.
+
+---
+
+🟦 **Apr.PeriodsPerYear**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The value of this field holds the number of periods per year.
+
+This field will only be present when the Apr method is Actuarial or US Rule
+with a unit period calendar.
+
+---
+</details>
+
+### 🟦 TestResults
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The `TestResult` object is present if the calling application has specified one
+of the following: (i) `TestApr`, (ii) `TestFinChg`, or (iii) `TestTotPmt`. The
+child fields of this object descibe the analysis of each of the three possible
+tests.
+
+<details><summary><b>TestResults fields</b></summary>
+
+---
+
+🟦 **TestResults.Apr**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+This object is only present if the request provided a value greater than zero in
+for the value of the `TestApr` field.
+
+<details><summary><b>Apr fields</b></summary>
+
+---
+
+🟦 **Apr.LoanType**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Regular, Irregular |
+
+The `LoanType` is either `Regular` or `Irregular`. All loans are assumed to be
+`Regular` unless they contain multiple advances, an irregular period or an
+Irregular Payment, all of which are defined below. Note: Skipped payment loans
+are irregular loans, because, though the payments are regular, the periods are
+not.
+
+This field is only present when the APR method is Actuarial or US Rule.
+
+---
+
+🟦 **Apr.MultAdv**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Boolean | no | true, false |
+
+If a loan has more than one advance, this value of this field will be `true`;
+otherwise, it is `false`.
+
+This field is only present when the APR method is Actuarial or US Rule.
+
+---
+
+🟦 **Apr.IrregPeriod**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Boolean | no | true, false |
+
+If a loan has an irregular period between payments, this value of this field is
+`true`; otherwise, it is `false`. An irregular period is any period between
+payments not a unit period. (See Section 18.2.7)
+
+This field is only present when the APR method is Actuarial or US Rule.
+
+---
+
+🟦 **Apr.IrregPmt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Boolean | no | true, false |
+
+If a loan has an irregular payment, this value of this field is `true`;
+otherwise, it is `false`. First and final payments are not considered in this
+assessment. A loan may only have one payment amount from the 2nd through the
+N-1st payments. If two or more payment amounts exist for these middle payments,
+this attribute will be true.
+
+This field is only present when the APR method is Actuarial or US Rule.
+
+---
+
+🟥 **Apr.Value**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The APR computed by the SCE.
+
+---
+
+🟥 **Apr.TestValue**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The APR specified by the request which is to be tested for compliance.
+
+---
+
+🟥 **Apr.Difference**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The magnitude of the difference between the test APR and the computed APR.
+
+---
+
+🟦 **Apr.Tolerance**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - % |
+
+The tolerance permitted by RegZ for the type of loan in question. In the United
+States of America, regular loans have a tolerance of 0.125, while irregular
+loans have a tolerance of 0.250. *See official staff commentary 226.22(a)(1) -
+(3)*
+
+This field is only present when the APR method is Actuarial or US Rule.
+
+---
+
+🟦 **Apr.InCompliance**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Boolean | no | true, false |
+
+This value of this field is `true` or `false` depending on whether the
+`Difference` is greater than the `Tolerance` or not. If the difference is
+greater than the allowed tolerance, this element returns `false`. Otherwise, the
+APR is within compliance and therefore has `true` returned.
+
+This field is only present when the APR method is Actuarial or US Rule.
+
+---
+
+🟦 **Apr.OnCusp**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Boolean | no | true, false |
+
+If a test apr is exactly equal to the tolerance, the `OnCusp` field is `true`;
+otherwise, it is `false`. Though the loan is within compliance, a loan far
+enough out of  compliance to be on the cusp of acceptability may want to be
+flagged for closer scrutiny.
+
+This field is only present when the APR method is Actuarial or US Rule.
+
+</details>
+
+---
+
+🟦 **TestResults.FinChg**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+This object is only present if the request provided a value greater than zero in
+for the value of the `TestFinChg` field.
+
+<details><summary><b>FinChg fields</b></summary>
+
+---
+
+🟥 **FinChg.Value**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The Finance Charge computed by the SCE.
+
+---
+
+🟥 **FinChg.TestValue**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The Finance Charge specified by the request which is to be tested for
+compliance.
+
+---
+
+🟥 **FinChg.Difference**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The magnitude of the difference between the test Finance Charge and the
+computed Finance Charge.
+
+</details>
+
+---
+
+🟦 **TestResults.TotPmt**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+This object is only present if the request provided a value greater than zero in
+for the value of the `TestTotPmt` field.
+
+<details><summary><b>TotPmt fields</b></summary>
+
+---
+
+🟥 **TotPmt.Value**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The Total of Payments computed by the SCE.
+
+---
+
+🟥 **TotPmt.TestValue**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The Total of Payments specified by the request which is to be tested for
+compliance.
+
+---
+
+🟥 **TotPmt.Difference**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The magnitude of the difference between the test Total of Payments and the
+computed Total of Payments.
+
+</details>
+
+---
+</details>
+
+### 🟥 Loan
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | yes |
+
+<details><summary><b>Loan fields</b></summary>
+
+---  
+
+🟥 **Loan.TransactionDate**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | YYYY-MM-DD |
+
+The Transaction Date is one of three values, depending on the input: The date
+entered as the `TransactionDate` from the request, the date of the first advance
+if the `TransactionDate` was omitted, or one unit period before the first
+payment in the case of loans with odd days interest.
+
+---  
+
+🟥 **Loan.AmountFinanced**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The total amount financed for the loan.
+
+---
+
+🟥 **Loan.NumAdvances**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The value of this field represents the number of advances in the specified loan.
+
+---  
+
+🟦 **Loan.AdvPresBal**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The value of this field is the present value of all advances made in the
+specified loan.
+
+This field is only present when the APR method is Actuarial.
+
+---  
+
+🟥 **Loan.TotPmt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+The total of all payments made in the requested loan.
+
+---
+
+🟥 **Loan.NumPmts**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The value of this field represents the number of payments made in the specified
+loan.
+
+---  
+
+🟦 **Loan.TotPmtPresBal**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The value of this field is the present value of all payments made in the
+specified loan.
+
+This field is only present when the APR method is Actuarial.
+
+---  
+
+</details>
+
+### 🟥 AmTable
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | yes |
+
+This object holds the amortization table as well as important error function
+results as fields.
+   
+<details><summary><b>AmTable fields</b></summary>
+
+---  
+
+🟥 **AmTable.Error**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The balance at the end of amortization using the disclosed APR. The correct
+APR is the rate which produces the smallest balance after amortization.
+Therefore, the magnitude of both `ErrorDown` and `ErrorUp`
+attributes should be greater than the value of this field.
+
+---  
+
+🟥 **AmTable.ErrorDown**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The balance at the end of amortization using the disclosed APR less one rate
+unit. As an example, if the disclosed APR is 10.000%, then the `ErrorDown`
+attribute would contain the error after amortizing the loan with a rate of
+9.999%.
+
+The magnitude of this value should never be less than the magnitude of the
+`Error` attribute, because the rate with a minimum error magnitude defines the
+correct APR.
+
+---
+
+🟥 **AmTable.ErrorUp**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The balance at the end of amortization using the disclosed APR plus one rate
+unit. As an example, if the disclosed RegZAPR is 10.000%, then the `ErrorUp`
+attribute would contain the error after amortizing the loan with a rate of
+10.001%.
+
+The magnitude of this value should never be less than the magnitude of the
+`Error` attribute, because the rate with a minimum error magnitude defines the
+correct APR.
+
+---
+
+🟥 **AmTable.AmLines**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of AmLine objects | yes |
+
+This field is an array of AmLine objects, which describe each amortization line
+in the schedule.
+
+<details><summary><b>AmLine fields</b></summary>
+
+---  
+
+🟥 **AmLine.Idx**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The index of the amortization event, starting with zero.
+
+---
+
+🟥 **AmLine.Date**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | YYYY-MM-DD |
+
+The date of the amortization event.
+
+---
+
+🟦 **AmLine.Adv**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The amount of the advance.
+
+This field is only present if this AmLine object is an advance event.
+
+---
+
+🟦 **AmLine.Pmt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The payment amount.
+
+This field is only present if this AmLine object is a payment event.
+
+---
+
+🟦 **AmLine.Prem**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The premium amount.
+
+This field is only present if this AmLine object is a premium event.
+
+---
+
+🟦 **AmLine.Unit**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The number of full unit periods from this event to the transaction date.
+
+*Section (b)(5),(6)*
+
+This field is only present when the APR method is Actuarial *or* US Rule using
+the Federal Calendar.
+
+---
+
+🟦 **AmLine.Frac**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The number of fractional unit periods from this event to the transaction date.
+
+*Section (b)(5),(6)*
+
+This field is only present when the APR method is Actuarial *or* US Rule using
+the Federal Calendar.
+
+---
+
+🟦 **AmLine.Factor**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The Term Factor used to compute interest. (APR/100) * Term Factor * BegBal = New
+Interest.
+
+This field is only present when the APR method is *not* Actuarial.
+
+---
+
+🟦 **AmLine.PresVal**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The present value of the event cash at the time of the transaction date.
+
+This field is only present when the APR method is *not* US Rule.
+
+---
+
+🟦 **AmLine.PresValSum**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The running total present value sum.
+
+This field is only present when the APR method is *not* US Rule.
+
+---
+
+🟦 **AmLine.BegBal**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The beginning balance before amortizing this event.
+
+This field is only present when the APR method is US Rule.
+
+---
+
+🟦 **AmLine.IntPaid**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The amount of interest paid at this event.
+
+This field is only present when the APR method is US Rule.
+
+---
+
+🟦 **AmLine.IntUnPaid**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The amount of unpaid interest remaining after this event is amortized.
+
+This field is only present when the APR method is US Rule.
+
+---
+
+🟦 **AmLine.EndBal**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number |
+
+The ending balance after amortizing this event.
+
+This field is only present when the APR method is US Rule.
+
+</details>
+
+---
+
+</details>
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |

@@ -63,7 +63,8 @@ payments. The final payment will be adjusted for perfect amortization.
 }
 ```
 
-The `Data` object in the loan module request is defined below:
+The fields of the `Data` object supported by a Loan module request are defined
+in alphabetical order below:
 
 ### 🟥 AccrualConfigs
 

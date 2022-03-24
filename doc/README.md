@@ -20,6 +20,7 @@ Version 2022-03-01
 ## Appendices
 * [Calculation Notes](appendix-calcnotes.md)
 * [Countries](appendix-countries.md)
+* [History](appendix-history.md)
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |

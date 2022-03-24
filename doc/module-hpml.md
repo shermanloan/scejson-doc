@@ -1,4 +1,4 @@
-# High Cost Mortgages
+# Higher Priced Mortgage Loans (HPML)
 
 > "Some men can live up to their loftiest ideals  
 >  without ever going higher than a basement."  

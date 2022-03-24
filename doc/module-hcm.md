@@ -23,7 +23,7 @@ two files (one for fixed rates and one for adjustable rates) are available for
 download at the following web site: https://ffiec.cfpb.gov/tools/rate-spread.
 Please note that it is necessary that these files be updated weekly, or else the
 SCE will not be able to determine if a loan is a HCM for loans whose lock in
-dates fall outside the range of dates provided in the APOR files. Note that if
+dates fall outside the range of dates provided in the APOR files. If
 you are using a version of the SCE that is hosted by J. L. Sherman and
 Associates, Inc., then the APOR files will be automatically updated weekly for
 your use.
@@ -167,11 +167,11 @@ premiums and/or fees which were financed.
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | see below | see below |
 
-If this attribute is set, the SCE will look for a data folder containing the
+If this field is set, the SCE will look for a data folder containing the
 APOR and `hcm.ini` files in the path specified. Note that the APOR files must be
 named as follows: `YieldTableFixed.txt` and `YieldTableAdjustable.txt`.
 
-If this attribute is not set, the SCE will attempt to locate the file in the
+If this field is not set, the SCE will attempt to locate the file in the
 default data directory. Note that the AWS hosted version of the SCE API server
 places the necessary files in the correct default directory, and hence
 specifying this field is not required.
@@ -179,7 +179,7 @@ specifying this field is not required.
 Since the APOR and `hcm.ini` files are global in nature, you only need to have
 one copy of these files available even if your installation hosts multiple data
 paths for different clients. The APOR files are identical to those needed for
-the HPML module, and thus a single location containing the APOR files can be
+the Hpml module, and thus a single location containing the APOR files can be
 used for both modules.
 
 ### 🟦 DiscountPoints
@@ -393,7 +393,7 @@ fields.
 
 If, under the terms of the loan contract, the creditor can charge a prepayment
 penalty more than 36 months after consummation, then the calling application
-should set the value of this attribute to `true`.
+should set the value of this field to `true`.
 
 Setting this value to `true` will trigger the prepayment penalty test, and his
 classify the specified loan as a HCM.
@@ -406,7 +406,7 @@ classify the specified loan as a HCM.
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | number - curency | 0 |
 
-If the maximum prepayment penalty exceeds 2% of this attribute's value, then the
+If the maximum prepayment penalty exceeds 2% of this field's value, then the
 prepayment penalty test will be triggered.
 
 ---
@@ -417,7 +417,7 @@ prepayment penalty test will be triggered.
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | number - curency | 0 |
 
-The value of this attribute specifies the amount of the total prepayment penalty
+The value of this field specifies the amount of the total prepayment penalty
 which was financed by the creditor.
 
 ---
@@ -458,7 +458,7 @@ PPY is an abbreviation for "payments per year", and specifies the payment
 frequency for the initial fixed rate period of the given loan. The default value
 of `12` will result in	a loan with an initial fixed rate period of 12 payments
 per year. If the loan in question uses a payment frequency for the initial fixed
-rate period other than monthly, specify it using this attribute.
+rate period other than monthly, specify it using this field.
 
 ### 🟥 RateType
 

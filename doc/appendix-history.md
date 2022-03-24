@@ -15,8 +15,8 @@ changes which may or may not be of interest to you.
   new `OddFirstPmt` field. The value of this field determines if the first
   payment should be adjusted for odd days using the same interest accrual
   calendar as in effect for the loan. Please see the documentation on this new
-  attribute in the chapter covering the [Loan module](module-loan.md) for
-  further information.
+  field in the chapter covering the [Loan](module-loan.md) module for further
+  information.
 * The [High Cost Mortgages](module-hcm.md) module has been made available in
   this release.
 * The [High Proced Mortgage Loans](module-hpml.md) module has been made

@@ -17,9 +17,9 @@ changes which may or may not be of interest to you.
   calendar as in effect for the loan. Please see the documentation on this new
   field in the chapter covering the [Loan](module-loan.md) module for further
   information.
-* The [High Cost Mortgages](module-hcm.md) module has been made available in
-  this release.
-* The [High Proced Mortgage Loans](module-hpml.md) module has been made
+* The [High Cost Mortgages (HCM)](module-hcm.md) module has been made available
+  in this release.
+* The [Higher Priced Mortgage Loans (HPML)](module-hpml.md) module has been made
   available in this release.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |

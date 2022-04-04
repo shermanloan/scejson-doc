@@ -70,3 +70,7 @@ will be further described in the list below:
 
    As requested, the US Rule APR was not computed, but set equal to the
    entered rate.
+
+| ⬅️ Back | ⬆️ Up | Forward ➡️ |
+| :--- | :---: | ---: |
+| [Higher Priced Mortgage Loans (HPML)](module-hpml.md) | [SCEJSON Reference Manual](README.md) | [Countries](appendix-countries.md) |

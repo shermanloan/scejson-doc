@@ -1,6 +1,6 @@
 # SCEJSON Reference Manual
 
-Version 2022-03-01
+Release 2022-04-0
 
 ## Introduction and Overview
 * [Introduction](introduction.md)
@@ -14,14 +14,13 @@ Version 2022-03-01
 
 ## Compliance Modules
 * [APR Calculation & Verification](module-apr.md)
-<!--
 * [High Cost Mortgage (HCM)](module-hcm.md)
 * [Higher Priced Mortgage Loans (HPML)](module-hpml.md)
--->
 
 ## Appendices
 * [Calculation Notes](appendix-calcnotes.md)
 * [Countries](appendix-countries.md)
+* [History](appendix-history.md)
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |

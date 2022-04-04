@@ -5,7 +5,7 @@
 >  government when it deserves it."  
 >                           --- Mark Twain
 
-This chapter provides a list of countries supported by the SCE, along
+This appendix provides a list of countries supported by the SCE, along
 with their associated two character and three digit codes, as well as
 the default number of decimal places allowed for currency values.
 
@@ -27,3 +27,7 @@ the default number of decimal places allowed for currency values.
 | Ukraine | UA | 804 | 2 |
 | United Kingdom | GB | 826 | 2 |
 | United States of America | US | 840 | 2 |
+
+| ⬅️ Back | ⬆️ Up | Forward ➡️ |
+| :--- | :---: | ---: |
+| [Calculation Notes](appendix-calcnotes.md) | [SCEJSON Reference Manual](README.md) | [History](appendix-history.md) |

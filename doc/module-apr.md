@@ -45,7 +45,8 @@ of $10,000, and 36 monthly payments of $322.67.
 }
 ```
 
-The `Data` object in the Apr module request is defined below:
+The fields of the `Data` object supported by a Apr module request are defined
+in alphabetical order below:
 
 ### 🟦 ActuarialOpts
 
@@ -1647,4 +1648,4 @@ This field is only present when the APR method is US Rule.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Loan Module](module-loan.md) | [SCEJSON Reference Manual](README.md) | |
+| [Loan Module](module-loan.md) | [SCEJSON Reference Manual](README.md) | [High Cost Mortgages Module](module-hcm.md) |

@@ -35,7 +35,7 @@ above. Similar to the APOR files, this file will be updated automatically for
 your use if you are using a version of the SCE which is hosted by J. L. Sherman
 and Associates, Inc.
 
-## Hcm Data Object Field Definition
+## Hcm Request Data Object Field Definition
 
 **Example - Request Envelope for Hcm Module**
 

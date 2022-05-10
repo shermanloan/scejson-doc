@@ -18,7 +18,7 @@ fourth. Instead of creating four different request and response JSON interfaces,
 only one request format and one response format are used, each of which is
 detailed below.
 
-## Cd Data Object Field Definition
+## Cd Request Data Object Field Definition
 
 **Example - Request Envelope for Cd Module**
 

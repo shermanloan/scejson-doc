@@ -12,6 +12,8 @@ changes which may or may not be of interest to you.
 ## Release 2022-07-0
 * The [Certificates of Deposit](module-cd.md) module has been made available in
   this release.
+* The [Individual Retirement Accounts](module-ira.md) module has been made
+  available in this release.
 
 
 ## Release 2022-04-0

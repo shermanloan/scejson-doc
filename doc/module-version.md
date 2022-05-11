@@ -21,11 +21,11 @@ can also be of critical importance, so let us tackle it now.
 }
 ```
 
-The `Data` object in the version module request should be empty (e.g `{}`) but present.
+The `Data` object in the Version module request should be empty (e.g `{}`) but present.
 
 ## Version Response Data Object Field Definition
 
-**Example - Response Envelope for Version Module** *(hosted on AWS)*
+**Example - Response Envelope for Version Module**
 
 ```json
 {
@@ -44,7 +44,7 @@ The `Data` object in the version module request should be empty (e.g `{}`) but p
 }
 ```
 
-The `Data` object for a response from the version module is defined below:
+The `Data` object for a response from the Version module is defined below:
 
 ### 🟥 Errors
 
@@ -79,7 +79,7 @@ help to isolate a field name spelling error in the calling application's code). 
 field names which start with "//" will bre treated as comment fields by the SCEJSON, and
 no warnings will be generated for these unrecognized fields.
 
-**Example - Request and response illustrating warnings when passing unrecognized fields** *(hosted on AWS)*
+**Example - Request and response illustrating warnings when passing unrecognized fields**
 ```json
 {
   "Module" : "Version",

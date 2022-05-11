@@ -19,6 +19,7 @@ Release 2022-07-0
 
 ## Savings Calculation Modules
 * [Certificates of Deposit](module-cd.md)
+* [Individual Retirement Accounts](module-ira.md)
 
 ## Appendices
 * [Calculation Notes](appendix-calcnotes.md)

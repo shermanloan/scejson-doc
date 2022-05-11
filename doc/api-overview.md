@@ -67,7 +67,7 @@ Once the request envelope has been successfully sent to the SCEJSON, the SCEJSON
 
 The response envelope is simply a JSON object which identifies the numeric `Result` of the call to the SCEJSON, a response `Module`, along with a `Data` object that contains the response module specific data fields. The response `Data` object for each module is thoroughly documented in the chapter dedicated to that module.
 
-**Example - Response Envelope for Version Module** *(hosted on AWS)*
+**Example - Response Envelope for Version Module**
 
 ```json
 {

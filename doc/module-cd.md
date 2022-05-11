@@ -22,7 +22,7 @@ detailed below.
 
 **Example - Request Envelope for Cd Module**
 
-The following is a sample SCE request for a Hpml calculation:
+The following is a sample SCE request for a Cd calculation:
 
 ```json
 {
@@ -84,7 +84,7 @@ single payment note using a simple interest accrual method).
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | n/a |
+| String | no | number - currency | n/a |
 
 The future value is the amount that the CD is worth at the end of it's
 term. The future value is equal to the present value plus all interest
@@ -95,7 +95,7 @@ accrued during the CD's term. If you are computing the future value
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | n/a |
+| String | no | number - currency | n/a |
 
 The present value is the amount which is deposited in the CD on the given
 deposit date. Interest accrues on this initial amount, much like interest
@@ -106,7 +106,7 @@ present value (e.g. `"CalcType" : "PV"`), then you may omit this field.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | n/a |
+| String | no | number - % | n/a |
 
 This field dictates the rate at which interest accrues throughout the
 term of the CD. If you are computing the interest rate (e.g. 
@@ -153,7 +153,7 @@ options are: Years, Months, and Days.
 The following example is the response returned from the SCEJSON for the request
 provided at the beginning of the previous section.
 
-**Example - Response Envelope for Cd Module** *(hosted on AWS)*
+**Example - Response Envelope for Cd Module**
 
 ```json
 {
@@ -210,7 +210,7 @@ help to isolate a field name spelling error in the calling application's code). 
 field names which start with "//" will bre treated as comment fields by the SCEJSON, and
 no warnings will be generated for these unrecognized fields.
 
-**Example - Request and response illustrating warnings when passing unrecognized fields** *(hosted on AWS)*
+**Example - Request and response illustrating warnings when passing unrecognized fields**
 
 ```json
 {
@@ -239,7 +239,8 @@ no warnings will be generated for these unrecognized fields.
       "Request field Data.How (String) not recognized."
     ]
   }
-}```
+}
+```
 
 ### 🟥 PV
 
@@ -314,4 +315,4 @@ is other than annual, the APY will differ from the interest rate.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Higher Priced Mortgage Loans (HPML)](module-hpml.md) | [SCEJSON Reference Manual](README.md) | [Calculation Notes](appendix-calcnotes.md) |
+| [Higher Priced Mortgage Loans (HPML)](module-hpml.md) | [SCEJSON Reference Manual](README.md) | [Individual Retirement Accounts](module-ira.md) |

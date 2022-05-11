@@ -143,7 +143,7 @@ term of the adjustable rate loan.
 The following example is the response returned from the SCEJSON for the request
 provided at the beginning of the previous section.
 
-**Example - Response Envelope for Hpml Module** *(hosted on AWS)*
+**Example - Response Envelope for Hpml Module**
 
 ```json
 {
@@ -195,7 +195,7 @@ help to isolate a field name spelling error in the calling application's code). 
 field names which start with "//" will bre treated as comment fields by the SCEJSON, and
 no warnings will be generated for these unrecognized fields.
 
-**Example - Request and response illustrating warnings when passing unrecognized fields** *(hosted on AWS)*
+**Example - Request and response illustrating warnings when passing unrecognized fields**
 
 ```json
 {

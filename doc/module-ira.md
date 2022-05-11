@@ -59,7 +59,7 @@ like interest accrues on the principal balance of a loan.
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | FV, Deposit | FV |
 
-This field informs the SCE which of the IRA calculations is to be performed.
+This field informs the SCE which of the two IRA calculations is to be performed.
 
 In the sample above, the calculation type being requested is `FV`, which directs
 the SCE to compute the *future value* of the IRA. Thus, the periodic deposit
@@ -95,7 +95,7 @@ account. The periodicity of the deposit is dictated by the `DepositFrequency`
 field, detailed below.
 
 If you are computing the periodic deposit amount necessary to generate a
-specified future value (e.g. `"Calculate" = "FV"'), then omit this field from
+specified future value (e.g. `"Calculate" : "FV"'), then omit this field from
 the request.
 
 ### 🟦 DepositFreq
@@ -146,7 +146,7 @@ be allowed to grow.
 The future value is the balance of the IRA account at the borrower's specified
 retirement age. The future value is equal to the present value plus all periodic
 deposits plus all interest accrued during the IRA's term. If you are computing
-the future value (e.g. `"Calculate" = "FV"`), then you may omit this field.
+the future value (e.g. `"Calculate" : "FV"`), then you may omit this field.
 
 ## Ira Response Data Object Field Definition
 
@@ -344,4 +344,4 @@ is other than annual, the APY will differ from the interest rate.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Certificates of Deposit](module-cd.md) | [SCEJSON Reference Manual](README.md) | [Calculation Notes](appendix-calcnotes.md) |
+| [Certificates of Deposit](module-cd.md) | [SCEJSON Reference Manual](README.md) | [Retirement Annuities](module-annuity.md) |

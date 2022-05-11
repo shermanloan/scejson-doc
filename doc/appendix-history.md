@@ -14,6 +14,8 @@ changes which may or may not be of interest to you.
   this release.
 * The [Individual Retirement Accounts](module-ira.md) module has been made
   available in this release.
+* The [Retirement Annuities](module-annuity.md) module has been made
+  available in this release.
 
 
 ## Release 2022-04-0

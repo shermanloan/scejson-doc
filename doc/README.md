@@ -18,6 +18,7 @@ Release 2022-07-0
 * [Higher Priced Mortgage Loans (HPML)](module-hpml.md)
 
 ## Savings Calculation Modules
+* [APY Calculation](module-apy.md)
 * [Certificates of Deposit](module-cd.md)
 * [Individual Retirement Accounts](module-ira.md)
 * [Retirement Annuities](module-annuity.md)

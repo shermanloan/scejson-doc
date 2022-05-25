@@ -315,4 +315,4 @@ is other than annual, the APY will differ from the interest rate.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Higher Priced Mortgage Loans (HPML)](module-hpml.md) | [SCEJSON Reference Manual](README.md) | [Individual Retirement Accounts](module-ira.md) |
+| [APY Calculation](module-apy.md) | [SCEJSON Reference Manual](README.md) | [Individual Retirement Accounts](module-ira.md) |

@@ -10,6 +10,8 @@ chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
 ## Release 2022-07-0
+* The [APY Calculation](module-apy.md) module has been made available in this
+  release.
 * The [Certificates of Deposit](module-cd.md) module has been made available in
   this release.
 * The [Individual Retirement Accounts](module-ira.md) module has been made

@@ -281,4 +281,4 @@ example, if the lock in date was 2009-12-22, then the date returned should be
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [High Cost Mortgages](module-hcm.md) | [SCEJSON Reference Manual](README.md) | [Certificates of Deposit](module-cd.md) |
+| [High Cost Mortgages](module-hcm.md) | [SCEJSON Reference Manual](README.md) | [APY Calculation](module-apy.md) |

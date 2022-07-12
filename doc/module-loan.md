@@ -2018,6 +2018,13 @@ starting date for the payment stream in question. As an example, if the payment
 stream should begin on Feb. 1, 2021, then the field should be specified as
 `"Date" : "2021-02-01"`.
 
+For payment frequencies that are monthly multiples, the day number specified
+in this field specifies the desired day number of all future payments, if
+this day number does not exceed the number of days in the computed month.
+As an example, if the first payment is scheduled to be made in February of
+2022 and the desired day for all payments is the 30th, then the field
+would be specified as `"Date" : "2022-02-30"`.
+
 However, to provide power and flexibility to the calling application, the SCE
 will also understand `Date` values in the following formats:
 
@@ -2563,7 +2570,7 @@ of the loan will be disclosed in the response as a field of the
 The following example is the response returned from the SCEJSON for the request
 provided at the beginning of the previous section.
 
-**Example - Response Envelope for Loan Module** *(hosted on AWS)*
+**Example - Response Envelope for Loan Module**
 
 ```json
 {
@@ -2655,7 +2662,7 @@ help to isolate a field name spelling error in the calling application's code). 
 field names which start with "//" will bre treated as comment fields by the SCEJSON, and
 no warnings will be generated for these unrecognized fields.
 
-**Example - Request and response illustrating warnings when passing unrecognized fields** *(hosted on AWS)*
+**Example - Request and response illustrating warnings when passing unrecognized fields**
 
 ```json
 {

@@ -19,7 +19,7 @@ the range of dates provided in the APOR files. If you are using a version of the
 SCE that is hosted by J. L. Sherman and Associates, Inc., then the APOR files
 will be automatically updated weekly for your use.
 
-## Hpml Data Object Field Definition
+## Hpml Request Data Object Field Definition
 
 **Example - Request Envelope for Hpml Module**
 
@@ -143,7 +143,7 @@ term of the adjustable rate loan.
 The following example is the response returned from the SCEJSON for the request
 provided at the beginning of the previous section.
 
-**Example - Response Envelope for Hpml Module** *(hosted on AWS)*
+**Example - Response Envelope for Hpml Module**
 
 ```json
 {
@@ -195,7 +195,7 @@ help to isolate a field name spelling error in the calling application's code). 
 field names which start with "//" will bre treated as comment fields by the SCEJSON, and
 no warnings will be generated for these unrecognized fields.
 
-**Example - Request and response illustrating warnings when passing unrecognized fields** *(hosted on AWS)*
+**Example - Request and response illustrating warnings when passing unrecognized fields**
 
 ```json
 {
@@ -281,4 +281,4 @@ example, if the lock in date was 2009-12-22, then the date returned should be
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [High Cost Mortgages](module-hcm.md) | [SCEJSON Reference Manual](README.md) | [Calculation Notes](appendix-calcnotes.md) |
+| [High Cost Mortgages](module-hcm.md) | [SCEJSON Reference Manual](README.md) | [APY Calculation](module-apy.md) |

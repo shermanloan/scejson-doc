@@ -1,0 +1,10 @@
+{
+  "Module": "Apy",
+  "Data": {
+    "Compounding": "Annual",
+    "Decimals": "4",
+    "Statement": "Monthly",
+    "Principal": "1000.00",
+    "Interest": "4.11"
+  }
+}

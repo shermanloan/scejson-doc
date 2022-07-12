@@ -1,0 +1,12 @@
+{
+  "Module": "Apy",
+  "Data": {
+    "Compounding": "Daily",
+    "Decimals": "4",
+    "Statement": "Monthly",
+    "Principal": "1000.00",
+    "Interest": "61.68",
+    "InvestDate": "2014-04-16",
+    "MaturityDate": "2015-04-16"
+  }
+}

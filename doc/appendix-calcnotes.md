@@ -73,4 +73,4 @@ will be further described in the list below:
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Higher Priced Mortgage Loans (HPML)](module-hpml.md) | [SCEJSON Reference Manual](README.md) | [Countries](appendix-countries.md) |
+| [Retirement Annuities](module-annuity.md) | [SCEJSON Reference Manual](README.md) | [Countries](appendix-countries.md) |

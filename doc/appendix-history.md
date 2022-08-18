@@ -9,6 +9,10 @@ in a reverse chronological order, grouped by release. By referencing this
 chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
+## Release 2022-10-0
+* The [Single Payment Notes](module-singlepmt.md) module has been made available
+  in this release.
+
 ## Release 2022-07-0
 * The [APY Calculation](module-apy.md) module has been made available in this
   release.

@@ -329,18 +329,6 @@ name your fees accordingly.
 
 </details>
 
----
-
-### 🟥 LoanDate
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | yes | YYYY-MM-DD | n/a |
-
-This field holds the date on which the loan amount is disbursed and interest
-begins to accrue. All dates must be in the form of YYYY-MM-DD, and be 10
-characters long.
-
 ### 🟥 IntRate
 
 | Type  | Required | Values | Default |
@@ -365,6 +353,18 @@ date is set equal the loan date. Also note that the interest start date
 
 The interest start date (when specified) must be on or after the loan date,
 as well as on or before the first payment date.
+
+---
+
+### 🟥 LoanDate
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | YYYY-MM-DD | n/a |
+
+This field holds the date on which the loan amount is disbursed and interest
+begins to accrue. All dates must be in the form of YYYY-MM-DD, and be 10
+characters long.
 
 ### 🟥 PmtDate
 

@@ -117,9 +117,9 @@ If this field is set to a value of `true`, then the SCE will compute the
 Military APR in addition to the Regulation Z APR. The `MAPR` object will be
 included in the loan response.
 
-</details>
-
 ---
+
+</details>
 
 ### 🟦 Country
 
@@ -327,19 +327,9 @@ of the fee in any manner. However, the value of this field *will* be used to
 identify the fee in the response, and hence it is highly recommended that you
 name your fees accordingly.
 
-</details>
-
 ---
 
-### 🟥 LoanDate
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | yes | YYYY-MM-DD | n/a |
-
-This field holds the date on which the loan amount is disbursed and interest
-begins to accrue. All dates must be in the form of YYYY-MM-DD, and be 10
-characters long.
+</details>
 
 ### 🟥 IntRate
 
@@ -363,6 +353,16 @@ date is set equal the loan date.
 
 The interest start date (when specified) must be on or after the loan date,
 as well as on or before the first payment date.
+
+### 🟥 LoanDate
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | YYYY-MM-DD | n/a |
+
+This field holds the date on which the loan amount is disbursed and interest
+begins to accrue. All dates must be in the form of YYYY-MM-DD, and be 10
+characters long.
 
 ### 🟥 PmtDate
 
@@ -666,9 +666,9 @@ terms, coverage amounts, ages, etc.) returned for each product offered, set the
 value of this field to `true`. Otherwise, omit this field or set it to `false`.
 See the `Caps` objectt defined in the response section for more information.
 
-</details>
-
 ---
+
+</details>
 
 ### 🟦 ServiceCharges
 
@@ -765,9 +765,9 @@ This field is only considered when the service charge is of type
 `LumpSum`. It determines how the calculated periodic amount
 is rounded.
 
-</details>
-
 ---
+
+</details>
 
 ### 🟦 Settings
 
@@ -905,9 +905,9 @@ Note that this field is supported for equal payment loans, balloon payment
 loans, single payment notes, interest only loans, fixed principal plus interest
 loans, skips, pickups and irregulars, and ARMs.
 
-</details>
-
 ---
+
+</details>
 
 ### 🟦 TotalDown
 
@@ -1109,9 +1109,9 @@ the loan request.
 
 The computed payment for the requested equal payment loan.
 
-</details>
-
 ---
+
+</details>
 
 ### 🟦 FedBox
 
@@ -1310,9 +1310,9 @@ would be:
 
 </details>
 
-</details>
-
 ---
+
+</details>
 
 ### 🟦 TILARESPA2015
 
@@ -1719,9 +1719,9 @@ values by the estimated escrow amounts if any are present.
 
 </details>
 
-</details>
-
 ---
+
+</details>
 
 ### 🟦 Moneys
 
@@ -2014,6 +2014,10 @@ Discloses the computed service charge amount.
 
 </details>
 
+---
+
+</details>
+
 ### 🟦 Accrual
 
 | Type  | Required |
@@ -2075,9 +2079,9 @@ Holds the maturity date of the loan, which is the date on which the last
 payment is scheduled. All dates are in the form of YYYY-MM-DD, and must
 be 10 characters long.
 
-</details>
-
 ---
+
+</details>
 
 ### 🟦 PmtStreams[]
 
@@ -2164,9 +2168,9 @@ This field identifies the date on which the first payment for this given payment
 stream is scheduled to be made. All dates are in the form of `YYYY-MM-DD`, and
 must be 10 characters long.
 
-</details>
-
 ---
+
+</details>
 
 ### 🟦 Protection
 
@@ -3547,8 +3551,6 @@ returned.
 
 </details>
 
-</details>
-
 ---
 
 </details>
@@ -3962,9 +3964,9 @@ The principal balance amount, after the amortization event has taken place.
 
 </details>
 
-</details>
-
 ---
+
+</details>
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |

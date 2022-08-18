@@ -69,8 +69,6 @@ If you are computing the Military APR (see `UseMAPR` below) and wish to override
 the default maximum APR value of 36%, then specify the desired maximum as the
 value of this field.
 
----
-
 🟦 **Apr.Method**
 
 | Type  | Required | Values | Default |
@@ -104,8 +102,6 @@ If this field is not specified and the `Country` field is not
 specified, then the value of `default` will be used which informs the
 SCE to use the APR method defined in the setup file for the specified
 `Account`.
-
----
 
 🟦 **Apr.UseMAPR**
 
@@ -159,8 +155,6 @@ If this fee should be included in the computed Finance Charge (and hence, affect
 the APR), then set this field to `true`. The default value of `false` indicates
 that the fee does not affect the Finance Charge nor APR.
 
----
-
 🟦 **Fee.AddToPrin**
 
 | Type  | Required | Values | Default |
@@ -170,8 +164,6 @@ that the fee does not affect the Finance Charge nor APR.
 If this fee should be added to the principal balance (e.g. the fee is financed
 along with the advance(s)), then set this field to `true`. If set to `false`,
 then the fee is paid up front out of the borrower's pocket.
-
----
 
 🟦 **Fee.Adjust**
 
@@ -207,8 +199,6 @@ this in the SCE is as follows:
 }
 ```
 
----
-
 🟦 **Fee.CalcType**
 
 | Type  | Required | Values | Default |
@@ -230,8 +220,6 @@ This field specifies how the fee is to be computed, as described in the followin
 | OddDaysUnit365 & Compute a prepaid interest charge on the odd days, using a unit period calendar with 365 day divisor. For this calculation type, the `Entry` attribute is ignored. You *must* set the `AddToFinChg` attribute to true, otherwise the fee will return a value of zero.|
 | OddDaysVarDPY | Compute a prepaid interest charge on the odd days, using a unit period calendar with a divisor equal to 12 multiplied by the number of days in the month of the date on which interest begins to accrue. For this calculation type, the `Entry` attribute is ignored. You *must* set the `AddToFinChg` attribute to true, otherwise the fee will return a value of zero. |
 
----
-
 🟦 **Fee.Entry**
 
 | Type  | Required | Values | Default |
@@ -240,8 +228,6 @@ This field specifies how the fee is to be computed, as described in the followin
 
 How this field is interpreted depends upon the `Fee.CalcType` field.
 Please see the documentation for this field for further information.
-
----
 
 🟦 **Fee.IsLoanCost***
 
@@ -263,8 +249,6 @@ of [`OddDays360`, `OddDays365`, `OddDaysActAct`, `OddDaysUnit360`,
 considered as part of the interest charge as far as the "In 5 Years" and "Total
 Interest Percentage" calculations are concerned.
 
----
-
 🟦 **Fee.MAPR***
 
 | Type  | Required | Values | Default |
@@ -282,8 +266,6 @@ Note that debt protection products are automatically included in the calculation
 of the Military APR, no matter what method is used for payment (e.g. single
 premium vs. monthly outstanding balance).
 
----
-
 🟦 **Fee.Max**
 
 | Type  | Required | Values | Default |
@@ -298,8 +280,6 @@ types supported. Also, note that a specified maximum value is checked *after*
 enforcing a specified minimum value, and hence a specified maximum value trumps
 a specified minimum.
 
----
-
 🟦 **Fee.Min**
 
 | Type  | Required | Values | Default |
@@ -313,8 +293,6 @@ then no minimum will be enforced. Please note that this field is applied to
 *all* fee types supported. Also, note that a specified minimum value is checked
 *before* enforcing a specified maximum value, and hence a specified maximum
 value trumps a specified minimum.
-
----
 
 🟦 **Fee.Name**
 
@@ -414,8 +392,6 @@ in the form of YYYY-MM-DD, and be 10 characters long. Hence, a birthday of April
 element *must* be set if the `Covers` attribute of any of the four payment
 protection objects is set to `borrower2` or `both`.
 
----
-
 🟦 **Protection.Birthday2**
 
 | Type  | Required | Values | Default |
@@ -427,8 +403,6 @@ in the form of YYYY-MM-DD, and be 10 characters long. Hence, a birthday of April
 9, 1972 would be specified as `"Birthday1" : "1972-04-09"`. Note that this
 element *must* be set if the `Covers` attribute of any of the four payment
 protection objects is set to `borrower1` or `both`.
-
----
 
 🟦 **Protection.Disability**
 
@@ -456,8 +430,6 @@ amount allowed will be used in the loan calculation. Note that if the specified
 account has not been set up to allow for user-specified benefit amounts for the
 product in question, then this attribute will be ignored.
 
----
-
 🟦 **Disability.Covers**
 
 | Type  | Required | Values | Default |
@@ -471,8 +443,6 @@ objects described above). A request for joint coverage on both borrowers is
 indicated by a value of `both`. Finally, if no coverage is desired, simple omit
 the `Disability` object altogether or specify a value of `none`.
 
----
-
 🟦 **Disability.CovTerm**
 
 | Type  | Required | Values | Default |
@@ -485,8 +455,6 @@ loan will be covered for the maximum term allowed. Note that if the specified
 account has not been set up to allow for user specified coverage terms for this
 product, then this field will be ignored.
 
----
-
 🟦 **Disability.Table**
 
 | Type  | Required | Values | Default |
@@ -498,9 +466,9 @@ or debt cancellation plans, then this field determines which
 plan number will be used. If no table number is specified, the
 first table (table zero) will be used.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Protection.Financed**
 
@@ -514,8 +482,6 @@ is the default value if not specified). A value of `false` indicates that the
 computed premiums will not be financed with the proceeds, and hence will be paid
 out of pocket by the borrower. *Note that this applies to single premium
 insurance products only!*
-
----
 
 🟦 **Protection.Life**
 
@@ -543,8 +509,6 @@ amount allowed will be used in the loan calculation. Note that if the specified
 account has not been set up to allow for user specified coverage amounts for the
 product in question, then this attribute will be ignored.
 
----
-
 🟦 **Life.Covers**
 
 | Type  | Required | Values | Default |
@@ -558,8 +522,6 @@ objects described above). A request for joint coverage on both borrowers is
 indicated by a value of `both`. Finally, if no coverage is desired, simple omit
 the `Life` object altogether or specify a value of `none`.
 
----
-
 🟦 **Life.CovTerm**
 
 | Type  | Required | Values | Default |
@@ -572,8 +534,6 @@ loan will be covered for the maximum term allowed. Note that if the specified
 account has not been set up to allow for user specified coverage terms for this
 product, then this field will be ignored.
 
----
-
 🟦 **Life.Dismemberment**
 
 | Type  | Required | Values | Default |
@@ -584,8 +544,6 @@ If the account specified has been set up to offer life protection products with
 optional dismemberment coverage, and if the optional dismemberment coverage is
 desired, then set this field's value to `true`. Otherwise, use the default value
 of `false`.
-
----
 
 🟦 **Life.Method**
 
@@ -598,8 +556,6 @@ Some accounts are configured to offer different types of credit life products
 application to specify which method to use for a given loan. If no method is
 present in the request, then the default method will be used.
 
----
-
 🟦 **Life.UseLevelRates**
 
 | Type  | Required | Values | Default |
@@ -611,9 +567,9 @@ using level rates instead of the normal decreasing rates, and if you wish to use
 level rates instead of decreasing, then set this field's value to `true`.
 Otherwise, use the default value of `false`.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Protection.LineOfCredit**
 
@@ -624,8 +580,6 @@ Otherwise, use the default value of `false`.
 If this is an account using CUNA Mutual's MOB insurance, and if this loan is a
 line of credit where product term caps should be ignored, then set this field to
 `true`. Otherwise, omit this field or set it to `false`.
-
----
 
 🟦 **Protection.Mandatory**
 
@@ -640,8 +594,6 @@ included as a part of the Finance Charge, and hence affect the disclosed APR.
 If the `Mandatory` field is set to `false`, then the loan will treat any
 premiums / fees as normal.
 
----
-
 🟦 **Protection.ShowBorrowerInfo**
 
 | Type  | Required | Values | Default |
@@ -652,8 +604,6 @@ If the calling application would like to have data returned for each specified
 borrower instead of a single `Term` object, then set the value of this field to
 `true`. Otherwise, omit this field or set it to `false`. See the `Borrower` and
 `Term` objects defined in the response section for more information.
-
----
 
 🟦 **Protection.ShowCaps**
 
@@ -695,8 +645,6 @@ specify an amount that will be spread out evenly over the loan's payment
 stream. On the other hand, a `Periodic` service charge is the amount
 which will be added to each payment.
 
----
-
 🟥 **ServiceCharge.Entry**
 
 | Type  | Required | Values | Default |
@@ -706,8 +654,6 @@ which will be added to each payment.
 How this field is interpreted depends upon the `ServiceCharge.CalcType` field.
 It is the numeric amount defining either the lump sum or periodically paid
 service charge.
-
----
 
 🟦 **ServiceCharge.Exact**
 
@@ -725,8 +671,6 @@ be adjusted so that the sum of all periodic amounts is exactly equal to the
 entered amount (and will result in an odd final payment). A value of `false`
 indicates that the final periodic amount will not be adjusted.
 
----
-
 🟦 **ServiceCharge.IsLoanCost***
 
 | Type  | Required | Values | Default |
@@ -740,8 +684,6 @@ third party, then the fee does not affect the loan calculation and should not be
 sent to the SCEX. If it is sent, then the value of this attribute should be set
 to false.
 
----
-
 🟦 **ServiceCharge.Name**
 
 | Type  | Required | Values | Default |
@@ -752,8 +694,6 @@ This field is for convenience purposes only, and does not affect the calculation
 of the service charge in any manner. However, the value of this field *will* be
 used to identify the fee in the response, and hence it is highly recommended
 that you name your fees accordingly.
-
----
 
 🟦 **ServiceCharge.Round**
 
@@ -794,8 +734,6 @@ and each account corresponds to a set of setup file which define numerous
 settings which may affect the loan calculation, such as the accrual method,
 insurance methods / rates / caps, etc.
 
----
-
 🟦 **Settings.AccrualCode**
 
 | Type  | Required | Values | Default |
@@ -815,8 +753,6 @@ in the setup file for the specified `Account`.
 | 230, 330 | Actual/Actual Simple |
 | 231, 331 | Midnight 366 Simple |
 | 240, 241 | Actual/365.25 Simple |
-
----
 
 🟦 **Settings.DataPath**
 
@@ -843,8 +779,6 @@ but have many different setup file groupings. By specifying a different
 `DataPath` for each grouping, you can easily separate the groups from one
 another instead of grouping them all together in a single directory.
 
----
-
 🟦 **Settings.PmtDollarRound**
 
 | Type  | Required | Values | Default |
@@ -861,8 +795,6 @@ proceeds), rounding the payment up or to the nearest dollar may require a
 shortened loan term to prevent one or more negative payments at the end of the
 loan.
 
----
-
 🟦 **Settings.PmtRound**
 
 | Type  | Required | Values | Default |
@@ -875,8 +807,6 @@ amortization. If two payments result in the same minimal error magnitude, the
 smaller payment is chosen. `default` means that the setting should be configured
 as specified in the setup file.
 
----
-
 🟦 **Settings.ShowAmTable**
 
 | Type  | Required | Values | Default |
@@ -886,8 +816,6 @@ as specified in the setup file.
 To supress the entire amortization schedule from the response, set value of this
 field to `false`; otherwise, the amortization schedule will be returned with the
 response.
-
----
 
 🟦 **Settings.TILARESPA2015**
 
@@ -1085,8 +1013,6 @@ associated with the specified code. Please see the [Countries
 Appendix](appendix-countries.md) for the list of supported countries and their
 associated codes.
 
----
-
 ### 🟦 Results
 
 | Type  | Required |
@@ -1138,8 +1064,6 @@ request.
 The Regulation Z Amount Financed, which is defined as the amount of credit
 provided to the borrower or on their behalf.
 
----
-
 🟥 **FedBox.FinChg**
 
 | Type  | Required | Values |
@@ -1148,8 +1072,6 @@ provided to the borrower or on their behalf.
 
 This element contains the Regulation Z Finance Charge, described as the dollar
 amount the credit extension will cost the borrower.
-
----
 
 🟥 **FedBox.TotPmts**
 
@@ -1160,8 +1082,6 @@ amount the credit extension will cost the borrower.
 The amount which the borrower will have paid when the borrower has made all
 scheduled payments.
 
----
-
 🟦 **FedBox.TotalSalePrice**
 
 | Type  | Required |
@@ -1171,8 +1091,6 @@ scheduled payments.
 The sum of the total of payments plus the total down payment. Please note that
 if no `TotalDown` field was included in the request, then this element will not
 be present.
-
----
 
 🟥 **FedBox.APR**
 
@@ -1196,8 +1114,6 @@ The `APR` object contains fields which return the value and APR method used.
 The computed APR, which is the cost of the extension of credit expressed as a
 yearly rate.
 
----
-
 🟥 **APR.Method**
 
 | Type  | Required | Values |
@@ -1205,8 +1121,6 @@ yearly rate.
 | String | yes | string |
 
 This field returns the APR method used to compute the reported APR.
-
----
 
 🟦 **APR.Max**
 
@@ -1217,8 +1131,6 @@ This field returns the APR method used to compute the reported APR.
 This field returns the maximum APR as configured in the account's setup files.
 If no maximum APR has been specified, then this field will not be present in the
 response. The value of this field should be displayed as a percentage.
-
----
 
 🟦 **APR.MaxExceeded**
 
@@ -1231,9 +1143,9 @@ this field indicates whether or not the current loan exceeds the maximum APR. If
 no maximum APR has been specified, then this field will not be present in the
 response.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **FedBox.MAPR**
 
@@ -1257,8 +1169,6 @@ value of the `Apr.UseMAPR` request field is `true`.
 
 The computed military APR.
 
----
-
 🟥 **MAPR.Advance**
 
 | Type  | Required | Values |
@@ -1268,8 +1178,6 @@ The computed military APR.
 This field returns the equivalent of the Amount Financed for the Military APR.
 Specifically, it is the principal balance less any MAPR fees, debt protection,
 etc.
-
----
 
 🟥 **MAPR.Max**
 
@@ -1282,8 +1190,6 @@ input XML (see `Apr.MAPR_Max`). If not specified, a default value
 of 36% is assumed. The value of this field should be displayed
 as a percentage. As an example, for `"Max" : "36.000"`, you would
 disclose a maximum Military APR of 36%.
-
----
 
 🟥 **MAPR.MaxExceeded**
 
@@ -1355,8 +1261,6 @@ fee types, as explained in the previous documentation of the `Fee` and
 If a name was provided for the fee, then it will be included here in the
 disclosure for identification purposes.
 
----
-
 🟦 **LoanCost.In5Years**
 
 | Type  | Required | Values |
@@ -1368,8 +1272,6 @@ first five years (for example, a service charge), then this attribute will be
 present and disclose the portion of this loan coast that is accrued during the
 first five years.
 
----
-
 🟥 **LoanCost.Value**
 
 | Type  | Required | Values |
@@ -1379,9 +1281,9 @@ first five years.
 The value of this field is the numerical value of the fee, rounded to the
 nearest dollar.
 
-</details>
-
 ---
+
+</details>
 
 🟥 **TILARESPA2015.TotalLoanCost**
 
@@ -1393,8 +1295,6 @@ The value of this field is the sum of all borrower paid loan costs. Since all
 `LoanCost` values are rounded dollar amounts, the value of this element will
 also be a rounded dollar amount.
 
----
-
 🟥 **TILARESPA2015.CD_TotPmts**
 
 | Type  | Required | Values |
@@ -1404,8 +1304,6 @@ also be a rounded dollar amount.
 This field returns the sum of the total of payments and all borrower paid loan
 costs. This value should be disclosed on the Closing Disclosure form in the
 Total of Payments field.
-
----
 
 🟥 **TILARESPA2015.In5Years**
 
@@ -1432,8 +1330,6 @@ borrower paid loan costs scheduled to be paid through the end of the 60th month
 after the due date of the first periodic payment". Note that this value is
 rounded to the nearest whole dollar.
 
----
-
 🟥 **In5Years.PaidPrincipal**
 
 | Type  | Required | Values |
@@ -1444,9 +1340,9 @@ This attribute holds "the principal scheduled to be paid through the end of the
 60th month after the due date of the first periodic payment". Note that this
 value is rounded to the nearest whole dollar.
 
-</details>
-
 ---
+
+</details>
 
 🟥 **TILARESPA2015.TIP**
 
@@ -1456,8 +1352,6 @@ value is rounded to the nearest whole dollar.
 
 The total interest percentage, rounded to three or fewer decimal places - as
 required.
-
----
 
 🟥 **TILARESPA2015.MaxPnIPmt**
 
@@ -1484,8 +1378,6 @@ The value of this field returns the date on which the maximum scheduled
 principal and interest payment is made. If the maximum scheduled payment occurs
 more than once, then the date returned is that of the first instance.
 
----
-
 🟥 **MaxPnIPmt.Amount**
 
 | Type  | Required | Values |
@@ -1494,9 +1386,9 @@ more than once, then the date returned is that of the first instance.
 
 The maximum sceduled principal and interest payment during the term of the loan.
 
-</details>
-
 ---
+
+</details>
 
 🟥 **TILARESPA2015.MinRate**
 
@@ -1520,8 +1412,6 @@ interest rate applied during the term of the loan.
 
 The value of the minimum interest rate applied during the term of the loan.
 
----
-
 🟥 **MinRate.Idx**
 
 | Type  | Required | Values |
@@ -1531,9 +1421,9 @@ The value of the minimum interest rate applied during the term of the loan.
 This field returns the payment number for which the minimum rate is
 first applicable.
 
-</details>
-
 ---
+
+</details>
 
 🟥 **TILARESPA2015.MaxRate**
 
@@ -1557,8 +1447,6 @@ interest rate applied during the term of the loan.
 
 The value of the maximum interest rate applied during the term of the loan.
 
----
-
 🟥 **MaxRate.Idx**
 
 | Type  | Required | Values |
@@ -1568,9 +1456,9 @@ The value of the maximum interest rate applied during the term of the loan.
 This field returns the payment number for which the maximum rate is
 first applicable.
 
-</details>
-
 ---
+
+</details>
 
 🟥 **TILARESPA2015.ProjectedPaymentsTable**
 
@@ -1597,8 +1485,6 @@ parameters of the loan.
 The value of this field identifies the number of the column to which the
 following fields apply. The value will be from 1 to 4.
 
----
-
 🟥 **PPCol.Title**
 
 | Type  | Required | Values |
@@ -1609,8 +1495,6 @@ The value of this field is the title for the column. Most of the time, it
 will be in the form of "Years X - Y", or "Year X", or "Final Payment" in
 the case of a final balloon payment.
 
----
-
 🟥 **PPCol.YearStart**
 
 | Type  | Required | Values |
@@ -1618,8 +1502,6 @@ the case of a final balloon payment.
 | String | yes | number |
 
 The beginning year number for which this column data applies.
-
----
 
 🟥 **PPCol.YearEnd**
 
@@ -1629,8 +1511,6 @@ The beginning year number for which this column data applies.
 
 The ending year number for which this column data applies.
 
----
-
 🟥 **PPCol.PnIPmtMin**
 
 | Type  | Required | Values |
@@ -1639,8 +1519,6 @@ The ending year number for which this column data applies.
 
 The minimum principal and interest payment for this column.
 
----
-
 🟥 **PPCol.PnIPmtMax**
 
 | Type  | Required | Values |
@@ -1648,8 +1526,6 @@ The minimum principal and interest payment for this column.
 | String | yes | number - currency |
 
 The maximum principal and interest payment for this column.
-
----
 
 🟥 **PPCol.IntOnly**
 
@@ -1667,8 +1543,6 @@ Note that for the purposes of this attribute, a scheduled payment is considered
 an interest only payment if the payment amount pays off all interest due at the
 time of the payment, with no reduction in the principal balance.
 
----
-
 🟥 **PPCol.Balloon**
 
 | Type  | Required | Values |
@@ -1678,8 +1552,6 @@ time of the payment, with no reduction in the principal balance.
 If any of the payments associated with this column are balloon payments (e.g.
 isolated payments that are more than twice the value of a regular periodic
 payment), then the value of this attribute will be `true`.
-
----
 
 🟥 **PPCol.MIPmt**
 
@@ -1691,8 +1563,6 @@ The value of this field holds the mortgage insurance premium associated with
 this column, rounded to the nearest dollar. If no mortgage insurance is present
 or coverage has been dropped, a value of zero will be present.
 
----
-
 🟥 **PPCol.TotalPmtMin**
 
 | Type  | Required | Values |
@@ -1703,8 +1573,6 @@ This field returns the minimum estimated total payment for this column. Note
 that this value does not include any estimated escrow, as the SCEX does not
 support escrow calculations. The calling application will need to increase these
 values by the estimated escrow amounts if any are present.
-
----
 
 🟥 **PPCol.TotalPmtMax**
 
@@ -1749,8 +1617,6 @@ The principal balance is the amount on which interest is accrued. The
 principal balance consists of all advances requested by the borrower,
 as well as any fees and/or protection products which are financed.
 
----
-
 🟥 **Moneys.Interest**
 
 | Type  | Required | Values |
@@ -1759,8 +1625,6 @@ as well as any fees and/or protection products which are financed.
 
 This value of this field holds the total interest accrued during the term of the
 loan, assuming the borrower will make all scheduled payments.
-
----
 
 🟦 **Moneys.FinFees**
 
@@ -1772,8 +1636,6 @@ This field contains the sum of all fees having `AddToPrin`
 set to `true` and occuring on the date of an advance. If this
 value is zero, the field will not appear in the response.
 
----
-
 🟦 **Moneys.Prepaid**
 
 | Type  | Required | Values |
@@ -1783,8 +1645,6 @@ value is zero, the field will not appear in the response.
 This field represents all prepaid finance charges and contains the sum of all
 fees occurring on an advance and having `AddToFinChg` set to `true`. If this
 value is zero, the field will not be found in the response.
-
----
 
 🟦 **Moneys.PocketFees**
 
@@ -1797,8 +1657,6 @@ added to the finance charge. In essence, they are paid out of the
 borrower's pocket. If no out of pocket fees were requested, then this
 field will not show up in the response.
 
----
-
 🟦 **Moneys.MAPRFees**
 
 | Type  | Required | Values |
@@ -1808,8 +1666,6 @@ field will not show up in the response.
 This field holds the sum of all fees which are Military APR fees (including 
 protection products), and will only appear if the Military APR has been
 requested.
-
----
 
 🟦 **Moneys.Protection**
 
@@ -1836,8 +1692,6 @@ Discloses the total cost of all protection plans included with the
 computed loan. For the individual plan costs, see the
 `Protection` field described below.
 
----
-
 🟥 **Protection.PerPmt**
 
 | Type  | Required | Values |
@@ -1846,8 +1700,6 @@ computed loan. For the individual plan costs, see the
 
 The cost of all loan protection products expressed as dollars per payment.
 
----
-
 🟥 **Protection.PerDay**
 
 | Type  | Required | Values |
@@ -1855,8 +1707,6 @@ The cost of all loan protection products expressed as dollars per payment.
 | String | yes | number - currency |
 
 The cost of all loan protection products expressed as dollars per day.
-
----
 
 🟥 **Protection.Category**
 
@@ -1875,8 +1725,6 @@ protection falls. The categories are described below:
 | TrueMOB     | CUNA Mutual's monthly outstanding balance method. |
 | PaidSP      | Non-financed single premium coverage. |
 
----
-
 🟦 **Protection.IsDP**
 
 | Type  | Required | Values |
@@ -1887,8 +1735,6 @@ This field indicates if the specified account's protection is set up as debt
 protection. If this attribute is not present, then the default value of `false`
 should be used (which indicates that the account's protection is set up as
 insurance instead).
-
----
 
 🟦 **Protection.Mandatory**
 
@@ -1904,9 +1750,9 @@ If the value of the `Mandatory` field is `true`, then the total premium / fee
 amount for all insurance / debt protection products has been treated as a part
 of the Finance Charge, and hence will affect the effective APR.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Moneys.Fees[]**
 
@@ -1935,8 +1781,6 @@ will not be included in the response.
 If a name was provided for the fee, then it will be included here in the
 disclosure for identification purposes.
 
----
-
 🟥 **Fee.Fee**
 
 | Type  | Required | Values |
@@ -1944,8 +1788,6 @@ disclosure for identification purposes.
 | String | yes | number - currency |
 
 Discloses the computed fee amount.
-
----
 
 🟦 **Fee.OddDays**
 
@@ -1958,8 +1800,6 @@ configured to compute the odd days prepaid fee as a number of odd days
 multiplied by a rounded daily amount, then this attribute will be present and
 its value is the number of computed odd days.
 
----
-
 🟦 **Fee.DailyAmt**
 
 | Type  | Required | Values |
@@ -1971,9 +1811,9 @@ configured to compute the odd days prepaid fee as a number of odd days
 multiplied by a rounded daily amount, then this attribute will be present and
 its value is the number of computed odd days.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Moneys.ServiceCharges[]**
 
@@ -2001,8 +1841,6 @@ If there were no service charges requested with the loan, then the
 
 If a name was provided for the service charge, then it will be included here in
 the disclosure for identification purposes.
-
----
 
 🟥 **ServiceCharge.Fee**
 
@@ -2042,8 +1880,6 @@ loan's maturity date.
 The `Method` field contains a textual description of the interest accrual method
 used to compute the loan (e.g. "Unit Period 365 Simple".
 
----
-
 🟥 **Accrual.Days1Pmt**
 
 | Type  | Required | Values |
@@ -2053,8 +1889,6 @@ used to compute the loan (e.g. "Unit Period 365 Simple".
 This field contains the number of days between the date of the first
 advance and the date of first payment, computed by one of two
 methods as specified in by `Accrual.DayCount` (below).
-
----
 
 🟥 **Accrual.DayCount**
 
@@ -2066,8 +1900,6 @@ This field specifies the method used to compute the number of days from the date
 of the first advance until the first payment date. `Actual` means that the
 actual number of days between these two dates are used, whereas the `True360`
 method use a 360 day calendar.
-
----
 
 🟥 **Accrual.Maturity**
 
@@ -2134,8 +1966,6 @@ payment stream.
 The `Term` field holds the number of payments that make up the given payment
 stream.
 
----
-
 🟥 **PmtStream.Pmt**
 
 | Type  | Required | Values |
@@ -2143,8 +1973,6 @@ stream.
 | String | yes | number - currency |
 
 The `Pmt` field holds the computed payment amount for this payment stream.
-
----
 
 🟥 **PmtStream.Rate**
 
@@ -2155,8 +1983,6 @@ The `Pmt` field holds the computed payment amount for this payment stream.
 Contains the interest rate used for the duration of this payment stream. If this
 payment stream accrued interest using split-rate tiers, then this field will
 *not* be returned.
-
----
 
 🟥 **PmtStream.Begin**
 
@@ -2217,8 +2043,6 @@ not computed with the loan, and the value describes why. In this case, there is
 no need to parse through the other fields or child objects, as the product was
 not computed.
 
----
-
 🟥 **Life.Formula**
 
 | Type  | Required | Values |
@@ -2228,8 +2052,6 @@ not computed.
 The `Formula` field contains an abbreviated description of the formula used to
 compute the desired protection product. The formula codes are for the use of the
 J. L. Sherman and Associates, Inc. support team.
-
----
 
 🟥 **Life.RateType**
 
@@ -2249,8 +2071,6 @@ rate used to compute the protection may have changed (in the case of
 coverage for one borrower ending while coverage for the other borrower
 continues). If this is the case, then the field will indicate this
 rate change with a value of `Variable`.
-
----
 
 🟥 **Life.Cost**
 
@@ -2275,8 +2095,6 @@ premiums.
 
 The total cost for this protection over the term of the loan.
 
----
-
 🟥 **Cost.PerPmt**
 
 | Type  | Required | Values |
@@ -2284,8 +2102,6 @@ The total cost for this protection over the term of the loan.
 | String | yes | number - currency |
 
 The cost of coverage expressed as currency per payment.
-
----
 
 🟥 **Cost.PerDay**
 
@@ -2295,8 +2111,6 @@ The cost of coverage expressed as currency per payment.
 
 The cost of coverage expressed as currency per dey.
 
----
-
 🟥 **Cost.Factor**
 
 | Type  | Required | Values |
@@ -2304,8 +2118,6 @@ The cost of coverage expressed as currency per dey.
 | String | yes | number |
 
 The rate factor used to compute the premium for the requested protection product.
-
----
 
 🟦 **Cost.Premium2**
 
@@ -2319,8 +2131,6 @@ coverage. If this is the case, then the `Premium2` field is provided so that the
 calling application can disclose two premiums instead of a single aggregate
 joint premium.
 
----
-
 🟦 **Cost.PerPmt2**
 
 | Type  | Required | Values |
@@ -2329,8 +2139,6 @@ joint premium.
 
 The cost of coverage for the secondary ordinary life borrower, expressed as
 currency per payment. Please see `Cost.Premium2` above for further information.
-
----
 
 🟦 **Cost.PerDay2**
 
@@ -2341,8 +2149,6 @@ currency per payment. Please see `Cost.Premium2` above for further information.
 The cost of coverage for the secondary ordinary life borrower, expressed as
 currency per dey. Please see `Cost.Premium2` above for further information.
 
----
-
 🟦 **Cost.Factor2**
 
 | Type  | Required | Values |
@@ -2352,9 +2158,9 @@ currency per dey. Please see `Cost.Premium2` above for further information.
 The rate factor used to compute the premium for the secondary ordinary life
 borrower. Please see `Cost.Premium2` above for further information.
 
-</details>
-
 ---
+
+</details>
 
 🟥 **Life.Coverage**
 
@@ -2378,8 +2184,6 @@ this object:
 
 The aggregate coverage amount for this protection product.
 
----
-
 🟥 **Coverage.Note**
 
 | Type  | Required | Values |
@@ -2390,9 +2194,9 @@ The `Note` field will describe the type of coverage provided. If full coverage
 has been provided on the aggregate coverage, then the note will contain "Full
 Coverage". Otherwise, the note will describe the type of partial coverage used.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Life.Term**
 
@@ -2418,8 +2222,6 @@ coverage for the requested product. If the input request has specified
 
 Contains the term of coverage expressed as a number of months.
 
----
-
 🟥 **Term.InPmts**
 
 | Type  | Required | Values |
@@ -2428,8 +2230,6 @@ Contains the term of coverage expressed as a number of months.
 
 Contains the number of payments covered.
 
----
-
 🟥 **Term.Maturity**
 
 | Type  | Required | Values |
@@ -2437,8 +2237,6 @@ Contains the number of payments covered.
 | String | yes | YYYY-MM-DD |
 
 This field contains the maturity date for the requested coverage.
-
----
 
 🟥 **Term.Note**
 
@@ -2451,9 +2249,9 @@ full term coverage has been provided, then the note will contain
 "Full Coverage". Otherwise, the note will describe the type of truncated
 coverage used.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Life.Borrower1**
 
@@ -2480,8 +2278,6 @@ valid birthdate was provided.
 
 The birthday associated with the borrower, as specified in the request.
 
----
-
 🟥 **Borrower1.AgeAtIssue**
 
 | Type  | Required | Values |
@@ -2492,8 +2288,6 @@ If coverage is written on this borrower, then the value of this field represents
 the age at issue of the borrower in a special date-like format of `YYYY-MM-DD`,
 where the borrower is `YYYY` years, `MM` months, and `DD` days old when coverage
 begins.
-
----
 
 🟥 **Borrower1.AgeAtMaturity**
 
@@ -2506,8 +2300,6 @@ the age at maturity of the borrower in a special date-like format of
 `YYYY-MM-DD`, where the borrower is `YYYY` years, `MM` months, and `DD` days old
 when coverage terminates.
 
----
-
 🟥 **Borrower1.Pmts**
 
 | Type  | Required | Values |
@@ -2515,8 +2307,6 @@ when coverage terminates.
 | String | yes | number |
 
 The term of coverage expressed as a number of payments.
-
----
 
 🟥 **Borrower1.Months**
 
@@ -2526,8 +2316,6 @@ The term of coverage expressed as a number of payments.
 
 The term of coverage expressed as a number of months.
 
----
-
 🟥 **Borrower1.Maturity**
 
 | Type  | Required | Values |
@@ -2535,8 +2323,6 @@ The term of coverage expressed as a number of months.
 | String | yes | YYYY-MM-DD |
 
 The coverage maturity date for this particular borrower.
-
----
 
 🟥 **Borrower1.Note**
 
@@ -2548,16 +2334,15 @@ The value of this field will describe the type of coverage provided. If full
 term coverage has been provided, then the note will contain "Full Coverage".
 Otherwise, the note will describe the type of truncated coverage used.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Life.Borrower2**
 
 | Type  | Required |
 | :---: |   :---:  |
 | object | no |
-
 
 The `Borrower2` object provides the calling application with data about the term
 of coverage of a borrower, for the requested product. Note that this object will
@@ -2568,14 +2353,11 @@ Please note that the fields of the `Borrower2` object are identical to the
 `Borrower1` object. See the documentation above for the `Borrower1` object for
 further information.
 
----
-
 🟦 **Life.Caps**
 
 | Type  | Required |
 | :---: |   :---:  |
 | object | no |
-
 
 The `Caps` object provides the calling application with data about the maximum
 terms, amounts, and ages associated with the requested product. This objectt
@@ -2596,8 +2378,6 @@ is set to `true`.
 Contains the maximum aggregate coverage amount. If no cap is present or
 applicable, then a value of zero is returned.
 
----
-
 🟥 **Caps.Ben**
 
 | Type  | Required | Values |
@@ -2606,8 +2386,6 @@ applicable, then a value of zero is returned.
 
 Contains the maximum monthly benefit amount. If no cap is present or applicable,
 then a value of zero is returned.
-
----
 
 🟥 **Caps.Term**
 
@@ -2618,8 +2396,6 @@ then a value of zero is returned.
 Contains the maximum coverage term, expressed in months. If no cap is present or
 applicable, then a value of zero is returned.
 
----
-
 🟥 **Caps.InceptAge**
 
 | Type  | Required | Values |
@@ -2628,8 +2404,6 @@ applicable, then a value of zero is returned.
 
 Contains the maximum age a borrower may be at loan inception, expressed in
 years. If no cap is present or applicable, then a value of zero is returned.
-
----
 
 🟥 **Caps.AttainAge**
 
@@ -2643,9 +2417,9 @@ returned.
 
 </details>
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Protection.Level**
 
@@ -2678,8 +2452,6 @@ not computed with the loan, and the value describes why. In this case, there is
 no need to parse through the other fields or child objects, as the product was
 not computed.
 
----
-
 🟥 **Level.Formula**
 
 | Type  | Required | Values |
@@ -2689,8 +2461,6 @@ not computed.
 The `Formula` field contains an abbreviated description of the formula used to
 compute the desired protection product. The formula codes are for the use of the
 J. L. Sherman and Associates, Inc. support team.
-
----
 
 🟥 **Level.Cost**
 
@@ -2715,8 +2485,6 @@ premiums.
 
 The total cost for this protection over the term of the loan.
 
----
-
 🟥 **Cost.PerPmt**
 
 | Type  | Required | Values |
@@ -2724,8 +2492,6 @@ The total cost for this protection over the term of the loan.
 | String | yes | number - currency |
 
 The cost of coverage expressed as currency per payment.
-
----
 
 🟥 **Cost.PerDay**
 
@@ -2735,8 +2501,6 @@ The cost of coverage expressed as currency per payment.
 
 The cost of coverage expressed as currency per dey.
 
----
-
 🟥 **Cost.Factor**
 
 | Type  | Required | Values |
@@ -2744,8 +2508,6 @@ The cost of coverage expressed as currency per dey.
 | String | yes | number |
 
 The rate factor used to compute the premium for the requested protection product.
-
----
 
 🟦 **Cost.Premium2**
 
@@ -2759,8 +2521,6 @@ coverage. If this is the case, then the `Premium2` field is provided so that the
 calling application can disclose two premiums instead of a single aggregate
 joint premium.
 
----
-
 🟦 **Cost.PerPmt2**
 
 | Type  | Required | Values |
@@ -2769,8 +2529,6 @@ joint premium.
 
 The cost of coverage for the secondary ordinary life borrower, expressed as
 currency per payment. Please see `Cost.Premium2` above for further information.
-
----
 
 🟦 **Cost.PerDay2**
 
@@ -2781,8 +2539,6 @@ currency per payment. Please see `Cost.Premium2` above for further information.
 The cost of coverage for the secondary ordinary life borrower, expressed as
 currency per dey. Please see `Cost.Premium2` above for further information.
 
----
-
 🟦 **Cost.Factor2**
 
 | Type  | Required | Values |
@@ -2792,9 +2548,9 @@ currency per dey. Please see `Cost.Premium2` above for further information.
 The rate factor used to compute the premium for the secondary ordinary life
 borrower. Please see `Cost.Premium2` above for further information.
 
-</details>
-
 ---
+
+</details>
 
 🟥 **Level.Coverage**
 
@@ -2818,8 +2574,6 @@ this object:
 
 The aggregate coverage amount for this protection product.
 
----
-
 🟥 **Coverage.Note**
 
 | Type  | Required | Values |
@@ -2830,16 +2584,15 @@ The `Note` field will describe the type of coverage provided. If full coverage
 has been provided on the aggregate coverage, then the note will contain "Full
 Coverage". Otherwise, the note will describe the type of partial coverage used.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Level.Term**
 
 | Type  | Required |
 | :---: |   :---:  |
 | object | no |
-
 
 The `Term` object provides the calling application with data about the term of
 coverage for the requested product. If the input request has specified
@@ -2858,8 +2611,6 @@ coverage for the requested product. If the input request has specified
 
 Contains the term of coverage expressed as a number of months.
 
----
-
 🟥 **Term.InPmts**
 
 | Type  | Required | Values |
@@ -2868,8 +2619,6 @@ Contains the term of coverage expressed as a number of months.
 
 Contains the number of payments covered.
 
----
-
 🟥 **Term.Maturity**
 
 | Type  | Required | Values |
@@ -2877,8 +2626,6 @@ Contains the number of payments covered.
 | String | yes | YYYY-MM-DD |
 
 This field contains the maturity date for the requested coverage.
-
----
 
 🟥 **Term.Note**
 
@@ -2891,16 +2638,15 @@ full term coverage has been provided, then the note will contain
 "Full Coverage". Otherwise, the note will describe the type of truncated
 coverage used.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Level.Borrower1**
 
 | Type  | Required |
 | :---: |   :---:  |
 | object | no |
-
 
 The `Borrower1` object provides the calling application with data about the term
 of coverage of a borrower, for the requested product. Note that this object will
@@ -2920,8 +2666,6 @@ valid birthdate was provided.
 
 The birthday associated with the borrower, as specified in the request.
 
----
-
 🟥 **Borrower1.AgeAtIssue**
 
 | Type  | Required | Values |
@@ -2932,8 +2676,6 @@ If coverage is written on this borrower, then the value of this field represents
 the age at issue of the borrower in a special date-like format of `YYYY-MM-DD`,
 where the borrower is `YYYY` years, `MM` months, and `DD` days old when coverage
 begins.
-
----
 
 🟥 **Borrower1.AgeAtMaturity**
 
@@ -2946,8 +2688,6 @@ the age at maturity of the borrower in a special date-like format of
 `YYYY-MM-DD`, where the borrower is `YYYY` years, `MM` months, and `DD` days old
 when coverage terminates.
 
----
-
 🟥 **Borrower1.Pmts**
 
 | Type  | Required | Values |
@@ -2955,8 +2695,6 @@ when coverage terminates.
 | String | yes | number |
 
 The term of coverage expressed as a number of payments.
-
----
 
 🟥 **Borrower1.Months**
 
@@ -2966,8 +2704,6 @@ The term of coverage expressed as a number of payments.
 
 The term of coverage expressed as a number of months.
 
----
-
 🟥 **Borrower1.Maturity**
 
 | Type  | Required | Values |
@@ -2975,8 +2711,6 @@ The term of coverage expressed as a number of months.
 | String | yes | YYYY-MM-DD |
 
 The coverage maturity date for this particular borrower.
-
----
 
 🟥 **Borrower1.Note**
 
@@ -2988,16 +2722,15 @@ The value of this field will describe the type of coverage provided. If full
 term coverage has been provided, then the note will contain "Full Coverage".
 Otherwise, the note will describe the type of truncated coverage used.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Level.Borrower2**
 
 | Type  | Required |
 | :---: |   :---:  |
 | object | no |
-
 
 The `Borrower2` object provides the calling application with data about the term
 of coverage of a borrower, for the requested product. Note that this object will
@@ -3008,14 +2741,11 @@ Please note that the fields of the `Borrower2` object are identical to the
 `Borrower1` object. See the documentation above for the `Borrower1` object for
 further information.
 
----
-
 🟦 **Level.Caps**
 
 | Type  | Required |
 | :---: |   :---:  |
 | object | no |
-
 
 The `Caps` object provides the calling application with data about the maximum
 terms, amounts, and ages associated with the requested product. This objectt
@@ -3036,8 +2766,6 @@ is set to `true`.
 Contains the maximum aggregate coverage amount. If no cap is present or
 applicable, then a value of zero is returned.
 
----
-
 🟥 **Caps.Ben**
 
 | Type  | Required | Values |
@@ -3046,8 +2774,6 @@ applicable, then a value of zero is returned.
 
 Contains the maximum monthly benefit amount. If no cap is present or applicable,
 then a value of zero is returned.
-
----
 
 🟥 **Caps.Term**
 
@@ -3058,8 +2784,6 @@ then a value of zero is returned.
 Contains the maximum coverage term, expressed in months. If no cap is present or
 applicable, then a value of zero is returned.
 
----
-
 🟥 **Caps.InceptAge**
 
 | Type  | Required | Values |
@@ -3068,8 +2792,6 @@ applicable, then a value of zero is returned.
 
 Contains the maximum age a borrower may be at loan inception, expressed in
 years. If no cap is present or applicable, then a value of zero is returned.
-
----
 
 🟥 **Caps.AttainAge**
 
@@ -3083,9 +2805,9 @@ returned.
 
 </details>
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Protection.Disability**
 
@@ -3118,8 +2840,6 @@ not computed with the loan, and the value describes why. In this case, there is
 no need to parse through the other fields or child objects, as the product was
 not computed.
 
----
-
 🟥 **Disability.Formula**
 
 | Type  | Required | Values |
@@ -3129,8 +2849,6 @@ not computed.
 The `Formula` field contains an abbreviated description of the formula used to
 compute the desired protection product. The formula codes are for the use of the
 J. L. Sherman and Associates, Inc. support team.
-
----
 
 🟥 **Disability.RateType**
 
@@ -3150,8 +2868,6 @@ rate used to compute the protection may have changed (in the case of
 coverage for one borrower ending while coverage for the other borrower
 continues). If this is the case, then the field will indicate this
 rate change with a value of `Variable`.
-
----
 
 🟥 **Disability.Cost**
 
@@ -3176,8 +2892,6 @@ rate factor used to compute the premiums.
 
 The total cost for this protection over the term of the loan.
 
----
-
 🟥 **Cost.PerPmt**
 
 | Type  | Required | Values |
@@ -3185,8 +2899,6 @@ The total cost for this protection over the term of the loan.
 | String | yes | number - currency |
 
 The cost of coverage expressed as currency per payment.
-
----
 
 🟥 **Cost.PerDay**
 
@@ -3196,8 +2908,6 @@ The cost of coverage expressed as currency per payment.
 
 The cost of coverage expressed as currency per dey.
 
----
-
 🟥 **Cost.Factor**
 
 | Type  | Required | Values |
@@ -3206,9 +2916,9 @@ The cost of coverage expressed as currency per dey.
 
 The rate factor used to compute the premium for the requested protection product.
 
-</details>
-
 ---
+
+</details>
 
 🟥 **Disability.Coverage**
 
@@ -3232,8 +2942,6 @@ this object:
 
 The aggregate coverage amount for this protection product.
 
----
-
 🟥 **Coverage.Note**
 
 | Type  | Required | Values |
@@ -3245,9 +2953,9 @@ full coverage has been provided on the aggregate coverage, then the note will co
 "Full Coverage". Otherwise, the note will describe the type of partial
 coverage used.
 
-</details>
-
 ---
+
+</details>
 
 🟥 **Disability.Benefit**
 
@@ -3271,8 +2979,6 @@ fields of this object:
 
 The monthly benefit amount for this protection product.
 
----
-
 🟦 **Benefit.Periodic**
 
 | Type  | Required | Values |
@@ -3284,8 +2990,6 @@ to monthly benefit amounts, which are returned in the `Amount` field
 described above), and if the specified payment frequency is other than monthly,
 then this field will be present and will hold the periodic benefit amount.
 
----
-
 🟥 **Benefit.Note**
 
 | Type  | Required | Values |
@@ -3296,16 +3000,15 @@ The `Note` field describes the type of coverage provided. If full coverage has
 been provided on the benefit, then the note will contain "Full Coverage".
 Otherwise, the note will describe the type of partial coverage used.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Disability.Term**
 
 | Type  | Required |
 | :---: |   :---:  |
 | object | no |
-
 
 The `Term` object provides the calling application with data about the term of
 coverage for the requested product. If the input request has specified
@@ -3324,8 +3027,6 @@ coverage for the requested product. If the input request has specified
 
 Contains the term of coverage expressed as a number of months.
 
----
-
 🟥 **Term.InPmts**
 
 | Type  | Required | Values |
@@ -3334,8 +3035,6 @@ Contains the term of coverage expressed as a number of months.
 
 Contains the number of payments covered.
 
----
-
 🟥 **Term.Maturity**
 
 | Type  | Required | Values |
@@ -3343,8 +3042,6 @@ Contains the number of payments covered.
 | String | yes | YYYY-MM-DD |
 
 This field contains the maturity date for the requested coverage.
-
----
 
 🟥 **Term.Note**
 
@@ -3357,16 +3054,15 @@ full term coverage has been provided, then the note will contain
 "Full Coverage". Otherwise, the note will describe the type of truncated
 coverage used.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Disability.Borrower1**
 
 | Type  | Required |
 | :---: |   :---:  |
 | object | no |
-
 
 The `Borrower1` object provides the calling application with data about the term
 of coverage of a borrower, for the requested product. Note that this object will
@@ -3386,8 +3082,6 @@ valid birthdate was provided.
 
 The birthday associated with the borrower, as specified in the request.
 
----
-
 🟥 **Borrower1.AgeAtIssue**
 
 | Type  | Required | Values |
@@ -3398,8 +3092,6 @@ If coverage is written on this borrower, then the value of this field represents
 the age at issue of the borrower in a special date-like format of `YYYY-MM-DD`,
 where the borrower is `YYYY` years, `MM` months, and `DD` days old when coverage
 begins.
-
----
 
 🟥 **Borrower1.AgeAtMaturity**
 
@@ -3412,8 +3104,6 @@ the age at maturity of the borrower in a special date-like format of
 `YYYY-MM-DD`, where the borrower is `YYYY` years, `MM` months, and `DD` days old
 when coverage terminates.
 
----
-
 🟥 **Borrower1.Pmts**
 
 | Type  | Required | Values |
@@ -3421,8 +3111,6 @@ when coverage terminates.
 | String | yes | number |
 
 The term of coverage expressed as a number of payments.
-
----
 
 🟥 **Borrower1.Months**
 
@@ -3432,8 +3120,6 @@ The term of coverage expressed as a number of payments.
 
 The term of coverage expressed as a number of months.
 
----
-
 🟥 **Borrower1.Maturity**
 
 | Type  | Required | Values |
@@ -3441,8 +3127,6 @@ The term of coverage expressed as a number of months.
 | String | yes | YYYY-MM-DD |
 
 The coverage maturity date for this particular borrower.
-
----
 
 🟥 **Borrower1.Note**
 
@@ -3454,16 +3138,15 @@ The value of this field will describe the type of coverage provided. If full
 term coverage has been provided, then the note will contain "Full Coverage".
 Otherwise, the note will describe the type of truncated coverage used.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Disability.Borrower2**
 
 | Type  | Required |
 | :---: |   :---:  |
 | object | no |
-
 
 The `Borrower2` object provides the calling application with data about the term
 of coverage of a borrower, for the requested product. Note that this object will
@@ -3474,14 +3157,11 @@ Please note that the fields of the `Borrower2` object are identical to the
 `Borrower1` object. See the documentation above for the `Borrower1` object for
 further information.
 
----
-
 🟦 **Disability.Caps**
 
 | Type  | Required |
 | :---: |   :---:  |
 | object | no |
-
 
 The `Caps` object provides the calling application with data about the maximum
 terms, amounts, and ages associated with the requested product. This objectt
@@ -3502,8 +3182,6 @@ is set to `true`.
 Contains the maximum aggregate coverage amount. If no cap is present or
 applicable, then a value of zero is returned.
 
----
-
 🟥 **Caps.Ben**
 
 | Type  | Required | Values |
@@ -3512,8 +3190,6 @@ applicable, then a value of zero is returned.
 
 Contains the maximum monthly benefit amount. If no cap is present or applicable,
 then a value of zero is returned.
-
----
 
 🟥 **Caps.Term**
 
@@ -3524,8 +3200,6 @@ then a value of zero is returned.
 Contains the maximum coverage term, expressed in months. If no cap is present or
 applicable, then a value of zero is returned.
 
----
-
 🟥 **Caps.InceptAge**
 
 | Type  | Required | Values |
@@ -3534,8 +3208,6 @@ applicable, then a value of zero is returned.
 
 Contains the maximum age a borrower may be at loan inception, expressed in
 years. If no cap is present or applicable, then a value of zero is returned.
-
----
 
 🟥 **Caps.AttainAge**
 
@@ -3580,8 +3252,6 @@ This field will only appear if a Canadian APR is disclosed for the computed
 loan. The value of this field is the average balance of the loan used in the
 Canadian APR calculation.
 
----
-
 🟦 **AmTable.Months**
 
 | Type  | Required | Values |
@@ -3592,8 +3262,6 @@ This field will only appear if a Canadian APR is disclosed for the computed
 loan. The value of this field is the whole number of months in the term of the
 loan used in the Canadian APR calculation. Note that the term is expressed in
 monthly or weekly units, but never both.
-
----
 
 🟦 **AmTable.Weeks**
 
@@ -3606,8 +3274,6 @@ loan. The value of this field is the whole number of weeks in the term of the
 loan used in the Canadian APR calculation. Note that the term is expressed in
 monthly or weekly units, but never both.
 
----
-
 🟦 **AmTable.OddDays**
 
 | Type  | Required | Values |
@@ -3619,8 +3285,6 @@ loan. The value of this field is the number of odd days in the term of the loan
 used in the Canadian APR calculation. Odd days are computed by moving backwards
 from the maturity date the number of disclosed months or weeks, and then
 counting the additional number of days required to land on the loan date.
-
----
 
 🟦 **AmTable.GrandTotals**
 
@@ -3645,8 +3309,6 @@ total of payments are all contained in fields of this object.
 
 The total of payments scheduled for the computed loan.
 
----
-
 🟥 **GrandTotals.IntTot**
 
 | Type  | Required | Values |
@@ -3655,8 +3317,6 @@ The total of payments scheduled for the computed loan.
 
 The total amount paid to interest over the life of the loan, assuming all
 payments are made as scheduled.
-
----
 
 🟥 **GrandTotals.PrinTot**
 
@@ -3667,8 +3327,6 @@ payments are made as scheduled.
 This field contains the total amount paid to principal during the loan term,
 assuming all payments are made as scheduled.
 
----
-
 🟦 **GrandTotals.CLTot**
 
 | Type  | Required | Values |
@@ -3678,8 +3336,6 @@ assuming all payments are made as scheduled.
 The `CLTot` field will only appear on loans with certain types of life
 protection products, such as those based on a monthly outstanding balance. It
 contains the total amount paid for life over the duration of the loan.
-
----
 
 🟦 **GrandTotals.AHTot**
 
@@ -3692,8 +3348,6 @@ debt protection products, such as those based on a monthly outstanding balance.
 It contains the total amount paid for this protection over the duration of the
 loan.
 
----
-
 🟦 **GrandTotals.SCTot**
 
 | Type  | Required | Values |
@@ -3703,9 +3357,9 @@ loan.
 The `SCTot` attribute will only appear on loans with service charges. It
 contains the total service charge amount paid over the duration of the loan.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **AmTable.SubTotals[]**
 
@@ -3730,8 +3384,6 @@ a `SubTotal` object in the array.
 
 The calendar year for which the subtotal data is applicable.
 
----
-
 🟥 **SubTotal.Start**
 
 | Type  | Required | Values |
@@ -3742,8 +3394,6 @@ This field defines the first amortization event which falls in the specified
 calendar year. To find the `AmLine` object which corresponds to this value,
 match the `Idx` field of the `AmLine` object.
 
----
-
 🟥 **SubTotal.Events**
 
 | Type  | Required | Values |
@@ -3753,8 +3403,6 @@ match the `Idx` field of the `AmLine` object.
 This field defines the number of amortization events which belong to this
 calendar year.
 
----
-
 🟥 **SubTotal.PmtSub**
 
 | Type  | Required | Values |
@@ -3762,8 +3410,6 @@ calendar year.
 | String | yes | number-currency |
 
 Contains the total of payments scheduled for the calendar year.
-
----
 
 🟥 **SubTotal.IntSub**
 
@@ -3774,8 +3420,6 @@ Contains the total of payments scheduled for the calendar year.
 Holds the total amount paid to interest over the calendar year, assuming all
 payments are made as scheduled.
 
----
-
 🟥 **SubTotal.PrinSub**
 
 | Type  | Required | Values |
@@ -3784,8 +3428,6 @@ payments are made as scheduled.
 
 Contains the total amount paid to principal during the calendar year, assuming
 all payments are made as scheduled.
-
----
 
 🟦 **SubTotal.CLSub**
 
@@ -3797,8 +3439,6 @@ The `CLSub` field will only appear on loans with certain types of life
 protection products, such as those based on a monthly outstanding balance. It
 contains the total amount paid for life during the year.
 
----
-
 🟦 **SubTotal.AHSub**
 
 | Type  | Required | Values |
@@ -3809,8 +3449,6 @@ The `AHSub` field will only appear on loans with certain types of accident and
 health or debt protection products, such as those based on a monthly outstanding
 balance. It contains the total amount paid for this protection during the year.
 
----
-
 🟦 **SubTotal.SCSub**
 
 | Type  | Required | Values |
@@ -3820,9 +3458,9 @@ balance. It contains the total amount paid for this protection during the year.
 The `SCSub` field will only appear on loans with service charges. It contains
 the total of service charges paid during the year.
 
-</details>
-
 ---
+
+</details>
 
 🟥 **AmTable.AmLines[]**
 
@@ -3851,8 +3489,6 @@ The index of the amortization event, which is either the payment number, or
 zero. A value of zero designates an event that is either not a payment or is a
 skipped payment.
 
----
-
 🟥 **AmLine.Date**
 
 | Type  | Required | Values |
@@ -3862,8 +3498,6 @@ skipped payment.
 The date on which the amortization event is scheduled to occur. All dates are in
 the form of `YYYY-MM-DD`, and must be 10 characters long.
 
----
-
 🟥 **AmLine.BegBal**
 
 | Type  | Required | Values |
@@ -3871,8 +3505,6 @@ the form of `YYYY-MM-DD`, and must be 10 characters long.
 | String | yes | number-currency |
 
 The principal balance before the amortization event occurs.
-
----
 
 🟥 **AmLine.Pmt**
 
@@ -3882,8 +3514,6 @@ The principal balance before the amortization event occurs.
 
 The payment amount for this event.
 
----
-
 🟥 **AmLine.Int**
 
 | Type  | Required | Values |
@@ -3892,8 +3522,6 @@ The payment amount for this event.
 
 The amount of interest paid at this event.
 
----
-
 🟥 **AmLine.Prin**
 
 | Type  | Required | Values |
@@ -3901,8 +3529,6 @@ The amount of interest paid at this event.
 | String | yes | number-currency |
 
 The amount of principal paid at this event.
-
----
 
 🟦  **AmLine.CL**
 
@@ -3913,8 +3539,6 @@ The amount of principal paid at this event.
 The `CL` field will only appear on loans with certain types of life protection
 products, such as those based on a monthly outstanding balance. It contains the
 amount of the payment which is marked for life coverage.
-
----
 
 🟦  **AmLine.AH**
 
@@ -3927,8 +3551,6 @@ health or debt protection products, such as those based on a monthly outstanding
 balance. It contains the amount of the payment which is marked for disability /
 debt protection coverage.
 
----
-
 🟦  **AmLine.SC**
 
 | Type  | Required | Values |
@@ -3937,8 +3559,6 @@ debt protection coverage.
 
 This field contains the total service charge for this payment, and will only be
 present if one or more service charges were requested with the loan.
-
----
 
 🟦  **AmLine.UnpaidInt**
 
@@ -3951,8 +3571,6 @@ but has not yet been paid or added to the principal balance. If the interest acc
 has not yet been rounded, then the unpaid interest will be displayed to four (4)
 decimal placed. If rounded, then the unpaid interest is displayed to two (2) decimal
 places.
-
----
 
 🟥 **AmLine.EndBal**
 

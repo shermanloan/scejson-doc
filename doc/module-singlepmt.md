@@ -183,7 +183,6 @@ affecting fee to be computed by decreasing the amount financed by $2,000,
 and then multiplying this reduced amount by 0.115. The way to accomplish
 this in the SCE is as follows:
 
-
 ```json
 {
   "Fees" : [
@@ -2204,7 +2203,6 @@ Coverage". Otherwise, the note will describe the type of partial coverage used.
 | :---: |   :---:  |
 | object | no |
 
-
 The `Term` object provides the calling application with data about the term of
 coverage for the requested product. If the input request has specified
 `"ShowBorrowerInfo" : true`, then this object will not be present.
@@ -2258,7 +2256,6 @@ coverage used.
 | Type  | Required |
 | :---: |   :---:  |
 | object | no |
-
 
 The `Borrower1` object provides the calling application with data about the term
 of coverage of a borrower, for the requested product. Note that this object will

@@ -12,6 +12,8 @@ changes which may or may not be of interest to you.
 ## Release 2022-10-0
 * The [Single Payment Notes](module-singlepmt.md) module has been made available
   in this release.
+* The [Interest Only Loans](module-interestonly.md) module has been made available
+  in this release.
 
 ## Release 2022-07-0
 * The [APY Calculation](module-apy.md) module has been made available in this

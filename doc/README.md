@@ -12,6 +12,7 @@ Release 2022-07-0
 ## Loan Calculation Modules
 * [Loan](module-loan.md)
 * [Single Payment Note](module-singlepmt.md)
+* [Interest Only Loans](module-interestonly.md)
 
 ## Compliance Modules
 * [APR Calculation & Verification](module-apr.md)

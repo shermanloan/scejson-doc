@@ -128,38 +128,14 @@ included in the loan response.
 | :---: |   :---:  |
 | Object | no |
 
-The `Construction` object determines if this loan includes a construction loan
-request. Note that the specified account must be configured to support
-construction loans. If the specified account is *not* configured to support
-construction loans, then this object will be ignored.
+The `Construction` object determines if this loan is a construction to permanent
+loan request. If you wish to compute a construction loan without an attached
+permanent loan, you will need to use either the
+[Construction](module-construction.md) or [Loan](module-loan.md) modules.
 
 <details><summary><b>Construction fields</b></summary>
 
 ---
-
-🟦 **Construction.Accrual**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | default, unitperiod, actual360, actual365 | default |
-
-If the loan request is a construction loan with no permanent loan attached (i.e.
-`"PermanentAttached" : false`), then this field allows the calling application
-to specify the accrual method used.
-
-A value of `default` indicates that the accrual method used will be that which
-is specified in the setup files for the given account. `unitperiod` computes
-interest on a pure unit period basis, with odd days optionally taken into
-account (see `UnitOddDayDivisor` field for more information). `actual360` uses
-an actual day calendar and divides the day count by 360 to determine the
-appropriate interest factor. `actual365` does the same thing, but uses a 365
-divisor instead.
-
-Note that if a construction loan is requested *with* a permanent loan attached,
-then interest is defined to accrue on the construction loan portion depending
-upon the method of construction loan computation as specified in the setup
-files: (i) on a pure unit period basis if the method is simple, or (ii) as the
-permanent loan accrues interest if LaserPro.
 
 🟦 **Construction.HalfCommitment**
 
@@ -174,35 +150,18 @@ initial commitment amount (i.e. the principal balance). The default value of
 `false` will cause interest to be estimated using the entire initial commitment
 amount.
 
-🟦 **Construction.PermanentAttached**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | false |
-
-Construction loans may be computed on their own, or they may be attached to a
-permanent loan which begins at the conclusion of the construction loan. If a
-permanent loan is attached to the construction loan, then set this field's
-value to `true` and set up the permanent loan information in the elements
-specified above.
-
-The default value of `false` indicates that this is solely a construction loan
-with no permanent attached. In this case, you still need to set up the
-`LoanDate`, `PmtDate` and `Proceeds` fields as described in this chapter.
-
 🟦 **Construction.PPY**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | 1, 2, 4, 6, 12, 24, 26, 52 | 12 |
 
-The PPY field allows the calling application to specify the payment
-frequency during the construction period. The default value of `12`
-will result in a construction loan with 12 payments per year. If you require
-a payment frequency during the construction period other than monthly, then
-specify it using this field. Note that if a permanent loan is attached
-to the construction loan, that the permanent loan's payment frequency
-*may* differ from the construction period's payment frequency.
+The PPY field allows the calling application to specify the payment frequency
+during the construction period. The default value of `12` will result in a
+construction loan with 12 payments per year. If you require a payment frequency
+during the construction period other than monthly, then specify it using this
+field. Note that the permanent loan's payment frequency *may* differ from the
+construction period's payment frequency.
 
 🟥 **Construction.Rate**
 
@@ -221,16 +180,6 @@ amount during the term of the construction loan.
 
 The term of the construction loan (in payments) is specified using this field.
 Please note that the term may not exceed five years.
-
-🟦 **Construction.UnitPeriodDivisor**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | Ignore, 360, 365, VarDPY | Ignore |
-
-When specifying an `Accrual` field value of `unitperiod`, this field allows the
-calling application to specify how odd days between the loan and first payment
-dates are taken into account.
 
 ---
 </details>
@@ -1186,6 +1135,29 @@ in the setup file for the specified `Account`.
 | 230, 330 | Actual/Actual Simple |
 | 231, 331 | Midnight 366 Simple |
 | 240, 241 | Actual/365.25 Simple |
+
+🟦 **Settings.ConstructMethod**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | default, simple, interestonly | default |
+
+When computing a construction to permanent loan, there are two
+supported methods for computing interest during the constrcution
+period:
+
+If the value of this field is `simple`, then the estimated construction
+interets will be computed and disclosed as a lup-sum prepaid fee (see
+the `Moneys.ConstructInterest` response field).  
+
+If the value of this field is `interestonly`, then the construction and
+permanent loans are combined into a single loan, with the construction (and
+permanent) loan's interest being reflected in the `Moneys.Interest` field, and
+both loans reflected in a single, combined amortization schedule.
+
+A value of `default` instructs the SCE to use the construction method specified
+in the setup file for the given account.
+
 
 🟦 **Settings.DataPath**
 
@@ -2156,24 +2128,19 @@ loan, assuming the borrower will make all scheduled payments.
 | :---: |   :---:  |
 | Object | no |
 
-If the requested loan is a construction loan with a permanent loan
-attached and the account specified is set up to compute construction
-loans via the "Simple" method, then this field will contain the
-construction interest for the requested loan.
+If the requested loan is a construction loan with a permanent loan attached and
+the request is configured to use the "Simple" method, then this field will
+contain the construction interest for the requested loan.
 
 Note that if a permanent loan is attached to a construction loan and the
-account is set up to use the "LaserPro" method, then the construction
+request is set up to use the "Interest Only" method, then the construction
 and permanent loans are combined into a single loan, with the construction
 (and permanent) loan's interest being reflected in the
 `Moneys.Interest` field, and both loans reflected in a single,
 combined amortization schedule.
 
-If the requested loan is a construction loan *without* a permanent loan
-attached, then the construction interest will be disclosed in the
-`Moneys.Interest` field.
-
 If the requested loan was not a construction loan, or if construction
-loans have not been set up for the given account, then this field
+loans have not been configured for the given account, then this field
 will not appear in the response.
 
 🟦 **Moneys.FinFees**

@@ -628,8 +628,8 @@ required as of August 1st, 2015. If the field is omitted or set to `false`, then
 the TILA RESPA outputs will not be generated.
 
 Note that this field is supported for equal payment loans, balloon payment
-loans, single payment notes, interest only loans, fixed principal plus interest
-loans, skips, pickups and irregulars, and ARMs.
+loans, single payment notes, interest only loans, construction loans, fixed
+principal plus interest loans, skips, pickups and irregulars, and ARMs.
 
 ---
 
@@ -657,7 +657,7 @@ The `Term` field indicates the the number of *payments* to be made at the
 specified payment frequency (see the `PPY` field above), after which the loan is
 scheduled to be paid off.
 
-## Single Payment Note Response Data Object Field Definition
+## Construction Loan Response Data Object Field Definition
 
 The following example is the response returned from the SCEJSON for the request
 provided at the beginning of the previous section.

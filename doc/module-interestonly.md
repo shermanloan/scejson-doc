@@ -1252,8 +1252,8 @@ required as of August 1st, 2015. If the field is omitted or set to `false`, then
 the TILA RESPA outputs will not be generated.
 
 Note that this field is supported for equal payment loans, balloon payment
-loans, single payment notes, interest only loans, fixed principal plus interest
-loans, skips, pickups and irregulars, and ARMs.
+loans, single payment notes, interest only loans, construction loans, fixed
+principal plus interest loans, skips, pickups and irregulars, and ARMs.
 
 🟦 **Settings.YieldPPY**
 

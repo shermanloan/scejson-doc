@@ -9,10 +9,13 @@ Release 2022-07-0
 ## Utility Modules
 * [Version](module-version.md)
 
-## Loan Calculation Modules
+## General Loan Calculation Module
 * [Loan](module-loan.md)
-* [Single Payment Note](module-singlepmt.md)
+
+## Specific Loan Calculation Modules
+* [Construction Loans](module-construct.md)
 * [Interest Only Loans](module-interestonly.md)
+* [Single Payment Note](module-singlepmt.md)
 
 ## Compliance Modules
 * [APR Calculation & Verification](module-apr.md)

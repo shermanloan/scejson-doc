@@ -1045,9 +1045,7 @@ The computed payment for the requested equal payment loan.
 | Object | no |
 
 This object groups together all fields which contain important numerical
-information, as defined in the Truth-In-Lending laws (Regulation Z). This object
-will not be present if `BusinessRules.AmortizeOnly` is set to `true` in the
-request.
+information, as defined in the Truth-In-Lending laws (Regulation Z).
 
 <details>
 <summary><b>FedBox fields</b></summary>
@@ -1598,8 +1596,7 @@ values by the estimated escrow amounts if any are present.
 
 This element groups together those other major cash result amounts not disclosed
 under the `FedBox` object, such as the principal balance, interest charge, and
-fee amounts. This object will not be present if `BusinessRules.AmortizeOnly` is
-set to `true` in the request.
+fee amounts.
 
 <details>
 <summary><b>Moneys fields</b></summary>
@@ -3585,4 +3582,4 @@ The principal balance amount, after the amortization event has taken place.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Loan Module](module-loan.md) | [SCEJSON Reference Manual](README.md) | [Interest Only Loans](module-interestonly.md) |
+| [Interest Only Loans](module-interestonly.md) | [SCEJSON Reference Manual](README.md) | [APR Calculation & Verification Module](module-apr.md) |

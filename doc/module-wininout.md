@@ -1136,15 +1136,14 @@ in the setup file for the specified `Account`.
 | 231, 331 | Midnight 366 Simple |
 | 240, 241 | Actual/365.25 Simple |
 
-🟦 **Settings.ConstructMethod**
+🟦 **Settings.ConMethod**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | default, simple, interestonly | default |
 
-When computing a construction to permanent loan, there are two
-supported methods for computing interest during the constrcution
-period:
+When computing a construction loan, there are two supported methods for
+computing interest during the constrcution period:
 
 If the value of this field is `simple`, then the estimated construction
 interets will be computed and disclosed as a lup-sum prepaid fee (see
@@ -1541,9 +1540,7 @@ The computed first payment of the interest only loan.
 | Object | no |
 
 This object groups together all fields which contain important numerical
-information, as defined in the Truth-In-Lending laws (Regulation Z). This object
-will not be present if `BusinessRules.AmortizeOnly` is set to `true` in the
-request.
+information, as defined in the Truth-In-Lending laws (Regulation Z).
 
 <details>
 <summary><b>FedBox fields</b></summary>
@@ -2094,8 +2091,7 @@ values by the estimated escrow amounts if any are present.
 
 This element groups together those other major cash result amounts not disclosed
 under the `FedBox` object, such as the principal balance, interest charge, and
-fee amounts. This object will not be present if `BusinessRules.AmortizeOnly` is
-set to `true` in the request.
+fee amounts.
 
 <details>
 <summary><b>Moneys fields</b></summary>

@@ -1,4 +1,4 @@
-# Interest Only Loans
+# [[LOAN NAME]]
 
 > "An election is coming. Universal peace is declared  
 >  and the foxes have a sincere interest in  
@@ -11,11 +11,11 @@ principal balance plus the interest accrued during the final payment
 period. The principal balance does not decrease during the term of the
 loan, until the final payment when it is scheduled to be fully paid.
 
-## Interest Only Loan Request Data Object Field Definition
+## [[LOAN NAME]] Request Data Object Field Definition
 
-**Example - Request Envelope for InterestOnly Module**
+**Example - Request Envelope for [[MODULE NAME]] Module**
 
-The following example is a request for an interest only loan with proceeds of
+The following example is a request for a [[LOAN NAME]] loan with proceeds of
 $10,000, interest will accrue at a 4.5% rate using a unit period / 360 U. S.
 Rule accrual method (accrual code `301`), with a financed and APR affecting document
 preparation fee of $25 included. There will be 11 monthly interest only payments
@@ -47,7 +47,7 @@ with an additional final payment paying off the loan.
 }
 ```
 
-The fields of the `Data` object supported by an InterestOnly module request are
+The fields of the `Data` object supported by an [[MODULE NAME]] module request are
 defined in alphabetical order below:
 
 ### 🟦 Apr
@@ -1294,12 +1294,12 @@ The `Term` field indicates the the number of *payments* to be made at the
 specified payment frequency (see the `PPY` field above), after which the loan is
 scheduled to be paid off.
 
-## Single Payment Note Response Data Object Field Definition
+## [[LOAN NAME]] Response Data Object Field Definition
 
 The following example is the response returned from the SCEJSON for the request
 provided at the beginning of the previous section.
 
-**Example - Response Envelope for InterestOnly Module**
+**Example - Response Envelope for [[MODULE NAME]] Module**
 
 ```json
 {
@@ -1420,7 +1420,7 @@ provided at the beginning of the previous section.
 }
 ```
 
-The `Data` object for a response from the InterestOnly module is defined below, in the
+The `Data` object for a response from the [[MODULE NAME]] module is defined below, in the
 order the fields are returned:
 
 ### 🟥 Errors

@@ -1,53 +1,48 @@
-# Interest Only Loans
+# Fixed Principal Plus Interest Loans
 
-> "An election is coming. Universal peace is declared  
->  and the foxes have a sincere interest in  
->  prolonging the lives of the poultry."  
->                           --- T. S. Eliot
+> "Those who make their dress a principal part  
+>  of themselves, will, in general, become of  
+>  no more value than their dress."  
+>                           --- William Hazlitt
 
-Interest only loans are loans which have a payment stream consisting of
-one or more interest only payment, with a final payment paying off the
-principal balance plus the interest accrued during the final payment
-period. The principal balance does not decrease during the term of the
-loan, until the final payment when it is scheduled to be fully paid.
+Fixed principal plus interest loans (hereafter called principal plus loans) are
+loans which have a payment stream made up of payments which pay off a fixed
+amount of principal with each P&I payment, with interest only payments
+optionally occurring during the life of the loan as well.
 
-## Interest Only Loan Request Data Object Field Definition
+For example, a borrower could specify that a loan of $1,000 be paid off with the
+first two payments consisting of interest only and the follow 10 payments paying
+off $100 of principal each.
 
-**Example - Request Envelope for InterestOnly Module**
+## Fixed Principal Plus Interest Loan Request Data Object Field Definition
 
-The following example is a request for an interest only loan with proceeds of
-$10,000, interest will accrue at a 4.5% rate using a unit period / 360 U. S.
-Rule accrual method (accrual code `301`), with a financed and APR affecting document
-preparation fee of $25 included. There will be 11 monthly interest only payments
-with an additional final payment paying off the loan.
+**Example - Request Envelope for PrincipalPlus Module**
+
+The following example is a request for a Fixed Principal Plus Interest Loans
+loan with proceeds of $10,000, interest will accrue at a 6.0% rate using an
+actual day / 365 U. S. Rule accrual method (accrual code `320`). There will be
+12 monthly payments, the first 11 of which will pay of a fixed principal amount
+of $100 plus interest due, with an additional final payment paying off the loan.
 
 ```json
 {
-  "Module" : "InterestOnly",
+  "Module" : "PrincipalPlus",
   "Data" : {
-    "LoanDate" : "2022-08-22",
+    "LoanDate" : "2022-08-24",
     "PmtDate" : "2022-10-01",
-    "IntRate" : "4.500",
-    "Term" : "12",
-    "PPY" : "12",
+    "IntRate" : "6.000",
     "Proceeds" : "10000.00",
-    "Fees" : [
-      {
-        "Name" : "Doc Prep Fee",
-        "AddToFinChg" : true,
-        "AddToPrin" : true,
-        "CalcType" : "Dollar",
-        "Entry" : "25.00"
-      }
-    ],
+    "FirstPrincipalPmt" : "1",
+    "PrincipalReduction" : "100",
+    "PrincipalPmts" : "12",
     "Settings" : {
-      "AccrualCode" : "301"
+      "AccrualCode" : "320"
     }
   }
 }
 ```
 
-The fields of the `Data` object supported by an InterestOnly module request are
+The fields of the `Data` object supported by a PrincipalPlus module request are
 defined in alphabetical order below:
 
 ### 🟦 Apr
@@ -375,6 +370,80 @@ name your fees accordingly.
 
 </details>
 
+### 🟦 IrregPmts
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of IrregPmt objects | no |
+
+This array of `IrregPmt` objects allows the calling application to specify one ore
+more skipped / interest only payments to be scheduled in the repayment plan, depending
+upon the value of the `UseIntOnlyNotSkips` field.
+
+<details>
+<summary><b>IrregPmt fields</b></summary>
+
+---
+
+🟦 **IrregPmt.Index**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number | 0 |
+
+Instead of specifying a month (and optionally, a year) for a given skipped
+payment, you may instead specify a payment number using the `Index` field. Thus,
+if you wish to specify that the first payment be skipped, you would set `"Index"
+: "1"`.
+
+Note that if you specify a payment index, then you should omit the `Month` and
+`Year` fields.
+
+🟦 **IrregPmt.Month**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number | 0 |
+
+The `Month` field allows the user to specify a month during which the skipped /
+interest only payment is applicable. If the `Year` field *is not* set for this
+element, then the skipped / interest only payment will be applied for each
+payment falling in the given month, throughout the entire term of the loan.
+
+On the other hand, if the `Year` field *is* set for this element, then the
+skipped / interest only payment will only be applied to those payments falling
+in the given month and year.
+
+If the value of the `Month` field is set to zero (0), then this skipped /
+interest only payment specification is ignored.
+
+If you wish to specify a skipped payment for a specific payment number (instead
+of specifying the month and optionally, the year), then use the `Index` field
+and omit the `Month` and `Year` fields.
+
+🟦 **IrregPmt.Year**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number | 0 |
+
+As discussed above in `IrregPmt.Year`, this field works closely with the `Month`
+field, and is entirely optional.
+
+---
+
+</details>
+
+### 🟥 FirstPrincipalPmt
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | number | n/a |
+
+The value of this field determines on which payment number the fixed principal
+reduction amount (see `PrincipalReduction` below) begins. All payments prior to
+the payment number will be interest only payments.
+
 ### 🟥 IntRate
 
 | Type  | Required | Values | Default |
@@ -410,213 +479,6 @@ This field holds the date on which the loan amount is disbursed and interest
 begins to accrue. All dates must be in the form of YYYY-MM-DD, and be 10
 characters long.
 
-### 🟦 MI
-
-| Type  | Required |
-| :---: |   :---:  |
-| object | no |
-
-The `MI` objectt determines if this loan includes one of the supported types of
-mortgage insurance (MI): PMI or FHA.
-
-<details>
-<summary><b>MI fields</b></summary>
-
----
-
-🟦 **MI.CashDown**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number - currency | 0 |
-
-The `CashDown` field represents a cash down payment made at closing. If
-specified and greater than zero, this amount will be deducted from the
-principal balance. If not specified, the cash down payment will default to zero.
-
-🟦 **MI.LoanAmt**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number - currency | 0 |
-
-The `LoanAmt` field represents the amount by which the PMI rates
-are multiplied to produce a level PMI premium. If not specified, then
-the principal balance will be used to compute the annual premium.
-
-🟦 **MI.Periodic**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object  | no |
-
-The `Periodic` object supports fields which control when mortgage insurance
-should be dropped during the repayment period.
-
-<details>
-<summary><b>Periodic fields</b></summary>
-
----
-
-🟦 **Periodic.DropLTV**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
-
-The value of this field determines the loan to value ratio at which MI should be
-removed, and is expressed as a percentage.
-
-🟦 **Periodic.Term**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
-
-The value of this field represents the term beyond which MI is no longer
-included.
-
-🟦 **Periodic.WarnLTV**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
-
-The value of this field determines the loan to value ratio at which a warning
-should be issued, and is expressed as a percentage of LTV (loan to value).
-
----
-
-</details>
-
-🟥 **MI.PropertyValue**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number - currency | n/a |
-
-This field's value represents the appraised property value, and will be
-used in the calculation of the loan to value ratio.
-
-🟥 **MI.Rates**
-
-| Type  | Required |
-| :---: |   :---:  |
-| array of Rate  | yes |
-
-This array of `Rate` objects allows the calling application to specify one ore
-more mortgage insurance rate objects.
-
-<details>
-<summary><b>Rate fields</b></summary>
-
----
-
-🟥 **Rate.Rate**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | n/a |
-
-The value of this field specifies the cost of mortgage insurance per $100 of the
-loan amount. Note that there may be more than one Rate object in a loan request
-(see the `Switch` field below).
-
-🟦 **Rate.Switch**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
-
-This optional field defines the payment number beyond which the associated
-mortgage insurance rate will apply. If not specified, the value will default to
-zero.
-
-Thus, if there is only a single mortgage insurance rate, one may omit this
-attribute.
-
----
-
-</details>
-
-🟦 **MI.Type**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | fha, pmi | pmi |
-
-This field determines the type of mortgage insurance to include with the
-loan. If the `Type` field is set to `FHA`, then a different
-MI premium is computed every twelve months based upon the average outstanding principal
-balance during that same term. The MI calculation adheres strictly to the [HUD
-regulation](http://portal.hud.gov/hudportal/HUD?src=/program_offices/housing/comp/premiums/sfpcalc).
-
-If the `Type` attribute is set to `PMI`, then each defined MI
-rate produces a level MI premium based upon the inital loan amount.
-
-🟦 **MI.UpFront**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object  | no |
-
-This object determines the up front fee for mortgage insurance, as disclosed in the
-`PMI_Fee` element in the results. If this object is not specified, no up
-front fee will be computed. Note that ZOMP (zero option monthly premium) products do
-not have an up front fee, which means that this element can be omitted or set to zero.
-
-<details>
-<summary><b>UpFront fields</b></summary>
-
----
-
-🟦 **UpFront.Paid**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | Financed, AtClosing, ByLender | AtClosing |
-
-If the value of this field is set to `Financed`, then the computed up front fee
-will be added to the principal balance and the finance charge. A value of
-`AtClosing` will cause the value of the fee to be added to the finance charge
-alone. Finally, a value of `ByLender` means that the up front fee is to be paid
-by the lender, hence the value of the fee is not added to either the principal
-balance nor the finance charge.
-
-🟦 **UpFront.Units**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | Months, Years, Points | Months |
-
-If the `Units` field is set to `Months`, then `UpFront.Value` represents the
-number of periodic MI premiums to be paid at closing.
-
-If the `Units` attribute is set to `Years`, then `UpFront.Value` represents the
-number of annual MI premiums to be paid at closing. Many single premium products
-define the up front fee as a number of years of MI to be paid up front.
-
-Finally, if the `Units` attribute is set to `Points`, then `UpFront.Value`
-represents the percentage of principal to be paid up front. As of October 3,
-2011, FHA loans use points.
-
-🟦 **UpFront.Value**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
-
-The `Value` attribute meaning depends upon the value of `UpFront.Units`. Please
-see its documentation above for further information.
-
----
-
-</details>
-
----
-
-</details>
-
 ### 🟥 PmtDate
 
 | Type  | Required | Values | Default |
@@ -631,12 +493,56 @@ and be 10 characters long.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | 1, 2, 4, 6, 12, 24, 26, 52 | 12 |
+| String | no | 1, 2, 4, 6, 12 | 12 |
 
 `PPY` is an abbreviation for "payments per year", and determines the payment
 frequency for the requested loan. The default value of monthly will result in a
 loan with 12 payments per year. If you require a loan with a payment frequency
 other than monthly, specify it using this field.
+
+### 🟥 PrincipalPmts
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number | n/a |
+
+Instead of specifying a given number of payments in the principal plus loan
+(e.g. `Term` element in an equal payment loan request), the calling application
+instead specifies the number of principal payments in the loan. The loan term is
+then computed based upon this value, along with the number of principal payments
+per year and the number of interest only payments preceding the first principal
+payment.
+
+### 🟦 PrincipalPPY
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 1, 2, 4, 6, 12 | 12 |
+
+`PrincipalPPY` is an abbreviation for "principal payments per year", and 
+determines the payment frequency of principal and interest payments for the given loan.
+The default value of monthly will result in a loan with 12 principal and interest payments
+per year. If you require a loan with a principal plus interest payment frequency other than
+monthly, specify it using this field. Note that the numeric equivalent of
+`PrincipalPPY` must evenly divide the `PPY` field. As an example, if
+`"PPY" : "12"` then `PrincipalPPY` may be 1, 2, 4, 6 or 12.
+
+### 🟥 PrincipalReduction
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - currency | n/a |
+
+This field contains the constant principal reduction amount to be applied
+for each principal and interest payment. If this value is set to to zero, then
+the principal reduction amount will be computed as the principal balance
+divided by the number of principal payments in the loan (see
+`PrincipalPmts` avoce).
+
+If the number of principal payments multiplied by the specified constant
+principal reduction amount does *not* equal the principal balance, then
+the final principal plus interest payment will be computed such that the
+principal balance is scheduled to be completely paid off at loan maturity.
 
 ### 🟥 Proceeds
 
@@ -655,11 +561,10 @@ etc.
 | object | no |
 
 The `Protection` object is used by the calling application to request one or
-more payment protection products (e.g. life, disability, or involuntary
-unemployment) be included in the loan calculation. Each of
-these products is requested by including its own child object (`Life`,
-`Disability`, and `Unemployment`), along with the borrower
-birthdays.
+more payment protection products (e.g. life, disability, involuntary
+unemployment, or personal property) be included in the loan calculation. Each of
+these products is requested by including its own child object (`Life` and
+`Disability`), along with the borrower birthdays.
 
 <details>
 <summary><b>Protection fields</b></summary>
@@ -901,59 +806,6 @@ If the calling application would like to have cap information (e.g. maximum
 terms, coverage amounts, ages, etc.) returned for each product offered, set the
 value of this field to `true`. Otherwise, omit this field or set it to `false`.
 See the `Caps` objectt defined in the response section for more information.
-
-🟦 **Protection.Unemployment**
-
-| Type  | Required |
-| :---: |   :---:  |
-| Object | no |
-
-The `Unemployment` object determines what type of unemployment coverage is
-requested for the loan.
-
-<details>
-<summary><b>Unemployment fields</b></summary>
-
----
-
-🟦 **Unemployment.Benefit**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   | :---: |
-| String | no | number - currency | 0 |
-
-If you wish to specify a benefit amount less than the maximum allowed, then do
-so with this field. Omitting this field will ensure that the maximum benefit
-amount allowed will be used in the loan calculation. Note that if the specified
-account has not been set up to allow for user-specified benefit amounts for the
-product in question, then this attribute will be ignored.
-
-🟦 **Unemployment.Covers**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | none, borrower1, both, borrower2 | borrower1 |
-
-The value of this field determines what type of coverage is being requested on
-the loan. The values `borrower1` and `borrower2` represent single coverage on
-the appropriate borrower (whose birthdays are contained in appropriate Birthday
-objects described above). A request for joint coverage on both borrowers is
-indicated by a value of `both`. Finally, if no coverage is desired, simple omit
-the `Unemployment` object altogether or specify a value of `none`.
-
-🟦 **Unemployment.CovTerm**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   | :---: |
-| String | no | number | 0 |
-
-If you need to specify a coverage term (in months or payments) less than the
-maximum allowed, then do so using this field. If this field is omitted, then the
-loan will be covered for the maximum term allowed. Note that if the specified
-account has not been set up to allow for user specified coverage terms for this
-product, then this field will be ignored.
-
-</details>
 
 ---
 
@@ -1209,8 +1061,8 @@ required as of August 1st, 2015. If the field is omitted or set to `false`, then
 the TILA RESPA outputs will not be generated.
 
 Note that this field is supported for equal payment loans, balloon payment
-loans, single payment notes, interest only loans, construction loans, fixed
-principal plus interest loans, skips, pickups and irregulars, and ARMs.
+loans, single payment notes, interest only loans, fixed principal plus interest
+loans, skips, pickups and irregulars, and ARMs.
 
 🟦 **Settings.YieldPPY**
 
@@ -1241,134 +1093,129 @@ payment, net trade-in value, or rebate. You only need to specify a total down
 payment if the loan needs to disclose a total sale price. Typical examples of
 these loan types are auto and boat loans.
 
-### 🟥 Term
+### 🟦 UseIntOnlyNotSkips
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | n/a |
+| Boolean | no | true, false | false |
 
-The `Term` field indicates the the number of *payments* to be made at the
-specified payment frequency (see the `PPY` field above), after which the loan is
-scheduled to be paid off.
+If the value of this field is set to `true`, then any specified skipped payments
+(see `Irregs[]` above) will be treated as interest only payments instead of
+skipped payments.
 
-## Single Payment Note Response Data Object Field Definition
+## Fixed Principal Plus Interest Loan Response Data Object Field Definition
 
 The following example is the response returned from the SCEJSON for the request
 provided at the beginning of the previous section.
 
-**Example - Response Envelope for InterestOnly Module**
+**Example - Response Envelope for PrincipalPlus Module**
 
 ```json
 {
   "Result" : 200,
-  "Module" : "InterestOnly",
+  "Module" : "PrincipalPlus",
   "Data" : {
     "Errors" : [
     ],
     "Warnings" : [
     ],
     "Results" : {
-      "Final" : "10062.59",
-      "First" : "50.13"
+      "Final" : "8945.35",
+      "First" : "162.47",
+      "Principal Reduction" : "100.00",
+      "Term" : "12"
     },
     "FedBox" : {
       "AmtFin" : "10000.00",
-      "FinChg" : "488.62",
-      "TotPmts" : "10488.62",
+      "FinChg" : "580.06",
+      "TotPmts" : "10580.06",
       "APR" : {
-        "Value" : "4.748",
+        "Value" : "5.996",
         "Type" : "Actuarial"
       }
     },
     "Moneys" : {
-      "Principal" : "10025.00",
-      "Interest" : "463.62",
-      "FinFees" : "25.00",
-      "FinChgFees" : "25.00",
-      "Fees" : [
-        {
-          "Name" : "Doc Prep Fee",
-          "Fee" : "25.00"
-        }
-      ]
+      "Principal" : "10000.00",
+      "Interest" : "580.06"
     },
     "Accrual" : {
-      "Method" : "Unit Period 360 US Rule",
-      "Days1Pmt" : "40",
+      "Method" : "Actual/365 US Rule",
+      "Days1Pmt" : "38",
       "DayCount" : "Actual",
       "Maturity" : "2023-09-01"
     },
     "PmtStreams" : [
       {
         "Term" : "1",
-        "Pmt" : "50.13",
-        "Rate" : "4.500",
+        "Pmt" : "162.47",
+        "Rate" : "6.000",
         "Begin" : "2022-10-01"
       },
       {
-        "Term" : "10",
-        "Pmt" : "37.59",
-        "Rate" : "4.500",
+        "Term" : "1",
+        "Pmt" : "150.45",
+        "Rate" : "6.000",
         "Begin" : "2022-11-01"
       },
+      ...,
       {
         "Term" : "1",
-        "Pmt" : "10062.59",
-        "Rate" : "4.500",
+        "Pmt" : "8945.35",
+        "Rate" : "6.000",
         "Begin" : "2023-09-01"
       }
     ],
     "AmTable" : {
       "GrandTotals" : {
-        "PmtTot" : "10488.62",
-        "IntTot" : "463.62",
-        "PrinTot" : "10025.00"
+        "PmtTot" : "10580.06",
+        "IntTot" : "580.06",
+        "PrinTot" : "10000.00"
       },
       "SubTotals" : [
         {
           "Year" : "2022",
           "Start" : "1",
           "Events" : "3",
-          "PmtSub" : "125.31",
-          "IntSub" : "125.31",
-          "PrinSub" : "0.00"
+          "PmtSub" : "461.25",
+          "IntSub" : "161.25",
+          "PrinSub" : "300.00"
         },
         {
           "Year" : "2023",
           "Start" : "4",
           "Events" : "9",
-          "PmtSub" : "10363.31",
-          "IntSub" : "338.31",
-          "PrinSub" : "10025.00"
+          "PmtSub" : "10118.81",
+          "IntSub" : "418.81",
+          "PrinSub" : "9700.00"
         }
       ],
       "AmLines" : [
         {
           "Idx" : "1",
           "Date" : "2022-10-01",
-          "BegBal" : "10025.00",
-          "Pmt" : "50.13",
-          "Int" : "50.13",
-          "Prin" : "0.00",
-          "EndBal" : "10025.00"
+          "BegBal" : "10000.00",
+          "Pmt" : "162.47",
+          "Int" : "62.47",
+          "Prin" : "100.00",
+          "EndBal" : "9900.00"
         },
         {
           "Idx" : "2",
           "Date" : "2022-11-01",
-          "BegBal" : "10025.00",
-          "Pmt" : "37.59",
-          "Int" : "37.59",
-          "Prin" : "0.00",
-          "EndBal" : "10025.00"
+          "BegBal" : "9900.00",
+          "Pmt" : "150.45",
+          "Int" : "50.45",
+          "Prin" : "100.00",
+          "EndBal" : "9800.00"
         },
         ...,
         {
           "Idx" : "12",
           "Date" : "2023-09-01",
-          "BegBal" : "10025.00",
-          "Pmt" : "10062.59",
-          "Int" : "37.59",
-          "Prin" : "10025.00",
+          "BegBal" : "8900.00",
+          "Pmt" : "8945.35",
+          "Int" : "45.35",
+          "Prin" : "8900.00",
           "EndBal" : "0.00"
         }
       ]
@@ -1377,7 +1224,7 @@ provided at the beginning of the previous section.
 }
 ```
 
-The `Data` object for a response from the InterestOnly module is defined below, in the
+The `Data` object for a response from the PrincipalPlus module is defined below, in the
 order the fields are returned:
 
 ### 🟥 Errors
@@ -1476,7 +1323,7 @@ the loan request.
 | :---: |   :---:  |  ---   |
 | String | yes | number - currency |
 
-The computed final payment of the interest only loan.
+The computed final payment of the fixed principal and interest loan.
 
 🟥 **Results.First**
 
@@ -1484,7 +1331,27 @@ The computed final payment of the interest only loan.
 | :---: |   :---:  |  ---   |
 | String | yes | number - currency |
 
-The computed first payment of the interest only loan.
+The computed first payment of the fixed principal and interest loan.
+
+🟥 **Results.PrincipalReduction**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number - currency |
+
+If the `PrincipalReduction` field of the request was specified and greater than
+zero, then this field will hold the same value as that specified. If the
+specified principal reduction amount was zero, then the constant principal
+reduction amount calculated by the SCE is returned here.
+
+🟥 **Results.Term**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | number |
+
+The total number of payments (including skipped, interest only, and principal
+plus interest) made over the course of the loan.
 
 ---
 
@@ -2080,19 +1947,24 @@ loan, assuming the borrower will make all scheduled payments.
 | :---: |   :---:  |
 | Object | no |
 
-If the requested loan is a construction loan with a permanent loan attached and
-the request is configured to use the "Simple" method, then this field will
-contain the construction interest for the requested loan.
+If the requested loan is a construction loan with a permanent loan
+attached and the account specified is set up to compute construction
+loans via the "Simple" method, then this field will contain the
+construction interest for the requested loan.
 
 Note that if a permanent loan is attached to a construction loan and the
-request is set up to use the "Interest Only" method, then the construction
+account is set up to use the "LaserPro" method, then the construction
 and permanent loans are combined into a single loan, with the construction
 (and permanent) loan's interest being reflected in the
 `Moneys.Interest` field, and both loans reflected in a single,
 combined amortization schedule.
 
+If the requested loan is a construction loan *without* a permanent loan
+attached, then the construction interest will be disclosed in the
+`Moneys.Interest` field.
+
 If the requested loan was not a construction loan, or if construction
-loans have not been configured for the given account, then this field
+loans have not been set up for the given account, then this field
 will not appear in the response.
 
 🟦 **Moneys.FinFees**
@@ -2319,19 +2191,7 @@ the disclosure for identification purposes.
 
 Discloses the computed service charge amount.
 
----
-
 </details>
-
-🟦 **Moneys.PMI_Fee**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number - currency |
-
-If PMI has been requested on the loan, and if a number of `UpFront`
-payments have been specified, then this field will return the total PMI
-fee for all up front payments.
 
 ---
 
@@ -2391,79 +2251,6 @@ method use a 360 day calendar.
 Holds the maturity date of the loan, which is the date on which the last
 payment is scheduled. All dates are in the form of YYYY-MM-DD, and must
 be 10 characters long.
-
----
-
-</details>
-
-### 🟦 PMI
-
-| Type  | Required |
-| :---: |   :---:  |
-| Object | no |
-
-The PMI object will only appear if PMI has been computed with the loan. Please
-note that the PMI premiums are do not reflected in the amount reported in the
-`Payment` object, the `PmtStreams[]` array, the `TotPmts` object, nor the `Pmt`
-attribute of the `AmLine` object.
-
-<details>
-<summary><b>PMI fields</b></summary>
-
----
-
-🟥 **PMI.Rate**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - % |
-
-The percentage rate used in the PMI calculation.
-
-🟥 **PMI.LTV**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-The loan to value ratio of the computed loan, expressed as a percentage.
-
-🟥 **PMI.PremiumPerYear**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number-currency |
-
-The annual PMI premium amount.
-
-🟥 **PMI.PremiumPerPeriod**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number-currency |
-
-The periodic PMI premium amount.
-
-🟦 **PMI.IndexToWarn**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number |
-
-This field only appears if the `PercentToWarn` PMI input field
-is specified, and indicates that the payment index on which the remaining
-principal balance to home value ratio drops below the specified percentage.
-
-🟦 **PMI.IndexToRemove**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number |
-
-This field only appears if the `PercentToRemove` PMI input field
-is specified, and indicates that the payment index on which the remaining
-principal balance to home value ratio drops below the specified percentage.
-PMI coverage *stops* after this payment.
 
 ---
 
@@ -3787,419 +3574,6 @@ returned.
 
 </details>
 
-🟦 **Protection.Unemployment**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object | no |
-
-If unemployment protection was requested with the loan, then the `Unemployment`
-object will be present in the response to return information on involuntary
-unemployment coverage.
-
-<details>
-<summary><b>Unemployment fields</b></summary>
-
----
-
-🟥 **Unemployment.Result**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | See below |
-
-This field contains the calculation result for the requested protection product.
-If it contains a value of "Valid Calculation", then the requested product was
-computed and factored into the loan. Parse the other fields and child objects
-for further details.
-
-A value *other than* "Valid Calculation" means that the requested product was
-not computed with the loan, and the value describes why. In this case, there is
-no need to parse through the other fields or child objects, as the product was
-not computed.
-
-🟥 **Unemployment.Formula**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | See below |
-
-The `Formula` field contains an abbreviated description of the formula used to
-compute the desired protection product. The formula codes are for the use of the
-J. L. Sherman and Associates, Inc. support team.
-
-🟥 **Unemployment.RateType**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | Fixed |
-
-This field will only be present in the response if the protection
-product has been configured to allow for coverage to switch from 
-joint to single during the term of coverage, should one of the borrowers
-exceed an age at termination cap. If the field is not present, then
-a value of `Fixed` should be assumed as only one rate has been
-used in the protection calculation.
-
-If this field is present, then there is the possibility that the
-rate used to compute the protection may have changed (in the case of
-coverage for one borrower ending while coverage for the other borrower
-continues). If this is the case, then the field will indicate this
-rate change with a value of `Variable`.
-
-🟥 **Unemployment.Cost**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object | yes |
-
-Fields of this object provide the cost of the protection
-product in total, per payment, and per day. It also provides the
-rate factor used to compute the premiums.
-
-<details>
-<summary><b>Cost fields</b></summary>
-
----
-
-🟥 **Cost.Premium**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-The total cost for this protection over the term of the loan.
-
-🟥 **Cost.PerPmt**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-The cost of coverage expressed as currency per payment.
-
-🟥 **Cost.PerDay**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-The cost of coverage expressed as currency per dey.
-
-🟥 **Cost.Factor**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-The rate factor used to compute the premium for the requested protection product.
-
----
-
-</details>
-
-🟥 **Unemployment.Coverage**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object | yes |
-
-The aggregate coverage amount and note are provided in the following fields of
-this object:
-
-<details>
-<summary><b>Coverage fields</b></summary>
-
----
-
-🟥 **Coverage.Amount**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-The aggregate coverage amount for this protection product.
-
-🟥 **Coverage.Note**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | see below |
-
-The `Note` field will describe the type of coverage provided. If full coverage
-has been provided on the aggregate coverage, then the note will contain "Full
-Coverage". Otherwise, the note will describe the type of partial coverage used.
-
----
-
-</details>
-
-🟥 **Unemployment.Benefit**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object | yes |
-
-The protection product's benefit amount and note are provided in the following
-fields of this object:
-
-<details>
-<summary><b>Benefit fields</b></summary>
-
----
-
-🟥 **Benefit.Amount**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-The monthly benefit amount for this protection product.
-
-🟦 **Benefit.Periodic**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number - currency |
-
-If the account has been configured to disclose periodic benefits (as opposed
-to monthly benefit amounts, which are returned in the `Amount` field
-described above), and if the specified payment frequency is other than monthly,
-then this field will be present and will hold the periodic benefit amount.
-
-🟥 **Benefit.Note**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | see below |
-
-The `Note` field describes the type of coverage provided. If full coverage has
-been provided on the benefit, then the note will contain "Full Coverage".
-Otherwise, the note will describe the type of partial coverage used.
-
----
-
-</details>
-
-🟦 **Unemployment.Term**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object | no |
-
-The `Term` object provides the calling application with data about the term of
-coverage for the requested product. If the input request has specified
-`"ShowBorrowerInfo" : true`, then this object will not be present.
-
-<details>
-<summary><b>Term fields</b></summary>
-
----
-
-🟥 **Term.InMonths**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-Contains the term of coverage expressed as a number of months.
-
-🟥 **Term.InPmts**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-Contains the number of payments covered.
-
-🟥 **Term.Maturity**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | YYYY-MM-DD |
-
-This field contains the maturity date for the requested coverage.
-
-🟥 **Term.Note**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | see below |
-
-The `Note` field will describe the type of coverage provided. If
-full term coverage has been provided, then the note will contain
-"Full Coverage". Otherwise, the note will describe the type of truncated
-coverage used.
-
----
-
-</details>
-
-🟦 **Unemployment.Borrower1**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object | no |
-
-The `Borrower1` object provides the calling application with data about the term
-of coverage of a borrower, for the requested product. Note that this object will
-only be present if the request has specified `"ShowBorrowerInfo" : true`, and a
-valid birthdate was provided.
-
-<details>
-<summary><b>Borrower1 fields</b></summary>
-
----
-
-🟥 **Borrower1.Birthday**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | YYYY-MM-DD |
-
-The birthday associated with the borrower, as specified in the request.
-
-🟥 **Borrower1.AgeAtIssue**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | YYYY-MM-DD |
-
-If coverage is written on this borrower, then the value of this field represents
-the age at issue of the borrower in a special date-like format of `YYYY-MM-DD`,
-where the borrower is `YYYY` years, `MM` months, and `DD` days old when coverage
-begins.
-
-🟥 **Borrower1.AgeAtMaturity**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | YYYY-MM-DD |
-
-If coverage is written on this borrower, then the value of this field represents
-the age at maturity of the borrower in a special date-like format of
-`YYYY-MM-DD`, where the borrower is `YYYY` years, `MM` months, and `DD` days old
-when coverage terminates.
-
-🟥 **Borrower1.Pmts**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-The term of coverage expressed as a number of payments.
-
-🟥 **Borrower1.Months**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-The term of coverage expressed as a number of months.
-
-🟥 **Borrower1.Maturity**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | YYYY-MM-DD |
-
-The coverage maturity date for this particular borrower.
-
-🟥 **Borrower1.Note**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | see below |
-
-The value of this field will describe the type of coverage provided. If full
-term coverage has been provided, then the note will contain "Full Coverage".
-Otherwise, the note will describe the type of truncated coverage used.
-
----
-
-</details>
-
-🟦 **Unemployment.Borrower2**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object | no |
-
-The `Borrower2` object provides the calling application with data about the term
-of coverage of a borrower, for the requested product. Note that this object will
-only be present if the request has specified `"ShowBorrowerInfo" : true`, and a
-valid birthdate was provided.
-
-Please note that the fields of the `Borrower2` object are identical to the
-`Borrower1` object. See the documentation above for the `Borrower1` object for
-further information.
-
-🟦 **Unemployment.Caps**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object | no |
-
-The `Caps` object provides the calling application with data about the maximum
-terms, amounts, and ages associated with the requested product. This objectt
-will only be present if the `ShowCaps` field of the `Protection` request objectt
-is set to `true`.
-
-<details>
-<summary><b>Caps fields</b></summary>
-
----
-
-🟥 **Caps.Cov**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-Contains the maximum aggregate coverage amount. If no cap is present or
-applicable, then a value of zero is returned.
-
-🟥 **Caps.Ben**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-Contains the maximum monthly benefit amount. If no cap is present or applicable,
-then a value of zero is returned.
-
-🟥 **Caps.Term**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-Contains the maximum coverage term, expressed in months. If no cap is present or
-applicable, then a value of zero is returned.
-
-🟥 **Caps.InceptAge**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-Contains the maximum age a borrower may be at loan inception, expressed in
-years. If no cap is present or applicable, then a value of zero is returned.
-
-🟥 **Caps.AttainAge**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-Contains the maximum age a borrower may attain during the term of the loan,
-expressed in years. If no cap is present or applicable, then a value of zero is
-returned.
-
-</details>
-
-</details>
-
 </details>
 
 ---
@@ -4327,28 +3701,6 @@ debt protection products, such as those based on a monthly outstanding balance.
 It contains the total amount paid for this protection over the duration of the
 loan.
 
-🟦 **GrandTotals.IUTot**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number-currency |
-
-The `IUTot` field will only appear on loans with certain types of involuntary
-unemployment protection products, such as those based on a monthly outstanding
-balance. It contains the total amount paid for this protection over the duration
-of the loan.
-
-🟦 **GrandTotals.PMITot**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number-currency |
-
-The `PMITot` attribute will only appear on loans with PMI insurance where the
-PMI premiums were requested in the amortization schedule. It contains the total
-PMI amount paid (not including any up front periodic PMI premiums)for PMI over
-the duration of the loan.
-
 🟦 **GrandTotals.SCTot**
 
 | Type  | Required | Values |
@@ -4449,28 +3801,6 @@ contains the total amount paid for life during the year.
 The `AHSub` field will only appear on loans with certain types of accident and
 health or debt protection products, such as those based on a monthly outstanding
 balance. It contains the total amount paid for this protection during the year.
-
-🟦 **SubTotal.IUSub**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number-currency |
-
-The `IUSub` field will only appear on loans with certain types of involuntary
-unemployment protection products, such as those based on a monthly outstanding
-balance. It contains the total amount paid for involuntary unemployment during
-the year.
-
-🟦 **SubTotal.PMISub**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number-currency |
-
-The `PMISub` field will only appear on loans with PMI insurance where the PMI
-premiums were requested in the amortization schedule. It contains the total PMI
-amount paid (not including any up front periodic PMI premiums) for PMI during
-the year.
 
 🟦 **SubTotal.SCSub**
 
@@ -4574,27 +3904,6 @@ health or debt protection products, such as those based on a monthly outstanding
 balance. It contains the amount of the payment which is marked for disability /
 debt protection coverage.
 
-🟦  **AmLine.IU**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number-currency |
-
-The `IU` field will only appear on loans with certain types of involuntary
-unemployment protection products, such as those based on a monthly outstanding
-balance. It contains the amount of the payment which is marked for this
-coverage.
-
-🟦  **AmLine.PMI**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number-currency |
-
-This field contains the PMI premium for this payment, and will only show up if
-PMI has been computed for this payment and if PMI premiums should be displayed
-in the amortization schedule.
-
 🟦  **AmLine.SC**
 
 | Type  | Required | Values |
@@ -4624,32 +3933,6 @@ places.
 
 The principal balance amount, after the amortization event has taken place.
 
-🟦  **AmLine.MinPnI**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number-currency |
-
-If the ARM loan specified a minimum lifetime interest rate (see `MinRate`), and
-if TILA RESPA data has been requested (using the `Settings.TILARESPA2015`
-field), then this field will be present in each `AmLine` object that represents
-a payment. The value of this field represents the minimum principal and interest
-payment possible, should the index + margin rate trend towards the minimum
-lifetime rate after the teaser term has expired.
-
-🟦  **AmLine.MaxPnI**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number-currency |
-
-If the ARM loan specified a maximum lifetime interest rate (see `MaxRate`), and
-if TILA RESPA data has been requested (using the `Settings.TILARESPA2015`
-field), then this field will be present in each `AmLine` object that represents
-a payment. The value of this field represents the maximum principal and interest
-payment possible, should the index + margin rate trend towards the maximum
-lifetime rate after the teaser term has expired.
-
 </details>
 
 ---
@@ -4658,4 +3941,4 @@ lifetime rate after the teaser term has expired.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Fixed Principal Plus Interest Loans](module-principalplus.md) | [SCEJSON Reference Manual](README.md) | [Single Payment Note](module-singlepmt.md) |
+| [Construction Loans](module-construction.md) | [SCEJSON Reference Manual](README.md) | [Interest Only Loans](module-interestonly.md) |

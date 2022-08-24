@@ -14,6 +14,7 @@ Release 2022-07-0
 
 ## Specific Loan Calculation Modules
 * [Construction Loans](module-construction.md)
+* [Fixed Principal Plus Interest Loans](module-principalplus.md)
 * [Interest Only Loans](module-interestonly.md)
 * [Single Payment Note](module-singlepmt.md)
 

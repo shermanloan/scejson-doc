@@ -1158,7 +1158,6 @@ both loans reflected in a single, combined amortization schedule.
 A value of `default` instructs the SCE to use the construction method specified
 in the setup file for the given account.
 
-
 🟦 **Settings.DataPath**
 
 | Type  | Required | Values | Default |

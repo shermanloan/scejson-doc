@@ -662,7 +662,7 @@ scheduled to be paid off.
 The following example is the response returned from the SCEJSON for the request
 provided at the beginning of the previous section.
 
-**Example - Response Envelope for InterestOnly Module**
+**Example - Response Envelope for Construction Module**
 
 ```json
 {

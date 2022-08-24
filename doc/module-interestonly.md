@@ -4970,4 +4970,4 @@ lifetime rate after the teaser term has expired.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Construction Loans](module-construct.md) | [SCEJSON Reference Manual](README.md) | [Single Payment Note](module-singlepmt.md) |
+| [Construction Loans](module-construction.md) | [SCEJSON Reference Manual](README.md) | [Single Payment Note](module-singlepmt.md) |

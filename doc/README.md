@@ -13,7 +13,7 @@ Release 2022-07-0
 * [Loan](module-loan.md)
 
 ## Specific Loan Calculation Modules
-* [Construction Loans](module-construct.md)
+* [Construction Loans](module-construction.md)
 * [Interest Only Loans](module-interestonly.md)
 * [Single Payment Note](module-singlepmt.md)
 

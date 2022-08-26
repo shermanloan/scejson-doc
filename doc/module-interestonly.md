@@ -959,95 +959,6 @@ product, then this field will be ignored.
 
 </details>
 
-### 🟦 ServiceCharges
-
-| Type  | Required |
-| :---: |   :---:  |
-| array of ServiceCharge objects | no |
-
-This array of `ServiceCharge` objects allows the calling application to specify one ore
-more Service Charge objects to be included with the loan.
-
-<details>
-<summary><b>ServiceCharge fields</b></summary>
-
----
-
-🟦 **ServiceCharge.CalcType**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | LumpSum, Periodic | LumpSum |
-
-A service charge of type `LumpSum` allows the calling application to
-specify an amount that will be spread out evenly over the loan's payment
-stream. On the other hand, a `Periodic` service charge is the amount
-which will be added to each payment.
-
-🟥 **ServiceCharge.Entry**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | n/a |
-
-How this field is interpreted depends upon the `ServiceCharge.CalcType` field.
-It is the numeric amount defining either the lump sum or periodically paid
-service charge.
-
-🟦 **ServiceCharge.Exact**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | false |
-
-The `Exact` field is only considered when the service charge is of type
-`LumpSum`. When the calculated periodic amount is rounded, it will most often
-times produce a total service charge amount that differs from what was
-specified.
-
-If the `Exact` attribute is set to `true`, then the final periodic amount will
-be adjusted so that the sum of all periodic amounts is exactly equal to the
-entered amount (and will result in an odd final payment). A value of `false`
-indicates that the final periodic amount will not be adjusted.
-
-🟦 **ServiceCharge.IsLoanCost***
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | false |
-
-When requesting TILA RESPA outputs (via the `Settings.TILARESPA2015` field), the
-SCE needs to know which service charges need to be considered "borrower paid loan costs",
-as defined in the rule. Please note that if the fee is paid by a lender or other
-third party, then the fee does not affect the loan calculation and should not be
-sent to the SCEX. If it is sent, then the value of this attribute should be set
-to false.
-
-🟦 **ServiceCharge.Name**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | any | empty |
-
-This field is for convenience purposes only, and does not affect the calculation
-of the service charge in any manner. However, the value of this field *will* be
-used to identify the fee in the response, and hence it is highly recommended
-that you name your fees accordingly.
-
-🟦 **ServiceCharge.Round**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | nearest, up, down | nearest |
-
-This field is only considered when the service charge is of type
-`LumpSum`. It determines how the calculated periodic amount
-is rounded.
-
----
-
-</details>
-
 ### 🟦 Settings
 
 | Type  | Required |
@@ -1690,11 +1601,11 @@ request is set to `true`.
 | :---: |   :---:  |
 | array of LoanCost objects | yes |
 
-For every object in the `Fees[]` and `ServiceCharges[]` array present in the
-request which has its `IsLoanCost` field set to `true` (and hence, is a borrower
-paid loan cost) and whose amount is greater than zero (except odd days interest
-fee types, as explained in the previous documentation of the `Fee` and
-`ServiceCharge` objects), there will be a corresponding `LoanCost` object.
+For every object in the `Fees[]` array present in the request which has its
+`IsLoanCost` field set to `true` (and hence, is a borrower paid loan cost) and
+whose amount is greater than zero (except odd days interest fee types, as
+explained in the previous documentation of the `Fee` object), there will be a
+corresponding `LoanCost` object.
 
 <details>
 <summary><b>LoanCost fields</b></summary>
@@ -2279,45 +2190,6 @@ If an odd days prepaid fee has been requested, and if the account has been
 configured to compute the odd days prepaid fee as a number of odd days
 multiplied by a rounded daily amount, then this attribute will be present and
 its value is the number of computed odd days.
-
----
-
-</details>
-
-🟦 **Moneys.ServiceCharges[]**
-
-| Type  | Required |
-| :---: |   :---:  |
-| array of ServiceCharge objects | no |
-
-If the requested loan included service charges, then for each service charge in
-the loan there will be a ServiceCharge object in this array containing the name
-of the service charge and the computed service charge amount.
-
-If there were no service charges requested with the loan, then the
-`Moneys.ServiceCharges[]` array will not be included in the response.
-
-<details>
-<summary><b>ServiceCharge fields</b></summary>
-
----
-
-🟦 **ServiceCharge.Name**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | string |
-
-If a name was provided for the service charge, then it will be included here in
-the disclosure for identification purposes.
-
-🟥 **ServiceCharge.Fee**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-Discloses the computed service charge amount.
 
 ---
 
@@ -4349,15 +4221,6 @@ PMI premiums were requested in the amortization schedule. It contains the total
 PMI amount paid (not including any up front periodic PMI premiums)for PMI over
 the duration of the loan.
 
-🟦 **GrandTotals.SCTot**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number-currency |
-
-The `SCTot` attribute will only appear on loans with service charges. It
-contains the total service charge amount paid over the duration of the loan.
-
 ---
 
 </details>
@@ -4472,15 +4335,6 @@ premiums were requested in the amortization schedule. It contains the total PMI
 amount paid (not including any up front periodic PMI premiums) for PMI during
 the year.
 
-🟦 **SubTotal.SCSub**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number-currency |
-
-The `SCSub` field will only appear on loans with service charges. It contains
-the total of service charges paid during the year.
-
 ---
 
 </details>
@@ -4594,15 +4448,6 @@ coverage.
 This field contains the PMI premium for this payment, and will only show up if
 PMI has been computed for this payment and if PMI premiums should be displayed
 in the amortization schedule.
-
-🟦  **AmLine.SC**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number-currency |
-
-This field contains the total service charge for this payment, and will only be
-present if one or more service charges were requested with the loan.
 
 🟦  **AmLine.UnpaidInt**
 

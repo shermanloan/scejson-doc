@@ -1173,7 +1173,7 @@ no warnings will be generated for these unrecognized fields.
 
 ```json
 {
-  "Module" : "SinglePmt",
+  "Module" : "PrincipalPlus",
   "Data" : {
     "//" : "This is a comment.",
     "Hello" : "Friend!",
@@ -1185,22 +1185,23 @@ no warnings will be generated for these unrecognized fields.
 ```json
 {
   "Result" : 200,
-  "Module" : "InterestOnly",
+  "Module" : "PrincipalPlus",
   "Data" : {
     "Errors" : [
       "Data.LoanDate (StringDate) not found.",
       "Data.PmtDate (StringDate) not found.",
-      "Data.Term (StringInt) not found.",
       "Data.IntRate (StringFloat) not found.",
-      "Data.Proceeds (StringFloat) not found."
+      "Data.Proceeds (StringFloat) not found.",
+      "Data.FirstPrincipalPmt (StringInt) not found.",
+      "Data.PrincipalReduction (StringFloat) not found.",
+      "Data.PrincipalPmts (StringInt) not found."
     ],
     "Warnings" : [
       "Request field Data.Hello (String) not recognized.",
       "Request field Data.How (String) not recognized."
     ]
   }
-}
-```
+}```
 
 ### 🟦 Country
 

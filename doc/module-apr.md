@@ -1648,4 +1648,4 @@ This field is only present when the APR method is US Rule.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Single Payment Notes Module](module-singlepmt.md) | [SCEJSON Reference Manual](README.md) | [High Cost Mortgages Module](module-hcm.md) |
+| [APR Calculation & Verification Module](module-apr.md) | [SCEJSON Reference Manual](README.md) | [High Cost Mortgages Module](module-hcm.md) |

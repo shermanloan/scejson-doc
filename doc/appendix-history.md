@@ -18,6 +18,8 @@ changes which may or may not be of interest to you.
   in this release.
 * The [Single Payment Notes](module-singlepmt.md) module has been made available
   in this release.
+* The [Skip, Pickup and Irregular Payment Loans](module-irregular.md) module has
+  been made available in this release.
 
 ## Release 2022-07-0
 * The [APY Calculation](module-apy.md) module has been made available in this

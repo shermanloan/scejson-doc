@@ -17,6 +17,7 @@ Release 2022-07-0
 * [Fixed Principal Plus Interest Loans](module-principalplus.md)
 * [Interest Only Loans](module-interestonly.md)
 * [Single Payment Note](module-singlepmt.md)
+* [Skip, Pickup and Irregular Payment Loans](module-irregular.md)
 
 ## Compliance Modules
 * [APR Calculation & Verification](module-apr.md)

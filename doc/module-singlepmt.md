@@ -3582,4 +3582,4 @@ The principal balance amount, after the amortization event has taken place.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Interest Only Loans](module-interestonly.md) | [SCEJSON Reference Manual](README.md) | [APR Calculation & Verification Module](module-apr.md) |
+| [Interest Only Loans](module-interestonly.md) | [SCEJSON Reference Manual](README.md) | [Skip, Pickup and Irregular Payment Loans](module-irregular.md) |

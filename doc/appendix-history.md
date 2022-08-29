@@ -10,12 +10,14 @@ chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
 ## Release 2022-10-0
-* The [Construction Loans](module-construction.md) module has been made available
-  in this release.
+* The [Balloon Payment Loans](module-construction.md) module has been made
+  available in this release.
+* The [Construction Loans](module-construction.md) module has been made
+  available in this release.
 * The [Fixed Principal Plus Interest Loans](module-principalplus.md) module has
   been made available in this release.
-* The [Interest Only Loans](module-interestonly.md) module has been made available
-  in this release.
+* The [Interest Only Loans](module-interestonly.md) module has been made
+  available in this release.
 * The [Single Payment Notes](module-singlepmt.md) module has been made available
   in this release.
 * The [Skip, Pickup and Irregular Payment Loans](module-irregular.md) module has

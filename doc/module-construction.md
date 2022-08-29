@@ -2009,4 +2009,4 @@ The principal balance amount, after the amortization event has taken place.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Loan Module](module-loan.md) | [SCEJSON Reference Manual](README.md) | [Fixed Principal Plus Interest Loans](module-principalplus.md) |
+| [Balloon Payment Loans](module-balloon.md) | [SCEJSON Reference Manual](README.md) | [Fixed Principal Plus Interest Loans](module-principalplus.md) |

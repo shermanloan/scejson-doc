@@ -16,15 +16,15 @@ which supports the permanent loan's repayment structure.
 
 **Example - Request Envelope for Construction Module**
 
-The following example is a request for a construction loan with no permanent loan
-attached, with a proceeds of
-$100,000, interest will accrue at a 4.5% rate using a unit period / 360 U. S.
-Rule accrual method (accrual code `301`). There will be 11 monthly interest only payments
-with an additional final payment paying off the loan. As the schedule of advances are
-not known at this time and interest is only due on the outstanding balance, we
-will assume that half the commitment amount is outstanding during the term of the loan.
-Furthermore, we will ask the SCE to return the individual interest only payments instead
-of using the `Simple` method which returs a single lump sum interest amount.
+The following example is a request for a construction loan with no permanent
+loan attached, with a proceeds of $100,000, interest will accrue at a 4.5% rate
+using a unit period / 360 U. S. Rule accrual method (accrual code `301`). There
+will be 11 monthly interest only payments with an additional final payment
+paying off the loan. As the schedule of advances are not known at this time and
+interest is only due on the outstanding balance, we will assume that half the
+commitment amount is outstanding during the term of the loan. Furthermore, we
+will ask the SCE to return the individual interest only payments instead of
+using the `Simple` method which returs a single lump sum interest amount.
 
 ```json
 {
@@ -2009,4 +2009,4 @@ The principal balance amount, after the amortization event has taken place.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Balloon Payment Loans](module-balloon.md) | [SCEJSON Reference Manual](README.md) | [Fixed Principal Plus Interest Loans](module-principalplus.md) |
+| [Balloon Payment Loans](module-balloon.md) | [SCEJSON Reference Manual](README.md) | [Equal Payment Loans](module-equalpmt.md) |

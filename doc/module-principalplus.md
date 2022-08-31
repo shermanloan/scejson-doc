@@ -18,7 +18,7 @@ off $100 of principal each.
 
 **Example - Request Envelope for PrincipalPlus Module**
 
-The following example is a request for a Fixed Principal Plus Interest Loans
+The following example is a request for a fixed principal plus interest Loans
 loan with proceeds of $10,000, interest will accrue at a 6.0% rate using an
 actual day / 365 U. S. Rule accrual method (accrual code `320`). There will be
 12 monthly payments, the first 11 of which will pay of a fixed principal amount
@@ -3789,4 +3789,4 @@ The principal balance amount, after the amortization event has taken place.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Construction Loans](module-construction.md) | [SCEJSON Reference Manual](README.md) | [Interest Only Loans](module-interestonly.md) |
+| [Equal Payment Loans](module-equalpmt.md) | [SCEJSON Reference Manual](README.md) | [Interest Only Loans](module-interestonly.md) |

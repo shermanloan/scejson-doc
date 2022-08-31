@@ -15,6 +15,7 @@ Release 2022-07-0
 ## Specific Loan Calculation Modules
 * [Balloon Payment Loans](module-balloon.md)
 * [Construction Loans](module-construction.md)
+* [Equal Payment Loans](module-equalpmt.md)
 * [Fixed Principal Plus Interest Loans](module-principalplus.md)
 * [Interest Only Loans](module-interestonly.md)
 * [Single Payment Note](module-singlepmt.md)

@@ -9,8 +9,17 @@ Release 2022-07-0
 ## Utility Modules
 * [Version](module-version.md)
 
-## Loan Calculation Modules
+## General Loan Calculation Module
 * [Loan](module-loan.md)
+
+## Specific Loan Calculation Modules
+* [Balloon Payment Loans](module-balloon.md)
+* [Construction Loans](module-construction.md)
+* [Equal Payment Loans](module-equalpmt.md)
+* [Fixed Principal Plus Interest Loans](module-principalplus.md)
+* [Interest Only Loans](module-interestonly.md)
+* [Single Payment Note](module-singlepmt.md)
+* [Skip, Pickup and Irregular Payment Loans](module-irregular.md)
 
 ## Compliance Modules
 * [APR Calculation & Verification](module-apr.md)

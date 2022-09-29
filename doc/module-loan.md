@@ -1038,7 +1038,7 @@ both are set to `true`, then an error will be returned.
 | :---: |   :---:  |
 | array of Fee objects | no |
 
-This array of `Feee` objects allows the calling application to specify one ore
+This array of `Fee` objects allows the calling application to specify one ore
 more Fee objects to be added to the loan.
 
 <details>
@@ -2375,7 +2375,7 @@ be used.
 | String | no | number - currency | 0 |
 
 If you wish to specify a benefit amount less than the maximum allowed, then do
-so with this field. Omitting this field will assure that the maximum benefit
+so with this field. Omitting this field will ensure that the maximum benefit
 amount allowed will be used in the loan calculation. Note that if the specified
 account has not been set up to allow for user-specified benefit amounts for the
 product in question, or if the product itself does not have the notion of a
@@ -2437,7 +2437,7 @@ of 1 would thus be "0001").
 | String | no | number - currency | 0 |
 
 If you wish to specify a coverage amount less than the maximum allowed, then do
-so with this field. Omitting this field will assure that the maximum coverage
+so with this field. Omitting this field will ensure that the maximum coverage
 amount allowed will be used in the loan calculation. Note that if the specified
 account has not been set up to allow for user specified coverage amounts for the
 product in question, then this attribute will be ignored.
@@ -2520,7 +2520,7 @@ If you need to specify a coverage term (in months or payments) less than the
 maximum allowed, then do so using this field. If this field is omitted, then the
 loan will be covered for the maximum term allowed. Note that if the specified
 account has not been set up to allow for user specified coverage terms for this
-product, then this attribute will be ignored.
+product, then this field will be ignored.
 
 ---
 
@@ -2883,7 +2883,7 @@ This field returns the APR method used to compute the reported APR.
 | Object | no |
 
 The `MAPR` (military APR) object is only returned with the response if the
-value of the `APR.UseMAPR` request field is `true`.
+value of the `Apr.UseMAPR` request field is `true`.
 
 ---
 
@@ -2919,7 +2919,7 @@ etc.
 | String | yes | number - % |
 
 This field holds the maximum Military APR as specified in the
-input XML (see `APR.MAPR_Max`). If not specified, a default value
+input XML (see `Apr.MAPR_Max`). If not specified, a default value
 of 36% is assumed. The value of this field should be displayed
 as a percentage. As an example, for `"Max" : "36.000"`, you would
 disclose a maximum Military APR of 36%.
@@ -4678,4 +4678,4 @@ The principal balance amount, after the amortization event has taken place.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Version Module](module-version.md) | [SCEJSON Reference Manual](README.md) | [APR Calculation & Verification Module](module-apr.md) |
+| [Version Module](module-version.md) | [SCEJSON Reference Manual](README.md) | [Balloon Payment Loans](module-balloon.md) |

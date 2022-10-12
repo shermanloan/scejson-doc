@@ -2354,6 +2354,28 @@ of the Finance Charge, and hence will affect the effective APR.
 
 </details>
 
+🟦 **Moneys.MinIntChgAdj**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+If a minimum interest charge is configured in the account's setup files and the
+final payment was adjusted to meet this minimum interest charge, then this
+field will be returned in the response and will contain the value of the
+minimum interest charge adjustment.
+
+🟦 **Moneys.MinFinChgAdj**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | number - currency |
+
+If a minimum finance charge is configured in the account's setup files and the
+final payment was adjusted to meet this minimum finance charge, then this
+field will be returned in the response and will contain the value of the
+minimum finance charge adjustment.
+
 🟦 **Moneys.Fees[]**
 
 | Type  | Required |

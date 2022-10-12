@@ -9,6 +9,26 @@ in a reverse chronological order, grouped by release. By referencing this
 chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
+## Release 2023-01-0
+* The [Loan](module-loan.md) module's `BusinessRules` request object supports
+  two new fields: `MinIntChg` and `MinFinChg`. These fields allow the calling
+  application to specify minimum interest and finance charge values for a given
+  loan. If adjustments are made to the final payment to satisfy the specified
+  minimum interest and finance charge values, then new `MintIntChgAdj` and
+  `MinFinChgAdj` fields will be present in the `Moneys` response object. Please
+  see the documentation for these new fields in the chapter covering the
+  [Loan](module-loan.md) module for further information.
+* All specific loan calculation modules (i.e. [Equal Payment
+  Loans](module-equalpmt.md), [Balloon Payment Loans](module-balloon.md), etc.)
+  now support either a minimum interest charge *or* a minimum finance charge
+  through the setup files. This minimum defined in the setup files is then
+  active for all specific loan calculation moudle requests using that account.
+  If adjustments are made to the final payment to satisfy the specified minimum
+  interest and finance charge values, then new `MintIntChgAdj` and
+  `MinFinChgAdj` fields will be present in the `Moneys` response object. Please
+  see the chapter covering the appropriate specific loan calculation module for
+  further information.
+
 ## Release 2022-10-0
 * The [Balloon Payment Loans](module-construction.md) module has been made
   available in this release.

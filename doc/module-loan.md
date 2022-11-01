@@ -1737,6 +1737,17 @@ payment, then set the value of this field to `true`. A value of `false`
 indicates that the odd days interest will be treated as a prepaid finance
 charge.
 
+🟦 **ODI.AddToPrin**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If any odd days interest should be treated as a financed prepaid fee, then set
+the value of this field to `true`. Note that if both `AddToPmt` and `AddToPrin`
+are set to `true`, then a warning message will be returned by the SCE and the
+value of `AddToPrin` will be set to `false`.
+
 🟦 **ODI.AnchorDate**
 
 | Type  | Required | Values | Default |

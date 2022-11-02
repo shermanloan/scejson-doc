@@ -42,6 +42,13 @@ changes which may or may not be of interest to you.
   skip weekends, with options to move the date to the previous, next, or nearest
   business day. Please see the documentation for the new `Weekends` field in the
   chapter covering the [Loan](module-loan.md) module for further information.
+* The [Loan](module-loan.md) module now allows `PmtStream` and `Fee` dates to
+  skip holidays, with options to move the date to the previous or next day.
+  Please see the documentation for the new `Holidays[]` array and `Holidays`
+  field of the `PmtStream` and `Fee` request objects in the chapter covering the
+  [Loan](module-loan.md) module for further information.
+
+
 
 ## Release 2022-10-0
 * The [Balloon Payment Loans](module-construction.md) module has been made

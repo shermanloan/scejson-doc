@@ -1166,6 +1166,47 @@ field), this field determines if all the service charge fee payments should be
 forced to be equal (a value of `true`), or if the final service charge fee
 payment can be different from the others due to rounding (a value of `false`).
 
+🟦 **Fee.Holidays**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | ignore, prev, next | ignore |
+
+If fee dates (including the specified start date) are not allowed to fall on
+specified holidays (see the `Holidays[]` array for more inforation on how to
+specify holidays), then set the value of this field to something other than
+`ignore`. The meaning of the other two values are defined below:
+
+- **prev -** The date will be moved to the day before the holiday.
+- **next -** The date will be moved to the Monday after the holiday.
+
+Note that two other `Fee` fields can cause the computed dates to be adjusted:
+`AllowFeb29` and `Weekends`. The rules for how these three fields interact are
+described below in detail.
+
+For every date required in our payment stream, the SCE goes through the
+following steps:
+
+1. Generate the next date in our date stream, called the target date.
+2. If February 29th is not allowed and if the target date is 2/29, then
+ adjust the target date forward or backward one day based upon the date
+ generation frequency. If the frequency is a monthly multiple, then the target
+ date is moved backward one day to 2/28. Weekly and biweekly frequencies move the
+ target date forward one day to 3/1.
+3. If weekend dates are not allowed (e.g. the `Weekends` field holds a
+ value other than `ignore`) and the target date falls on a Saturday or Sunday:
+    1. then adjust the target date according to the field value.
+    2. if February 29th is not allowed and if the target date is 2/29, then
+     adjust the target date in the same direction as in 3(a) above.
+4. If holidays are not allowed (e.g. the `Holidays` field holds a value
+ other than `ignore`) and the target date falls on a specified holiday:
+    1. Then adjust the target date according to the `Holidays` field value.
+    2. If weekend dates are not allowed (e.g. the `Weekends` field holds a
+     value other than `Ignore`) and the target date falls on a Saturday or Sunday,
+     then adjust the target date in the same direction as 4(a) above.
+    3. if February 29th is not allowed and if the target date is 2/29, then
+     adjust the target date in the same direction as in 4(a) above.
+
 🟦 **Fee.LastDay**
 
 | Type  | Required | Values | Default |
@@ -1419,7 +1460,7 @@ valid date, then the value of this field is ignored.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | ignore, prev, near, next | ignore |
+| String | no | ignore, prev, near, next | ignore |
 
 If fee dates (including the specified start `Date`) are not allowed to fall on a
 Saturday or Sunday, then set the value of this field to something other than
@@ -1440,6 +1481,39 @@ fields work together, please see the documentation for the `Holidays` field.
 ---
 
 </details>
+
+### 🟦 Holidays
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of String | no |
+
+If dates for `PmtStream` and `Fee` objects have requested that holidays be
+skipped (e.g. the `Holidays` field for the object in question is set to a value
+other than `ignore`, then the request must specify each holiday to be
+considered, with each holiday requiring at least one entry in this `Holidays`
+array.
+
+The format of the `Holidays[]` array member must follow one of the three
+following descriptions:
+
+- **YYYY-MM-DD -** A holiday can be defined by sending in a valid date, where
+ YYYY is greater than or equal to 1900, MM is a valid month, and DD is a valid
+ day for the given year and month.
+- **0000-MM-DD -** A holiday that occurs annually on the same month and day can
+ be defined by sending in a valid month and day, with the year passed in as
+ `0000`. As an example, in the United States of America, Christmas is a Federal
+ holiday celebrated on December 25th of each year. To pass this holiday in to
+ the SCE, the `Holidays[]` array member would look like `"0000-12-25"`.
+- **0001-MM-PD -** A holiday that occurs annually in the same month on a given
+ day of the week (`D`) in a given position in the month (`P`) can be defined by
+ sending in a valid month, position, and day of the week, with the year passed
+ in as `0001`. The value of `D` can be from 0 to 6, where 0 = Sunday, 1 =
+ Monday, ..., 6 = Saturday. The value of `P` can be from 1 to 6, where 1 = 1st,
+ 2 = Second, ..., 5 = 5th, 6 = last. As an example, in the United States of
+ America, Thanksgiving is a Federal holiday celebrated on the 4th (`P=4`)
+ Thursday (`D=4`) of November (`MM=11`) every year. To pass this holiday in to
+ the SCE, the `Holiday[]` array member would look like `"0001-11-44"`.
 
 ### 🟦 MI
 
@@ -2029,6 +2103,47 @@ will also understand `Date` values in the following formats:
 of one of the three formats mentioned above), then the `LastDay`, `Term`, and
 `PPY` fields will be ignored, unless otherwise noted above.*
 
+🟦 **PmtStream.Holidays**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | ignore, prev, next | ignore |
+
+If payment dates (including the specified start date) are not allowed to fall on
+specified holidays (see the `Holidays[]` array for more inforation on
+how to specify holidays), then set the value of this field to something other
+than `ignore`. The meaning of the other two values are defined below:
+
+- **prev -** The date will be moved to the day before the holiday.
+- **next -** The date will be moved to the Monday after the holiday.
+
+Note that two other `PmtStream` fields can cause the computed dates to be
+adjusted: `AllowFeb29` and `Weekends`. The rules for how these three fields
+interact are described below in detail.
+
+For every date required in our payment stream, the SCE goes through the
+following steps:
+
+1. Generate the next date in our date stream, called the target date.
+2. If February 29th is not allowed and if the target date is 2/29, then
+ adjust the target date forward or backward one day based upon the date
+ generation frequency. If the frequency is a monthly multiple, then the target
+ date is moved backward one day to 2/28. Weekly and biweekly frequencies move the
+ target date forward one day to 3/1.
+3. If weekend dates are not allowed (e.g. the `Weekends` field holds a
+ value other than `ignore`) and the target date falls on a Saturday or Sunday:
+    1. then adjust the target date according to the field value.
+    2. if February 29th is not allowed and if the target date is 2/29, then
+     adjust the target date in the same direction as in 3(a) above.
+4. If holidays are not allowed (e.g. the `Holidays` field holds a value
+ other than `ignore`) and the target date falls on a specified holiday:
+    1. Then adjust the target date according to the `Holidays` field value.
+    2. If weekend dates are not allowed (e.g. the `Weekends` field holds a
+     value other than `Ignore`) and the target date falls on a Saturday or Sunday,
+     then adjust the target date in the same direction as 4(a) above.
+    3. if February 29th is not allowed and if the target date is 2/29, then
+     adjust the target date in the same direction as in 4(a) above.
+
 🟦 **PmtStream.LastDay**
 
 | Type  | Required | Values | Default |
@@ -2179,7 +2294,7 @@ ignored, unless it is a replacement payment using the `NNNN-00-00` date format.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | ignore, prev, near, next | ignore |
+| String | no | ignore, prev, near, next | ignore |
 
 If payment stream dates (including the specified start `Date`) are not allowed
 to fall on a Saturday or Sunday, then set the value of this field to something

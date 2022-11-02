@@ -28,7 +28,7 @@ changes which may or may not be of interest to you.
   `MinFinChgAdj` fields will be present in the `Moneys` response object. Please
   see the chapter covering the appropriate specific loan calculation module for
   further information.
-* All Loan calculation modules now support financed odd days prepaid interest
+* All loan calculation modules now support financed odd days prepaid interest
   via the `AddToPrin` field of the appropriate object. Note that this field will
   be ignored if the odd days interest is set up to be added to the first payment
   instead of being disclosed as a prepaid fee.

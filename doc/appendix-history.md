@@ -38,6 +38,10 @@ changes which may or may not be of interest to you.
   application to request a principal reduction amount equal to the computed target
   payment (e.g. `"Amount" : "100%C"`). Please see the documentation for the
   `PmtStream` object's `Amount` field in the Loan chapter for further information.
+* The [Loan](module-loan.md) module now allows `PmtStream` and `Fee` dates to
+  skip weekends, with options to move the date to the previous, next, or nearest
+  business day. Please see the documentation for the new `Weekends` field in the
+  chapter covering the [Loan](module-loan.md) module for further information.
 
 ## Release 2022-10-0
 * The [Balloon Payment Loans](module-construction.md) module has been made

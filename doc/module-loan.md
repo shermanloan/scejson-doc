@@ -1415,6 +1415,28 @@ specified frequency (see `Fee.PPY` above), after which the fee stream is
 completed. The default value is `1`. If the value of the `Date` field is not a
 valid date, then the value of this field is ignored.
 
+🟦 **Fee.Weekends**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | ignore, prev, near, next | ignore |
+
+If fee dates (including the specified start `Date`) are not allowed to fall on a
+Saturday or Sunday, then set the value of this field to something other than
+`ignore`. The meaning of the other three values are defined below:
+
+- **prev** - The date will be moved to the Friday before the computed weekend
+  date.
+- **near** - The date will be moved to the Friday before the computed weekend
+  date if the computed weekend date falls on a Saturday, otherwise it will be
+  moved to the Monday after.
+- **next** - The date will be moved to the Monday after the computed weekend
+  date.
+
+Note that two other `Fee` fields can cause the computed dates to be adjusted -
+`AllowFeb29` and `Holidays`. For a complete description of how these three
+fields work together, please see the documentation for the `Holidays` field.
+
 ---
 
 </details>
@@ -2152,6 +2174,29 @@ specified payment frequency (see `PmtStream.PPY` above), after which the payment
 stream is completed. The default value is `1`. If the value of the
 `PmtStream.Date` field is not a valid date, then the value of this field is
 ignored, unless it is a replacement payment using the `NNNN-00-00` date format.
+
+🟦 **PmtStream.Weekends**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | ignore, prev, near, next | ignore |
+
+If payment stream dates (including the specified start `Date`) are not allowed
+to fall on a Saturday or Sunday, then set the value of this field to something
+other than `ignore`. The meaning of the other three values are defined below:
+
+- **prev** - The date will be moved to the Friday before the computed weekend
+  date.
+- **near** - The date will be moved to the Friday before the computed weekend
+  date if the computed weekend date falls on a Saturday, otherwise it will be
+  moved to the Monday after.
+- **next** - The date will be moved to the Monday after the computed weekend
+  date.
+
+Note that two other `PmtStream` fields can cause the computed dates to be
+adjusted - `AllowFeb29` and `Holidays`. For a complete description of how these
+three fields work together, please see the documentation for the `Holidays`
+field.
 
 ---
 </details>

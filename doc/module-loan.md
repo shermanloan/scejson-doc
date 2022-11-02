@@ -1491,7 +1491,7 @@ fields work together, please see the documentation for the `Holidays` field.
 If dates for `PmtStream` and `Fee` objects have requested that holidays be
 skipped (e.g. the `Holidays` field for the object in question is set to a value
 other than `ignore`, then the request must specify each holiday to be
-considered, with each holiday requiring at least one entry in this `Holidays`
+considered, with each holiday requiring at least one entry in this `Holidays[]`
 array.
 
 The format of the `Holidays[]` array member must follow one of the three

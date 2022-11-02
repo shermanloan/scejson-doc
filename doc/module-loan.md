@@ -1853,9 +1853,13 @@ stream.
 
 If the `PmtType` field is equal to `PayInt` or `PayPrin`, then the value of this
 field may be specified as a flat dollar amount (e.g. `"Amount" : "250.00"`), a
-percentage of the principal balance (e.g. `"Amount" : "5.25%"`), or a percentage
-of the outstanding balance at the time the payment is made (e.g. `"Amount" :
-"8.125%B"`).
+percentage of the principal balance (e.g. `"Amount" : "5.25%"`), a percentage of
+the outstanding balance at the time the payment is made (e.g. `"Amount" : "8.125%B"`),
+or a percentage of the computed target payment (e.g. `"Amount" : "100%C"`).
+
+balance (e.g. \texttt{Amount="5.25\%"}), a percentage of the outstanding balance
+at the time the payment is made (e.g. \texttt{Amount="8.125\%B"}), or a
+percentage of the computed target payment (e.g. \texttt{Amount="100\%C"}).
 
 If the `PmtType` field is equal to `CalcPmt`, then the value of this field may
 be specified as a flat dollar amount (e.g. `"Amount" : "500.00"`) which will be

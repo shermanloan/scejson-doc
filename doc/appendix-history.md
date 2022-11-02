@@ -32,6 +32,12 @@ changes which may or may not be of interest to you.
   via the `AddToPrin` field of the appropriate object. Note that this field will
   be ignored if the odd days interest is set up to be added to the first payment
   instead of being disclosed as a prepaid fee.
+* The [Loan](module-loan.md) module now supports the calculation of fixed principal
+  plus interest and pure principal payments where the principal reduction amount
+  is defined as a percentage of the computed payment. This allows a calling
+  application to request a principal reduction amount equal to the computed target
+  payment (e.g. `"Amount" : "100%C"`). Please see the documentation for the
+  `PmtStream` object's `Amount` field in the Loan chapter for further information.
 
 ## Release 2022-10-0
 * The [Balloon Payment Loans](module-construction.md) module has been made

@@ -47,8 +47,13 @@ changes which may or may not be of interest to you.
   Please see the documentation for the new `Holidays[]` array and `Holidays`
   field of the `PmtStream` and `Fee` request objects in the chapter covering the
   [Loan](module-loan.md) module for further information.
-
-
+* The [Loan](module-loan.md) module now supports the new `Capitalization` array
+  of `Capitalize` events, each of which allows the calling application to
+  specify a stream of interest accrual capitalization events during the term of
+  the loan. This is most useful in loans which feature pure principal payments
+  and which capitalize interest regurlarly on a different day of the month.
+  Please see the documentation for the new `Capitalization[]` array field in the
+  chapter covering the [Loan](module-loan.md) module for further information.
 
 ## Release 2022-10-0
 * The [Balloon Payment Loans](module-construction.md) module has been made

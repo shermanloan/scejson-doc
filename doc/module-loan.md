@@ -761,6 +761,200 @@ Balance of the loan.
 ---
 </details>
 
+### 🟦 Capitalization
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of Capitalize objects | no |
+
+Some loans require interest to be capitalized on specific dates, irrespective of
+any other considerations. For these events, use one or more `Capitalize`
+objects.
+
+<details>
+<summary><b>Capitalize fields</b></summary>
+
+---
+
+🟦 **Capitalize.AllowFeb29**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | true |
+
+This attribute is used when generating event dates in a capitalization stream
+(if any) beyond the specified `Date` date of the `Capitalize` object. If the
+value of this attribute is `true`, then February 29th is an allowed date.
+
+On the other hand, if the value of this attribute is set to `false` and a computed
+date in the given capitalization stream is scheduled to fall on February 29th,
+then the scheduled date will be altered in one of the following manners:
+
+- If the number of payments per year is 1, 2, 4, 6, 12, or 24 then the
+ scheduled date of February 29 will be moved back one day to February 28.
+ This is the only date that will be adjusted.
+- If the number of payments per year is 26 or 52 then the scheduled
+ date of February 29 will be moved forward one day to March 1, and all subsequent
+ dates will be a multiple of 7 or 14 days from this date (depending upon
+ the specified payment frequency).
+
+🟥 **Capitalize.Date**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | YYYY-MM-DD | n/a |
+
+The `Date` field for the `Capitalize` object is used to specify the date on
+which to capitalize interest. (For a stream of Capitilize events, see the `Term`
+field.) As an example, if interest is to be capitalized on Feb. 1, 2008, the
+field should be specified as `"Date" : "2008-02-01"`.
+
+🟦 **Capitalize.Holidays**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | ignore, prev, next | ignore |
+
+If event dates (including the specified start date) are not allowed to fall on
+specified holidays (see the `Holidays[]` array for more inforation on
+how to specify holidays), then set the value of this field to something other
+than `ignore`. The meaning of the other two values are defined below:
+
+- **prev -** The date will be moved to the day before the holiday.
+- **next -** The date will be moved to the Monday after the holiday.
+
+Note that two other `Capitalize` fields can cause the computed dates to be
+adjusted: `AllowFeb29` and `Weekends`. The rules for how these three fields
+interact are described below in detail.
+
+For every date required in our capitalization stream, the SCE goes through the
+following steps:
+
+1. Generate the next date in our date stream, called the target date.
+2. If February 29th is not allowed and if the target date is 2/29, then
+ adjust the target date forward or backward one day based upon the date
+ generation frequency. If the frequency is a monthly multiple, then the target
+ date is moved backward one day to 2/28. Weekly and biweekly frequencies move the
+ target date forward one day to 3/1.
+3. If weekend dates are not allowed (e.g. the `Weekends` field holds a
+ value other than `ignore`) and the target date falls on a Saturday or Sunday:
+    1. then adjust the target date according to the field value.
+    2. if February 29th is not allowed and if the target date is 2/29, then
+     adjust the target date in the same direction as in 3(a) above.
+4. If holidays are not allowed (e.g. the `Holidays` field holds a value
+ other than `ignore`) and the target date falls on a specified holiday:
+    1. Then adjust the target date according to the `Holidays` field value.
+    2. If weekend dates are not allowed (e.g. the `Weekends` field holds a
+     value other than `Ignore`) and the target date falls on a Saturday or Sunday,
+     then adjust the target date in the same direction as 4(a) above.
+    3. if February 29th is not allowed and if the target date is 2/29, then
+     adjust the target date in the same direction as in 4(a) above.
+    4. Step 4 is repeated until the target date is not adjusted.
+
+🟦 **Capitalize.LastDay**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+This field is used to resolve ambiguitiess in subsequent event
+dates when the `Date` date falls on the last day of a month
+with fewer than 31 days.
+
+Set this field's value to `true` if the intent was to make
+subsequent events occur on the last day of the month. A value of
+`false` indicates that subsequent event dates will fall on the
+day number specified by the `Date`.
+
+As an example, if the calling application specifies a `Date`
+of "2010-02-28", then subsequent payment dates for a monthly
+payment frequency will be:
+
+- **on the 28th of each subsequent month** if `"LastDay" : false`.
+- **on the last day of each subsequent month** if `"LastDay" : true`.
+
+🟦 **Capitalize.PPY**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 1, 2, 4, 6, 12, 24, 26, 52 | 12 |
+
+`PPY` is an abbreviation for "payments per year", and as one might surmise,
+determines the frequency of capitalization events. If only one capitalization
+event occurs or the stream of capitilization events are monthly, this attribute
+may be ignored.
+
+🟦 **Capitalize.SemimonthlyDay**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | number | 0 |
+
+When specifying a semimonthly stream, the day number on which the first
+capitalization event occurs is the day number for all of the following odd
+numbered payments. If you omit this field or specify a value of `0`, then the
+even numbered events will be generated using the default method within the SCE.
+
+If you wish to specify the day number on which even numbered events fall
+(overriding the default method used in the SCE), then set the value of this
+field to the desired day number. Setting the value of this field to `31` will
+cause all even events to fall on the last day of the month.
+
+As an example, if you want to specify a semi-monthly capitalization stream
+beginning on January 1, 2019 with events that fall on the 1st and 15th of each
+month for 24 payments, the object should look something like this:
+
+```json
+{
+  "Capitalization" : [
+    {
+      "Date" : "2019-01-01",
+      "Term" : "24",
+      "PPY" : "24",
+      "SemimonthlyDay" : "15"
+    }
+  ]
+}
+```
+
+🟦 **Capitalize.Term**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | number | 1 |
+
+The `Term` field indicates the the number of capitalization events to be made at
+the specified payment frequency (see `Capitalize.PPY` above). The default value
+is `1`, and if only one capitalization event is required, this field may be
+omitted.
+
+🟦 **Capitalize.Weekends**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | ignore, prev, near, next | ignore |
+
+If capitalization stream dates (including the specified start `Date`) are not
+allowed to fall on a Saturday or Sunday, then set the value of this field to
+something other than `ignore`. The meaning of the other three values are defined
+below:
+
+- **prev** - The date will be moved to the Friday before the computed weekend
+  date.
+- **near** - The date will be moved to the Friday before the computed weekend
+  date if the computed weekend date falls on a Saturday, otherwise it will be
+  moved to the Monday after.
+- **next** - The date will be moved to the Monday after the computed weekend
+  date.
+
+Note that two other `Capitalize` fields can cause the computed dates to be
+adjusted - `AllowFeb29` and `Holidays`. For a complete description of how these
+three fields work together, please see the documentation for the `Holidays`
+field.
+
+---
+</details>
+
 ### 🟦 Construction
 
 | Type  | Required |
@@ -1206,6 +1400,7 @@ following steps:
      then adjust the target date in the same direction as 4(a) above.
     3. if February 29th is not allowed and if the target date is 2/29, then
      adjust the target date in the same direction as in 4(a) above.
+    4. Step 4 is repeated until the target date is not adjusted.
 
 🟦 **Fee.LastDay**
 
@@ -2143,6 +2338,7 @@ following steps:
      then adjust the target date in the same direction as 4(a) above.
     3. if February 29th is not allowed and if the target date is 2/29, then
      adjust the target date in the same direction as in 4(a) above.
+    4. Step 4 is repeated until the target date is not adjusted.
 
 🟦 **PmtStream.LastDay**
 
@@ -2161,11 +2357,11 @@ subsequent payments occur on the last day of the month. A value of
 day number specified by the `Date`.
 
 As an example, if the calling application specifies a `Date`
-of `2010-02-281, then subsequent payment dates for a monthly
+of `2010-02-28`, then subsequent payment dates for a monthly
 payment frequency will be:
 
 - **on the 28th of each subsequent month** if `"LastDay" : false`.
-- **on the last day of each subsequent month** if "LastDay : true`.
+- **on the last day of each subsequent month** if `"LastDay" : true`.
 
 🟦 **PmtStream.MinPmt** (number) \{optional\}}
 

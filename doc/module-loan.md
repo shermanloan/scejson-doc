@@ -186,7 +186,7 @@ interest.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number - Integer | Text - See below |
+| String | no | Number - % | Text - See below |
 
 Defines the interest rate that applies at and beyond this event. If no `IntRate`
 is specified, the previously defined interest rate is used. A value of zero will
@@ -273,7 +273,7 @@ Defines the upper bound to which the specified split rate tier will apply.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number - Floating | n/a |
+| String | yes | Number - % | n/a |
 
 Defines the interest rate that applies to this split rate tier.
 
@@ -3711,7 +3711,7 @@ year, and premium per period.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | Number - % |
+| String | yes | Number - Floating |
 
 The percentage rate used in the mortgage insurance calculation.
 

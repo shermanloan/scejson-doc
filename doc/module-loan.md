@@ -176,7 +176,7 @@ will also understand `Date` values in the following formats:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Integer | 0 |
+| String | no | Number - Integer | 0 |
 
 Increase or decrease the number of days between this event and the next event by
 the value of this field. e.g. `1` will be considered one more day of
@@ -339,7 +339,7 @@ of January 2, 2021 would be specified as `"Date" : "2021-01-02"`.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Integer | 0 |
+| String | no | Number - Integer | 0 |
 
 Increase or decrease the number of days between this event and the next event by
 the value of this field. e.g. `1` will be considered one more day of interest.

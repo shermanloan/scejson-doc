@@ -5080,4 +5080,4 @@ lifetime rate after the teaser term has expired.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Loan Module](module-loan.md) | [SCEJSON Reference Manual](README.md) | [Construction Loans](module-construction.md) |
+| [Adjustable Rate Mortgages](module-arm.md) | [SCEJSON Reference Manual](README.md) | [Construction Loans](module-construction.md) |

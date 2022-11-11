@@ -10,6 +10,8 @@ chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
 ## Release 2023-01-0
+* The [Adjustable Rate Mortgages](module-arm.md) module has been made available
+  in this release.
 * The [Loan](module-loan.md) module's `BusinessRules` request object supports
   two new fields: `MinIntChg` and `MinFinChg`. These fields allow the calling
   application to specify minimum interest and finance charge values for a given

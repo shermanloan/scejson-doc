@@ -4726,4 +4726,4 @@ The principal balance amount, after the amortization event has taken place.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Version Module](module-version.md) | [SCEJSON Reference Manual](README.md) | [Balloon Payment Loans](module-balloon.md) |
+| [Version Module](module-version.md) | [SCEJSON Reference Manual](README.md) | [Adjustable Rate Mortgages](module-arm.md) |

@@ -1,54 +1,81 @@
-# [[LOAN NAME]]
+# Adjustable Rate Mortgages
 
-> "An election is coming. Universal peace is declared  
->  and the foxes have a sincere interest in  
->  prolonging the lives of the poultry."  
->                           --- T. S. Eliot
+> "You live and learn. At any rate, you live."  
+>                           --- Douglas Adams
 
-Interest only loans are loans which have a payment stream consisting of
-one or more interest only payment, with a final payment paying off the
-principal balance plus the interest accrued during the final payment
-period. The principal balance does not decrease during the term of the
-loan, until the final payment when it is scheduled to be fully paid.
+An adjustable rate mortgage is a loan whose interest rate varies
+during the repayment term. These types of loans are most often
+found in the real estate market, hence their name. In this chapter,
+we will refer to adjustable rate mortgages as ARMs.
 
-## [[LOAN NAME]] Request Data Object Field Definition
+## Adjustable Rate Mortgage Request Data Object Field Definition
 
-**Example - Request Envelope for [[MODULE NAME]] Module**
+**Example - Request Envelope for Arm Module**
 
-The following example is a request for a [[LOAN NAME]] loan with proceeds of
-$10,000, interest will accrue at a 4.5% rate using a unit period / 360 U. S.
-Rule accrual method (accrual code `301`), with a financed and APR affecting document
-preparation fee of $25 included. There will be 11 monthly interest only payments
-with an additional final payment paying off the loan.
+The following example is a request for an ARM loan with proceeds of
+$10,000, interest will accrue at a teaser rate of 4.0% for a term of 12 months, after
+which the rate will adjust annually to the index + margin of 8.0%, with a maximum
+annual rate increase of 2.0%. The interest accrual method requested is unit period / 365 U. S.
+Rule accrual method (accrual code `302`).
 
 ```json
 {
-  "Module" : "InterestOnly",
+  "Module" : "Arm",
   "Data" : {
-    "LoanDate" : "2022-08-22",
-    "PmtDate" : "2022-10-01",
-    "IntRate" : "4.500",
-    "Term" : "12",
-    "PPY" : "12",
+    "CalcType" : "Payments",
+    "LoanDate" : "2022-11-15",
+    "PmtDate" : "2023-01-01",
     "Proceeds" : "10000.00",
-    "Fees" : [
-      {
-        "Name" : "Doc Prep Fee",
-        "AddToFinChg" : true,
-        "AddToPrin" : true,
-        "CalcType" : "Dollar",
-        "Entry" : "25.00"
-      }
-    ],
+    "Term" : "120",
+    "PPY" : "monthly",
+    "TeaserTerm" : "12",
+    "TeaserRate" : "4.000",
+    "Index" : "6.00",
+    "Margin" : "2.00",
+    "TermStep" : "12",
+    "AnnualRateIncrease" : "2.00",
     "Settings" : {
-      "AccrualCode" : "301"
+      "AccrualCode" : "302"
     }
   }
 }
 ```
 
-The fields of the `Data` object supported by an [[MODULE NAME]] module request are
+The fields of the `Data` object supported by an Arm module request are
 defined in alphabetical order below:
+
+### 🟦 AdjFirstInc
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the value of this field is `false`, then the first rate increase following
+the teaser term is equal to annual rate increase. If `true`, then the first rate
+increase following the teaser term is equal to periodic rate increase (see
+`TermStep`).
+
+### 🟦 AmortTerm
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - Integer | 0 |
+
+To specify a balloon payment for the ARM loan using a specified amortization term
+(similar to one of the balloon loan options), then set the contents
+of this field to a value greater than that found in `Term` field.
+
+### 🟥 AnnualRateIncrease
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - % | n/a |
+
+Just how much the interest rate increases when a rate increase is due depends
+upon this field, in conjunction with the `TermStep` field. In our example, the
+annual rate increase is specified as 2%, with rate adjustments every twelve
+monthly payments. Thus, each rate adjustment will see the interest rate increase
+by 2%.
 
 ### 🟦 Apr
 
@@ -68,7 +95,7 @@ in the fields of this object.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 36 |
+| String | no | Number - Floating | 36 |
 
 If you are computing the Military APR (see `UseMAPR` below) and wish to override
 the default maximum APR value of 36%, then specify the desired maximum as the
@@ -122,6 +149,39 @@ included in the loan response.
 
 </details>
 
+### 🟦 BlendedIntOnly
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+Blended interest only payments do not consider the initial stream of interest
+payments to be outside the scheme of rate increases. For example, if the value
+of this field is set to `true` with `IntOnlyPmts` set to 12 and `TeaserTerm` set
+to 48, the payment stream resulting will be 12 interest only payments followed
+by 36 principal and interest payments (and the rest of the tiered P&I payments).
+If set to `false`, then the payment stream would be 12 interest only payments
+(accrued at a rate determined by the `InterestPmtRate` field) followed by 48 P&I
+payments.
+
+If the value of this field is set to `true`, then the
+`InterestPmtRate` field is ignored. Please note that blended
+interest only payments are not allowed with ARM loans computed using a
+`CalcType` of `Balloon`.
+
+### 🟦 CalcType
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Payments, Balloon | Payments |
+
+This field specifies how the payment stream is adjusted for rate changes
+during the term of the loan. If this field holds a value of `Payments`,
+then the disclosed payment will change with each rate change. A value of
+`Balloon` indicates that the payment computed for the teaser term will be
+used for all but the last payment, with the final payment equal to the amount
+needed to pay off the loan.
+
 ### 🟦 Construction
 
 | Type  | Required |
@@ -167,16 +227,16 @@ construction period's payment frequency.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - % | n/a |
+| String | yes | Number - % | n/a |
 
-This attribute determines the rate applied to the appropriate commitment
+This field determines the rate applied to the appropriate commitment
 amount during the term of the construction loan.
 
 🟥 **Construction.Term**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number | n/a |
+| String | yes | Number - Integer | n/a |
 
 The term of the construction loan (in payments) is specified using this field.
 Please note that the term may not exceed five years.
@@ -197,6 +257,56 @@ the list of supported countries and their associated codes.
 
 Specifying the `Country` will also set the default value for the `APR.Method`
 field appropriately for the country specified.
+
+### 🟦 ExemptPostTeaserMax
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+This field determines whether or not the post teaser rate (if one has been
+specified) is excluded from the maximum rate constraint (see `MaxRate`). If the
+value of this field is set to `true`, then the post teaser rate may be
+greater than the specified maximum rate. If the value of this field is set
+to `false`, then the rate during the post teaser term can not be greater than
+the specified maximum rate.
+
+### 🟦 ExemptTeaserMax
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | true |
+
+This field determines whether or not the teaser rate is excluded from the
+maximum rate constraint (see `MaxRate`). If the value of this field is set
+to `true`, then the teaser rate may be greater than the specified maximum rate.
+If the value of this field is set to `false`, then rate during the teaser
+term can not be greater than the specified maximum rate.
+
+### 🟦 ExemptPostTeaserMin
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+This field determines whether or not the post teaser rate (if one has been
+specified) is excluded from the minimum rate constraint (see `MinRate`). If the
+value of this field is set to `true`, then the post teaser rate may be less
+than the specified minimum rate. If the value of this field is set to
+`false`, then the rate during the post teaser term can not be less than the
+specified minimum rate.
+
+### 🟦 ExemptTeaserMin
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+This field determines whether or not the teaser rate is excluded from the
+minimum rate constraint (see `MinRate`). If the value of this field is set to
+`true`, then the teaser rate may be less than the specified minimum rate. If the
+value of this field is set to `false`, then the rate during the teaser term can
+not be less than the specified minimum rate.
 
 ### 🟦 Fees
 
@@ -236,7 +346,7 @@ then the fee is paid up front out of the borrower's pocket.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
+| String | no | Number - Currency | 0 |
 
 The optional `Adjust` field allows the calling application
 to increase or decrease the base amount on which a fee is calculated.
@@ -279,18 +389,18 @@ This field specifies how the fee is to be computed, as described in the followin
 | OnProceeds    | The `Entry` field is understood as a percentage value, to be applied to the loan's proceeds, defined as the sum of advances. An `Amount` of `0.25` would represent a fee of 0.25% of the total proceeds. |
 | OnPrincipal   | The `Entry` field is understood as a percentage value, to be applied to the loan's principal balance. An `Amount` of `0.125` would represent a fee of 0.125% of the principal balance. |
 | OnAmtFin      | The `Entry` field is understood as a percentage value, to be applied to the loan's Regulation Z Amount Financed. An `Amount` of `0.33` would represent a fee of 0.33% of the amount financed. |
-| OddDays360 | Compute a prepaid interest charge on the odd days, using a 360 day divisor. For this calculation type, the `Entry` attribute is ignored. You *must* set the `AddToFinChg` attribute to true, otherwise the fee will return a value of zero.|
-| OddDays365  | Compute a prepaid interest charge on the odd days, using a 365 day divisor. For this calculation type, the `Entry` attribute is ignored. You *must* set the `AddToFinChg` attribute to true, otherwise the fee will return a value of zero.|
-| OddDaysActAct  | Compute a prepaid interest charge on the odd days, using the actual/actual method (366 for leap year, 365 for non-leap year) as the divisor. For this calculation type, the `Entry` attribute is ignored. You *must* set the `AddToFinChg` attribute to true, otherwise the fee will return a value of zero.|
-| OddDaysUnit360 | Compute a prepaid interest charge on the odd days, using a unit period calendar with 360 day divisor. For this calculation type, the `Entry` attribute is ignored. You *must* set the `AddToFinChg` attribute to true, otherwise the fee return a value of zero.|
-| OddDaysUnit365 & Compute a prepaid interest charge on the odd days, using a unit period calendar with 365 day divisor. For this calculation type, the `Entry` attribute is ignored. You *must* set the `AddToFinChg` attribute to true, otherwise the fee will return a value of zero.|
-| OddDaysVarDPY | Compute a prepaid interest charge on the odd days, using a unit period calendar with a divisor equal to 12 multiplied by the number of days in the month of the date on which interest begins to accrue. For this calculation type, the `Entry` attribute is ignored. You *must* set the `AddToFinChg` attribute to true, otherwise the fee will return a value of zero. |
+| OddDays360 | Compute a prepaid interest charge on the odd days, using a 360 day divisor. For this calculation type, the `Entry` field is ignored. You *must* set the `AddToFinChg` field to true, otherwise the fee will return a value of zero.|
+| OddDays365  | Compute a prepaid interest charge on the odd days, using a 365 day divisor. For this calculation type, the `Entry` field is ignored. You *must* set the `AddToFinChg` field to true, otherwise the fee will return a value of zero.|
+| OddDaysActAct  | Compute a prepaid interest charge on the odd days, using the actual/actual method (366 for leap year, 365 for non-leap year) as the divisor. For this calculation type, the `Entry` field is ignored. You *must* set the `AddToFinChg` field to true, otherwise the fee will return a value of zero.|
+| OddDaysUnit360 | Compute a prepaid interest charge on the odd days, using a unit period calendar with 360 day divisor. For this calculation type, the `Entry` field is ignored. You *must* set the `AddToFinChg` field to true, otherwise the fee return a value of zero.|
+| OddDaysUnit365 & Compute a prepaid interest charge on the odd days, using a unit period calendar with 365 day divisor. For this calculation type, the `Entry` field is ignored. You *must* set the `AddToFinChg` field to true, otherwise the fee will return a value of zero.|
+| OddDaysVarDPY | Compute a prepaid interest charge on the odd days, using a unit period calendar with a divisor equal to 12 multiplied by the number of days in the month of the date on which interest begins to accrue. For this calculation type, the `Entry` field is ignored. You *must* set the `AddToFinChg` field to true, otherwise the fee will return a value of zero. |
 
 🟦 **Fee.Entry**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
+| String | no | Number - Floating | 0 |
 
 How this field is interpreted depends upon the `Fee.CalcType` field.
 Please see the documentation for this field for further information.
@@ -305,7 +415,7 @@ When requesting TILA RESPA outputs (via the `Settings.TILARESPA2015` field), the
 SCE needs to know which fees need to be considered "borrower paid loan costs",
 as defined in the rule. Please note that if the fee is paid by a lender or other
 third party, then the fee does not affect the loan calculation and should not be
-sent to the SCEX. If it is sent, then the value of this attribute should be set
+sent to the SCEX. If it is sent, then the value of this field should be set
 to false.
 
 Note that fees which calculate odd days interest (e.g. their `CalcType` is one
@@ -336,7 +446,7 @@ premium vs. monthly outstanding balance).
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
+| String | no | Number - Currency | 0 |
 
 If a maximum value for the fee is specified and is greater than zero, then if
 the computed fee exceeds this maximum value, then the maximum value will be used
@@ -350,7 +460,7 @@ a specified minimum.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
+| String | no | Number - Currency | 0 |
 
 If a minimum value for the fee is specified and is greater than zero, then if
 the computed fee is less than this minimum value, then the minimum value will be
@@ -375,16 +485,70 @@ name your fees accordingly.
 
 </details>
 
-### 🟥 IntRate
+### 🟦 FirstRateIncrease
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | see below |
+| String | no | Number - % | 0 |
 
-Determine the interest rate used for the loan.
-The interest rate should be expressed as a percentage. For example,
-a loan computed with a rate of 5.125% would be specified as
-`"IntRate" : "5.125"`.
+If the value contained in this field is greater than zero and less than or equal
+to ten, then the first rate adjustment (which occurs at the conclusion of the
+teaser term) for the first `TermStep` number of payments will be in this amount.
+After that, the rate will adjust as described in `AnnualRateIncrease`. Note that
+this adjustment is always from the teaser rate towards the sum of the specified
+index and margin. Thus, if the sum of the index and margin is greater than the
+teaser rate, then the teaser rate will increase by the specified value.
+Similarly, if the sum of the index and margin is less than the teaser rate (and
+if rates are allowed to stair step down [see the `StairStepDown` field]), then
+the rate will decrease by the specified value.
+
+Note that the calling application may specify either the `FirstRateIncrease`
+*or* the `PostTeaserRate` (see below), but not both.
+
+### 🟦 ForcTeaserSegment
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the ARM loan has a constant rate over the term of the loan, should the teaser
+term portion of the loan be disclosed as a separate payment stream?
+
+### 🟥 Index
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - % | n/a |
+
+This field holds the current value of the rate index at loan closing. When added
+together with the value of the `Margin` field, it produces the interest rate for
+the loan.
+
+### 🟦 InterestPmtRate
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - % | 0 |
+
+If this loan has interest only payments preceding the ARM loan (i.e. the value
+contained in the `InterestPmts` field is greater than zero), then this field
+determines the interest rate charged during the interest only payment stream if
+the `BlendedIntOnly` field is `false`.
+
+If no interest only payments precede the irregular loan, or if the interest only
+payments are blended (e.g `BlendedIntOnly` is set to `true`), then this element
+need not be specified and will be ignored if present.
+
+### 🟦 InterestPmts
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - Integer | n/a |
+
+If present, this field determines the number of interest only payments
+made at the start of the ARM loan. After the specified number
+of interest only payments are made, then the loan continues with
+P&I payments.
 
 ### 🟦 IntStartDate
 
@@ -410,6 +574,44 @@ This field holds the date on which the loan amount is disbursed and interest
 begins to accrue. All dates must be in the form of YYYY-MM-DD, and be 10
 characters long.
 
+### 🟦 Margin
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - % | 0 |
+
+As noted in the documentation for the `Index` field, the `Margin` is closely
+tied with the `Index`, and represents the difference between the interest rate
+and index rate. The lender determines the margin at the time of loan closing,
+and it remains fixed for the duration of the loan.
+
+### 🟦 MaxRate
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - % | 0 |
+
+This is another optional field which allows the calling application to specify
+an absolute interest rate maximum during the term of the ARM. If the interest
+rate ever exceeds this rate maximum, then it will be capped at this value. If
+left unspecified (or zero), then no absolute rate maximum will be enforced.
+
+Note that there are three different ways to specify interest rate maximums: (i)
+`Index` + `Margin`, (ii) `TeaserRate` + `MaxRateIncrease`, and (iii) `MaxRate`.
+
+### 🟦 MaxRateIncrease
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - % | 0 |
+
+This optional field allows the calling application to specify a maximum value
+that the interest rate may increase from the specified teaser rate, during the
+term of the loan. If an interest rate adjustment would exceed the maximum rate
+increase, then the interest rate will be capped at a value equal to the teaser
+rate plus the maximum rate increase. If left unspecified (or zero), then no
+maximum rate increase will be enforced.
+
 ### 🟦 MI
 
 | Type  | Required |
@@ -428,7 +630,7 @@ mortgage insurance (MI): PMI or FHA.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number - currency | 0 |
+| String | no | Number - Currency | 0 |
 
 The `CashDown` field represents a cash down payment made at closing. If
 specified and greater than zero, this amount will be deducted from the
@@ -438,7 +640,7 @@ principal balance. If not specified, the cash down payment will default to zero.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number - currency | 0 |
+| String | no | Number - Currency | 0 |
 
 The `LoanAmt` field represents the amount by which the PMI rates
 are multiplied to produce a level PMI premium. If not specified, then
@@ -462,7 +664,7 @@ should be dropped during the repayment period.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
+| String | no | Number - % | 0 |
 
 The value of this field determines the loan to value ratio at which MI should be
 removed, and is expressed as a percentage.
@@ -471,7 +673,7 @@ removed, and is expressed as a percentage.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
+| String | no | Number - Integer | 0 |
 
 The value of this field represents the term beyond which MI is no longer
 included.
@@ -480,7 +682,7 @@ included.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
+| String | no | Number - %  | 0 |
 
 The value of this field determines the loan to value ratio at which a warning
 should be issued, and is expressed as a percentage of LTV (loan to value).
@@ -493,7 +695,7 @@ should be issued, and is expressed as a percentage of LTV (loan to value).
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 This field's value represents the appraised property value, and will be
 used in the calculation of the loan to value ratio.
@@ -516,7 +718,7 @@ more mortgage insurance rate objects.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | n/a |
+| String | yes | Number - Floating | n/a |
 
 The value of this field specifies the cost of mortgage insurance per $100 of the
 loan amount. Note that there may be more than one Rate object in a loan request
@@ -526,14 +728,14 @@ loan amount. Note that there may be more than one Rate object in a loan request
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
+| String | no | Number - Integer | 0 |
 
 This optional field defines the payment number beyond which the associated
 mortgage insurance rate will apply. If not specified, the value will default to
 zero.
 
 Thus, if there is only a single mortgage insurance rate, one may omit this
-attribute.
+field.
 
 ---
 
@@ -551,7 +753,7 @@ MI premium is computed every twelve months based upon the average outstanding pr
 balance during that same term. The MI calculation adheres strictly to the [HUD
 regulation](http://portal.hud.gov/hudportal/HUD?src=/program_offices/housing/comp/premiums/sfpcalc).
 
-If the `Type` attribute is set to `PMI`, then each defined MI
+If the `Type` field is set to `PMI`, then each defined MI
 rate produces a level MI premium based upon the inital loan amount.
 
 🟦 **MI.UpFront**
@@ -592,11 +794,11 @@ balance nor the finance charge.
 If the `Units` field is set to `Months`, then `UpFront.Value` represents the
 number of periodic MI premiums to be paid at closing.
 
-If the `Units` attribute is set to `Years`, then `UpFront.Value` represents the
+If the `Units` field is set to `Years`, then `UpFront.Value` represents the
 number of annual MI premiums to be paid at closing. Many single premium products
 define the up front fee as a number of years of MI to be paid up front.
 
-Finally, if the `Units` attribute is set to `Points`, then `UpFront.Value`
+Finally, if the `Units` field is set to `Points`, then `UpFront.Value`
 represents the percentage of principal to be paid up front. As of October 3,
 2011, FHA loans use points.
 
@@ -604,9 +806,9 @@ represents the percentage of principal to be paid up front. As of October 3,
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
+| String | no | Number - Integer or Floating | 0 |
 
-The `Value` attribute meaning depends upon the value of `UpFront.Units`. Please
+The `Value` field meaning depends upon the value of `UpFront.Units`. Please
 see its documentation above for further information.
 
 ---
@@ -617,6 +819,17 @@ see its documentation above for further information.
 
 </details>
 
+### 🟦 MinRate
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - % | 0 |
+
+The contents of this optional field allow you to specify a minimum interest rate for
+the ARM. Should the interest rate ever dip below this value, then the minimum
+rate specified will be used instead. If left unspecified (or zero), then no
+rate minimum will be enforced.
+
 ### 🟥 PmtDate
 
 | Type  | Required | Values | Default |
@@ -626,6 +839,21 @@ see its documentation above for further information.
 This field specifies the first (and for single payment notes, only) payment date
 in the loan's repayment schedule. All dates must be in the form of YYYY-MM-DD,
 and be 10 characters long.
+
+### 🟦 PostTeaserRate
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - % | 0 |
+
+Instead of specifying a first rate adjustment using the `FirstRateIncrease`
+field above, the calling application can instead specify an interest rate that applies
+following the teaser term. This will allow for loans with a teaser rate, followed by a post
+teaser rate less than the teaser rate, which will then adjust to the sum of the index and
+margin greater than the teaser rate.
+
+Note that the calling application may either specify the `FirstRateIncrease`
+(see above) *or* the `PostTeaserRate`, but not both.
 
 ### 🟦 PPY
 
@@ -642,7 +870,7 @@ other than monthly, specify it using this field.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 The proceeds specified indicate the amount of money the borrower is
 requesting, and does not include financed fees, financed insurances,
@@ -675,7 +903,7 @@ birthdays.
 This field holds the date of birth for the secondary borrower. All dates must be
 in the form of YYYY-MM-DD, and be 10 characters long. Hence, a birthday of April
 9, 1972 would be specified as `"Birthday2" : "1972-04-09"`. Note that this
-element *must* be set if the `Covers` attribute of any of the four payment
+element *must* be set if the `Covers` field of any of the four payment
 protection objects is set to `borrower2` or `both`.
 
 🟦 **Protection.Birthday2**
@@ -687,7 +915,7 @@ protection objects is set to `borrower2` or `both`.
 This field holds the date of birth for the primary borrower. All dates must be
 in the form of YYYY-MM-DD, and be 10 characters long. Hence, a birthday of April
 9, 1972 would be specified as `"Birthday1" : "1972-04-09"`. Note that this
-element *must* be set if the `Covers` attribute of any of the four payment
+element *must* be set if the `Covers` field of any of the four payment
 protection objects is set to `borrower1` or `both`.
 
 🟦 **Protection.Disability**
@@ -708,13 +936,13 @@ requested for the loan.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   | :---: |
-| String | no | number - currency | 0 |
+| String | no | Number - Currency | 0 |
 
 If you wish to specify a benefit amount less than the maximum allowed, then do
 so with this field. Omitting this field will ensure that the maximum benefit
 amount allowed will be used in the loan calculation. Note that if the specified
 account has not been set up to allow for user-specified benefit amounts for the
-product in question, then this attribute will be ignored.
+product in question, then this field will be ignored.
 
 🟦 **Disability.Covers**
 
@@ -733,7 +961,7 @@ the `Disability` object altogether or specify a value of `none`.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   | :---: |
-| String | no | number | 0 |
+| String | no | Number - Integer | 0 |
 
 If you need to specify a coverage term (in months or payments) less than the
 maximum allowed, then do so using this field. If this field is omitted, then the
@@ -787,13 +1015,13 @@ requested for the loan.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   | :---: |
-| String | no | number - currency | 0 |
+| String | no | Number - Currency | 0 |
 
 If you wish to specify a coverage amount less than the maximum allowed, then do
 so with this field. Omitting this field will ensure that the maximum coverage
 amount allowed will be used in the loan calculation. Note that if the specified
 account has not been set up to allow for user specified coverage amounts for the
-product in question, then this attribute will be ignored.
+product in question, then this field will be ignored.
 
 🟦 **Life.Covers**
 
@@ -812,7 +1040,7 @@ the `Life` object altogether or specify a value of `none`.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   | :---: |
-| String | no | number | 0 |
+| String | no | Number - Integer | 0 |
 
 If you need to specify a coverage term (in months or payments) less than the
 maximum allowed, then do so using this field. If this field is omitted, then the
@@ -880,49 +1108,6 @@ included as a part of the Finance Charge, and hence affect the disclosed APR.
 If the `Mandatory` field is set to `false`, then the loan will treat any
 premiums / fees as normal.
 
-🟦 **Protection.Property**
-
-| Type  | Required |
-| :---: |   :---:  |
-| Object | no |
-
-The `Property` object determines what type of property coverage is
-requested for the loan.
-
-<details>
-<summary><b>Property fields</b></summary>
-
----
-
-🟦 **Property.Coverage**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   | :---: |
-| String | no | number - currency | 0 |
-
-If you wish to specify a benefit amount less than the maximum allowed, then do
-so with this field. Omitting this field will ensure that the maximum benefit
-amount allowed will be used in the loan calculation. Note that if the specified
-account has not been set up to allow for user-specified benefit amounts for the
-product in question, then this attribute will be ignored.
-
-🟦 **Property.Covers**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | none, borrower1, both | borrower1 |
-
-The value of this field determines what type of coverage is being requested on
-the loan. A value of `borrower1` represents single coverage on the primary
-borrower (whose birthdays are contained in appropriate Birthday
-objects described above). A request for joint coverage on both borrowers is
-indicated by a value of `both`. Finally, if no coverage is desired, simple omit
-the `Property` object altogether or specify a value of `none`.
-
----
-
-</details>
-
 🟦 **Protection.ShowBorrowerInfo**
 
 | Type  | Required | Values | Default |
@@ -963,13 +1148,13 @@ requested for the loan.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   | :---: |
-| String | no | number - currency | 0 |
+| String | no | Number - Currency | 0 |
 
 If you wish to specify a benefit amount less than the maximum allowed, then do
 so with this field. Omitting this field will ensure that the maximum benefit
 amount allowed will be used in the loan calculation. Note that if the specified
 account has not been set up to allow for user-specified benefit amounts for the
-product in question, then this attribute will be ignored.
+product in question, then this field will be ignored.
 
 🟦 **Unemployment.Covers**
 
@@ -988,7 +1173,7 @@ the `Unemployment` object altogether or specify a value of `none`.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   | :---: |
-| String | no | number | 0 |
+| String | no | Number - Integer | 0 |
 
 If you need to specify a coverage term (in months or payments) less than the
 maximum allowed, then do so using this field. If this field is omitted, then the
@@ -1002,94 +1187,42 @@ product, then this field will be ignored.
 
 </details>
 
-### 🟦 ServiceCharges
-
-| Type  | Required |
-| :---: |   :---:  |
-| array of ServiceCharge objects | no |
-
-This array of `ServiceCharge` objects allows the calling application to specify one ore
-more Service Charge objects to be included with the loan.
-
-<details>
-<summary><b>ServiceCharge fields</b></summary>
-
----
-
-🟦 **ServiceCharge.CalcType**
+### 🟦 Round
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | LumpSum, Periodic | LumpSum |
+| String | no | up, down, nearest | nearest |
 
-A service charge of type `LumpSum` allows the calling application to
-specify an amount that will be spread out evenly over the loan's payment
-stream. On the other hand, a `Periodic` service charge is the amount
-which will be added to each payment.
+If a value is specified for the `RoundRate` field (see below), then the value of
+this field determines how the rounding will be performed.
 
-🟥 **ServiceCharge.Entry**
+### 🟦 RoundRate
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | n/a |
+| String | no | Number - floating | 0 |
 
-How this field is interpreted depends upon the `ServiceCharge.CalcType` field.
-It is the numeric amount defining either the lump sum or periodically paid
-service charge.
+If the value of this field is greater than zero, then the sum of the specified index and
+margin (i.e. the sum of the unrounded values specified in the response) will be rounded
+according to this value and the `Round` field defined above.
 
-🟦 **ServiceCharge.Exact**
+As an example, if the sum of the specified index and margin is 5.01 and the value of this
+element is `0.125` (1/8th of a percent), then the computed index + margin will be rounded
+to either 5.0 or 5.125 depending upon the value of the `Round` field specified.
 
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | false |
+If no value is specified for this element, then no rounding of the index plus
+margin (nor any other rates) will occur.
 
-The `Exact` field is only considered when the service charge is of type
-`LumpSum`. When the calculated periodic amount is rounded, it will most often
-times produce a total service charge amount that differs from what was
-specified.
-
-If the `Exact` attribute is set to `true`, then the final periodic amount will
-be adjusted so that the sum of all periodic amounts is exactly equal to the
-entered amount (and will result in an odd final payment). A value of `false`
-indicates that the final periodic amount will not be adjusted.
-
-🟦 **ServiceCharge.IsLoanCost***
+### 🟥 TeaserRate
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | false |
+| String | yes | Number - % | See below |
 
-When requesting TILA RESPA outputs (via the `Settings.TILARESPA2015` field), the
-SCE needs to know which service charges need to be considered "borrower paid loan costs",
-as defined in the rule. Please note that if the fee is paid by a lender or other
-third party, then the fee does not affect the loan calculation and should not be
-sent to the SCEX. If it is sent, then the value of this attribute should be set
-to false.
-
-🟦 **ServiceCharge.Name**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | any | empty |
-
-This field is for convenience purposes only, and does not affect the calculation
-of the service charge in any manner. However, the value of this field *will* be
-used to identify the fee in the response, and hence it is highly recommended
-that you name your fees accordingly.
-
-🟦 **ServiceCharge.Round**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | nearest, up, down | nearest |
-
-This field is only considered when the service charge is of type
-`LumpSum`. It determines how the calculated periodic amount
-is rounded.
-
----
-
-</details>
+Determine the interest rate used for the loan.
+The interest rate should be expressed as a percentage. For example,
+a loan computed with a rate of 5.125% would be specified as
+`"IntRate" : "5.125"`.
 
 ### 🟦 Settings
 
@@ -1108,7 +1241,7 @@ loan calculation options.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 1..9999 |
+| String | no | 1..9999 | 1 |
 
 The `Account` field specifies the numeric setup file account number that will be
 used to compute the requested loan. Each account is numbered from 1 to 9,999,
@@ -1123,8 +1256,10 @@ insurance methods / rates / caps, etc.
 | String | no | see table | default |
 
 The method of interest accrual is defined by this field. A value of `default`
-informs the SCE to use the single payment note interest accrual method defined
+informs the SCE to use the interest accrual method defined
 in the setup file for the specified `Account`.
+
+** TODO ** - Finish this list!
 
 | Code | Description |
 | :---: | :--- |
@@ -1201,22 +1336,6 @@ will result in payments which fall at the end of the month. A value of `false`
 indicates that when dictated, subsequent payment dates will not be moved to the
 last day of the month.
 
-🟦 **Settings.PmtDollarRound**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | false |
-
-Payments are normally rounded to the penny, according to the method specified by
-in the setup file, or vy the`Settings.PmtRound` field. If the payment should be
-rounded to the dollar instead of the penny, then set the value of this field to
-`true`.
-
-Note that for some loans (such as those with longer terms or relatively small
-proceeds), rounding the payment up or to the nearest dollar may require a
-shortened loan term to prevent one or more negative payments at the end of the
-loan.
-
 🟦 **Settings.PmtRound**
 
 | Type  | Required | Values | Default |
@@ -1264,7 +1383,7 @@ loans, skips, pickups and irregulars, and ARMs.
 Canadian mortgages may compute periodic interest using a fractional power of a
 periodic yield. If set to a value other than `0', this field determines the
 period. Please contact us for further information if you support mortgage
-calculations in Canada. Note that when using this attribute with a value other
+calculations in Canada. Note that when using this field with a value other
 than zero, the calling application *must* include an odd days prepaid fee in the
 request.
 
@@ -1272,11 +1391,45 @@ request.
 
 </details>
 
+### 🟦 StairStepDown
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false, default | default |
+
+If the final rate is less than the teaser rate, a value of `false` will keep the
+rate at the teaser rate for the duration of the loan. If your institution allows
+the rate to decrease below the teaser rate over the term of the loan, then set
+the value of this field to `true`. A `default` value instructs the SCE to use
+the value stored in the setup file.
+
+### 🟥 TeaserRate
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - % | See below |
+
+The teaser rate is the interest rate initially applied to the loan during the
+`TeaserTerm`. These rates are in effect for a given number of payments (see
+`TeaserTerm` below), after which regular rate adjustments will take place during
+the life of the loan. In our sample above, the teaser rate is set to 4%.
+
+### 🟥 TeaserTerm
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - Integer | n/a |
+
+This field specifies the number of payments that the `TeaserRate` (see above) is in effect.
+No interest rate increase will take place during the teaser term. In our sample above, the
+teaser rate of 4% is applicable for the first twelve months of the loan. After the
+twelfth payment, the rates will be adjusted as dictated to the `Index` + `Margin`.
+
 ### 🟦 TotalDown
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number - currency | n/a |
+| String | no | Number - Currency | n/a |
 
 This optional field represents the total down payment that the borrower
 has applied to reduce the requested proceeds. It may consist of a cash down
@@ -1288,131 +1441,155 @@ these loan types are auto and boat loans.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | n/a |
+| String | yes | Number - Integer | n/a |
 
 The `Term` field indicates the the number of *payments* to be made at the
 specified payment frequency (see the `PPY` field above), after which the loan is
 scheduled to be paid off.
 
-## [[LOAN NAME]] Response Data Object Field Definition
+### 🟥 TermStep
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - Integer | n/a |
+
+This field specifies the number of payments between interest rate increases
+after the teaser term has passed. In our sample above, the teaser term is 12
+months, with a term step of 12 months. This means that the first 12 months will
+use the teaser rate as the interest rate. Then, the next twelve months will use
+an increased rate, with the next twelve months increasing the rate again, etc.
+
+If the value of this field is greater than the number of payments per year, then
+any value is valid, and the rate increase per step is equal to the annual rate
+increase.
+
+If the value of this field is less than or equal to the number of payments per
+year, then the value of the `TermStep` field must evenly divide the number of
+payments per year. In this case, the rate increase per step is equal to the
+annual rate increase multiplied by the term step divided by the number of
+payments per year.
+
+### 🟦 UseMarginAsMin
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the `MinRate` field is not present in the request and the value of this field
+is `true`, then the value of the `Margin` field will be treated as the specified
+minimum rate for all purposes, including the TILA RESPA 2015 disclosures.
+
+## Adjustable Rate Mortgage Response Data Object Field Definition
 
 The following example is the response returned from the SCEJSON for the request
 provided at the beginning of the previous section.
 
-**Example - Response Envelope for [[MODULE NAME]] Module**
+**Example - Response Envelope for Arm Module**
 
 ```json
 {
   "Result" : 200,
-  "Module" : "InterestOnly",
+  "Module" : "Arm",
   "Data" : {
     "Errors" : [
     ],
     "Warnings" : [
     ],
     "Results" : {
-      "Final" : "10062.59",
-      "First" : "50.13"
+      "Number of Groups" : "3"
     },
     "FedBox" : {
       "AmtFin" : "10000.00",
-      "FinChg" : "488.62",
-      "TotPmts" : "10488.62",
+      "FinChg" : "3930.08",
+      "TotPmts" : "13930.08",
       "APR" : {
-        "Value" : "4.748",
+        "Value" : "6.778",
         "Type" : "Actuarial"
       }
     },
     "Moneys" : {
-      "Principal" : "10025.00",
-      "Interest" : "463.62",
-      "FinFees" : "25.00",
-      "FinChgFees" : "25.00",
-      "Fees" : [
-        {
-          "Name" : "Doc Prep Fee",
-          "Fee" : "25.00"
-        }
-      ]
+      "Principal" : "10000.00",
+      "Interest" : "3930.08"
     },
     "Accrual" : {
-      "Method" : "Unit Period 360 US Rule",
-      "Days1Pmt" : "40",
+      "Method" : "Unit Period 365 US Rule",
+      "Days1Pmt" : "47",
       "DayCount" : "Actual",
-      "Maturity" : "2023-09-01"
+      "Maturity" : "2032-12-01"
     },
     "PmtStreams" : [
       {
-        "Term" : "1",
-        "Pmt" : "50.13",
-        "Rate" : "4.500",
-        "Begin" : "2022-10-01"
+        "Term" : "12",
+        "Pmt" : "101.43",
+        "Rate" : "4.000",
+        "Begin" : "2023-01-01"
       },
       {
-        "Term" : "10",
-        "Pmt" : "37.59",
-        "Rate" : "4.500",
-        "Begin" : "2022-11-01"
+        "Term" : "12",
+        "Pmt" : "110.29",
+        "Rate" : "6.000",
+        "Begin" : "2024-01-01"
       },
       {
-        "Term" : "1",
-        "Pmt" : "10062.59",
-        "Rate" : "4.500",
-        "Begin" : "2023-09-01"
+        "Term" : "96",
+        "Pmt" : "118.64",
+        "Rate" : "8.000",
+        "Begin" : "2025-01-01"
       }
     ],
     "AmTable" : {
       "GrandTotals" : {
-        "PmtTot" : "10488.62",
-        "IntTot" : "463.62",
-        "PrinTot" : "10025.00"
+        "PmtTot" : "13930.08",
+        "IntTot" : "3930.68",
+        "PrinTot" : "9999.40"
       },
       "SubTotals" : [
         {
-          "Year" : "2022",
-          "Start" : "1",
-          "Events" : "3",
-          "PmtSub" : "125.31",
-          "IntSub" : "125.31",
-          "PrinSub" : "0.00"
-        },
-        {
           "Year" : "2023",
-          "Start" : "4",
-          "Events" : "9",
-          "PmtSub" : "10363.31",
-          "IntSub" : "338.31",
-          "PrinSub" : "10025.00"
+          "Start" : "1",
+          "Events" : "12",
+          "PmtSub" : "1217.16",
+          "IntSub" : "403.71",
+          "PrinSub" : "813.45"
+        },
+        ...,
+        {
+          "Year" : "2032",
+          "Start" : "109",
+          "Events" : "12",
+          "PmtSub" : "1423.68",
+          "IntSub" : "59.89",
+          "PrinSub" : "1363.79"
         }
       ],
       "AmLines" : [
         {
           "Idx" : "1",
-          "Date" : "2022-10-01",
-          "BegBal" : "10025.00",
-          "Pmt" : "50.13",
-          "Int" : "50.13",
-          "Prin" : "0.00",
-          "EndBal" : "10025.00"
+          "Date" : "2023-01-01",
+          "BegBal" : "10000.00",
+          "Pmt" : "101.43",
+          "Int" : "51.51",
+          "Prin" : "49.92",
+          "EndBal" : "9950.08"
         },
         {
           "Idx" : "2",
-          "Date" : "2022-11-01",
-          "BegBal" : "10025.00",
-          "Pmt" : "37.59",
-          "Int" : "37.59",
-          "Prin" : "0.00",
-          "EndBal" : "10025.00"
+          "Date" : "2023-02-01",
+          "BegBal" : "9950.08",
+          "Pmt" : "101.43",
+          "Int" : "33.17",
+          "Prin" : "68.26",
+          "EndBal" : "9881.82"
         },
         ...,
         {
-          "Idx" : "12",
-          "Date" : "2023-09-01",
-          "BegBal" : "10025.00",
-          "Pmt" : "10062.59",
-          "Int" : "37.59",
-          "Prin" : "10025.00",
-          "EndBal" : "0.00"
+          "Idx" : "120",
+          "Date" : "2032-12-01",
+          "BegBal" : "118.45",
+          "Pmt" : "118.64",
+          "Int" : "0.79",
+          "Prin" : "117.85",
+          "EndBal" : "0.60"
         }
       ]
     }
@@ -1420,7 +1597,7 @@ provided at the beginning of the previous section.
 }
 ```
 
-The `Data` object for a response from the [[MODULE NAME]] module is defined below, in the
+The `Data` object for a response from the Arm module is defined below, in the
 order the fields are returned:
 
 ### 🟥 Errors
@@ -1458,7 +1635,7 @@ no warnings will be generated for these unrecognized fields.
 
 ```json
 {
-  "Module" : "SinglePmt",
+  "Module" : "Arm",
   "Data" : {
     "//" : "This is a comment.",
     "Hello" : "Friend!",
@@ -1470,16 +1647,21 @@ no warnings will be generated for these unrecognized fields.
 ```json
 {
   "Result" : 200,
-  "Module" : "InterestOnly",
+  "Module" : "Arm",
   "Data" : {
     "Errors" : [
       "Data.LoanDate (StringDate) not found.",
       "Data.PmtDate (StringDate) not found.",
       "Data.Term (StringInt) not found.",
-      "Data.IntRate (StringFloat) not found.",
-      "Data.Proceeds (StringFloat) not found."
+      "Data.Proceeds (StringFloat) not found.",
+      "Data.TeaserTerm (StringInt) not found.",
+      "Data.TeaserRate (StringFloat) not found.",
+      "Data.Index (StringFloat) not found.",
+      "Data.TermStep (StringInt) not found.",
+      "Data.AnnualRateIncrease (StringFloat) not found."
     ],
     "Warnings" : [
+      "Data.Margin (StringFloat) not found.",
       "Request field Data.Hello (String) not recognized.",
       "Request field Data.How (String) not recognized."
     ]
@@ -1513,21 +1695,15 @@ the loan request.
 
 ---
 
-🟥 **Results.Final**
+🟥 **Results.Number of Groups**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Integer |
 
-The computed final payment of the interest only loan.
+This field's value is the number of payment groups found in the computed loan.
+This value is equivalent to the number of `PmtStream` array members.
 
-🟥 **Results.First**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-The computed first payment of the interest only loan.
 
 ---
 
@@ -1551,7 +1727,7 @@ information, as defined in the Truth-In-Lending laws (Regulation Z).
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The Regulation Z Amount Financed, which is defined as the amount of credit
 provided to the borrower or on their behalf.
@@ -1560,7 +1736,7 @@ provided to the borrower or on their behalf.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 This element contains the Regulation Z Finance Charge, described as the dollar
 amount the credit extension will cost the borrower.
@@ -1569,7 +1745,7 @@ amount the credit extension will cost the borrower.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The amount which the borrower will have paid when the borrower has made all
 scheduled payments.
@@ -1601,7 +1777,7 @@ The `APR` object contains fields which return the value and APR method used.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The computed APR, which is the cost of the extension of credit expressed as a
 yearly rate.
@@ -1610,7 +1786,7 @@ yearly rate.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | string |
+| String | yes | String |
 
 This field returns the APR method used to compute the reported APR.
 
@@ -1618,7 +1794,7 @@ This field returns the APR method used to compute the reported APR.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - % |
+| String | no | Number - % |
 
 This field returns the maximum APR as configured in the account's setup files.
 If no maximum APR has been specified, then this field will not be present in the
@@ -1657,7 +1833,7 @@ value of the `Apr.UseMAPR` request field is `true`.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The computed military APR.
 
@@ -1665,7 +1841,7 @@ The computed military APR.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 This field returns the equivalent of the Amount Financed for the Military APR.
 Specifically, it is the principal balance less any MAPR fees, debt protection,
@@ -1675,7 +1851,7 @@ etc.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 This field holds the maximum Military APR as specified in the
 input XML (see `Apr.MAPR_Max`). If not specified, a default value
@@ -1748,7 +1924,7 @@ fee types, as explained in the previous documentation of the `Fee` and
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | string |
+| String | no | String |
 
 If a name was provided for the fee, then it will be included here in the
 disclosure for identification purposes.
@@ -1757,10 +1933,10 @@ disclosure for identification purposes.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 If the entire amount of the fee is different from the amount collected over the
-first five years (for example, a service charge), then this attribute will be
+first five years (for example, a service charge), then this field will be
 present and disclose the portion of this loan coast that is accrued during the
 first five years.
 
@@ -1768,7 +1944,7 @@ first five years.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The value of this field is the numerical value of the fee, rounded to the
 nearest dollar.
@@ -1781,7 +1957,7 @@ nearest dollar.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The value of this field is the sum of all borrower paid loan costs. Since all
 `LoanCost` values are rounded dollar amounts, the value of this element will
@@ -1791,7 +1967,7 @@ also be a rounded dollar amount.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 This field returns the sum of the total of payments and all borrower paid loan
 costs. This value should be disclosed on the Closing Disclosure form in the
@@ -1815,7 +1991,7 @@ section of the disclosure.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 This field holds the sum of all "principal, interest, mortgage insurance, and
 borrower paid loan costs scheduled to be paid through the end of the 60th month
@@ -1826,9 +2002,9 @@ rounded to the nearest whole dollar.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
-This attribute holds "the principal scheduled to be paid through the end of the
+This field holds "the principal scheduled to be paid through the end of the
 60th month after the due date of the first periodic payment". Note that this
 value is rounded to the nearest whole dollar.
 
@@ -1840,7 +2016,7 @@ value is rounded to the nearest whole dollar.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The total interest percentage, rounded to three or fewer decimal places - as
 required.
@@ -1874,7 +2050,7 @@ more than once, then the date returned is that of the first instance.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The maximum sceduled principal and interest payment during the term of the loan.
 
@@ -1900,7 +2076,7 @@ interest rate applied during the term of the loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The value of the minimum interest rate applied during the term of the loan.
 
@@ -1908,7 +2084,7 @@ The value of the minimum interest rate applied during the term of the loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 This field returns the payment number for which the minimum rate is
 first applicable.
@@ -1935,7 +2111,7 @@ interest rate applied during the term of the loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The value of the maximum interest rate applied during the term of the loan.
 
@@ -1943,7 +2119,7 @@ The value of the maximum interest rate applied during the term of the loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes |  Number - Integer  |
 
 This field returns the payment number for which the maximum rate is
 first applicable.
@@ -1972,7 +2148,7 @@ parameters of the loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The value of this field identifies the number of the column to which the
 following fields apply. The value will be from 1 to 4.
@@ -1981,7 +2157,7 @@ following fields apply. The value will be from 1 to 4.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | text |
+| String | yes | Text |
 
 The value of this field is the title for the column. Most of the time, it
 will be in the form of "Years X - Y", or "Year X", or "Final Payment" in
@@ -1991,7 +2167,7 @@ the case of a final balloon payment.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The beginning year number for which this column data applies.
 
@@ -1999,7 +2175,7 @@ The beginning year number for which this column data applies.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The ending year number for which this column data applies.
 
@@ -2007,7 +2183,7 @@ The ending year number for which this column data applies.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The minimum principal and interest payment for this column.
 
@@ -2015,7 +2191,7 @@ The minimum principal and interest payment for this column.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The maximum principal and interest payment for this column.
 
@@ -2031,7 +2207,7 @@ of the payments (but not all) associated with this columnt are interest only.
 Finally, a value of `all` indicates that *all* payments associated with this
 columnt are interest only.
 
-Note that for the purposes of this attribute, a scheduled payment is considered
+Note that for the purposes of this field, a scheduled payment is considered
 an interest only payment if the payment amount pays off all interest due at the
 time of the payment, with no reduction in the principal balance.
 
@@ -2043,13 +2219,13 @@ time of the payment, with no reduction in the principal balance.
 
 If any of the payments associated with this column are balloon payments (e.g.
 isolated payments that are more than twice the value of a regular periodic
-payment), then the value of this attribute will be `true`.
+payment), then the value of this field will be `true`.
 
 🟥 **PPCol.MIPmt**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The value of this field holds the mortgage insurance premium associated with
 this column, rounded to the nearest dollar. If no mortgage insurance is present
@@ -2059,7 +2235,7 @@ or coverage has been dropped, a value of zero will be present.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 This field returns the minimum estimated total payment for this column. Note
 that this value does not include any estimated escrow, as the SCEX does not
@@ -2070,7 +2246,7 @@ values by the estimated escrow amounts if any are present.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 This field returns the maximum estimated total payment for this column. Note
 that this value does not include any estimated escrow, as the SCEX does not
@@ -2102,7 +2278,7 @@ fee amounts.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The principal balance is the amount on which interest is accrued. The
 principal balance consists of all advances requested by the borrower,
@@ -2112,7 +2288,7 @@ as well as any fees and/or protection products which are financed.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 This value of this field holds the total interest accrued during the term of the
 loan, assuming the borrower will make all scheduled payments.
@@ -2147,7 +2323,7 @@ will not appear in the response.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 This field contains the sum of all fees having `AddToPrin`
 set to `true` and occuring on the date of an advance. If this
@@ -2157,7 +2333,7 @@ value is zero, the field will not appear in the response.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 This field represents all prepaid finance charges and contains the sum of all
 fees occurring on an advance and having `AddToFinChg` set to `true`. If this
@@ -2167,7 +2343,7 @@ value is zero, the field will not be found in the response.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 This field holds the sum of all fees which are neither financed, nor
 added to the finance charge. In essence, they are paid out of the
@@ -2178,7 +2354,7 @@ field will not show up in the response.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 This field holds the sum of all fees which are Military APR fees (including 
 protection products), and will only appear if the Military APR has been
@@ -2203,7 +2379,7 @@ then this object will be omitted from the response.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 Discloses the total cost of all protection plans included with the
 computed loan. For the individual plan costs, see the
@@ -2213,7 +2389,7 @@ computed loan. For the individual plan costs, see the
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The cost of all loan protection products expressed as dollars per payment.
 
@@ -2221,7 +2397,7 @@ The cost of all loan protection products expressed as dollars per payment.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The cost of all loan protection products expressed as dollars per day.
 
@@ -2249,7 +2425,7 @@ protection falls. The categories are described below:
 | Boolean | no | true, false |
 
 This field indicates if the specified account's protection is set up as debt
-protection. If this attribute is not present, then the default value of `false`
+protection. If this field is not present, then the default value of `false`
 should be used (which indicates that the account's protection is set up as
 insurance instead).
 
@@ -2275,7 +2451,7 @@ of the Finance Charge, and hence will affect the effective APR.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 If a minimum interest charge is configured in the account's setup files and the
 final payment was adjusted to meet this minimum interest charge, then this
@@ -2286,7 +2462,7 @@ minimum interest charge adjustment.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 If a minimum finance charge is configured in the account's setup files and the
 final payment was adjusted to meet this minimum finance charge, then this
@@ -2315,7 +2491,7 @@ will not be included in the response.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | string |
+| String | no | String |
 
 If a name was provided for the fee, then it will be included here in the
 disclosure for identification purposes.
@@ -2324,7 +2500,7 @@ disclosure for identification purposes.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 Discloses the computed fee amount.
 
@@ -2332,62 +2508,23 @@ Discloses the computed fee amount.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 If an odd days prepaid fee has been requested, and if the account has been
 configured to compute the odd days prepaid fee as a number of odd days
-multiplied by a rounded daily amount, then this attribute will be present and
+multiplied by a rounded daily amount, then this field will be present and
 its value is the number of computed odd days.
 
 🟦 **Fee.DailyAmt**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 If an odd days prepaid fee has been requested, and if the account has been
 configured to compute the odd days prepaid fee as a number of odd days
-multiplied by a rounded daily amount, then this attribute will be present and
+multiplied by a rounded daily amount, then this field will be present and
 its value is the number of computed odd days.
-
----
-
-</details>
-
-🟦 **Moneys.ServiceCharges[]**
-
-| Type  | Required |
-| :---: |   :---:  |
-| array of ServiceCharge objects | no |
-
-If the requested loan included service charges, then for each service charge in
-the loan there will be a ServiceCharge object in this array containing the name
-of the service charge and the computed service charge amount.
-
-If there were no service charges requested with the loan, then the
-`Moneys.ServiceCharges[]` array will not be included in the response.
-
-<details>
-<summary><b>ServiceCharge fields</b></summary>
-
----
-
-🟦 **ServiceCharge.Name**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | string |
-
-If a name was provided for the service charge, then it will be included here in
-the disclosure for identification purposes.
-
-🟥 **ServiceCharge.Fee**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-Discloses the computed service charge amount.
 
 ---
 
@@ -2397,7 +2534,7 @@ Discloses the computed service charge amount.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 If PMI has been requested on the loan, and if a number of `UpFront`
 payments have been specified, then this field will return the total PMI
@@ -2426,7 +2563,7 @@ loan's maturity date.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | description of accrual method used |
+| String | yes | Text |
 
 The `Method` field contains a textual description of the interest accrual method
 used to compute the loan (e.g. "Unit Period 365 Simple".
@@ -2435,7 +2572,7 @@ used to compute the loan (e.g. "Unit Period 365 Simple".
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 This field contains the number of days between the date of the first
 advance and the date of first payment, computed by one of two
@@ -2475,7 +2612,7 @@ be 10 characters long.
 The PMI object will only appear if PMI has been computed with the loan. Please
 note that the PMI premiums are do not reflected in the amount reported in the
 `Payment` object, the `PmtStreams[]` array, the `TotPmts` object, nor the `Pmt`
-attribute of the `AmLine` object.
+field of the `AmLine` object.
 
 <details>
 <summary><b>PMI fields</b></summary>
@@ -2486,7 +2623,7 @@ attribute of the `AmLine` object.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The percentage rate used in the PMI calculation.
 
@@ -2494,7 +2631,7 @@ The percentage rate used in the PMI calculation.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - % |
 
 The loan to value ratio of the computed loan, expressed as a percentage.
 
@@ -2502,7 +2639,7 @@ The loan to value ratio of the computed loan, expressed as a percentage.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number- Currency |
 
 The annual PMI premium amount.
 
@@ -2510,7 +2647,7 @@ The annual PMI premium amount.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The periodic PMI premium amount.
 
@@ -2518,7 +2655,7 @@ The periodic PMI premium amount.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 This field only appears if the `PercentToWarn` PMI input field
 is specified, and indicates that the payment index on which the remaining
@@ -2528,7 +2665,7 @@ principal balance to home value ratio drops below the specified percentage.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 This field only appears if the `PercentToRemove` PMI input field
 is specified, and indicates that the payment index on which the remaining
@@ -2591,7 +2728,7 @@ payment stream.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The `Term` field holds the number of payments that make up the given payment
 stream.
@@ -2600,7 +2737,7 @@ stream.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The `Pmt` field holds the computed payment amount for this payment stream.
 
@@ -2608,7 +2745,7 @@ The `Pmt` field holds the computed payment amount for this payment stream.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - % |
 
 Contains the interest rate used for the duration of this payment stream. If this
 payment stream accrued interest using split-rate tiers, then this field will
@@ -2721,7 +2858,7 @@ premiums.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The total cost for this protection over the term of the loan.
 
@@ -2729,7 +2866,7 @@ The total cost for this protection over the term of the loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The cost of coverage expressed as currency per payment.
 
@@ -2737,7 +2874,7 @@ The cost of coverage expressed as currency per payment.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The cost of coverage expressed as currency per dey.
 
@@ -2745,7 +2882,7 @@ The cost of coverage expressed as currency per dey.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Floating |
 
 The rate factor used to compute the premium for the requested protection product.
 
@@ -2753,7 +2890,7 @@ The rate factor used to compute the premium for the requested protection product
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 The only time the `Premium2` field will be present is when the account has been
 setup to use an ordinary life product *and* the user has requested joint
@@ -2765,7 +2902,7 @@ joint premium.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 The cost of coverage for the secondary ordinary life borrower, expressed as
 currency per payment. Please see `Cost.Premium2` above for further information.
@@ -2774,7 +2911,7 @@ currency per payment. Please see `Cost.Premium2` above for further information.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 The cost of coverage for the secondary ordinary life borrower, expressed as
 currency per dey. Please see `Cost.Premium2` above for further information.
@@ -2783,7 +2920,7 @@ currency per dey. Please see `Cost.Premium2` above for further information.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Floating |
 
 The rate factor used to compute the premium for the secondary ordinary life
 borrower. Please see `Cost.Premium2` above for further information.
@@ -2810,7 +2947,7 @@ this object:
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The aggregate coverage amount for this protection product.
 
@@ -2818,7 +2955,7 @@ The aggregate coverage amount for this protection product.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see below |
+| String | yes | Text - See below |
 
 The `Note` field will describe the type of coverage provided. If full coverage
 has been provided on the aggregate coverage, then the note will contain "Full
@@ -2847,7 +2984,7 @@ coverage for the requested product. If the input request has specified
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the term of coverage expressed as a number of months.
 
@@ -2855,7 +2992,7 @@ Contains the term of coverage expressed as a number of months.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the number of payments covered.
 
@@ -2871,7 +3008,7 @@ This field contains the maturity date for the requested coverage.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see below |
+| String | yes | Text - See below |
 
 The `Note` field will describe the type of coverage provided. If
 full term coverage has been provided, then the note will contain
@@ -2932,7 +3069,7 @@ when coverage terminates.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The term of coverage expressed as a number of payments.
 
@@ -2940,7 +3077,7 @@ The term of coverage expressed as a number of payments.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The term of coverage expressed as a number of months.
 
@@ -2956,7 +3093,7 @@ The coverage maturity date for this particular borrower.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see below |
+| String | yes | Text - See below |
 
 The value of this field will describe the type of coverage provided. If full
 term coverage has been provided, then the note will contain "Full Coverage".
@@ -3001,7 +3138,7 @@ is set to `true`.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 Contains the maximum aggregate coverage amount. If no cap is present or
 applicable, then a value of zero is returned.
@@ -3010,7 +3147,7 @@ applicable, then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 Contains the maximum monthly benefit amount. If no cap is present or applicable,
 then a value of zero is returned.
@@ -3019,7 +3156,7 @@ then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the maximum coverage term, expressed in months. If no cap is present or
 applicable, then a value of zero is returned.
@@ -3028,7 +3165,7 @@ applicable, then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the maximum age a borrower may be at loan inception, expressed in
 years. If no cap is present or applicable, then a value of zero is returned.
@@ -3037,7 +3174,7 @@ years. If no cap is present or applicable, then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the maximum age a borrower may attain during the term of the loan,
 expressed in years. If no cap is present or applicable, then a value of zero is
@@ -3068,7 +3205,7 @@ on level life coverage.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | See below |
+| String | yes | Text - See below |
 
 This field contains the calculation result for the requested protection product.
 If it contains a value of "Valid Calculation", then the requested product was
@@ -3084,7 +3221,7 @@ not computed.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | See below |
+| String | yes | Text - See below |
 
 The `Formula` field contains an abbreviated description of the formula used to
 compute the desired protection product. The formula codes are for the use of the
@@ -3109,7 +3246,7 @@ premiums.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The total cost for this protection over the term of the loan.
 
@@ -3119,7 +3256,7 @@ The total cost for this protection over the term of the loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The cost of coverage expressed as currency per payment.
 
@@ -3127,7 +3264,7 @@ The cost of coverage expressed as currency per payment.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The cost of coverage expressed as currency per dey.
 
@@ -3135,7 +3272,7 @@ The cost of coverage expressed as currency per dey.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Floating |
 
 The rate factor used to compute the premium for the requested protection product.
 
@@ -3143,7 +3280,7 @@ The rate factor used to compute the premium for the requested protection product
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 The only time the `Premium2` field will be present is when the account has been
 setup to use an ordinary life product *and* the user has requested joint
@@ -3155,7 +3292,7 @@ joint premium.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 The cost of coverage for the secondary ordinary life borrower, expressed as
 currency per payment. Please see `Cost.Premium2` above for further information.
@@ -3164,7 +3301,7 @@ currency per payment. Please see `Cost.Premium2` above for further information.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 The cost of coverage for the secondary ordinary life borrower, expressed as
 currency per dey. Please see `Cost.Premium2` above for further information.
@@ -3173,7 +3310,7 @@ currency per dey. Please see `Cost.Premium2` above for further information.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Floatin |
 
 The rate factor used to compute the premium for the secondary ordinary life
 borrower. Please see `Cost.Premium2` above for further information.
@@ -3200,7 +3337,7 @@ this object:
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The aggregate coverage amount for this protection product.
 
@@ -3208,7 +3345,7 @@ The aggregate coverage amount for this protection product.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see below |
+| String | yes | Text - See below |
 
 The `Note` field will describe the type of coverage provided. If full coverage
 has been provided on the aggregate coverage, then the note will contain "Full
@@ -3237,7 +3374,7 @@ coverage for the requested product. If the input request has specified
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the term of coverage expressed as a number of months.
 
@@ -3247,7 +3384,7 @@ Contains the term of coverage expressed as a number of months.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the number of payments covered.
 
@@ -3263,7 +3400,7 @@ This field contains the maturity date for the requested coverage.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see below |
+| String | yes | Text - See below |
 
 The `Note` field will describe the type of coverage provided. If
 full term coverage has been provided, then the note will contain
@@ -3324,7 +3461,7 @@ when coverage terminates.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The term of coverage expressed as a number of payments.
 
@@ -3332,7 +3469,7 @@ The term of coverage expressed as a number of payments.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The term of coverage expressed as a number of months.
 
@@ -3348,7 +3485,7 @@ The coverage maturity date for this particular borrower.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see below |
+| String | yes | Text - See below |
 
 The value of this field will describe the type of coverage provided. If full
 term coverage has been provided, then the note will contain "Full Coverage".
@@ -3393,7 +3530,7 @@ is set to `true`.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 Contains the maximum aggregate coverage amount. If no cap is present or
 applicable, then a value of zero is returned.
@@ -3402,7 +3539,7 @@ applicable, then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 Contains the maximum monthly benefit amount. If no cap is present or applicable,
 then a value of zero is returned.
@@ -3411,7 +3548,7 @@ then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the maximum coverage term, expressed in months. If no cap is present or
 applicable, then a value of zero is returned.
@@ -3420,7 +3557,7 @@ applicable, then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the maximum age a borrower may be at loan inception, expressed in
 years. If no cap is present or applicable, then a value of zero is returned.
@@ -3429,7 +3566,7 @@ years. If no cap is present or applicable, then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the maximum age a borrower may attain during the term of the loan,
 expressed in years. If no cap is present or applicable, then a value of zero is
@@ -3460,7 +3597,7 @@ disability coverage.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | See below |
+| String | yes | Text - See below |
 
 This field contains the calculation result for the requested protection product.
 If it contains a value of "Valid Calculation", then the requested product was
@@ -3476,7 +3613,7 @@ not computed.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | See below |
+| String | yes | Text - See below |
 
 The `Formula` field contains an abbreviated description of the formula used to
 compute the desired protection product. The formula codes are for the use of the
@@ -3520,7 +3657,7 @@ rate factor used to compute the premiums.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The total cost for this protection over the term of the loan.
 
@@ -3528,7 +3665,7 @@ The total cost for this protection over the term of the loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The cost of coverage expressed as currency per payment.
 
@@ -3536,7 +3673,7 @@ The cost of coverage expressed as currency per payment.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The cost of coverage expressed as currency per dey.
 
@@ -3544,7 +3681,7 @@ The cost of coverage expressed as currency per dey.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Floating |
 
 The rate factor used to compute the premium for the requested protection product.
 
@@ -3570,7 +3707,7 @@ this object:
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The aggregate coverage amount for this protection product.
 
@@ -3578,7 +3715,7 @@ The aggregate coverage amount for this protection product.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see below |
+| String | yes | Text - See below |
 
 The `Note` field will describe the type of coverage provided. If
 full coverage has been provided on the aggregate coverage, then the note will contain
@@ -3607,7 +3744,7 @@ fields of this object:
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The monthly benefit amount for this protection product.
 
@@ -3615,7 +3752,7 @@ The monthly benefit amount for this protection product.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 If the account has been configured to disclose periodic benefits (as opposed
 to monthly benefit amounts, which are returned in the `Amount` field
@@ -3626,7 +3763,7 @@ then this field will be present and will hold the periodic benefit amount.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see below |
+| String | yes | Text - See below |
 
 The `Note` field describes the type of coverage provided. If full coverage has
 been provided on the benefit, then the note will contain "Full Coverage".
@@ -3655,7 +3792,7 @@ coverage for the requested product. If the input request has specified
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the term of coverage expressed as a number of months.
 
@@ -3663,7 +3800,7 @@ Contains the term of coverage expressed as a number of months.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the number of payments covered.
 
@@ -3679,7 +3816,7 @@ This field contains the maturity date for the requested coverage.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see below |
+| String | yes | Text - See below |
 
 The `Note` field will describe the type of coverage provided. If
 full term coverage has been provided, then the note will contain
@@ -3740,7 +3877,7 @@ when coverage terminates.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The term of coverage expressed as a number of payments.
 
@@ -3748,7 +3885,7 @@ The term of coverage expressed as a number of payments.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The term of coverage expressed as a number of months.
 
@@ -3764,7 +3901,7 @@ The coverage maturity date for this particular borrower.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see below |
+| String | yes | Text - See below |
 
 The value of this field will describe the type of coverage provided. If full
 term coverage has been provided, then the note will contain "Full Coverage".
@@ -3809,7 +3946,7 @@ is set to `true`.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 Contains the maximum aggregate coverage amount. If no cap is present or
 applicable, then a value of zero is returned.
@@ -3818,7 +3955,7 @@ applicable, then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 Contains the maximum monthly benefit amount. If no cap is present or applicable,
 then a value of zero is returned.
@@ -3827,7 +3964,7 @@ then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the maximum coverage term, expressed in months. If no cap is present or
 applicable, then a value of zero is returned.
@@ -3836,7 +3973,7 @@ applicable, then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the maximum age a borrower may be at loan inception, expressed in
 years. If no cap is present or applicable, then a value of zero is returned.
@@ -3845,7 +3982,7 @@ years. If no cap is present or applicable, then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the maximum age a borrower may attain during the term of the loan,
 expressed in years. If no cap is present or applicable, then a value of zero is
@@ -3876,7 +4013,7 @@ unemployment coverage.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | See below |
+| String | yes | Text - See below |
 
 This field contains the calculation result for the requested protection product.
 If it contains a value of "Valid Calculation", then the requested product was
@@ -3892,7 +4029,7 @@ not computed.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | See below |
+| String | yes | Text - See below |
 
 The `Formula` field contains an abbreviated description of the formula used to
 compute the desired protection product. The formula codes are for the use of the
@@ -3936,7 +4073,7 @@ rate factor used to compute the premiums.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The total cost for this protection over the term of the loan.
 
@@ -3944,7 +4081,7 @@ The total cost for this protection over the term of the loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The cost of coverage expressed as currency per payment.
 
@@ -3952,7 +4089,7 @@ The cost of coverage expressed as currency per payment.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The cost of coverage expressed as currency per dey.
 
@@ -3960,7 +4097,7 @@ The cost of coverage expressed as currency per dey.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Floating |
 
 The rate factor used to compute the premium for the requested protection product.
 
@@ -3986,7 +4123,7 @@ this object:
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The aggregate coverage amount for this protection product.
 
@@ -3994,7 +4131,7 @@ The aggregate coverage amount for this protection product.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see below |
+| String | yes | Text - See below |
 
 The `Note` field will describe the type of coverage provided. If full coverage
 has been provided on the aggregate coverage, then the note will contain "Full
@@ -4022,7 +4159,7 @@ fields of this object:
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The monthly benefit amount for this protection product.
 
@@ -4030,7 +4167,7 @@ The monthly benefit amount for this protection product.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 If the account has been configured to disclose periodic benefits (as opposed
 to monthly benefit amounts, which are returned in the `Amount` field
@@ -4041,7 +4178,7 @@ then this field will be present and will hold the periodic benefit amount.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see below |
+| String | yes | Text - See below |
 
 The `Note` field describes the type of coverage provided. If full coverage has
 been provided on the benefit, then the note will contain "Full Coverage".
@@ -4070,7 +4207,7 @@ coverage for the requested product. If the input request has specified
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the term of coverage expressed as a number of months.
 
@@ -4078,7 +4215,7 @@ Contains the term of coverage expressed as a number of months.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the number of payments covered.
 
@@ -4094,7 +4231,7 @@ This field contains the maturity date for the requested coverage.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see below |
+| String | yes | Text - See below |
 
 The `Note` field will describe the type of coverage provided. If
 full term coverage has been provided, then the note will contain
@@ -4155,7 +4292,7 @@ when coverage terminates.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The term of coverage expressed as a number of payments.
 
@@ -4163,7 +4300,7 @@ The term of coverage expressed as a number of payments.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The term of coverage expressed as a number of months.
 
@@ -4179,7 +4316,7 @@ The coverage maturity date for this particular borrower.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see below |
+| String | yes | Text - See below |
 
 The value of this field will describe the type of coverage provided. If full
 term coverage has been provided, then the note will contain "Full Coverage".
@@ -4224,7 +4361,7 @@ is set to `true`.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 Contains the maximum aggregate coverage amount. If no cap is present or
 applicable, then a value of zero is returned.
@@ -4233,7 +4370,7 @@ applicable, then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 Contains the maximum monthly benefit amount. If no cap is present or applicable,
 then a value of zero is returned.
@@ -4242,7 +4379,7 @@ then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the maximum coverage term, expressed in months. If no cap is present or
 applicable, then a value of zero is returned.
@@ -4251,7 +4388,7 @@ applicable, then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the maximum age a borrower may be at loan inception, expressed in
 years. If no cap is present or applicable, then a value of zero is returned.
@@ -4260,7 +4397,7 @@ years. If no cap is present or applicable, then a value of zero is returned.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Contains the maximum age a borrower may attain during the term of the loan,
 expressed in years. If no cap is present or applicable, then a value of zero is
@@ -4269,273 +4406,6 @@ returned.
 </details>
 
 ---
-
-</details>
-
-🟦 **Protection.Property**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object | no |
-
-If property protection was requested with the loan, then the `Property`
-object will be present in the response to return information on property
-coverage.
-
-<details>
-<summary><b>Property fields</b></summary>
-
----
-
-🟥 **Property.Result**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | See below |
-
-This field contains the calculation result for the requested protection product.
-If it contains a value of "Valid Calculation", then the requested product was
-computed and factored into the loan. Parse the other fields and child objects
-for further details.
-
-A value *other than* "Valid Calculation" means that the requested product was
-not computed with the loan, and the value describes why. In this case, there is
-no need to parse through the other fields or child objects, as the product was
-not computed.
-
-🟥 **Property.Formula**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | See below |
-
-The `Formula` field contains an abbreviated description of the formula used to
-compute the desired protection product. The formula codes are for the use of the
-J. L. Sherman and Associates, Inc. support team.
-
-🟥 **Property.RateType**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | Fixed |
-
-This field will only be present in the response if the protection
-product has been configured to allow for coverage to switch from 
-joint to single during the term of coverage, should one of the borrowers
-exceed an age at termination cap. If the field is not present, then
-a value of `Fixed` should be assumed as only one rate has been
-used in the protection calculation.
-
-If this field is present, then there is the possibility that the
-rate used to compute the protection may have changed (in the case of
-coverage for one borrower ending while coverage for the other borrower
-continues). If this is the case, then the field will indicate this
-rate change with a value of `Variable`.
-
-🟥 **Property.Cost**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object | yes |
-
-Fields of this object provide the cost of the protection
-product in total, per payment, and per day. It also provides the
-rate factor used to compute the premiums.
-
-<details>
-<summary><b>Cost fields</b></summary>
-
----
-
-🟥 **Cost.Premium**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-The total cost for this protection over the term of the loan.
-
-🟥 **Cost.PerPmt**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-The cost of coverage expressed as currency per payment.
-
-🟥 **Cost.PerDay**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-The cost of coverage expressed as currency per dey.
-
-🟥 **Cost.Factor**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-The rate factor used to compute the premium for the requested protection product.
-
----
-
-</details>
-
-🟥 **Property.Coverage**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object | yes |
-
-The aggregate coverage amount and note are provided
-in the following fields of this object:
-
-<details>
-<summary><b>Coverage fields</b></summary>
-
----
-
-🟥 **Coverage.Amount**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-The aggregate coverage amount for this protection product.
-
-🟥 **Coverage.Note**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | see below |
-
-The `Note` field will describe the type of coverage provided. If
-full coverage has been provided on the aggregate coverage, then the note will contain
-"Full Coverage". Otherwise, the note will describe the type of partial
-coverage used.
-
----
-
-</details>
-
-🟥 **Property.Term**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object | yes |
-
-The `Term` object provides the calling application with data about the term of
-coverage for the requested product.
-
-<details>
-<summary><b>Term fields</b></summary>
-
----
-
-🟥 **Term.InMonths**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-Contains the term of coverage expressed as a number of months.
-
-🟥 **Term.InPmts**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-Contains the number of payments covered.
-
-🟥 **Term.Maturity**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | YYYY-MM-DD |
-
-This field contains the maturity date for the requested coverage.
-
-🟥 **Term.Note**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | see below |
-
-The `Note` field will describe the type of coverage provided. If
-full term coverage has been provided, then the note will contain
-"Full Coverage". Otherwise, the note will describe the type of truncated
-coverage used.
-
----
-
-</details>
-
-🟦 **Property.Caps**
-
-| Type  | Required |
-| :---: |   :---:  |
-| object | no |
-
-The `Caps` object provides the calling application with data about the maximum
-terms, amounts, and ages associated with the requested product. This objectt
-will only be present if the `ShowCaps` field of the `Protection` request objectt
-is set to `true`.
-
-<details>
-<summary><b>Caps fields</b></summary>
-
----
-
-🟥 **Caps.Cov**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-Contains the maximum aggregate coverage amount. If no cap is present or
-applicable, then a value of zero is returned.
-
-🟥 **Caps.Ben**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number - currency |
-
-Contains the maximum monthly benefit amount. If no cap is present or applicable,
-then a value of zero is returned.
-
-🟥 **Caps.Term**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-Contains the maximum coverage term, expressed in months. If no cap is present or
-applicable, then a value of zero is returned.
-
-🟥 **Caps.InceptAge**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-Contains the maximum age a borrower may be at loan inception, expressed in
-years. If no cap is present or applicable, then a value of zero is returned.
-
-🟥 **Caps.AttainAge**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | yes | number |
-
-Contains the maximum age a borrower may attain during the term of the loan,
-expressed in years. If no cap is present or applicable, then a value of zero is
-returned.
-
-</details>
 
 </details>
 
@@ -4564,7 +4434,7 @@ be found in the response.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 This field will only appear if a Canadian APR is disclosed for the computed
 loan. The value of this field is the average balance of the loan used in the
@@ -4574,7 +4444,7 @@ Canadian APR calculation.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 This field will only appear if a Canadian APR is disclosed for the computed
 loan. The value of this field is the whole number of months in the term of the
@@ -4585,7 +4455,7 @@ monthly or weekly units, but never both.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 This field will only appear if a Canadian APR is disclosed for the computed
 loan. The value of this field is the whole number of weeks in the term of the
@@ -4596,7 +4466,7 @@ monthly or weekly units, but never both.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 This field will only appear if a Canadian APR is disclosed for the computed
 loan. The value of this field is the number of odd days in the term of the loan
@@ -4623,7 +4493,7 @@ total of payments are all contained in fields of this object.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The total of payments scheduled for the computed loan.
 
@@ -4631,7 +4501,7 @@ The total of payments scheduled for the computed loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The total amount paid to interest over the life of the loan, assuming all
 payments are made as scheduled.
@@ -4640,7 +4510,7 @@ payments are made as scheduled.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 This field contains the total amount paid to principal during the loan term,
 assuming all payments are made as scheduled.
@@ -4649,7 +4519,7 @@ assuming all payments are made as scheduled.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 The `CLTot` field will only appear on loans with certain types of life
 protection products, such as those based on a monthly outstanding balance. It
@@ -4659,7 +4529,7 @@ contains the total amount paid for life over the duration of the loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 The `AHTot` field will only appear on loans with certain types of disability or
 debt protection products, such as those based on a monthly outstanding balance.
@@ -4670,7 +4540,7 @@ loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 The `IUTot` field will only appear on loans with certain types of involuntary
 unemployment protection products, such as those based on a monthly outstanding
@@ -4681,21 +4551,12 @@ of the loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
-The `PMITot` attribute will only appear on loans with PMI insurance where the
+The `PMITot` field will only appear on loans with PMI insurance where the
 PMI premiums were requested in the amortization schedule. It contains the total
 PMI amount paid (not including any up front periodic PMI premiums)for PMI over
 the duration of the loan.
-
-🟦 **GrandTotals.SCTot**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number-currency |
-
-The `SCTot` attribute will only appear on loans with service charges. It
-contains the total service charge amount paid over the duration of the loan.
 
 ---
 
@@ -4720,7 +4581,7 @@ a `SubTotal` object in the array.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The calendar year for which the subtotal data is applicable.
 
@@ -4728,7 +4589,7 @@ The calendar year for which the subtotal data is applicable.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 This field defines the first amortization event which falls in the specified
 calendar year. To find the `AmLine` object which corresponds to this value,
@@ -4738,7 +4599,7 @@ match the `Idx` field of the `AmLine` object.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 This field defines the number of amortization events which belong to this
 calendar year.
@@ -4747,7 +4608,7 @@ calendar year.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 Contains the total of payments scheduled for the calendar year.
 
@@ -4755,7 +4616,7 @@ Contains the total of payments scheduled for the calendar year.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 Holds the total amount paid to interest over the calendar year, assuming all
 payments are made as scheduled.
@@ -4764,7 +4625,7 @@ payments are made as scheduled.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 Contains the total amount paid to principal during the calendar year, assuming
 all payments are made as scheduled.
@@ -4773,7 +4634,7 @@ all payments are made as scheduled.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 The `CLSub` field will only appear on loans with certain types of life
 protection products, such as those based on a monthly outstanding balance. It
@@ -4783,7 +4644,7 @@ contains the total amount paid for life during the year.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 The `AHSub` field will only appear on loans with certain types of accident and
 health or debt protection products, such as those based on a monthly outstanding
@@ -4793,7 +4654,7 @@ balance. It contains the total amount paid for this protection during the year.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 The `IUSub` field will only appear on loans with certain types of involuntary
 unemployment protection products, such as those based on a monthly outstanding
@@ -4804,21 +4665,12 @@ the year.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 The `PMISub` field will only appear on loans with PMI insurance where the PMI
 premiums were requested in the amortization schedule. It contains the total PMI
 amount paid (not including any up front periodic PMI premiums) for PMI during
 the year.
-
-🟦 **SubTotal.SCSub**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number-currency |
-
-The `SCSub` field will only appear on loans with service charges. It contains
-the total of service charges paid during the year.
 
 ---
 
@@ -4845,7 +4697,7 @@ payments but will show how the loan amortizes.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The index of the amortization event, which is either the payment number, or
 zero. A value of zero designates an event that is either not a payment or is a
@@ -4864,7 +4716,7 @@ the form of `YYYY-MM-DD`, and must be 10 characters long.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The principal balance before the amortization event occurs.
 
@@ -4872,7 +4724,7 @@ The principal balance before the amortization event occurs.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The payment amount for this event.
 
@@ -4880,7 +4732,7 @@ The payment amount for this event.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The amount of interest paid at this event.
 
@@ -4888,7 +4740,7 @@ The amount of interest paid at this event.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The amount of principal paid at this event.
 
@@ -4896,7 +4748,7 @@ The amount of principal paid at this event.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 The `CL` field will only appear on loans with certain types of life protection
 products, such as those based on a monthly outstanding balance. It contains the
@@ -4906,7 +4758,7 @@ amount of the payment which is marked for life coverage.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 The `AH` field will only appear on loans with certain types of accident and
 health or debt protection products, such as those based on a monthly outstanding
@@ -4917,7 +4769,7 @@ debt protection coverage.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 The `IU` field will only appear on loans with certain types of involuntary
 unemployment protection products, such as those based on a monthly outstanding
@@ -4928,26 +4780,17 @@ coverage.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 This field contains the PMI premium for this payment, and will only show up if
 PMI has been computed for this payment and if PMI premiums should be displayed
 in the amortization schedule.
 
-🟦  **AmLine.SC**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | number-currency |
-
-This field contains the total service charge for this payment, and will only be
-present if one or more service charges were requested with the loan.
-
 🟦  **AmLine.UnpaidInt**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 This field will only appear on an amortization line when interest has been accrued,
 but has not yet been paid or added to the principal balance. If the interest accrued
@@ -4959,7 +4802,7 @@ places.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The principal balance amount, after the amortization event has taken place.
 
@@ -4967,7 +4810,7 @@ The principal balance amount, after the amortization event has taken place.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 If the ARM loan specified a minimum lifetime interest rate (see `MinRate`), and
 if TILA RESPA data has been requested (using the `Settings.TILARESPA2015`
@@ -4980,7 +4823,7 @@ lifetime rate after the teaser term has expired.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 If the ARM loan specified a maximum lifetime interest rate (see `MaxRate`), and
 if TILA RESPA data has been requested (using the `Settings.TILARESPA2015`
@@ -4997,4 +4840,4 @@ lifetime rate after the teaser term has expired.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Single Payment Note](module-singlepmt.md) | [SCEJSON Reference Manual](README.md) | [APR Calculation & Verification Module](module-apr.md) |
+| [Loan Module](module-loan.md) | [SCEJSON Reference Manual](README.md) | [Balloon Payment Loans](module-balloon.md) |

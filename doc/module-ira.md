@@ -47,7 +47,7 @@ in alphabetical order below:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 The beginning balance is the amount which is currently present in the IRA account.
 Interest accrues on this initial amount (plus the periodic deposit amounts), much
@@ -80,7 +80,7 @@ The specified compounding period affects the allowable values for the
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number | n/a |
+| String | yes | Number - Integer | n/a |
 
 The current age of the IRA account owner.
 
@@ -88,7 +88,7 @@ The current age of the IRA account owner.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - currency | n/a |
+| String | no | Number - Currency | n/a |
 
 The `Deposit` field specifies the periodic deposit amount to be made to the IRA
 account. The periodicity of the deposit is dictated by the `DepositFrequency`
@@ -121,7 +121,7 @@ allowable compounding frequencies (see table below).
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - % | n/a |
+| String | yes | Number - % | n/a |
 
 This field dictates the rate at which interest accrues throughout the
 term of the IRA.
@@ -130,7 +130,7 @@ term of the IRA.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number | n/a |
+| String | yes | Number - Integer | n/a |
 
 The desired retirement age of the IRA account owner. This value must be greater
 than that found in the `CurrentAge` field. By subtracting the current age from
@@ -141,7 +141,7 @@ be allowed to grow.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - currency | n/a |
+| String | no | Number - Currency | n/a |
 
 The future value is the balance of the IRA account at the borrower's specified
 retirement age. The future value is equal to the present value plus all periodic
@@ -249,7 +249,7 @@ no warnings will be generated for these unrecognized fields.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The beginning balance is the amount which is currently present in the IRA account.
 Interest accrues on this initial amount (plus the periodic deposit amounts), much
@@ -259,7 +259,7 @@ like interest accrues on the principal balance of a loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The `Deposit` field specifies the periodic deposit amount to be made to the IRA
 account.
@@ -276,7 +276,7 @@ This field specifies the periodicity of the deposit amount.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The rate at which interest will accrue during the term of the IRA.
 
@@ -284,7 +284,7 @@ The rate at which interest will accrue during the term of the IRA.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number | n/a |
+| String | yes | Number - Integer | n/a |
 
 The current age of the IRA account owner.
 
@@ -292,7 +292,7 @@ The current age of the IRA account owner.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number | n/a |
+| String | yes | Number - Integer | n/a |
 
 The desired retirement age of the IRA account owner.
 
@@ -300,7 +300,7 @@ The desired retirement age of the IRA account owner.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The term is the number of years during which periodic deposit amounts and accrued
 interest are applied to the IRA account. It is equal to the individual's retirement
@@ -318,7 +318,7 @@ The `Term` field is always expressed as a number of years.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The future value of the IRA at retirement age.
 
@@ -326,7 +326,7 @@ The future value of the IRA at retirement age.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The gain is the difference between the future value and the sum of the initial balance
 and all periodic deposits made. It is the amount of interest accrued over the term of
@@ -336,7 +336,7 @@ the IRA.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The APY (annual percentage yield) is the rate of return on an investment over the
 term of a year. The APY takes compounding into account, and if the compounding frequency

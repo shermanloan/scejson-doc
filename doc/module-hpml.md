@@ -46,7 +46,7 @@ in alphabetical order below:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | see below | see below |
+| String | no | Text - See below | see below |
 
 If this field is set, the SCE will look for a data folder containing the
 APOR files in the path specified. Note that the APOR files must be
@@ -122,7 +122,7 @@ the SCE will look-up the APOR from the `YieldTableAdjustable.txt` file.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - % | n/a |
+| String | yes | Number - % | n/a |
 
 The value of this field holds the computed Regulation Z APR for the loan we are
 checking. The Regulation Z APR should be expressed as a percentage.
@@ -131,7 +131,7 @@ checking. The Regulation Z APR should be expressed as a percentage.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number | n/a |
+| String | yes | Number - Integer | n/a |
 
 The `TermInYears` field holds the term of the loan, in whole years. Valid terms
 range from 1 year to 50 years, inclusive. If the loan's `RateType` is
@@ -242,7 +242,7 @@ or not the submitted loan is a higher priced mortgage loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The value of this field contains the Average Prime Offer Rate for the submitted
 loan. This value is retrieved from the appropriate APOR file (fixed or
@@ -252,7 +252,7 @@ adjustable).
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - % |
 
 The spread value depends upon the type of lien. First-lien loans have a spread
 of 1.5, and subordinate-lien loans have a spread of 3.5.
@@ -261,7 +261,7 @@ of 1.5, and subordinate-lien loans have a spread of 3.5.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - % |
 
 The value of this field returns the difference between the submitted Regulation
 Z APR, and the APOR plus the spread. If the difference is greater than or equal

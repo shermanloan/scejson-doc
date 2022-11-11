@@ -95,7 +95,7 @@ in alphabetical order below:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 As defined in Regulation Z (*Section 1026.18(b)*), the amount of credit provided
 to the borrower or on the borrower's behalf. As an example, the SCEJSON's Loan
@@ -105,7 +105,7 @@ module returns the loan's Amount Financed in the `Data.FedBox.AmtFin` field.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - % | n/a |
+| String | yes | Number - % | n/a |
 
 This field's value contains the APR applicable to the transaction, which is
 *not* the same as the Regulation Z APR. The APR applicable to the transaction is
@@ -141,7 +141,7 @@ object should be included in the request with its fields set as appropriate. See
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - curency | 0 |
+| String | no | Number - Currency | 0 |
 
 The total of all credit life, credit disability, credit unemployment, or credit
 property insurance premiums.
@@ -152,7 +152,7 @@ property insurance premiums.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - curency | 0 |
+| String | no | Number - Currency | 0 |
 
 The value of this field specifies the amount of the above specified 
 premiums and/or fees which were financed.
@@ -165,7 +165,7 @@ premiums and/or fees which were financed.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | see below | see below |
+| String | no | Text - See below | see below |
 
 If this field is set, the SCE will look for a data folder containing the
 APOR and `hcm.ini` files in the path specified. Note that the APOR files must be
@@ -200,7 +200,7 @@ of this object.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - curency | 0 |
+| String | no | Number - Currency | 0 |
 
 The total fee due for the discounted interest rate.
 
@@ -210,7 +210,7 @@ The total fee due for the discounted interest rate.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - % | 0 |
+| String | no | Number - % | 0 |
 
 The value of this field specifies the non-discounted rate, or the interest
 rate without any discount.
@@ -221,7 +221,7 @@ rate without any discount.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - % | 0 |
+| String | no | Number - % | 0 |
 
 The value of this field specifies the number of bona fide discount points paid
 by the borrower. According to *Section 1026.32(b)(3)(i)(D)*, a bona fide
@@ -246,7 +246,7 @@ and the loan amount is less than fifty thousand, then the rate spread is
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - currency | 0 |
+| String | no | Number - Currency | 0 |
 
 The value of this element is the sum of all federal and state mortgage insurance
 premiums and guarantee fees that are included in the Finance Charge (see
@@ -256,7 +256,7 @@ premiums and guarantee fees that are included in the Finance Charge (see
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 As defined in Regulation Z (*Section 1026.4*), the dollar amount that the credit
 will cost the borrower. As an example, the SCEJSON's Loan module returns the
@@ -266,7 +266,7 @@ loan's Finance Charge in the `Data.FedBox.FinChg` field.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 The value of this field holds the total interest accrued during the term of the loan,
 assuming the borrower will make all scheduled payments (see *Section 1026.32(b)(1)(i)(A)*).
@@ -288,7 +288,7 @@ type); for subordinate-lien loans, that value is 8.5%.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 The Loan Amount is the face amount of the note (i.e., the principal balance).
 
@@ -296,7 +296,7 @@ The Loan Amount is the face amount of the note (i.e., the principal balance).
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - currency | 0 |
+| String | no | Number - Currency | 0 |
 
 The value of this field represents all compensation paid directly or indirectly
 by a consumer or creditor to a loan originator. See *Section 1026.32(b)(1)(ii)*.
@@ -339,7 +339,7 @@ using this object.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 0 |
+| String | no | Number - Currency | 0 |
 
 This field specifies the private mortgage insurance premiums payable after
 consummation. See *Section 1026.32(b)(1)(i)(C)(1)*.
@@ -350,7 +350,7 @@ consummation. See *Section 1026.32(b)(1)(i)(C)(1)*.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 0 |
+| String | no | Number - Currency | 0 |
 
 The value of this field represents private mortgage insurance premiums paid at
 or before consummation. See *Section 1026.32(b)(1)(i)(C)(2)*.
@@ -361,7 +361,7 @@ or before consummation. See *Section 1026.32(b)(1)(i)(C)(2)*.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 0 |
+| String | no | Number - Currency | 0 |
 
 The maximum private mortgage insurance premium paid at or before consummation
 allowable under *Section 203(c)(2)(A)* of the National Housing Act. See
@@ -404,7 +404,7 @@ classify the specified loan as a HCM.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - curency | 0 |
+| String | no | Number - Currency | 0 |
 
 If the maximum prepayment penalty exceeds 2% of this field's value, then the
 prepayment penalty test will be triggered.
@@ -415,7 +415,7 @@ prepayment penalty test will be triggered.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - curency | 0 |
+| String | no | Number - Currency | 0 |
 
 The value of this field specifies the amount of the total prepayment penalty
 which was financed by the creditor.
@@ -426,7 +426,7 @@ which was financed by the creditor.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - curency | 0 |
+| String | no | Number - Currency | 0 |
 
 The maximum prepayment penalty that may be charged or collected under the terms
 of the mortgage loan. See *Section 1026.32(b)(1)(v)*.
@@ -437,7 +437,7 @@ of the mortgage loan. See *Section 1026.32(b)(1)(v)*.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - curency | 0 |
+| String | no | Number - Currency | 0 |
 
 The total prepayment penalty incurred by the consumer if the consumer refinances
 the existing mortgage loan with the current holder of the existing loan, a
@@ -489,7 +489,7 @@ fees and other charges which should be included here.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - curency | 0 |
+| String | no | Number - Currency | 0 |
 
 The total fee due for all appropriate real estate fees and other charges.
 
@@ -499,7 +499,7 @@ The total fee due for all appropriate real estate fees and other charges.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - curency | 0 |
+| String | no | Number - Currency | 0 |
 
 The value of this field specifies the amount of the above specified real
 estate fees and other charges which were financed.
@@ -512,7 +512,7 @@ estate fees and other charges which were financed.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | n/a |
+| String | no | Number - Integer | n/a |
 
 The value of this field holds the number of payments *in the initial fixed rate
 period of the loan*. If the loan uses a fixed rate, then this is equal to the
@@ -528,7 +528,7 @@ Note that the calling application *must* specify either the
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | n/a |
+| String | no | Number - Integer | n/a |
 
 The value of this field holds the term of the initial fixed rate period of the
 loan, in whole years. Valid terms range from 1 year to 50 years, inclusive.
@@ -537,7 +537,7 @@ loan, in whole years. Valid terms range from 1 year to 50 years, inclusive.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - currency | 0 |
+| String | no | Number - Currency | 0 |
 
 This field holds the sum of all bona fide third-party charges included in the
 Finance Charge, as defined in *Section 1026.32(b)(1)(i)(D)*.
@@ -742,7 +742,7 @@ example, if the lock in date was 2013-05-09, then the date returned should be
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - % |
 
 The value of this field contains the Average Prime Offer Rate for the submitted
 loan. This value is retrieved from the appropriate APOR file (fixed or
@@ -754,7 +754,7 @@ adjustable).
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - % |
 
 The spread value depends upon the type of lien, loan amount, and dwelling type.
 The resulting spread will either be 6.5 or 8.5.
@@ -765,7 +765,7 @@ The resulting spread will either be 6.5 or 8.5.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - % |
 
 The value of this field returns the difference between the submitted APR
 applicable to the transaction, and the APOR plus the spread. If the difference
@@ -794,7 +794,7 @@ fees test, which may be of interest to the calling application.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The total loan amount is defined in *Section 1026.32(b)(4)*. It is calculated by
 taking the Regulation Z Amount Financed and deducting some of the financed fees
@@ -806,7 +806,7 @@ and charges which are provided as inputs to the calculation.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The total points and fees value is defined in *Section 1026.32(b)(1)*. It is
 calculated by taking the Regulation Z Finance Charge and deducting some portions
@@ -819,7 +819,7 @@ as inputs to the calculation.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 If the computed total points and fees value for the submitted loan exceeds this
 value, then the loan is a high cost mortgage. The maximum points and fees value
@@ -858,7 +858,7 @@ consummation, then the loan is a high cost mortgage.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 This field returns the total potential amount of prepayment penalties.
 
@@ -868,7 +868,7 @@ This field returns the total potential amount of prepayment penalties.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The maximum prepayment penalty is computed acording to *Section
 1026.32(a)(1)(iii)*, and is equal to 2% of the specified `AmountPrepaid`. If the

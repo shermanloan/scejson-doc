@@ -47,7 +47,7 @@ in alphabetical order below:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - currency | n/a |
+| String | no | Number - Currency | n/a |
 
 The beginning balance is the amount which is present in the retirment
 account when the annuity starts. Interest will accrue monthly on this 
@@ -72,7 +72,7 @@ whereas the `Income` field is omitted.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - currency | n/a |
+| String | no | Number - Currency | n/a |
 
 The value of this field specifies the desired monthly income amount. If you are
 computing the monthly income amount (e.g. `"Calculate" : "Income"`), then you
@@ -82,7 +82,7 @@ may omit this field from the request.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 This field dictates the rate at which interest accrues throughout the
 term of the annuity.
@@ -91,7 +91,7 @@ term of the annuity.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | n/a |
+| String | no | Number - Integer | n/a |
 
 This field specifies the number of months in the term of the annuity.
 This corresponds to the length of the monthly income stream which is
@@ -194,7 +194,7 @@ no warnings will be generated for these unrecognized fields.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The beginning balance is the amount which is present in the retirment
 account when the annuity starts.
@@ -203,7 +203,7 @@ account when the annuity starts.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The rate at which interest will accrue on the balance during the term of the
 annuity.
@@ -212,7 +212,7 @@ annuity.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The amount of the monthly disbursement.
 
@@ -220,7 +220,7 @@ The amount of the monthly disbursement.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 This number of months of income provided by the annuity.
 
@@ -228,7 +228,7 @@ This number of months of income provided by the annuity.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The `TotalIncome` is the sum of all monthly disbursements made during
 the term of the annuity.
@@ -237,7 +237,7 @@ the term of the annuity.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The `Gain` is the difference between the total income and the beginning balance.
 It is the total amount of interest accrued over the term of the annuity.

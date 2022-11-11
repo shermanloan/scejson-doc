@@ -195,7 +195,7 @@ these entries as streams of Amounts Financed (in the RegulationZ sense).
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 The proceeds to be advanced to the borrower less any prepaid fees for each of
 the `Term` advances is defined using this field. 
@@ -246,7 +246,7 @@ field is `1`, then this field is ignored.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | integer > 1 | 1 |
+| String | no | Number - Integer | 1 |
 
 The `Term` field determines the the number of advances to be included at the
 specified frequency (see `Advance.PPY` above), after which the advance stream is
@@ -318,7 +318,7 @@ computed with this field set as `true`.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 The total amount of construction interest.
 
@@ -342,7 +342,7 @@ then set the field's value to `false`.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - currency | 0 |
+| String | yes | Number - Currency | 0 |
 
 This field holds the total prepaid charge for points and fees, excluding
 construction interest. This attribute need only be specified when the
@@ -355,7 +355,7 @@ construction interest. This attribute need only be specified when the
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | 1, 2, 3, 4, 5 | see below |
+| String | no | 1, 2, 3, 4, 5 | Text - See below |
 
 The number of decimal places of accuracy for the disclosed APR is determined by
 this field. The default value of this field depends upon the selected `Method`.
@@ -444,7 +444,7 @@ payment frequency will be:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 This field defines the principal and interest portion of the payment for
 each of the `Term` payments. If the total payment includes any
@@ -471,7 +471,7 @@ field is ignored.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 0 |
+| String | no | Number - Integer | 0 |
 
 When specifying a semimonthly payment stream, the day number on which the first
 payment is made determines the day number for all of the following odd numbered
@@ -506,7 +506,7 @@ for 24 payments, the object should look something like this:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 1 |
+| String | no | Number - Integer | 1 |
 
 The term field indicates the the number of *payments* to be made at the
 specified payment frequency (see `PmtStream.PPY` above), after which the payment
@@ -570,7 +570,7 @@ Was the premium intended for the last day of the month?
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 The Premium amount.
 
@@ -580,7 +580,7 @@ The Premium amount.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 1 |
+| String | no | Number - Integer | 1 |
 
 The number of premiums in the stream.
 
@@ -591,7 +591,7 @@ The number of premiums in the stream.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - %| n/a |
+| String | no | Number - % | n/a |
 
 The SCE will compute an APR for the given loan, then compare the APR it has
 computed against this value. The difference between the computed and test APRs
@@ -603,7 +603,7 @@ omit this field. The test APR should be expressed as a percentage.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - currency | n/a |
+| String | no | Number - Currency | n/a |
 
 If this field is present and contains a value greater than zero, then the
 SCE will compute the Regulation Z Finance Charge for the given loan and
@@ -619,7 +619,7 @@ in the response.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - currency | n/a |
+| String | no | Number - Currency | n/a |
 
 If this field is present and contains a value greater than zero, then the SCE
 will compute the Regulation Z Total of Payments for the given loan and compare
@@ -682,7 +682,7 @@ include the follwing in the request:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 1 |
+| String | no | Number - Integer | 1 |
 
 This field's value defines the integral number of standard unit periods in the
 defined unit period.
@@ -693,7 +693,7 @@ defined unit period.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Day'', Week, Month, Year, or Semimonth | n/a |
+| String | yes | Day, Week, Month, Year, or Semimonth | n/a |
 
 This field defines the standard unit period. The unit period will be some
 integral multiple of this standard unit period, as specified by the `Multiple`
@@ -958,7 +958,7 @@ The APR data is contained in the fields of this object.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The numeric value of the computed Apr, expressed as a percentage.
 
@@ -978,7 +978,7 @@ This field returns the Apr method used to compute the numeric Apr value.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | see below |
+| String | no | Text - See below |
 
 US Rule APR's will disclose the precise method of interest accrual in this
 element. All of the variation is in regards to "Term factors". All US Rule
@@ -992,7 +992,7 @@ term factors, which represent how many years interest has been accruing.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | see below |
+| String | no | Text - See below |
 
 The value in this field concatenates the `Apr.UnitPeriodMult` and
 `Apr.UnitPeriodBase` into one value. For instance, when with `"Base : "Month"`
@@ -1023,7 +1023,7 @@ with a unit period calendar.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 The unit multiple composing the Unit Period. For instance, if the unit period
 were 6 months, the Base is `Month`, the Mult is `6`.
@@ -1037,7 +1037,7 @@ with a unit period calendar.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 The value of this field holds the number of periods per year.
 
@@ -1138,7 +1138,7 @@ This field is only present when the APR method is Actuarial or US Rule.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - % |
 
 The APR computed by the SCE.
 
@@ -1148,7 +1148,7 @@ The APR computed by the SCE.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - % |
 
 The APR specified by the request which is to be tested for compliance.
 
@@ -1158,7 +1158,7 @@ The APR specified by the request which is to be tested for compliance.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - % |
 
 The magnitude of the difference between the test APR and the computed APR.
 
@@ -1168,7 +1168,7 @@ The magnitude of the difference between the test APR and the computed APR.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - % |
+| String | no | Number - % |
 
 The tolerance permitted by RegZ for the type of loan in question. In the United
 States of America, regular loans have a tolerance of 0.125, while irregular
@@ -1228,7 +1228,7 @@ for the value of the `TestFinChg` field.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The Finance Charge computed by the SCE.
 
@@ -1238,7 +1238,7 @@ The Finance Charge computed by the SCE.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The Finance Charge specified by the request which is to be tested for
 compliance.
@@ -1249,7 +1249,7 @@ compliance.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The magnitude of the difference between the test Finance Charge and the
 computed Finance Charge.
@@ -1275,7 +1275,7 @@ for the value of the `TestTotPmt` field.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The Total of Payments computed by the SCE.
 
@@ -1285,7 +1285,7 @@ The Total of Payments computed by the SCE.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The Total of Payments specified by the request which is to be tested for
 compliance.
@@ -1296,7 +1296,7 @@ compliance.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The magnitude of the difference between the test Total of Payments and the
 computed Total of Payments.
@@ -1333,7 +1333,7 @@ payment in the case of loans with odd days interest.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The total amount financed for the loan.
 
@@ -1343,7 +1343,7 @@ The total amount financed for the loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The value of this field represents the number of advances in the specified loan.
 
@@ -1353,7 +1353,7 @@ The value of this field represents the number of advances in the specified loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Floating |
 
 The value of this field is the present value of all advances made in the
 specified loan.
@@ -1366,7 +1366,7 @@ This field is only present when the APR method is Actuarial.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The total of all payments made in the requested loan.
 
@@ -1376,7 +1376,7 @@ The total of all payments made in the requested loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The value of this field represents the number of payments made in the specified
 loan.
@@ -1387,7 +1387,7 @@ loan.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Floating |
 
 The value of this field is the present value of all payments made in the
 specified loan.
@@ -1415,7 +1415,7 @@ results as fields.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Floating |
 
 The balance at the end of amortization using the disclosed APR. The correct
 APR is the rate which produces the smallest balance after amortization.
@@ -1428,7 +1428,7 @@ attributes should be greater than the value of this field.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Floating |
 
 The balance at the end of amortization using the disclosed APR less one rate
 unit. As an example, if the disclosed APR is 10.000%, then the `ErrorDown`
@@ -1445,7 +1445,7 @@ correct APR.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Floating |
 
 The balance at the end of amortization using the disclosed APR plus one rate
 unit. As an example, if the disclosed RegZAPR is 10.000%, then the `ErrorUp`
@@ -1475,7 +1475,7 @@ in the schedule.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The index of the amortization event, starting with zero.
 
@@ -1495,7 +1495,7 @@ The date of the amortization event.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Currency |
 
 The amount of the advance.
 
@@ -1507,7 +1507,7 @@ This field is only present if this AmLine object is an advance event.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Currency |
 
 The payment amount.
 
@@ -1519,7 +1519,7 @@ This field is only present if this AmLine object is a payment event.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Currency |
 
 The premium amount.
 
@@ -1531,7 +1531,7 @@ This field is only present if this AmLine object is a premium event.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 The number of full unit periods from this event to the transaction date.
 
@@ -1546,7 +1546,7 @@ the Federal Calendar.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Text |
 
 The number of fractional unit periods from this event to the transaction date.
 
@@ -1561,7 +1561,7 @@ the Federal Calendar.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Floating |
 
 The Term Factor used to compute interest. (APR/100) * Term Factor * BegBal = New
 Interest.
@@ -1574,7 +1574,7 @@ This field is only present when the APR method is *not* Actuarial.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Floating |
 
 The present value of the event cash at the time of the transaction date.
 
@@ -1586,7 +1586,7 @@ This field is only present when the APR method is *not* US Rule.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Floating |
 
 The running total present value sum.
 
@@ -1598,7 +1598,7 @@ This field is only present when the APR method is *not* US Rule.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Floating |
 
 The beginning balance before amortizing this event.
 
@@ -1610,7 +1610,7 @@ This field is only present when the APR method is US Rule.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Floating |
 
 The amount of interest paid at this event.
 
@@ -1622,7 +1622,7 @@ This field is only present when the APR method is US Rule.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Floating |
 
 The amount of unpaid interest remaining after this event is amortized.
 
@@ -1634,7 +1634,7 @@ This field is only present when the APR method is US Rule.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Floating |
 
 The ending balance after amortizing this event.
 

@@ -95,7 +95,7 @@ in the fields of this object.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number - Floating | 36 |
+| String | no | Number - % | 36 |
 
 If you are computing the Military APR (see `UseMAPR` below) and wish to override
 the default maximum APR value of 36%, then specify the desired maximum as the
@@ -474,7 +474,7 @@ value trumps a specified minimum.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | any | empty |
+| String | no | Text | empty |
 
 This field is for convenience purposes only, and does not affect the calculation
 of the fee in any manner. However, the value of this field *will* be used to
@@ -1217,7 +1217,7 @@ margin (nor any other rates) will occur.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number - % | See below |
+| String | yes | Number - % | Text - See below |
 
 Determine the interest rate used for the loan.
 The interest rate should be expressed as a percentage. For example,
@@ -1296,7 +1296,7 @@ in the setup file for the given account.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | path | default data path |
+| String | no | Text | default data path |
 
 If this field is set, the SCE will look for a `/data` folder containing the
 setup files in the path specified. Thus, if the `DataPath` is set to `/etc/sce`,
@@ -1407,7 +1407,7 @@ the value stored in the setup file.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number - % | See below |
+| String | yes | Number - % | Text - See below |
 
 The teaser rate is the interest rate initially applied to the loan during the
 `TeaserTerm`. These rates are in effect for a given number of payments (see
@@ -1752,9 +1752,9 @@ scheduled payments.
 
 🟦 **FedBox.TotalSalePrice**
 
-| Type  | Required |
-| :---: |   :---:  |
-| Object | no |
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
 
 The sum of the total of payments plus the total down payment. Please note that
 if no `TotalDown` field was included in the request, then this element will not
@@ -2798,7 +2798,7 @@ on decreasing life coverage.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | See below |
+| String | yes | Text - See below |
 
 This field contains the calculation result for the requested protection product.
 If it contains a value of "Valid Calculation", then the requested product was
@@ -2814,7 +2814,7 @@ not computed.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | See below |
+| String | yes | Text - See below |
 
 The `Formula` field contains an abbreviated description of the formula used to
 compute the desired protection product. The formula codes are for the use of the

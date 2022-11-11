@@ -55,7 +55,7 @@ is determined by the value of this field.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 The total interest earned on the principal
 
@@ -91,7 +91,7 @@ are disclosed monthly, then this element may be omitted.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 The value of this field specifies the total amount earning interest.
 
@@ -201,7 +201,7 @@ no warnings will be generated for these unrecognized fields.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - percentage |
+| String | yes | Number - % |
 
 The APY, as defined in Appendix A to Part 1030 of Truth in Savings, and computed
 by the SCE.
@@ -230,7 +230,7 @@ The frequency that interest is compounded.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The value of this field specifies the number of days in each compounding period.
 
@@ -247,7 +247,7 @@ sent to the customer by the deposit institution.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The number of days in each statement period.
 
@@ -255,7 +255,7 @@ The number of days in each statement period.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The `Term` is the number of unit periods (as specified in the `TermUnits` field)
 between the deposit date and the CD's maturity date.
@@ -290,7 +290,7 @@ The number of days between the investment and maturity dates.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The value of this field specifies the total amount earning interest.
 
@@ -298,7 +298,7 @@ The value of this field specifies the total amount earning interest.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 This field holds the value of the `Interest` field passed into the SCE.
 

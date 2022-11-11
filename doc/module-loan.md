@@ -192,7 +192,7 @@ Defines the interest rate that applies at and beyond this event. If no `IntRate`
 is specified, the previously defined interest rate is used. A value of zero will
 be used if no previous `IntRate` has been defined.
 
-🟦 **AccrualConfig.IntRound***
+🟦 **AccrualConfig.IntRound**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -2135,7 +2135,7 @@ scheduled payment date will be altered in one of the following manners:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number - Currency, Number%, or Number%B | 0 |
+| String | no | Number - Currency, Number - Floating +"%", or Number - Floating + "%B" | 0 |
 
 The value of the `Amount` field has different meanings depending upon the
 `PmtType` selected. Please see the documentation on the `PmtType` field above

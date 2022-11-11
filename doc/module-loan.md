@@ -186,7 +186,7 @@ interest.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | Text - See below |
+| String | no | Number - Integer | Text - See below |
 
 Defines the interest rate that applies at and beyond this event. If no `IntRate`
 is specified, the previously defined interest rate is used. A value of zero will
@@ -265,7 +265,7 @@ rate structure is:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | n/a |
+| String | yes | Number - Currency | n/a |
 
 Defines the upper bound to which the specified split rate tier will apply.
 
@@ -273,7 +273,7 @@ Defines the upper bound to which the specified split rate tier will apply.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | n/a |
+| String | yes | Number - Floating | n/a |
 
 Defines the interest rate that applies to this split rate tier.
 
@@ -297,7 +297,7 @@ specify the cash advances made to the borrower.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | n/a |
+| String | yes | Number - Currency | n/a |
 
 The proceeds to be advanced to the borrower is defined using this field. If the
 calling application requests that the advance be computed (see the
@@ -599,7 +599,7 @@ rounded.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | currency | 0 |
+| String | no | Number - Currency | 0 |
 
 This field allows the calling application to specify a minimum allowed
 finance charge for the loan. If a value greater than zero is specified, then the
@@ -621,7 +621,7 @@ minimum finance charge adjustments made to the final payment.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | currency | 0 |
+| String | no | Number - Currency | 0 |
 
 This field allows the calling application to specify a minimum allowed
 interest charge for the loan. If a value greater than zero is specified, then the
@@ -1289,7 +1289,7 @@ then the scheduled fee date will be altered in one of the following manners:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | 0 |
+| String | yes | Number - Currency | 0 |
 
 How this field is interpreted depends upon the `Fee.CalcType` field.
 Please see the documentation for this field for further information.
@@ -1578,7 +1578,7 @@ based is defined as the computed service charge amount, as defined by the
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0.01 |
+| String | no | Number - Floating | 0.01 |
 
 When rounding the amount on which the fee is based, the value of this field
 determines the precision to which rounding is performed. The default value of
@@ -1644,7 +1644,7 @@ total number of days in the term of the fee.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Integer > 1 | 1 |
+| String | no | Number - Integer | 1 |
 
 The `Term` field determines the the number of fees to be included at the
 specified frequency (see `Fee.PPY` above), after which the fee stream is
@@ -3514,7 +3514,7 @@ of the interest accrual method used to compute the loan (e.g.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | integer |
+| String | no | Number - Integer |
 
 If `BusinessRules.YieldPPY` in the loan's request is set to a value other than `0`,
 then this field will be returned in the response with the same value passed into
@@ -3830,7 +3830,7 @@ fall under these loan repayment classifications.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | diretory |
+| String | no | Text |
 
 This optional field will hold the value of the data path used by the
 SCE to find the required setup files for protection calculations. This
@@ -3906,7 +3906,7 @@ field is not present, then the default value of `false` should be used
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | Number - % |
+| String | no | Number - Integer |
 
 The `Table` field will only be present when a product is offered with differing
 tables of rates. If present, the value of this field is the table number used in
@@ -3916,7 +3916,7 @@ the calculation.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | string% |
+| String | no | Text |
 
 The `Formula` field contains an abbreviated description of the formula used to
 compute the desired protection product. The formula codes are for the use of the
@@ -3945,7 +3945,7 @@ rate change with a value of `Variable`.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | Number - % |
+| String | no | Number - Integer |
 
 If the requested protection was dropped by the SCEX for any reason, then the
 value of this field will be greater than zero. In this case, no child objects of
@@ -3959,7 +3959,7 @@ should be parsed.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | Number - % |
+| String | no | Number - Integer |
 
 If the requested protection product was successfully included in the loan, then
 the value of this field will be `Valid Calculation` and corresponds to a
@@ -4698,7 +4698,7 @@ The amount of mortgage insurance paid at this event.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | Number - Currency |
+| String | no | Number - Floating |
 
 Any interest not paid after this event is logged in this field.
 

@@ -1709,6 +1709,12 @@ following descriptions:
  America, Thanksgiving is a Federal holiday celebrated on the 4th (`P=4`)
  Thursday (`D=4`) of November (`MM=11`) every year. To pass this holiday in to
  the SCE, the `Holiday[]` array member would look like `"0001-11-44"`.
+- **0002-NN-NN -** A holiday that occurs annually, but can not be expressed
+ using any of the above methods. Currently, the following special holidays are
+ recognized by the SCEX:
+   - **0001 -** Good Friday
+   - **0002 -** Easter Sunday
+   - **0003 -** Easter Monday
 
 ### 🟦 MI
 

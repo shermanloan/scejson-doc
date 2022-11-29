@@ -1099,18 +1099,45 @@ insurance methods / rates / caps, etc.
 | String | no | see table | default |
 
 The method of interest accrual is defined by this field. A value of `default`
-informs the SCE to use the single payment note interest accrual method defined
-in the setup file for the specified `Account`.
+informs the SCE to use the interest accrual method defined in the setup file for
+the specified `Account`. All other valid accrual codes are described in the
+table below.
 
 | Code | Description |
 | :---: | :--- |
-| 210, 310 | Actual/360 Simple |
-| 211, 311 | True365/360 Simple |
-| 220, 320 | Actual/365 Simple |
-| 221, 321 | True365/365 Simple |
-| 230, 330 | Actual/Actual Simple |
-| 231, 331 | Midnight 366 Simple |
-| 240, 241 | Actual/365.25 Simple |
+| 100 | Actuarial (using Federal calendar)  |
+| 101 | Actuarial w/ Toyota Motor Credit calendar  |
+| 201 | Unit period simple w/ 360 day divisor  |
+| 202 | Unit period simple w/ 365 day divisor  |
+| 203 | Unit period simple w/ days per period divisor (e.g. 91 for quarterly payment frequencies)   |
+| 204 | Unit period simple w/ true 360 calendar and 360 day divisor.  |
+| 205 | Unit period simple w/ true 360 calendar and 365 day divisor.  |
+| 206 | Unit period simple w/ true 360 calendar and days per period divisor (e.g. 91 for quarterly payment frequencies)   |
+| 207 | Unit period simple w/ Federal Calendar   |
+| 210 | Actual / 360 simple  |
+| 211 | True 365 / 360 simple  |
+| 220 | Actual / 365 simple  |
+| 221 | True 365 / 365 simple  |
+| 230 | Actual / Actual simple  |
+| 231 | Midnight 366 simple  |
+| 240 | Actual / 365.25 simple  |
+| 250 | Unit period simple w/ variable DPY divisor  |
+| 301 | Unit period US Rule w/ 360 day divisor  |
+| 302 | Unit period US Rule w/ 365 day divisor  |
+| 303 | Unit period US Rule w/ days per period divisor (e.g. 91 for quarterly payment frequencies)   |
+| 304 | Unit period US Rule w/ true 360 calendar and 360 day divisor.  |
+| 305 | Unit period US Rule w/ true 360 calendar and 365 day divisor.  |
+| 306 | Unit period US Rule w/ true 360 calendar  and days per period divisor (e.g. 91 for quarterly payment frequencies)   |
+| 307 | Unit period US Rule w/ Federal Calendar   |
+| 310 | Actual / 360 US Rule  |
+| 311 | True 365 / 360 US Rule  |
+| 320 | Actual / 365 US Rule  |
+| 321 | True 365 / 365 US Rule  |
+| 330 | Actual / Actual US Rule  |
+| 331 | Midnight 366 USRule  |
+| 340 | Actual / 365.25 US Rule  |
+| 350 | Unit period US Rule w/ variable DPY divisor  |
+| 400 | Add On  |
 
 🟦 **Settings.ConMethod**
 

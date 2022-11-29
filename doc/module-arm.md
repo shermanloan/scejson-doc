@@ -816,6 +816,128 @@ the ARM. Should the interest rate ever dip below this value, then the minimum
 rate specified will be used instead. If left unspecified (or zero), then no
 rate minimum will be enforced.
 
+### 🟦 ODI
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+If odd days should be treated as a prepaid finance charge *or* added to the
+first payment, then the request needs to define how odd days interest is
+computed and handled using the fields of this object.
+
+<details>
+<summary><b>ODI fields</b></summary>
+
+---
+
+🟦 **ODI.AccrualCode**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 204, 205, 210, 211, 220, 221, 230, 231, 250 | default |
+
+The accrual code defines how the odd days interest is computed. The meaning of the
+allowed accrual codes is defined below.
+
+Note that accrual code `250` ("Variable Days Per Year") defines the
+basis divisor days to be equal to 12 multiplied by the number of days in the month
+of the date on which interest begins to accrue. Thus, if the interest start date
+falls in November, then the number of basis days is 360. If the interest start
+date falls in a month with 31 days, then the number of basis days is 372. For
+an interest start date in February, the number of basis days will either be 336
+or 348, depending upon whether or not it is a leap year.
+
+| Accrual Code | Description |
+| :---: | :---- |
+| 204 | True360/360 |
+| 205 | True360/365 |
+| 210 | Actual/360 |
+| 211 | True365/360 |
+| 220 | Actual/365 |
+| 221 | True365/365 |
+| 230 | Actual/Actual |
+| 231 | Midnight 366 |
+| 250 | Actual/Variable Days Per Year |
+
+🟦 **ODI.AddToPmt**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the calling application wants the odd days interest to be added to the first
+payment, then set the value of this field to `true`. A value of `false`
+indicates that the odd days interest will be treated as a prepaid finance
+charge.
+
+🟦 **ODI.AddToPrin**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If any odd days interest should be treated as a financed prepaid fee, then set
+the value of this field to `true`. Note that if both `AddToPmt` and `AddToPrin`
+are set to `true`, then a warning message will be returned by the SCE and the
+value of `AddToPrin` will be set to `false`.
+
+🟦 **ODI.AnchorDate**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | BackUnitPeriod, BackDaysPerPeriod | BackUnitPeriod |
+
+The computed number of odd days is the number of days between the loan date and
+the anchor date. This field determines how to arrive at the anchor date. A value
+of `BackUnitPeriod` means that the anchor date is one unit period prior to the
+specified first payment date. A value of `BackDaysPerPeriod` means that the
+anchor date is the number of days per period prior to the first payment date.
+Please note that for both of these methods, the period used will be that
+associated with the payment stream in which the first payment occurs.
+
+🟦 **ODI.ForceUnitPeriod**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+Some unit period methods will not use a strict unit period interest accrual
+factor in the period to the first payment. For example, code `302` will count
+the days to the first payment and divide by 365. For a monthly loan, setting
+this field to `true` will use a 1/12 factor instead of Days/365.
+
+🟦 **ODI.UseDailyCost**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the total odd days prepaid fee is computed by first generating a rounded (to
+the nearest penny) daily cost and then multiplying this value by the computed
+number of odd days, then set the value of this property to `true`.
+
+A value of `false` means that the daily cost is left unrounded, and the total
+prepaid fee is rounded after the computation is complete.
+
+🟦 **ODI.UseNegODI**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If there are negative odd days in the loan, then the value of this field
+determines if a negative odd days interest fee is computed. If the value of this
+field is `false`, then negative odd days fees are not allowed, the SCE will
+return a value of zero in this situation, and the computed payment will be
+adjusted to take into account the negative odd days. A value of `true` will
+return a negative odd days interest fee (in effect, it then becomes and odd days
+interest credit) when there are negative odd days in a loan.
+
+---
+
+</details>
+
 ### 🟥 PmtDate
 
 | Type  | Required | Values | Default |
@@ -2278,6 +2400,74 @@ as well as any fees and/or protection products which are financed.
 
 This value of this field holds the total interest accrued during the term of the
 loan, assuming the borrower will make all scheduled payments.
+
+🟦 **Moneys.ODI**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+This object, if present, contains information regarding odd days interest. If no
+odd days interest was requested, then this object will not be present in the
+response.
+
+<details>
+<summary><b>ODI fields</b></summary>
+
+---
+
+🟥 **ODI.Count**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Integer |
+
+Discloses the number of odd days computed by the SCE for the requested loan.
+
+🟦 **ODI.Months**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Integer |
+
+This field holds the number of odd months computed by the SCE for the requested
+loan when using odd days accrual method `250`. If the odd days accrual method is
+a value other than `250`, then this field will not be present in the `ODI`
+object of the response.
+
+🟦 **ODI.DailyCost**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+If the odd days interest fee is computed using a rounded daily cost, then the
+value of this field will hold that value. If the odd days interest is *not*
+computed using a rounded daily cost, then this field will not be present in the
+response.
+
+🟦 **ODI.AddToPmt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Boolean | no | true, false |
+
+If the odd days interest has been added to the first payment, then this field will be
+present in the response with a value of `true`. If the odd days interest has been 
+treated as a prepaid finance charge, then this field will not be present and a default
+value of `false` should be assumed.
+
+🟥 **ODI.Fee**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Currency |
+
+Discloses the total amount odd days interest charge.
+
+---
+
+</details>
 
 🟦 **Moneys.ConstructInterest**
 

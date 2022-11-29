@@ -34,6 +34,13 @@ changes which may or may not be of interest to you.
   via the `AddToPrin` field of the appropriate object. Note that this field will
   be ignored if the odd days interest is set up to be added to the first payment
   instead of being disclosed as a prepaid fee.
+* The `OddDaysPrepaid` request object from the [Loan](module-loan.md) module has
+  been added to all of the other loan modules. This provides a consistent way to
+  specify odd days interest fees in all loan modules. The old way of specifying
+  an odd days prepaid fee (via the `Fees[]` array) has been deprecated, and the
+  associated documentation has been removed. However, for backwards
+  compatability purposes the functionality will remain within the SCE. Please
+  see the appropriate loan chapter for further information.
 * The [Loan](module-loan.md) module now supports the calculation of fixed principal
   plus interest and pure principal payments where the principal reduction amount
   is defined as a percentage of the computed payment. This allows a calling

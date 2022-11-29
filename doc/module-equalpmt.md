@@ -304,8 +304,7 @@ The optional `Adjust` field allows the calling application
 to increase or decrease the base amount on which a fee is calculated.
 If a negative value is specified and this adjustment would produce a
 negative base amount, then a value of zero is returned for the given fee.
-This field has no effect on fees with a `CalcType` of `Dollar`, nor on any of
-the `OddDay` fee varieties.
+This field has no effect on fees with a `CalcType` of `Dollar`.
 
 As an example, in Tennessee you may need to define a financed, non-APR
 affecting fee to be computed by decreasing the amount financed by $2,000,
@@ -331,7 +330,7 @@ this in the SCE is as follows:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Dollar, OnProceeds, OnPrincipal, OnAmtFin, OddDays360, OddDays365, OddDaysActAct, OddDaysUnit360, OddDaysUnit365, OddDaysVarDPY | Dollar |
+| String | no | Dollar, OnProceeds, OnPrincipal, OnAmtFin | Dollar |
 
 This field specifies how the fee is to be computed, as described in the following table.
 
@@ -341,12 +340,6 @@ This field specifies how the fee is to be computed, as described in the followin
 | OnProceeds    | The `Entry` field is understood as a percentage value, to be applied to the loan's proceeds, defined as the sum of advances. An `Amount` of `0.25` would represent a fee of 0.25% of the total proceeds. |
 | OnPrincipal   | The `Entry` field is understood as a percentage value, to be applied to the loan's principal balance. An `Amount` of `0.125` would represent a fee of 0.125% of the principal balance. |
 | OnAmtFin      | The `Entry` field is understood as a percentage value, to be applied to the loan's Regulation Z Amount Financed. An `Amount` of `0.33` would represent a fee of 0.33% of the amount financed. |
-| OddDays360 | Compute a prepaid interest charge on the odd days, using a 360 day divisor. For this calculation type, the `Entry` attribute is ignored. You *must* set the `AddToFinChg` attribute to true, otherwise the fee will return a value of zero.|
-| OddDays365  | Compute a prepaid interest charge on the odd days, using a 365 day divisor. For this calculation type, the `Entry` attribute is ignored. You *must* set the `AddToFinChg` attribute to true, otherwise the fee will return a value of zero.|
-| OddDaysActAct  | Compute a prepaid interest charge on the odd days, using the actual/actual method (366 for leap year, 365 for non-leap year) as the divisor. For this calculation type, the `Entry` attribute is ignored. You *must* set the `AddToFinChg` attribute to true, otherwise the fee will return a value of zero.|
-| OddDaysUnit360 | Compute a prepaid interest charge on the odd days, using a unit period calendar with 360 day divisor. For this calculation type, the `Entry` attribute is ignored. You *must* set the `AddToFinChg` attribute to true, otherwise the fee return a value of zero.|
-| OddDaysUnit365 & Compute a prepaid interest charge on the odd days, using a unit period calendar with 365 day divisor. For this calculation type, the `Entry` attribute is ignored. You *must* set the `AddToFinChg` attribute to true, otherwise the fee will return a value of zero.|
-| OddDaysVarDPY | Compute a prepaid interest charge on the odd days, using a unit period calendar with a divisor equal to 12 multiplied by the number of days in the month of the date on which interest begins to accrue. For this calculation type, the `Entry` attribute is ignored. You *must* set the `AddToFinChg` attribute to true, otherwise the fee will return a value of zero. |
 
 🟦 **Fee.Entry**
 
@@ -369,13 +362,6 @@ as defined in the rule. Please note that if the fee is paid by a lender or other
 third party, then the fee does not affect the loan calculation and should not be
 sent to the SCEX. If it is sent, then the value of this attribute should be set
 to false.
-
-Note that fees which calculate odd days interest (e.g. their `CalcType` is one
-of [`OddDays360`, `OddDays365`, `OddDaysActAct`, `OddDaysUnit360`,
-`OddDaysUnit365`]) will ignore the `IsLoanCost` field if set to a value of
-`true`, as they are not a loan cost. However, any odd days interest fees will be
-considered as part of the interest charge as far as the "In 5 Years" and "Total
-Interest Percentage" calculations are concerned.
 
 🟦 **Fee.MAPR***
 
@@ -2414,28 +2400,6 @@ disclosure for identification purposes.
 | String | yes | Number - Currency |
 
 Discloses the computed fee amount.
-
-🟦 **Fee.OddDays**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | Number - Integer |
-
-If an odd days prepaid fee has been requested, and if the account has been
-configured to compute the odd days prepaid fee as a number of odd days
-multiplied by a rounded daily amount, then this attribute will be present and
-its value is the number of computed odd days.
-
-🟦 **Fee.DailyAmt**
-
-| Type  | Required | Values |
-| :---: |   :---:  |  ---   |
-| String | no | Number - Currency |
-
-If an odd days prepaid fee has been requested, and if the account has been
-configured to compute the odd days prepaid fee as a number of odd days
-multiplied by a rounded daily amount, then this attribute will be present and
-its value is the number of computed odd days.
 
 ---
 

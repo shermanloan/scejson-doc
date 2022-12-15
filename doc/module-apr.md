@@ -115,6 +115,7 @@ over 365. For the former, use `InMonths`. For the latter, use `InDays`.
  *Section (b)(5)(vi)*
 
 ---
+
 </details>
 
 ### 🟦 AmTableOpts
@@ -143,8 +144,6 @@ indicated by this attribute. Note that this number does not affect the calculati
 merely affects to what number of decimals places to which the floating point number is disclosed.
 `9` means "do not trim".
 
----
-
 🟦 **AmTableOpts.ForceDay**
 
 | Type  | Required | Values | Default |
@@ -156,8 +155,6 @@ For instance, if payments were intended to be made on the end of the month, and
 the first payment is in April, making this setting `31` causes the fed calendar to compute
 time as if the day of the payment was 31, rather than 30.
 
----
-
 🟦 **AmTableOpts.RoundInt**
 
 | Type  | Required | Values | Default |
@@ -168,6 +165,7 @@ If interest is rounded within the amortization schedule for US Rule APRs, set th
 rounding method here.
 
 ---
+
 </details>
 
 ### 🟥 Advances
@@ -194,8 +192,6 @@ these entries as streams of Amounts Financed (in the RegulationZ sense).
 The proceeds to be advanced to the borrower less any prepaid fees for each of
 the `Term` advances is defined using this field. 
 
----
-
 🟥 **Advance.Date** (Date)
 
 | Type  | Required | Values | Default |
@@ -205,8 +201,6 @@ the `Term` advances is defined using this field.
 This field's value holds the date on which the advance is made. All dates must
 be in the form of YYYY-MM-DD, and be 10 characters long. Hence, an advance date
 of January 2, 2021 would be specified as `"Date" : "2021-01-02"`.
-
----
 
 🟦 **Advance.LastDay**
 
@@ -222,8 +216,6 @@ Set this field's value to `true` if the intent was to make subsequent advances
 occur on the last day of the month. A value of `false` indicates that subsequent
 advance dates will fall on the day number specified by the `Date` field.
 
----
-
 🟦 **Advance.PPY**
 
 | Type  | Required | Values | Default |
@@ -233,8 +225,6 @@ advance dates will fall on the day number specified by the `Date` field.
 PPY is an abbreviation for "payments per year", and in the case of the Advance
 object, determines the frequency for the advance stream. If the value of the `Term`
 field is `1`, then this field is ignored.
-
----
 
 🟦 **Advance.Term**
 
@@ -247,6 +237,7 @@ specified frequency (see `Advance.PPY` above), after which the advance stream is
 completed. The default value is `1`.
 
 ---
+
 </details>
 
 ### 🟦 Construction
@@ -278,8 +269,6 @@ On the other had, if the construction interest is not treated as a prepaid
 finance fee and is instead included as a stream of interest only payments during
 the construction period, then set the value of this attribute to `false`.
 
----
-
 🟥 **Construction.EndDate**
 
 | Type  | Required | Values | Default |
@@ -291,8 +280,6 @@ The date on which the construction period terminates.
 All dates must be in the form of "YYYY-MM-DD", and be 10 characters long.
 Hence, to end the construction period on July 4, 2021, the field would be
 specified as `"EndDate" : "2021-07-04"`.
-
----
 
 🟦 **Construction.HalfCommitment**
 
@@ -306,8 +293,6 @@ If interest is due on the entire commitment amount during the construction
 period, then set this value to `false`. Multiple advance construction loans are
 computed with this field set as `true`.
 
----
-
 🟥 **Construction.Interest**
 
 | Type  | Required | Values | Default |
@@ -315,8 +300,6 @@ computed with this field set as `true`.
 | String | yes | Number - Currency | n/a |
 
 The total amount of construction interest.
-
----
 
 🟥 **Construction.PermanentAttached**
 
@@ -330,8 +313,6 @@ permanent loan is attached to the construction loan, then set this field's
 value to `true`. If no permanent loan is attached to the construction loan,
 then set the field's value to `false`.
 
----
-
 🟦 **Construction.Prepaid**
 
 | Type  | Required | Values | Default |
@@ -343,6 +324,7 @@ construction interest. This attribute need only be specified when the
 `PermanentAttached` field is `false`.
 
 ---
+
 </details>
 
 ### 🟦 Decimals
@@ -407,8 +389,6 @@ fields, which are described below.
 This field contains the date on which this payment stream begins. All
 dates must be in the form of YYYY-MM-DD, and be 10 characters long.
 
----
-
 🟦 **PmtStream.LastDay**
 
 | Type  | Required | Values | Default |
@@ -432,8 +412,6 @@ payment frequency will be:
 - **on the 28th of each subsequent month** if `"LastDay" : false`.
 - **on the last day of each subsequent month** if "LastDay : true`.
 
----
-
 🟥 **PmtStream.Pmt**
 
 | Type  | Required | Values | Default |
@@ -446,8 +424,6 @@ protection products such as MOB life or debt protection fees, then these
 amounts must be removed as they are not a part of the principal and interest
 portion of the payment.
 
----
-
 🟦 **PmtStream.PPY**
 
 | Type  | Required | Values | Default |
@@ -458,8 +434,6 @@ PPY is an abbreviation for "payments per year", and as one might surmise,
 determines the payment frequency for the payment stream. If the value of
 the `Date`` field is not a valid date, then the value of this
 field is ignored.
-
----
 
 🟦 **PmtStream.SemimonthlyDay**
 
@@ -494,8 +468,6 @@ for 24 payments, the object should look something like this:
 }
 ```
 
----
-
 🟦 **PmtStream.Term**
 
 | Type  | Required | Values | Default |
@@ -509,6 +481,7 @@ stream is completed. The default value is `1`. If the value of the
 ignored, unless it is a replacement payment using the `NNNN-00-00` date format.
 
 ---
+
 </details>
 
 ### 🟦 Premiums
@@ -538,8 +511,6 @@ dates must be in the form of YYYY-MM-DD, and be 10 characters long. Hence,
 a payment stream starting date of December 10, 2006 would
 be specified as \texttt{Begin="2006-12-10"}.
 
----
-
 🟦 **Premium.Freq**
 
 | Type  | Required | Values | Default |
@@ -547,8 +518,6 @@ be specified as \texttt{Begin="2006-12-10"}.
 | String | no | 1, 2, 4, 6, 12 | 12 |
 
 The frequency of premiums.
-
----
 
 🟦 **PmtStream.LastDay**
 
@@ -558,8 +527,6 @@ The frequency of premiums.
 
 Was the premium intended for the last day of the month?
 
----
-
 🟥 **Premium.Prem**
 
 | Type  | Required | Values | Default |
@@ -567,8 +534,6 @@ Was the premium intended for the last day of the month?
 | String | yes | Number - Currency | n/a |
 
 The Premium amount.
-
----
 
 🟦 **Premium.Term**
 
@@ -579,6 +544,7 @@ The Premium amount.
 The number of premiums in the stream.
 
 ---
+
 </details>
 
 ### 🟦 TestApr
@@ -681,8 +647,6 @@ include the follwing in the request:
 This field's value defines the integral number of standard unit periods in the
 defined unit period.
 
----
-
 🟦 **UnitPeriod.Period**
 
 | Type  | Required | Values | Default |
@@ -694,6 +658,7 @@ integral multiple of this standard unit period, as specified by the `Multiple`
 field above.
 
 ---
+
 </details>
 
 ### 🟦 UsRuleOpts
@@ -719,8 +684,6 @@ to configure the parameters of the US Rule APR calculation.
 Actual day, unit period, and Federal calendars are supported with US Rule
 interest accrual.
 
----
-
 🟦 **UsRuleOpts.CalendarOption**
 
 | Type  | Required | Values | Default |
@@ -739,8 +702,6 @@ of one day to midnight of the other. The number of days between December 19th 20
 19th 2008 would be 13 Days in a 365 year plus 18 days in a 366 day year, resulting in a Term
 Factor of `13/365+18/366`. An Actual/366 calculation not using the Midnight366 setting would
 compute the term factor as `12/365+19/366`.
-
----
 
 🟦 **UsRuleOpts.Divisor**
 
@@ -770,8 +731,6 @@ by twelve.
 365.25 to compute the term factor. This setting may only be used with
 `ActualDay` calendars.
 
----
-
 🟦 **UsRuleOpts.PremBeforePmt**
 
 | Type  | Required | Values | Default |
@@ -782,6 +741,7 @@ Are premiums processed before or after payments? `true` means premiums are amort
 before payments, `false` means payments are processed before premiums.
 
 ---
+
 </details>
 
 ## Apr Response Data Object Field Definition
@@ -956,8 +916,6 @@ The APR data is contained in the fields of this object.
 
 The numeric value of the computed Apr, expressed as a percentage.
 
----
-
 🟥 **Apr.Method**
 
 | Type  | Required | Values |
@@ -965,8 +923,6 @@ The numeric value of the computed Apr, expressed as a percentage.
 | String | yes | Actuarial, USRule, EU_APR, XIRR, XIRR360, IRR, YieldIRR |
 
 This field returns the Apr method used to compute the numeric Apr value.
-
----
 
 🟦 **Apr.Accrual**
 
@@ -979,8 +935,6 @@ element. All of the variation is in regards to "Term factors". All US Rule
 interest accrual is governed by the following formula: Interest = APR/100 * Term
 Factor * Balance. Each accrual method has its own rules for generating these
 term factors, which represent how many years interest has been accruing.
-
----
 
 🟦 **Apr.UnitPeriod**
 
@@ -996,8 +950,6 @@ and ` "Mult" : "1" `, this field's value will be is `{ "UnitPeriod" : "1_Month"
 This field will only be present when the Apr method is Actuarial, EU, or US Rule
 with a unit period calendar.
 
----
-
 🟦 **Apr.UnitPeriodBase**
 
 | Type  | Required | Values |
@@ -1011,8 +963,6 @@ basic unit of measurement.
 This field will only be present when the Apr method is Actuarial, EU, or US Rule
 with a unit period calendar.
 
----
-
 🟦 **Apr.UnitPeriodMult**
 
 | Type  | Required | Values |
@@ -1024,8 +974,6 @@ were 6 months, the Base is `Month`, the Mult is `6`.
 
 This field will only be present when the Apr method is Actuarial, EU, or US Rule
 with a unit period calendar.
-
----
 
 🟦 **Apr.PeriodsPerYear**
 
@@ -1039,6 +987,7 @@ This field will only be present when the Apr method is Actuarial or US Rule
 with a unit period calendar.
 
 ---
+
 </details>
 
 ### 🟦 TestResults
@@ -1067,8 +1016,6 @@ for the value of the `TestApr` field.
 
 <details><summary><b>Apr fields</b></summary>
 
----
-
 🟦 **Apr.LoanType**
 
 | Type  | Required | Values |
@@ -1083,8 +1030,6 @@ not.
 
 This field is only present when the APR method is Actuarial or US Rule.
 
----
-
 🟦 **Apr.MultAdv**
 
 | Type  | Required | Values |
@@ -1095,8 +1040,6 @@ If a loan has more than one advance, this value of this field will be `true`;
 otherwise, it is `false`.
 
 This field is only present when the APR method is Actuarial or US Rule.
-
----
 
 🟦 **Apr.IrregPeriod**
 
@@ -1109,8 +1052,6 @@ If a loan has an irregular period between payments, this value of this field is
 payments not a unit period. (See Section 18.2.7)
 
 This field is only present when the APR method is Actuarial or US Rule.
-
----
 
 🟦 **Apr.IrregPmt**
 
@@ -1126,8 +1067,6 @@ this attribute will be true.
 
 This field is only present when the APR method is Actuarial or US Rule.
 
----
-
 🟥 **Apr.Value**
 
 | Type  | Required | Values |
@@ -1135,8 +1074,6 @@ This field is only present when the APR method is Actuarial or US Rule.
 | String | yes | Number - % |
 
 The APR computed by the SCE.
-
----
 
 🟥 **Apr.TestValue**
 
@@ -1146,8 +1083,6 @@ The APR computed by the SCE.
 
 The APR specified by the request which is to be tested for compliance.
 
----
-
 🟥 **Apr.Difference**
 
 | Type  | Required | Values |
@@ -1155,8 +1090,6 @@ The APR specified by the request which is to be tested for compliance.
 | String | yes | Number - % |
 
 The magnitude of the difference between the test APR and the computed APR.
-
----
 
 🟦 **Apr.Tolerance**
 
@@ -1171,8 +1104,6 @@ loans have a tolerance of 0.250. *See official staff commentary 226.22(a)(1) -
 
 This field is only present when the APR method is Actuarial or US Rule.
 
----
-
 🟦 **Apr.InCompliance**
 
 | Type  | Required | Values |
@@ -1185,8 +1116,6 @@ greater than the allowed tolerance, this element returns `false`. Otherwise, the
 APR is within compliance and therefore has `true` returned.
 
 This field is only present when the APR method is Actuarial or US Rule.
-
----
 
 🟦 **Apr.OnCusp**
 
@@ -1201,9 +1130,9 @@ flagged for closer scrutiny.
 
 This field is only present when the APR method is Actuarial or US Rule.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **TestResults.FinChg**
 
@@ -1226,8 +1155,6 @@ for the value of the `TestFinChg` field.
 
 The Finance Charge computed by the SCE.
 
----
-
 🟥 **FinChg.TestValue**
 
 | Type  | Required | Values |
@@ -1236,8 +1163,6 @@ The Finance Charge computed by the SCE.
 
 The Finance Charge specified by the request which is to be tested for
 compliance.
-
----
 
 🟥 **FinChg.Difference**
 
@@ -1248,9 +1173,9 @@ compliance.
 The magnitude of the difference between the test Finance Charge and the
 computed Finance Charge.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **TestResults.TotPmt**
 
@@ -1273,8 +1198,6 @@ for the value of the `TestTotPmt` field.
 
 The Total of Payments computed by the SCE.
 
----
-
 🟥 **TotPmt.TestValue**
 
 | Type  | Required | Values |
@@ -1283,8 +1206,6 @@ The Total of Payments computed by the SCE.
 
 The Total of Payments specified by the request which is to be tested for
 compliance.
-
----
 
 🟥 **TotPmt.Difference**
 
@@ -1298,6 +1219,7 @@ computed Total of Payments.
 </details>
 
 ---
+
 </details>
 
 ### 🟥 Loan
@@ -1321,8 +1243,6 @@ entered as the `TransactionDate` from the request, the date of the first advance
 if the `TransactionDate` was omitted, or one unit period before the first
 payment in the case of loans with odd days interest.
 
----  
-
 🟥 **Loan.AmountFinanced**
 
 | Type  | Required | Values |
@@ -1331,8 +1251,6 @@ payment in the case of loans with odd days interest.
 
 The total amount financed for the loan.
 
----
-
 🟥 **Loan.NumAdvances**
 
 | Type  | Required | Values |
@@ -1340,8 +1258,6 @@ The total amount financed for the loan.
 | String | yes | Number - Integer |
 
 The value of this field represents the number of advances in the specified loan.
-
----  
 
 🟦 **Loan.AdvPresBal**
 
@@ -1354,8 +1270,6 @@ specified loan.
 
 This field is only present when the APR method is Actuarial.
 
----  
-
 🟥 **Loan.TotPmt**
 
 | Type  | Required | Values |
@@ -1363,8 +1277,6 @@ This field is only present when the APR method is Actuarial.
 | String | yes | Number - Currency |
 
 The total of all payments made in the requested loan.
-
----
 
 🟥 **Loan.NumPmts**
 
@@ -1374,8 +1286,6 @@ The total of all payments made in the requested loan.
 
 The value of this field represents the number of payments made in the specified
 loan.
-
----  
 
 🟦 **Loan.TotPmtPresBal**
 
@@ -1416,8 +1326,6 @@ APR is the rate which produces the smallest balance after amortization.
 Therefore, the magnitude of both `ErrorDown` and `ErrorUp`
 attributes should be greater than the value of this field.
 
----  
-
 🟥 **AmTable.ErrorDown**
 
 | Type  | Required | Values |
@@ -1433,8 +1341,6 @@ The magnitude of this value should never be less than the magnitude of the
 `Error` attribute, because the rate with a minimum error magnitude defines the
 correct APR.
 
----
-
 🟥 **AmTable.ErrorUp**
 
 | Type  | Required | Values |
@@ -1449,8 +1355,6 @@ attribute would contain the error after amortizing the loan with a rate of
 The magnitude of this value should never be less than the magnitude of the
 `Error` attribute, because the rate with a minimum error magnitude defines the
 correct APR.
-
----
 
 🟥 **AmTable.AmLines**
 
@@ -1473,8 +1377,6 @@ in the schedule.
 
 The index of the amortization event, starting with zero.
 
----
-
 🟥 **AmLine.Date**
 
 | Type  | Required | Values |
@@ -1482,8 +1384,6 @@ The index of the amortization event, starting with zero.
 | String | yes | YYYY-MM-DD |
 
 The date of the amortization event.
-
----
 
 🟦 **AmLine.Adv**
 
@@ -1495,8 +1395,6 @@ The amount of the advance.
 
 This field is only present if this AmLine object is an advance event.
 
----
-
 🟦 **AmLine.Pmt**
 
 | Type  | Required | Values |
@@ -1507,8 +1405,6 @@ The payment amount.
 
 This field is only present if this AmLine object is a payment event.
 
----
-
 🟦 **AmLine.Prem**
 
 | Type  | Required | Values |
@@ -1518,8 +1414,6 @@ This field is only present if this AmLine object is a payment event.
 The premium amount.
 
 This field is only present if this AmLine object is a premium event.
-
----
 
 🟦 **AmLine.Unit**
 
@@ -1534,8 +1428,6 @@ The number of full unit periods from this event to the transaction date.
 This field is only present when the APR method is Actuarial *or* US Rule using
 the Federal Calendar.
 
----
-
 🟦 **AmLine.Frac**
 
 | Type  | Required | Values |
@@ -1549,8 +1441,6 @@ The number of fractional unit periods from this event to the transaction date.
 This field is only present when the APR method is Actuarial *or* US Rule using
 the Federal Calendar.
 
----
-
 🟦 **AmLine.Factor**
 
 | Type  | Required | Values |
@@ -1562,8 +1452,6 @@ Interest.
 
 This field is only present when the APR method is *not* Actuarial.
 
----
-
 🟦 **AmLine.PresVal**
 
 | Type  | Required | Values |
@@ -1573,8 +1461,6 @@ This field is only present when the APR method is *not* Actuarial.
 The present value of the event cash at the time of the transaction date.
 
 This field is only present when the APR method is *not* US Rule.
-
----
 
 🟦 **AmLine.PresValSum**
 
@@ -1586,8 +1472,6 @@ The running total present value sum.
 
 This field is only present when the APR method is *not* US Rule.
 
----
-
 🟦 **AmLine.BegBal**
 
 | Type  | Required | Values |
@@ -1597,8 +1481,6 @@ This field is only present when the APR method is *not* US Rule.
 The beginning balance before amortizing this event.
 
 This field is only present when the APR method is US Rule.
-
----
 
 🟦 **AmLine.IntPaid**
 
@@ -1610,8 +1492,6 @@ The amount of interest paid at this event.
 
 This field is only present when the APR method is US Rule.
 
----
-
 🟦 **AmLine.IntUnPaid**
 
 | Type  | Required | Values |
@@ -1621,8 +1501,6 @@ This field is only present when the APR method is US Rule.
 The amount of unpaid interest remaining after this event is amortized.
 
 This field is only present when the APR method is US Rule.
-
----
 
 🟦 **AmLine.EndBal**
 

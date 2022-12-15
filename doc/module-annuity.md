@@ -77,7 +77,8 @@ whereas the `Income` field is omitted.
 The `Format` object is one of the first objects parsed from a request, as various
 fields affect how date and numeric fields are parsed and validated.
 
-<details><summary><b>Format fields</b></summary><blockquote>
+<details><summary><b>Format fields</b></summary>
+---
 
 🟦 **Format.CurrencyDecimals**
 
@@ -133,7 +134,9 @@ When displaying numeric fields, this field determines the character used to
 separate the thousands places from the hundreds. Note that when parsing
 numeric fields, the value of this field is ignored.
 
-</blockquote></details>
+---
+
+</details>
 
 ### 🟦 Income
 

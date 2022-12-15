@@ -245,6 +245,7 @@ The term of the construction loan (in payments) is specified using this field.
 Please note that the term may not exceed five years.
 
 ---
+
 </details>
 
 ### 🟦 Country
@@ -678,8 +679,6 @@ represents the percentage of principal to be paid up front. As of October 3,
 
 The `Value` attribute meaning depends upon the value of `UpFront.Units`. Please
 see its documentation above for further information.
-
----
 
 </details>
 

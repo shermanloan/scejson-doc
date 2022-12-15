@@ -242,6 +242,7 @@ The term of the construction loan (in payments) is specified using this field.
 Please note that the term may not exceed five years.
 
 ---
+
 </details>
 
 ### 🟦 Country
@@ -796,8 +797,6 @@ represents the percentage of principal to be paid up front. As of October 3,
 
 The `Value` field meaning depends upon the value of `UpFront.Units`. Please
 see its documentation above for further information.
-
----
 
 </details>
 
@@ -1836,7 +1835,6 @@ the loan request.
 
 This field's value is the number of payment groups found in the computed loan.
 This value is equivalent to the number of `PmtStream` array members.
-
 
 ---
 

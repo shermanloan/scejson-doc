@@ -63,6 +63,10 @@ changes which may or may not be of interest to you.
   and which capitalize interest regurlarly on a different day of the month.
   Please see the documentation for the new `Capitalization[]` array field in the
   chapter covering the [Loan](module-loan.md) module for further information.
+* The `Format` request object has been added to the
+  [Annuity](module-annuity.md), [Apy](module-apy.md), [Cd](module-cd), and
+  [Ira](module-ira.md) modules. Please see the documentation in the chapters
+  covering the modules for further information.
 
 ## Release 2022-10-0
 * The [Balloon Payment Loans](module-construction.md) module has been made

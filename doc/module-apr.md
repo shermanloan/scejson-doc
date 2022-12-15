@@ -75,8 +75,6 @@ strict definition with, for example, payments on the 1st and 15th being classifi
 a unit period of `Semimonth`. If an institution wishes a looser definition of semimonth,
 this setting should be set to `true`. Otherwise, the strict rule applies.
 
----
-
 🟦 **ActuarialOpts.ODI**
 
 | Type  | Required | Values | Default |
@@ -86,8 +84,6 @@ this setting should be set to `true`. Otherwise, the strict rule applies.
 Loans that have used an odd days interest prepaid charge, common with mortgage
 loans, may use this attribute to adjust the APR to assume one unit period to the
 first payment. Otherwise, choose `false`.
-
----
 
 🟦 **ActuarialOpts.SemiMonthlyFixedFraction**
 
@@ -103,8 +99,6 @@ to each payment, choose `false`. The latter should typically be selected with an
 loan.
 
 *Section (b)(5)(iii)*
-
----
 
 🟦 **ActuarialOpts.SinglePayFraction**
 

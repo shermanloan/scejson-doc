@@ -80,11 +80,81 @@ The simple compounding frequency does no compounding of interest at all.
 Instead, interest is computed at the end of the CD's term (much like a
 single payment note using a simple interest accrual method). 
 
+### 🟦 Format
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The `Format` object is one of the first objects parsed from a request, as various
+fields affect how date and numeric fields are parsed and validated.
+
+<details><summary><b>Format fields</b></summary>
+---
+
+🟦 **Format.CurrencyDecimals**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 0 or 2 | 2 |
+
+When displaying and parsing Currency fields, this field determines the maximum
+number of decimal places allowed after the `DecimalSeparator`.
+
+🟦 **Format.DateFormat**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | YMD, MDY, or DMY  | YMD |
+
+When displaying and parsing Date fields, this field determines the expected
+format for all Date fields. The following `DateFormat` options are allowed:
+
+* `YMD` - All dates should be formated as YYYY-MM-DD.
+* `MDY` - All dates should be formated as MM-DD-YYYY.
+* `DMY` - All dates should be formated as DD-MM-YYYY.
+
+Note that the character which separates the individual month, day, and year
+portions of the date is configurable via the `DateSeparator` field.
+
+🟦 **Format.DateSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "-" |
+
+When displaying and parsing Date fields, this field determines the character
+used to separate the individual month, day, and year portions of a date field.
+
+🟦 **Format.DecimalSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "." |
+
+When displaying and parsing Currency, Percentage, or Floating numeric fields,
+this field determines the character used to separate the fractional part from
+the whole.
+
+🟦 **Format.ThousandSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "" |
+
+When displaying numeric fields, this field determines the character used to
+separate the thousands places from the hundreds. Note that when parsing
+numeric fields, the value of this field is ignored.
+
+---
+
+</details>
+
 ### 🟦 FV
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - currency | n/a |
+| String | no | Number - Currency | n/a |
 
 The future value is the amount that the CD is worth at the end of it's
 term. The future value is equal to the present value plus all interest
@@ -95,7 +165,7 @@ accrued during the CD's term. If you are computing the future value
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - currency | n/a |
+| String | no | Number - Currency | n/a |
 
 The present value is the amount which is deposited in the CD on the given
 deposit date. Interest accrues on this initial amount, much like interest
@@ -106,7 +176,7 @@ present value (e.g. `"CalcType" : "PV"`), then you may omit this field.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - % | n/a |
+| String | no | Number - % | n/a |
 
 This field dictates the rate at which interest accrues throughout the
 term of the CD. If you are computing the interest rate (e.g. 
@@ -116,7 +186,7 @@ term of the CD. If you are computing the interest rate (e.g.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | n/a |
+| String | no | Number - Integer | n/a |
 
 The `Term` field specifies the number of unit term periods after which
 the CD has matured. This numerical value can specify the number of
@@ -246,7 +316,7 @@ no warnings will be generated for these unrecognized fields.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The present value of the CD, representing the initial deposit made on the specified deposit
 date.
@@ -255,7 +325,7 @@ date.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The rate at which interest will accrue during the term of the CD.
 
@@ -263,7 +333,7 @@ The rate at which interest will accrue during the term of the CD.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The `Term` is the number of unit periods (as specified in the `TermUnits` field)
 between the deposit date and the CD's maturity date.
@@ -281,7 +351,7 @@ options are: Years, Months, and Days.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The future value of the CD at its maturity.
 
@@ -298,7 +368,7 @@ must be 10 characters long.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The gain is the difference between the future value and the present value. It is the
 amount by which the present value changes over the term of the CD.
@@ -307,7 +377,7 @@ amount by which the present value changes over the term of the CD.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The APY (annual percentage yield) is the rate of return on an investment over the
 term of a year. The APY takes compounding into account, and if the compounding frequency

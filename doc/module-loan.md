@@ -78,6 +78,7 @@ is used to specify how interest is calculated.
 <details><summary><b>AccrualConfig fields</b></summary>
 
 ---
+
 🟦 **AccrualConfig.Capitalize**
 
 | Type  | Required | Values | Default |
@@ -87,13 +88,11 @@ is used to specify how interest is calculated.
 If interest due is to be added to principal (capitalized) on the specified
 `Date`, then set this field's value to `true`.
 
----
-
 🟦 **AccrualConfig.Code**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | see table | see below |
+| String | yes | see table | Text - See below |
 
 The method of interest accrual is defined by this field. A value of `default`
 means one of two things: if no accrual method has beend defined at all, use the
@@ -151,8 +150,6 @@ protection products requested must also be single premium.
 | 405 | True360/365 Add-On |
 | 406 | True360/DaysPerPeriod Add-On 91 for quarterly payment frequencies) |
 
----
-
 🟦 **AccrualConfig.Date**
 
 | Type  | Required | Values | Default |
@@ -175,41 +172,33 @@ will also understand `Date` values in the following formats:
  event equal to that of the 12'th payment. A vale of 0000-00-00 will set the
  date of the event equal to the date of the first advance.
 
----
-
 🟦 **AccrualConfig.ExtraDays**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Integer | 0 |
+| String | no | Number - Integer | 0 |
 
 Increase or decrease the number of days between this event and the next event by
 the value of this field. e.g. `1` will be considered one more day of
 interest.
 
----
-
 🟦 **AccrualConfig.IntRate**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | see below |
+| String | no | Number - % | Text - See below |
 
 Defines the interest rate that applies at and beyond this event. If no `IntRate`
 is specified, the previously defined interest rate is used. A value of zero will
 be used if no previous `IntRate` has been defined.
 
----
-
-🟦 **AccrualConfig.IntRound***
+🟦 **AccrualConfig.IntRound**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | nearest, up, down | nearest |
 
 Defines how interest is to be rounded.
-
----
 
 🟦 **AccrualConfig.NewPmt**
 
@@ -221,8 +210,6 @@ If the payment should change to reflect a new interest rate, set the value of
 this field to `true`; otherwise, the payment will not change after this event.
 If only one `AccrualConfig` object is being specified, then this field
 should be omitted altogether.
-
----
 
 🟦 **AccrualConfig.PmtRound**
 
@@ -239,8 +226,6 @@ Note: If the `BusinessRules.ZeroInterestRule` field is set to 'true' and all
 interest rates are zero, payments are required to be rounded down. This rule
 ensures the total of payments never exceeds the amounts of the loan to pay off
 (principal balance).
-
----
 
 🟦 **AccrualConfig.Tiers**
 
@@ -280,7 +265,7 @@ rate structure is:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | n/a |
+| String | yes | Number - Currency | n/a |
 
 Defines the upper bound to which the specified split rate tier will apply.
 
@@ -288,7 +273,7 @@ Defines the upper bound to which the specified split rate tier will apply.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | n/a |
+| String | yes | Number - % | n/a |
 
 Defines the interest rate that applies to this split rate tier.
 
@@ -307,18 +292,17 @@ specify the cash advances made to the borrower.
 <details><summary><b>Advances fields</b></summary>
 
 ---
+
 🟥 **Advance.Amount**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | n/a |
+| String | yes | Number - Currency | n/a |
 
 The proceeds to be advanced to the borrower is defined using this field. If the
 calling application requests that the advance be computed (see the
 `Advance.Compute` field below), then the value of this field will be added
 to the computed advance amount, which can be useful in multiple advance loans.
-
----
 
 🟦 **Advance.Compute**
 
@@ -341,8 +325,6 @@ interest rate, and payment stream. With this in mind, all `PmtStream` objects
 We have provided several samples which illustrate various "Roll to Advance"
 calculations in the `/samples` directory, for your reference.
 
----
-
 🟥 **Advance.Date** (Date)
 
 | Type  | Required | Values | Default |
@@ -353,13 +335,11 @@ This field's value holds the date on which the advance is made. All dates must
 be in the form of YYYY-MM-DD, and be 10 characters long. Hence, an advance date
 of January 2, 2021 would be specified as `"Date" : "2021-01-02"`.
 
----
-
 🟦 **Advance.ExtraDays**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Integer | 0 |
+| String | no | Number - Integer | 0 |
 
 Increase or decrease the number of days between this event and the next event by
 the value of this field. e.g. `1` will be considered one more day of interest.
@@ -380,11 +360,12 @@ in the fields of this object.
 <details><summary><b>Apr fields</b></summary>
 
 ---
+
 🟦 **Apr.Code**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | 10, 20, 30, 40, 41, 50, 60, 100, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 320, 321, 330, 331, 340 | see below |
+| String | no | 10, 20, 30, 40, 41, 50, 60, 100, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 320, 321, 330, 331, 340 | Text - See below |
 
 The method of APR computation is defined by this field. If
 this field is not included, the default method depends upon the
@@ -423,30 +404,24 @@ is `60`.
 |  331  | Midnight366 US Rule |
 |  340  | Actual/365.25 US Rule |
 
----
-
 🟦 **Apr.Decimals**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | 1, 2, 3, 4, 5 | see below |
+| String | no | 1, 2, 3, 4, 5 | Text - See below |
 
 The number of decimal places of accuracy for the disclosed APR is determined by
 this field. The default value of this field is `3`.
-
----
 
 🟦 **Apr.MAPR_Max**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 36 |
+| String | no | Number - % | 36 |
 
 If you are computing the Military APR (see `UseMAPR` below) and wish to override
 the default maximum APR value of 36%, then specify the desired maximum as the
 value of this field.
-
----
 
 🟦 **Apr.SinglePayFraction**
 
@@ -459,8 +434,6 @@ value of this field.
  Appendix J allows for the term of the loan to be expressed as either a number of months
  over twelve, or the number of actual 24-hour days in the loan over 365. For the former,
  use "InMonths". For the latter, use "InDays".
-
----
 
 🟦 **Apr.StrictTime**
 
@@ -484,8 +457,6 @@ unit period strictly according to the rules of Appendix J of Regulation Z.
 A value of `false` instructs the SCE to keep the fraction of a unit period
 constant, equal to the fraction obtained by the time calculated from the date of
 the first payment to the transaction date.
-
----
 
 🟦 **Apr.UseMAPR**
 
@@ -512,6 +483,7 @@ object.
 <details><summary><b>BusinessRules fields</b></summary>
 
 ---  
+
 🟦 **BusinessRules.AmError**
 
 | Type  | Required | Values | Default |
@@ -536,8 +508,6 @@ perfect amortization, which will then result in an ending balance of zero.
 Note that using `AdjPrin` or `AdjInt` will cause the final payment to not equal
 the sum of the principal reduction amount and amount to interest in the
 amortization schedule.
-  
----
   
 🟦 **BusinessRules.AmortizeOnly**
 
@@ -566,8 +536,6 @@ and interest payments.
 Furthermore, the output for an `"AmortizeOnly" : true` Loan request will omit
 the `FedBox` and `Moneys` response objects.
   
----
-  
 🟦 **BusinessRules.CanSkipFirst**
 
 | Type  | Required | Values | Default |
@@ -577,8 +545,6 @@ the `FedBox` and `Moneys` response objects.
 Set this field to `true` to allow the first payment of a loan to be skipped.
 The default value of `false` does not allow a skipped first payment.
   
----
-  
 🟦 **BusinessRules.CanSkipLast**
 
 | Type  | Required | Values | Default |
@@ -587,9 +553,7 @@ The default value of `false` does not allow a skipped first payment.
 
 Set this field to `true` to allow the last payment of a loan to be skipped.
 The default value of `false` does not allow a skipped final payment.
-  
----
-  
+ 
 🟦 **BusinessRules.ClosedFormEqn**
 
 | Type  | Required | Values | Default |
@@ -603,8 +567,6 @@ and interest will be left unrounded during the payment search algorithm. Setting
 field value to `false` will cause interest to be rounded during the payment search
 algorithm.
   
----
-  
 🟦 **BusinessRules.CurrencyDP**
 
 | Type  | Required | Values | Default |
@@ -616,8 +578,6 @@ field. If this field is not included, the default value will be
 determined by the value of the `Country` field. For most countries,
 the default value is `"2"`. If no country code is specified, then the
 default value for this field is `"2"`.
-  
----
   
 🟦 **BusinessRules.LeapYearRound**
 
@@ -634,8 +594,50 @@ the interest accrued on a 366 days basis. Note that this option is encountered
 If the value of this field is `false`, then interest computed on a 365 day
 basis will be added to the interest computed on a 366 day basis, and then
 rounded.
-  
----
+
+🟦 **BusinessRules.MinFinChg**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - Currency | 0 |
+
+This field allows the calling application to specify a minimum allowed
+finance charge for the loan. If a value greater than zero is specified, then the
+loan will be computed in the normal manner, along with the finance charge. If
+the computed finance charge falls below the specified minimum, then the final
+payment's interest charge will be adjusted to meet the specified minimum.
+
+Note that the minimum interest charge is checked *before* the minimum
+finance charge. If the loan triggered a minimum finance charge adjustment, then
+the amount of this adjustment will be disclosed in the `MinFinChgAdj` field
+of the `Moneys` response object.
+
+Note that since the minimum finance charge check is done after the loan payment
+and protection calculations have been completed, certain protection products
+whose calculations may vary due to a modified final payment will not reflect any
+minimum finance charge adjustments made to the final payment.
+
+🟦 **BusinessRules.MinIntChg**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - Currency | 0 |
+
+This field allows the calling application to specify a minimum allowed
+interest charge for the loan. If a value greater than zero is specified, then the
+loan will be computed in the normal manner, along with the interest charge. If
+the computed interest charge falls below the specified minimum, then the final
+payment's interest charge will be adjusted to meet the specified minimum.
+
+Note that the minimum interest charge is checked *before* the minimum
+finance charge. If the loan triggered a minimum interest charge adjustment, then
+the amount of this adjustment will be disclosed in the `MinIntChgAdj` field
+of the `Moneys` response object.
+
+Note that since the minimum interest charge check is done after the loan payment
+and protection calculations have been completed, certain protection products
+whose calculations may vary due to a modified final payment will not reflect any
+minimum interest charge adjustments made to the final payment.
 
 🟦 **BusinessRules.MYED**
 
@@ -657,8 +659,6 @@ outstanding principal balance.
 When the `MYED` is specified, you must also specify a `PmtStream` object with a
 `PmtType` field value of `PmtEsc`, which indicates an escrowed payment.
 
----
-
 🟦 **BusinessRules.OddFirstPmt**
 
 | Type  | Required | Values | Default |
@@ -674,8 +674,6 @@ the first payment using this method.
 
 Note that you can not specify an odd first payment using this attribute 
 *and* include `ODI` in the same request.
-
----
 
 🟦 **BusinessRules.PmtAccrualCode**
 
@@ -698,8 +696,6 @@ A value of `default` means that the payment will be computed using the same
 accrual calendar as interest. Any other value will cause the computed payment
 to be calculated using the accrual code specified.
 
----
-
 🟦 **BusinessRules.ProtMandatory**
 
 | Type  | Required | Values | Default |
@@ -709,8 +705,6 @@ to be calculated using the accrual code specified.
 If the value of this field is set to `true`, then protection premiums/fees
 will be considered to be a part of the Finance Charge, and thus affect the Regulation
 Z APR. 
-
----
 
 🟦 **BusinessRules.UsRuleAprException**
 
@@ -729,8 +723,6 @@ Charge is equal to the interest charge, and (iv) there is only a single
 `AccrualConfig` object, then the US Rule APR will be disclosed as the interest
 rate.
 
----
-
 🟦 **BusinessRules.YieldPPY** 
 
 | Type  | Required | Values | Default |
@@ -743,8 +735,6 @@ period. Please contact us for further information if you support mortgage
 calculations in Canada. Note that when using this field with a value other
 than zero, the calling application *must* include an odd days prepaid fee
 in the request.
-
----
 
 🟦 **BusinessRules.ZeroInterestRule**
 
@@ -767,6 +757,200 @@ unforseen consequences.
 Lastly, all payment rounding is forced to be rounded down to the nearest penny.
 This adjustment ensures that the sum of payments never exceeds the Principal
 Balance of the loan.
+
+---
+</details>
+
+### 🟦 Capitalization
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of Capitalize objects | no |
+
+Some loans require interest to be capitalized on specific dates, irrespective of
+any other considerations. For these events, use one or more `Capitalize`
+objects.
+
+<details>
+<summary><b>Capitalize fields</b></summary>
+
+---
+
+🟦 **Capitalize.AllowFeb29**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | true |
+
+This attribute is used when generating event dates in a capitalization stream
+(if any) beyond the specified `Date` date of the `Capitalize` object. If the
+value of this attribute is `true`, then February 29th is an allowed date.
+
+On the other hand, if the value of this attribute is set to `false` and a computed
+date in the given capitalization stream is scheduled to fall on February 29th,
+then the scheduled date will be altered in one of the following manners:
+
+- If the number of payments per year is 1, 2, 4, 6, 12, or 24 then the
+ scheduled date of February 29 will be moved back one day to February 28.
+ This is the only date that will be adjusted.
+- If the number of payments per year is 26 or 52 then the scheduled
+ date of February 29 will be moved forward one day to March 1, and all subsequent
+ dates will be a multiple of 7 or 14 days from this date (depending upon
+ the specified payment frequency).
+
+🟥 **Capitalize.Date**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | YYYY-MM-DD | n/a |
+
+The `Date` field for the `Capitalize` object is used to specify the date on
+which to capitalize interest. (For a stream of Capitilize events, see the `Term`
+field.) As an example, if interest is to be capitalized on Feb. 1, 2008, the
+field should be specified as `"Date" : "2008-02-01"`.
+
+🟦 **Capitalize.Holidays**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | ignore, prev, next | ignore |
+
+If event dates (including the specified start date) are not allowed to fall on
+specified holidays (see the `Holidays[]` array for more inforation on
+how to specify holidays), then set the value of this field to something other
+than `ignore`. The meaning of the other two values are defined below:
+
+- **prev -** The date will be moved to the day before the holiday.
+- **next -** The date will be moved to the Monday after the holiday.
+
+Note that two other `Capitalize` fields can cause the computed dates to be
+adjusted: `AllowFeb29` and `Weekends`. The rules for how these three fields
+interact are described below in detail.
+
+For every date required in our capitalization stream, the SCE goes through the
+following steps:
+
+1. Generate the next date in our date stream, called the target date.
+2. If February 29th is not allowed and if the target date is 2/29, then
+ adjust the target date forward or backward one day based upon the date
+ generation frequency. If the frequency is a monthly multiple, then the target
+ date is moved backward one day to 2/28. Weekly and biweekly frequencies move the
+ target date forward one day to 3/1.
+3. If weekend dates are not allowed (e.g. the `Weekends` field holds a
+ value other than `ignore`) and the target date falls on a Saturday or Sunday:
+    1. then adjust the target date according to the field value.
+    2. if February 29th is not allowed and if the target date is 2/29, then
+     adjust the target date in the same direction as in 3(a) above.
+4. If holidays are not allowed (e.g. the `Holidays` field holds a value
+ other than `ignore`) and the target date falls on a specified holiday:
+    1. Then adjust the target date according to the `Holidays` field value.
+    2. If weekend dates are not allowed (e.g. the `Weekends` field holds a
+     value other than `Ignore`) and the target date falls on a Saturday or Sunday,
+     then adjust the target date in the same direction as 4(a) above.
+    3. if February 29th is not allowed and if the target date is 2/29, then
+     adjust the target date in the same direction as in 4(a) above.
+    4. Step 4 is repeated until the target date is not adjusted.
+
+🟦 **Capitalize.LastDay**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+This field is used to resolve ambiguitiess in subsequent event
+dates when the `Date` date falls on the last day of a month
+with fewer than 31 days.
+
+Set this field's value to `true` if the intent was to make
+subsequent events occur on the last day of the month. A value of
+`false` indicates that subsequent event dates will fall on the
+day number specified by the `Date`.
+
+As an example, if the calling application specifies a `Date`
+of "2010-02-28", then subsequent payment dates for a monthly
+payment frequency will be:
+
+- **on the 28th of each subsequent month** if `"LastDay" : false`.
+- **on the last day of each subsequent month** if `"LastDay" : true`.
+
+🟦 **Capitalize.PPY**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 1, 2, 4, 6, 12, 24, 26, 52 | 12 |
+
+`PPY` is an abbreviation for "payments per year", and as one might surmise,
+determines the frequency of capitalization events. If only one capitalization
+event occurs or the stream of capitilization events are monthly, this attribute
+may be ignored.
+
+🟦 **Capitalize.SemimonthlyDay**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - Integer | 0 |
+
+When specifying a semimonthly stream, the day number on which the first
+capitalization event occurs is the day number for all of the following odd
+numbered payments. If you omit this field or specify a value of `0`, then the
+even numbered events will be generated using the default method within the SCE.
+
+If you wish to specify the day number on which even numbered events fall
+(overriding the default method used in the SCE), then set the value of this
+field to the desired day number. Setting the value of this field to `31` will
+cause all even events to fall on the last day of the month.
+
+As an example, if you want to specify a semi-monthly capitalization stream
+beginning on January 1, 2019 with events that fall on the 1st and 15th of each
+month for 24 payments, the object should look something like this:
+
+```json
+{
+  "Capitalization" : [
+    {
+      "Date" : "2019-01-01",
+      "Term" : "24",
+      "PPY" : "24",
+      "SemimonthlyDay" : "15"
+    }
+  ]
+}
+```
+
+🟦 **Capitalize.Term**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - Integer | 1 |
+
+The `Term` field indicates the the number of capitalization events to be made at
+the specified payment frequency (see `Capitalize.PPY` above). The default value
+is `1`, and if only one capitalization event is required, this field may be
+omitted.
+
+🟦 **Capitalize.Weekends**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | ignore, prev, near, next | ignore |
+
+If capitalization stream dates (including the specified start `Date`) are not
+allowed to fall on a Saturday or Sunday, then set the value of this field to
+something other than `ignore`. The meaning of the other three values are defined
+below:
+
+- **prev** - The date will be moved to the Friday before the computed weekend
+  date.
+- **near** - The date will be moved to the Friday before the computed weekend
+  date if the computed weekend date falls on a Saturday, otherwise it will be
+  moved to the Monday after.
+- **next** - The date will be moved to the Monday after the computed weekend
+  date.
+
+Note that two other `Capitalize` fields can cause the computed dates to be
+adjusted - `AllowFeb29` and `Holidays`. For a complete description of how these
+three fields work together, please see the documentation for the `Holidays`
+field.
 
 ---
 </details>
@@ -821,8 +1005,6 @@ If the calling application sets up discrete interest only payments during the
 construction period, then the `EndDate` may also be specified as occurring on
 a given payment number (`NNNN`) as `"EndDate" : "NNNN-00-00"`.
 
----
-
 🟦 **Construction.HalfCommitment**
 
 | Type  | Required | Values | Default |
@@ -836,6 +1018,7 @@ period, then set this value to `false`. Multiple advance construction loans are
 computed with this field set as `true`.
 
 ---
+
 </details>
 
 ### 🟦 Country
@@ -893,8 +1076,6 @@ to end an early payoff date on July 1, 2021, the field would be specified as
 coinsides with the 60th payment, the field would be specified as
 `"EarlyPayoffDate" : "0060-00-00"`.
 
----
-
 🟦 **EditOutput.KeepSlush**
 
 | Type  | Required | Values | Default |
@@ -904,8 +1085,6 @@ coinsides with the 60th payment, the field would be specified as
 Rounding interest each period numerically eliminates values beyond two decimal places. This amount
 is referred to as slush. To keep this amount and add it to next period's unrounded interest, set
 the value of this field `true`.
-
----
 
 🟦 **EditOutput.Merge**
 
@@ -918,8 +1097,6 @@ merged together whenever possible. For example, if one event is of type
 `CalcPmt`, and another on the same day is `PayPrin`, then this field determines
 whether or not these two events will be combined into a single payment event or
 left as separate and distinct events.
-
----
 
 🟦 **EditOutput.PmtDollarRound**
 
@@ -936,8 +1113,6 @@ proceeds), rounding the payment up or to the nearest dollar may require a
 shortened loan term to prevent one or more negative payments at the end of the
 loan.
 
----
-
 🟦 **EditOutput.ShowAmTable**
 
 | Type  | Required | Values | Default |
@@ -946,8 +1121,6 @@ loan.
 
 To supress the entire amortization schedule from the response, set value of this
 field to `false`; otherwise, the amortization schedule will be returned.
-
----
 
 🟦 **EditOutput.ShowFees**
 
@@ -963,8 +1136,6 @@ A value of `true` means that all fees will be explicitly accounted for, both in 
 `Moneys` response object as child objects and in the amortization table. The
 `Type` field will have the name of the fee as its value.
 
----
-
 🟦 **EditOutput.ShowGrandTot**
 
 | Type  | Required | Values | Default |
@@ -973,8 +1144,6 @@ A value of `true` means that all fees will be explicitly accounted for, both in 
 
 To show the amortization schedule grand totals in the response, set this field's value to `true`;
 otherwise, the grand totals will not be returned.
-
----
 
 🟦 **EditOutput.ShowSubTot**
 
@@ -985,13 +1154,11 @@ otherwise, the grand totals will not be returned.
 To show the amortization schedule annual subtotals in the XML output, set this field's value to `true`;
 otherwise, annual subtotals will not be returned.
 
----
-
 🟦 **EditOutput.ShowTap**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | see below |
+| Boolean | no | true, false | Text - See below |
 
 If not specified, the default value of this field is determined by the
 `Country` specified. If the `Country` is `GB` (United Kingdom), then the default
@@ -1003,8 +1170,6 @@ The value of this field determines if the total amount payable response field
 the total of payments plus fees that do not enter into the amortization table in
 any way.
 
----
-
 🟦 **EditOutput.ShowType**
 
 | Type  | Required | Values | Default |
@@ -1015,8 +1180,6 @@ Each line of the amortization schedule is characterized by a type, which describ
 amortization event. An `EditInterest` event is different from a `FixedPmt` event, for example. Set
 this field to `true` to report the `Type` of each amortization event. A value of `false`
 will suppress output of the `Type` field in the amortization schedule.
-
----
 
 🟦 **EditOutput.TagPmts**
 
@@ -1030,6 +1193,7 @@ If this field is set to `true`, then the `EditOutput.Merge` field must be set to
 both are set to `true`, then an error will be returned.
 
 ---
+
 </details>
 
 ### 🟦 Fees
@@ -1056,8 +1220,6 @@ If this fee should be included in the computed Finance Charge (and hence, affect
 the APR), then set this field to `true`. The default value of `false` indicates
 that the fee does not affect the Finance Charge nor APR.
 
----
-
 🟦 **Fee.AddToPrin**
 
 | Type  | Required | Values | Default |
@@ -1068,13 +1230,11 @@ If this fee should be added to the principal balance (e.g. the fee is financed
 along with the advance(s)), then set this field to `true`. If set to `false`,
 then the fee is paid up front out of the borrower's pocket.
 
----
-
 🟦 **Fee.Adjust**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
+| String | no | Number - Currency | 0 |
 
 The optional `Adjust` field allows the calling application
 to increase or decrease the base amount on which a fee is calculated.
@@ -1103,8 +1263,6 @@ this in the SCE is as follows:
 }
 ```
 
----
-
 🟦 **Fee.AllowFeb29**
 
 | Type  | Required | Values | Default |
@@ -1127,18 +1285,14 @@ then the scheduled fee date will be altered in one of the following manners:
  dates will be a multiple of 7 or 14 days from this date (depending upon the
  specified payment frequency).
 
----
-
 🟥 **Fee.Amount**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number | 0 |
+| String | yes | Number - Currency | 0 |
 
 How this field is interpreted depends upon the `Fee.CalcType` field.
 Please see the documentation for this field for further information.
-
----
 
 🟦 **Fee.Blended** (true, false, 1, 0) `false' \{optional\}}
 
@@ -1157,8 +1311,6 @@ Similarly, if the Fee occurs on a payment date, then `true` means that the
 payment has the fee already included in it, whereas a value of `false` means the
 fee is to be added on top of the payment.
 
----
-
 🟦 **Fee.CalcType**
 
 | Type  | Required | Values | Default |
@@ -1175,8 +1327,6 @@ This field specifies how the fee is to be computed, as described in the followin
 | OnAmtFin      | The `Amount` field is understood as a percentage value, to be applied to the loan's Regulation Z Amount Financed. An `Amount` of `0.33` would represent a fee of 0.33% of the amount financed. |
 | OnBalance     | The `Amount` field is understood as an annual percentage value, to be applied to the current balance of the loan when the fee is assessed, and accrued using the interest accrual calendar in effect. An `Amount` of `12.01` would represent a fee accrued at an annual rate of 12.0% of the current balance. |
 | OnBalanceFlat | The `Amount` field is understood as a flat percentage value, to be applied to the current balance of the loan when the fee is assessed. An `Amount` of `1.0` would represent a fee of 1.0% of the current balance.|
-
----
 
 🟦 **Fee.Date**
 
@@ -1199,8 +1349,6 @@ example, `0000-06-00` instructs the system to pay this fee on June Payments.
 If the `Date` field is not specified, then it will default to the last specified
 Advance `Date`.
 
----
-
 🟦 **Fee.EqualServChg**
 
 | Type  | Required | Values | Default |
@@ -1212,7 +1360,47 @@ field), this field determines if all the service charge fee payments should be
 forced to be equal (a value of `true`), or if the final service charge fee
 payment can be different from the others due to rounding (a value of `false`).
 
----
+🟦 **Fee.Holidays**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | ignore, prev, next | ignore |
+
+If fee dates (including the specified start date) are not allowed to fall on
+specified holidays (see the `Holidays[]` array for more inforation on how to
+specify holidays), then set the value of this field to something other than
+`ignore`. The meaning of the other two values are defined below:
+
+- **prev -** The date will be moved to the day before the holiday.
+- **next -** The date will be moved to the Monday after the holiday.
+
+Note that two other `Fee` fields can cause the computed dates to be adjusted:
+`AllowFeb29` and `Weekends`. The rules for how these three fields interact are
+described below in detail.
+
+For every date required in our payment stream, the SCE goes through the
+following steps:
+
+1. Generate the next date in our date stream, called the target date.
+2. If February 29th is not allowed and if the target date is 2/29, then
+ adjust the target date forward or backward one day based upon the date
+ generation frequency. If the frequency is a monthly multiple, then the target
+ date is moved backward one day to 2/28. Weekly and biweekly frequencies move the
+ target date forward one day to 3/1.
+3. If weekend dates are not allowed (e.g. the `Weekends` field holds a
+ value other than `ignore`) and the target date falls on a Saturday or Sunday:
+    1. then adjust the target date according to the field value.
+    2. if February 29th is not allowed and if the target date is 2/29, then
+     adjust the target date in the same direction as in 3(a) above.
+4. If holidays are not allowed (e.g. the `Holidays` field holds a value
+ other than `ignore`) and the target date falls on a specified holiday:
+    1. Then adjust the target date according to the `Holidays` field value.
+    2. If weekend dates are not allowed (e.g. the `Weekends` field holds a
+     value other than `Ignore`) and the target date falls on a Saturday or Sunday,
+     then adjust the target date in the same direction as 4(a) above.
+    3. if February 29th is not allowed and if the target date is 2/29, then
+     adjust the target date in the same direction as in 4(a) above.
+    4. Step 4 is repeated until the target date is not adjusted.
 
 🟦 **Fee.LastDay**
 
@@ -1239,8 +1427,6 @@ fee frequency will be:
 - **on the 28th of each subsequent month** if `"LastDay" : false`.
 - **on the last day of each subsequent month** if `"LastDay" : true`.
 
----
-
 🟦 **Fee.MAPR***
 
 | Type  | Required | Values | Default |
@@ -1258,13 +1444,11 @@ Note that debt protection products are automatically included in the calculation
 of the Military APR, no matter what method is used for payment (e.g. single
 premium vs. monthly outstanding balance).
 
----
-
 🟦 **Fee.Max**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
+| String | no | Number - Currency | 0 |
 
 If a maximum value for the fee is specified and is greater than zero, then if
 the computed fee exceeds this maximum value, then the maximum value will be used
@@ -1274,13 +1458,11 @@ types supported. Also, note that a specified maximum value is checked *after*
 enforcing a specified minimum value, and hence a specified maximum value trumps
 a specified minimum.
 
----
-
 🟦 **Fee.Min**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0 |
+| String | no | Number - Currency | 0 |
 
 If a minimum value for the fee is specified and is greater than zero, then if
 the computed fee is less than this minimum value, then the minimum value will be
@@ -1290,20 +1472,16 @@ then no minimum will be enforced. Please note that this field is applied to
 *before* enforcing a specified maximum value, and hence a specified maximum
 value trumps a specified minimum.
 
----
-
 🟦 **Fee.Name**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | any | empty |
+| String | no | Text | empty |
 
 This field is for convenience purposes only, and does not affect the calculation
 of the fee in any manner. However, the value of this field *will* be used to
 identify the fee in the response, and hence it is highly recommended that you
 name your fees accordingly.
-
----
 
 🟦 **Fee.Position**
 
@@ -1326,8 +1504,6 @@ it is called a "Pocket APR" fee; otherwise, it is a straight "Pocket Fee".
   - A fee on an advance is treated as if `OnAdvance` were selected.
   - A fee on a payment is treated as if `InPmt` were selected.
 
----
-
 🟦 **Fee.PPY**
 
 | Type  | Required | Values | Default |
@@ -1337,8 +1513,6 @@ it is called a "Pocket APR" fee; otherwise, it is a straight "Pocket Fee".
 PPY is an abbreviation for "payments per year", and in the case of the Fee
 object, determines the frequency for the fee stream. If the value of the `Term`
 field is `1`, then the value of this field is ignored.
-
----
 
 🟦 **Fee.Round**
 
@@ -1400,21 +1574,17 @@ For the `ServChg` fee calculation type, the amount on which the fee is
 based is defined as the computed service charge amount, as defined by the
 `Amount` and `ServChgType` fields.
 
----
-
 🟦 **Fee.RoundBasis**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number | 0.01 |
+| String | no | Number - Floating | 0.01 |
 
 When rounding the amount on which the fee is based, the value of this field
 determines the precision to which rounding is performed. The default value of
 `0.01` indicates that the rounding should be done to the penny, whereas a value
 of `100.0` indicates that rounding should take place to the nearest hundred
 dollars.
-
----
 
 🟦 **Fee.SemimonthlyDay**
 
@@ -1453,8 +1623,6 @@ fees, the object should look something like this:
 }
 ```
 
----
-
 🟦 **Fee.ServChgType**
 
 | Type  | Required | Values | Default |
@@ -1472,21 +1640,81 @@ field of the same `Fee` object.
 is calculated as the number of days from the previous payment (or advance) divided by the
 total number of days in the term of the fee.
 
----
-
 🟦 **Fee.Term**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Integer > 1 | 1 |
+| String | no | Number - Integer | 1 |
 
 The `Term` field determines the the number of fees to be included at the
 specified frequency (see `Fee.PPY` above), after which the fee stream is
 completed. The default value is `1`. If the value of the `Date` field is not a
 valid date, then the value of this field is ignored.
 
+🟦 **Fee.Weekends**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | ignore, prev, near, next | ignore |
+
+If fee dates (including the specified start `Date`) are not allowed to fall on a
+Saturday or Sunday, then set the value of this field to something other than
+`ignore`. The meaning of the other three values are defined below:
+
+- **prev** - The date will be moved to the Friday before the computed weekend
+  date.
+- **near** - The date will be moved to the Friday before the computed weekend
+  date if the computed weekend date falls on a Saturday, otherwise it will be
+  moved to the Monday after.
+- **next** - The date will be moved to the Monday after the computed weekend
+  date.
+
+Note that two other `Fee` fields can cause the computed dates to be adjusted -
+`AllowFeb29` and `Holidays`. For a complete description of how these three
+fields work together, please see the documentation for the `Holidays` field.
+
 ---
+
 </details>
+
+### 🟦 Holidays
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of String | no |
+
+If dates for `PmtStream` and `Fee` objects have requested that holidays be
+skipped (e.g. the `Holidays` field for the object in question is set to a value
+other than `ignore`, then the request must specify each holiday to be
+considered, with each holiday requiring at least one entry in this `Holidays[]`
+array.
+
+The format of the `Holidays[]` array member must follow one of the three
+following descriptions:
+
+- **YYYY-MM-DD -** A holiday can be defined by sending in a valid date, where
+ YYYY is greater than or equal to 1900, MM is a valid month, and DD is a valid
+ day for the given year and month.
+- **0000-MM-DD -** A holiday that occurs annually on the same month and day can
+ be defined by sending in a valid month and day, with the year passed in as
+ `0000`. As an example, in the United States of America, Christmas is a Federal
+ holiday celebrated on December 25th of each year. To pass this holiday in to
+ the SCE, the `Holidays[]` array member would look like `"0000-12-25"`.
+- **0001-MM-PD -** A holiday that occurs annually in the same month on a given
+ day of the week (`D`) in a given position in the month (`P`) can be defined by
+ sending in a valid month, position, and day of the week, with the year passed
+ in as `0001`. The value of `D` can be from 0 to 6, where 0 = Sunday, 1 =
+ Monday, ..., 6 = Saturday. The value of `P` can be from 1 to 6, where 1 = 1st,
+ 2 = Second, ..., 5 = 5th, 6 = last. As an example, in the United States of
+ America, Thanksgiving is a Federal holiday celebrated on the 4th (`P=4`)
+ Thursday (`D=4`) of November (`MM=11`) every year. To pass this holiday in to
+ the SCE, the `Holiday[]` array member would look like `"0001-11-44"`.
+- **0002-NN-NN -** A holiday that occurs annually, but can not be expressed
+ using any of the above methods. Currently, the following special holidays are
+ recognized by the SCEX:
+   - **0001 -** Good Friday
+   - **0002 -** Easter Sunday
+   - **0003 -** Easter Monday
 
 ### 🟦 MI
 
@@ -1511,25 +1739,21 @@ only loan builder requests at this time.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 0 |
+| String | no | Number - Currency | 0 |
 
 The `CashDown` field represents a cash down payment made at closing. If
 specified and greater than zero, this amount will be deducted from the principal
 balance. If not specified, the cash down payment will default to zero.
 
----
-
 🟦 **MI.LoanAmt**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 0 |
+| String | no | Number - Currency | 0 |
 
 This field represents the amount by which the PMI rates are multiplied to
 produce a level PMI premium. If not specified, then the principal balance will
 be used to compute the annual premium.
-
----
 
 🟦 **MI.Periodic**
 
@@ -1549,7 +1773,7 @@ included.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - % | 0 |
+| String | no | Number - % | 0 |
 
 The value of this field determines the loan to value ratio at which
 MI should be removed, and is expressed as a percentage. For example,
@@ -1557,13 +1781,11 @@ if you wish to automatically drop MI when the loan to value ratio first
 equals or falls below 78%, then you would specify
 `"DropLTV" : "78.0"`.
 
----
-
 🟦 **Periodic.Term**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 0 |
+| String | no | Number - Integer | 0 |
 
 The value of this field represents the the term (in payments) beyond 
 which MI will be removed.
@@ -1579,33 +1801,29 @@ As an example, if mortgage insurance must be removed after the
 }
 ```
 
----
-
 🟦 **Periodic.WarnLTV**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - % | 0 |
+| String | no | Number - % | 0 |
 
 The value of this field determines the loan to value ratio at which a
 warning should be issued, and is expressed as a percentage of LTV (loan to value).
 For example,if you wish to know when the loan to value ratio first equals or
 falls below 80%, then you would specify `"WarnLTV" : "80.0"`.
 
-</details> 
-
 ---
+
+</details> 
 
 🟥 **MI.PropertyValue**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Currency |
 
 This field's value represents the appraised property value, and will be used in
 the calculation of the loan to value ratio.
-
----
 
 🟥 **MI.Rates[]**
 
@@ -1626,7 +1844,7 @@ rates are set to switch at a specified payment number.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Floating |
 
 The value of this field specifies the cost of mortgage insurance per $100
 of the loan amount. As an example, a loan computed with a MI rate of $1.50  per $100 would be
@@ -1642,13 +1860,11 @@ specified as
 }
 ```
 
----
-
 🟦 **Rate.Switch**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 0 |
+| String | no | Number - Integer | 0 |
 
 This optional attribute defines the payment number beyond which the associated MI rate
 will apply. If not specified, the value will default to zero.
@@ -1669,9 +1885,9 @@ of $0.20 for coverage beyond 10 years):
 }
 ```
 
-</details>
-
 ---
+
+</details>
 
 🟦 **MI.Type**
 
@@ -1687,8 +1903,6 @@ regulation](http://portal.hud.gov/hudportal/HUD?src=/program_offices/housing/com
 
 If the value of this field is set to `pmi`, then each defined MI rate produces a
 level MI premium based upon the inital loan amount.
-
----
 
 🟦 **MI.UpFront**
 
@@ -1719,8 +1933,6 @@ will cause the value of the fee to be added to the finance charge alone. Finally
 of `bylender` means that the up front fee is to be paid by the lender, hence the value
 of the fee is not added to either the principal balance nor the finance charge.
 
----
-
 🟦 **UpFront.Reduce**
 
 | Type  | Required | Values | Default |
@@ -1730,8 +1942,6 @@ of the fee is not added to either the principal balance nor the finance charge.
 If the specified number of periodic premiums to include as an up front fee is
 greater than zero, then this attribute determines if the term of coverage for
 PMI will be reduced by the same amount.
-
----
 
 🟦 **UpFront.Units**
 
@@ -1750,13 +1960,11 @@ Finally, if the `Units` field is set to `Points`, then `UpFront.Value`
 represents the percentage of principal to be paid up front. As of October 3,
 2011, FHA loans use points.
 
----
-
 🟦 **UpFront.Value**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 0 |
+| String | no | Number - Floating | 0 |
 
 If part of the MI fees are to be paid up front, then value of this field must be
 grater than zero. How the value of this field is interpreted depends upon the
@@ -1766,9 +1974,9 @@ The default value of zero means that no up front fee will be computed.
 
 </details>
 
----
-
 </details>
+
+---
 
 ### 🟦 ODI
 
@@ -1815,8 +2023,6 @@ or 348, depending upon whether or not it is a leap year.
 | 231 | Midnight 366 |
 | 250 | Actual/Variable Days Per Year |
 
----
-
 🟦 **ODI.AddToPmt**
 
 | Type  | Required | Values | Default |
@@ -1828,7 +2034,16 @@ payment, then set the value of this field to `true`. A value of `false`
 indicates that the odd days interest will be treated as a prepaid finance
 charge.
 
----
+🟦 **ODI.AddToPrin**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If any odd days interest should be treated as a financed prepaid fee, then set
+the value of this field to `true`. Note that if both `AddToPmt` and `AddToPrin`
+are set to `true`, then a warning message will be returned by the SCE and the
+value of `AddToPrin` will be set to `false`.
 
 🟦 **ODI.AnchorDate**
 
@@ -1844,8 +2059,6 @@ anchor date is the number of days per period prior to the first payment date.
 Please note that for both of these methods, the period used will be that
 associated with the payment stream in which the first payment occurs.
 
----
-
 🟦 **ODI.ForceUnitPeriod**
 
 | Type  | Required | Values | Default |
@@ -1856,8 +2069,6 @@ Some unit period methods will not use a strict unit period interest accrual
 factor in the period to the first payment. For example, code `302` will count
 the days to the first payment and divide by 365. For a monthly loan, setting
 this field to `true` will use a 1/12 factor instead of Days/365.
-
----
 
 🟦 **ODI.UseDailyCost**
 
@@ -1871,8 +2082,6 @@ number of odd days, then set the value of this property to `true`.
 
 A value of `false` means that the daily cost is left unrounded, and the total
 prepaid fee is rounded after the computation is complete.
-
----
 
 🟦 **ODI.UseNegODI**
 
@@ -1928,13 +2137,11 @@ scheduled payment date will be altered in one of the following manners:
  subsequent payment dates will be a multiple of 7 or 14 days from this date
  (depending upon the specified payment frequency).
 
----
-
 🟦 **PmtStream.Amount**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number, number%, or number%B | 0 |
+| String | no | Number - Currency, Number - Floating +"%", or Number - Floating + "%B" | 0 |
 
 The value of the `Amount` field has different meanings depending upon the
 `PmtType` selected. Please see the documentation on the `PmtType` field above
@@ -1943,17 +2150,19 @@ stream.
 
 If the `PmtType` field is equal to `PayInt` or `PayPrin`, then the value of this
 field may be specified as a flat dollar amount (e.g. `"Amount" : "250.00"`), a
-percentage of the principal balance (e.g. `"Amount" : "5.25%"`), or a percentage
-of the outstanding balance at the time the payment is made (e.g. `"Amount" :
-"8.125%B"`).
+percentage of the principal balance (e.g. `"Amount" : "5.25%"`), a percentage of
+the outstanding balance at the time the payment is made (e.g. `"Amount" : "8.125%B"`),
+or a percentage of the computed target payment (e.g. `"Amount" : "100%C"`).
+
+balance (e.g. \texttt{Amount="5.25\%"}), a percentage of the outstanding balance
+at the time the payment is made (e.g. \texttt{Amount="8.125\%B"}), or a
+percentage of the computed target payment (e.g. \texttt{Amount="100\%C"}).
 
 If the `PmtType` field is equal to `CalcPmt`, then the value of this field may
 be specified as a flat dollar amount (e.g. `"Amount" : "500.00"`) which will be
 added to the computed payment, or a percentage of the computed payment (e.g.
 `"Amount" : "200%"`), which allows the calling application to specify a double
 payment, half payment, etc.
-
----
 
 🟦 **PmtStream.ComputeTerm**
 
@@ -2004,8 +2213,6 @@ Note that in the above partial JSON request, the `PmtType` must be set to
 `FixedPmt`, the value of the `Amount` field is set to the maximum desired
 payment amount, and the value of the `Term` field is set to the maximum term
 allowed.
-
----
 
 🟥 **PmtStream.Date**
 
@@ -2097,7 +2304,47 @@ will also understand `Date` values in the following formats:
 of one of the three formats mentioned above), then the `LastDay`, `Term`, and
 `PPY` fields will be ignored, unless otherwise noted above.*
 
----
+🟦 **PmtStream.Holidays**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | ignore, prev, next | ignore |
+
+If payment dates (including the specified start date) are not allowed to fall on
+specified holidays (see the `Holidays[]` array for more inforation on
+how to specify holidays), then set the value of this field to something other
+than `ignore`. The meaning of the other two values are defined below:
+
+- **prev -** The date will be moved to the day before the holiday.
+- **next -** The date will be moved to the Monday after the holiday.
+
+Note that two other `PmtStream` fields can cause the computed dates to be
+adjusted: `AllowFeb29` and `Weekends`. The rules for how these three fields
+interact are described below in detail.
+
+For every date required in our payment stream, the SCE goes through the
+following steps:
+
+1. Generate the next date in our date stream, called the target date.
+2. If February 29th is not allowed and if the target date is 2/29, then
+ adjust the target date forward or backward one day based upon the date
+ generation frequency. If the frequency is a monthly multiple, then the target
+ date is moved backward one day to 2/28. Weekly and biweekly frequencies move the
+ target date forward one day to 3/1.
+3. If weekend dates are not allowed (e.g. the `Weekends` field holds a
+ value other than `ignore`) and the target date falls on a Saturday or Sunday:
+    1. then adjust the target date according to the field value.
+    2. if February 29th is not allowed and if the target date is 2/29, then
+     adjust the target date in the same direction as in 3(a) above.
+4. If holidays are not allowed (e.g. the `Holidays` field holds a value
+ other than `ignore`) and the target date falls on a specified holiday:
+    1. Then adjust the target date according to the `Holidays` field value.
+    2. If weekend dates are not allowed (e.g. the `Weekends` field holds a
+     value other than `Ignore`) and the target date falls on a Saturday or Sunday,
+     then adjust the target date in the same direction as 4(a) above.
+    3. if February 29th is not allowed and if the target date is 2/29, then
+     adjust the target date in the same direction as in 4(a) above.
+    4. Step 4 is repeated until the target date is not adjusted.
 
 🟦 **PmtStream.LastDay**
 
@@ -2116,19 +2363,17 @@ subsequent payments occur on the last day of the month. A value of
 day number specified by the `Date`.
 
 As an example, if the calling application specifies a `Date`
-of `2010-02-281, then subsequent payment dates for a monthly
+of `2010-02-28`, then subsequent payment dates for a monthly
 payment frequency will be:
 
 - **on the 28th of each subsequent month** if `"LastDay" : false`.
-- **on the last day of each subsequent month** if "LastDay : true`.
-
----
+- **on the last day of each subsequent month** if `"LastDay" : true`.
 
 🟦 **PmtStream.MinPmt** (number) \{optional\}}
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 0 |
+| String | no | Number - Currency | 0 |
 
 If specified, this field will dictate a minimum payment. If a calculated payment
 falls below the specified minimum payment value, then the minimum payment value
@@ -2139,8 +2384,6 @@ accelerated. In some loan scenarios, this will result in an early payoff of the
 loan before the specified `Term` of the payment stream. In this situation, the
 final payment will always pay off the loan, and will be smaller than the
 specified minimum payment.
-
----
 
 🟦 **PmtStream.PmtType**
 
@@ -2193,8 +2436,6 @@ to the following rules:
 - **FixedPmt and FixedPmt** - Keep both events separate.
 - **PayPrin and PayPrin** - Keep both events separate.
 
----
-
 🟦 **PmtStream.PPY**
 
 | Type  | Required | Values | Default |
@@ -2206,13 +2447,11 @@ determines the payment frequency for the payment stream. If the value of
 the `Date`` field is not a valid date, then the value of this
 field is ignored.
 
----
-
 🟦 **PmtStream.SemimonthlyDay**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 0 |
+| String | no | Number - Integer | 0 |
 
 When specifying a semimonthly payment stream, the day number on which the first
 payment is made determines the day number for all of the following odd numbered
@@ -2241,19 +2480,40 @@ for 24 payments, the object should look something like this:
 }
 ```
 
----
-
 🟦 **PmtStream.Term**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | 1 |
+| String | no | Number - Integer | 1 |
 
 The term field indicates the the number of *payments* to be made at the
 specified payment frequency (see `PmtStream.PPY` above), after which the payment
 stream is completed. The default value is `1`. If the value of the
 `PmtStream.Date` field is not a valid date, then the value of this field is
 ignored, unless it is a replacement payment using the `NNNN-00-00` date format.
+
+🟦 **PmtStream.Weekends**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | ignore, prev, near, next | ignore |
+
+If payment stream dates (including the specified start `Date`) are not allowed
+to fall on a Saturday or Sunday, then set the value of this field to something
+other than `ignore`. The meaning of the other three values are defined below:
+
+- **prev** - The date will be moved to the Friday before the computed weekend
+  date.
+- **near** - The date will be moved to the Friday before the computed weekend
+  date if the computed weekend date falls on a Saturday, otherwise it will be
+  moved to the Monday after.
+- **next** - The date will be moved to the Monday after the computed weekend
+  date.
+
+Note that two other `PmtStream` fields can cause the computed dates to be
+adjusted - `AllowFeb29` and `Holidays`. For a complete description of how these
+three fields work together, please see the documentation for the `Holidays`
+field.
 
 ---
 </details>
@@ -2277,7 +2537,7 @@ and at least one `Product` object in the `Products[]` array must be present.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   | :---: |
-| String | no | path | default data path |
+| String | no | Text | default data path |
 
 If this field is set, the SCE will look for a `/data` folder containing the
 setup files in the path specified. Thus, if the `DataPath` is set to `/etc/sce`,
@@ -2297,8 +2557,6 @@ This field is useful if you wish to use only a single installation of the SCE,
 but have many different setup file groupings. By specifying a different
 `DataPath` for each grouping, you can easily separate the groups from one
 another instead of grouping them all together in a single directory.
-
----
 
 🟦 **Protection.Products**
 
@@ -2357,7 +2615,7 @@ following:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   | :---: |
-| String | no | number | 1 |
+| String | no | Number - Integer | 1 |
 
 This field specifies the account number that will be used to define the
 requested product. Each account is numbered from 1 to 9,999, and each account
@@ -2366,13 +2624,11 @@ the product and how it is calculated, such as the insurance rates, caps,
 formulas used, etc. If this field is not specified, a default value of `1` will
 be used.
 
----
-
 🟦 **Product.Benefit**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   | :---: |
-| String | no | number - currency | 0 |
+| String | no | Number - Currency | 0 |
 
 If you wish to specify a benefit amount less than the maximum allowed, then do
 so with this field. Omitting this field will ensure that the maximum benefit
@@ -2381,8 +2637,6 @@ account has not been set up to allow for user-specified benefit amounts for the
 product in question, or if the product itself does not have the notion of a
 monthly benefit (such as life and property products), then this attribute will
 be ignored.
-
----
 
 🟥 **Product.Birthdays[]**
 
@@ -2406,8 +2660,6 @@ coverage options are single or joint).
 
 All dates must be in the form of YYYY-MM-DD, and be 10 characters long.
 
----
-
 🟥 **Product.Code**
 
 | Type  | Required | Values |
@@ -2428,21 +2680,17 @@ of 1 would thus be "0001").
 - **PP** - The requested product is treated as property insurance and will
   reference the `ppNNNN.ini setup file.
 
----
-
 🟦 **Product.Coverage**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   | :---: |
-| String | no | number - currency | 0 |
+| String | no | Number - Currency | 0 |
 
 If you wish to specify a coverage amount less than the maximum allowed, then do
 so with this field. Omitting this field will ensure that the maximum coverage
 amount allowed will be used in the loan calculation. Note that if the specified
 account has not been set up to allow for user specified coverage amounts for the
 product in question, then this attribute will be ignored.
-
----
 
 🟦 **Product.Dismemberment**
 
@@ -2455,8 +2703,6 @@ optional dismemberment coverage, and if the optional dismemberment coverage is
 desired, then set this field's value to `true`. Otherwise, use the default value
 of `false`.
 
----
-
 🟦 **Product.Financed**
 
 | Type  | Required | Values | Default |
@@ -2466,8 +2712,6 @@ of `false`.
 Single premium protection products are typically financed (added to the
 principal balance). If you wish to have the premiums paid up front at loan
 cloasing, then set the value of this field to `false`.
-
----
 
 🟦 **Product.Method**
 
@@ -2480,8 +2724,6 @@ Some accounts are configured to offer different types of credit life products
 application to specify which method to use for a given loan. If no method is
 present in the request, then the default method will be used.
 
----
-
 🟦 **Product.ShowFactor**
 
 | Type  | Required | Values | Default |
@@ -2492,13 +2734,11 @@ If this field is set to `true`, then the `Product.Cost` response object (member
 of the `Products[]` array) will include a `Factor` field which is useful to J.
 L. Sherman and Associates when debugging protection calculations.
 
----
-
 🟦 **Product.Table**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   | :---: |
-| String | no | number | 0 |
+| String | no | Number - Integer | 0 |
 
 When requesting the accident and health product (e.g. the `Code` field is set to
 `AH`), if the specified account has been set up with multiple disability or debt
@@ -2508,21 +2748,17 @@ used.
 
 If the requested product `Code` is not `AH`, then this attribute is ignored.
 
----
-
 🟦 **Product.Term**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   | :---: |
-| String | no | number | 0 |
+| String | no | Number - Integer | 0 |
 
 If you need to specify a coverage term (in months or payments) less than the
 maximum allowed, then do so using this field. If this field is omitted, then the
 loan will be covered for the maximum term allowed. Note that if the specified
 account has not been set up to allow for user specified coverage terms for this
 product, then this field will be ignored.
-
----
 
 🟦 **Product.TermUnits**
 
@@ -2533,8 +2769,6 @@ product, then this field will be ignored.
 The specified numeric coverage term (see `Term` field, above) will be
 interpreted as a number of payments or months, depending upon the value of this
 attribute.
-
----
 
 🟦 **Product.UseLevelRates**
 
@@ -2547,9 +2781,9 @@ using level rates instead of the normal decreasing rates, and if you wish to use
 level rates instead of decreasing, then set this field's value to `true`.
 Otherwise, use the default value of `false`.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Protection.ShowDataPath**
 
@@ -2747,34 +2981,28 @@ request.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The Regulation Z Amount Financed, which is defined as the amount of credit
 provided to the borrower or on their behalf.
-
----
 
 🟥 **FedBox.FinChg**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 This element contains the Regulation Z Finance Charge, described as the dollar
 amount the credit extension will cost the borrower.
-
----
 
 🟥 **FedBox.TotPmts**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The amount which the borrower will have paid when the borrower has made all
 scheduled payments.
-
----
 
 🟦 **FedBox.TAP**
 
@@ -2785,60 +3013,54 @@ scheduled payments.
 The `TAP` (total amount payable) object is only returned with the response if the
 value of the `EditOutput.ShowTap` request field is `true`.
 
----
-
 <details>
 <summary><b>TAP fields</b></summary>
+
+---
 
 🟥 **TAP.Value**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The value of this field represents the total amount payable, and is computed as
 the sum of: (i) the total of payments, (ii) all non-financed APR affecting fees,
 (iii) all out-of-pocket non-APR affecting fees, and (iv) all out-of-pocket APR
 affecting fees.
 
----
-
 🟦 **TAP.PrepaidNF**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency|
+| String | no | Number - Currency|
 
 The value of this field is the sum of all non-financed APR prepaid fees
 (APR affecting fees paid on the same date as an advance). This field will
 only be present if the value is greater than zero.
 
----
-
 🟦 **TAP.Pocket**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 The value of this field is the sum of all out-of-pocket non-APR affecting
 fees. This field will only be present if the value is greater than zero.
-
----
 
 🟦 **TAP.PocketAPR**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 The value of this field is the sum of all out-of-pocket APR affecting fees
 not paid on an advance. This field will only be present if the value is
 greater than zero.
 
-</details>
-
 ---
+
+</details>
 
 🟥 **FedBox.APR**
 
@@ -2848,27 +3070,25 @@ greater than zero.
 
 The `APR` object contains fields which return the value and APR method used.
 
----
-
 <details>
 <summary><b>APR fields</b></summary>
+
+---
 
 🟥 **APR.Value**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The computed APR, which is the cost of the extension of credit expressed as a
 yearly rate.
-
----
 
 🟥 **APR.Method**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | string |
+| String | yes | Text |
 
 This field returns the APR method used to compute the reported APR.
 
@@ -2885,46 +3105,40 @@ This field returns the APR method used to compute the reported APR.
 The `MAPR` (military APR) object is only returned with the response if the
 value of the `Apr.UseMAPR` request field is `true`.
 
----
-
 <details>
 <summary><b>MAPR fields</b></summary>
+
+---
 
 🟥 **MAPR.Value**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The computed military APR.
-
----
 
 🟥 **MAPR.Advance**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 This field returns the equivalent of the Amount Financed for the Military APR.
 Specifically, it is the principal balance less any MAPR fees, debt protection,
 etc.
 
----
-
 🟥 **MAPR.Max**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 This field holds the maximum Military APR as specified in the
 input XML (see `Apr.MAPR_Max`). If not specified, a default value
 of 36% is assumed. The value of this field should be displayed
 as a percentage. As an example, for `"Max" : "36.000"`, you would
 disclose a maximum Military APR of 36%.
-
----
 
 🟥 **MAPR.MaxExceeded**
 
@@ -2975,107 +3189,89 @@ set to `true` in the request.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 This field represents the sum of all Advance amounts.
-
----
 
 🟥 **Moneys.Principal**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The principal balance is the amount on which interest is accrued. The
 principal balance consists of all advances requested by the borrower,
 as well as any fees and/or protection products which are financed.
 
----
-
 🟥 **Moneys.Interest**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 This value of this field holds the total interest accrued during the term of the
 loan, assuming the borrower will make all scheduled payments.
-
----
 
 🟦 **Moneys.FinFees**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 This field contains the sum of all fees having `AddToPrin`
 set to `true` and occuring on the date of an advance. If this
 value is zero, the field will not appear in the response.
 
----
-
 🟦 **Moneys.Prepaid**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 This field represents all prepaid finance charges and contains the sum of all
 fees occurring on an advance and having `AddToFinChg` set to `true`. If this
 value is zero, the field will not be found in the response.
 
----
-
 🟦 **Moneys.OthNonAprFees**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 This field contains the sum of all fees having `AddToPrin`
 set to `true` *not* occuring on the date of an advance. If this
 value is zero, the field will not be present in the response.
 
----
-
 🟦 **Moneys.ServiceChg**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 This field represents all service charge fees and contains the sum of all fees
 not occurring on an advance and having `AddToFinChg` set to `true`. If this
 value is zero, the field will be omitted from the response.
 
----
-
 🟦 **Moneys.PocketFees**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 This field holds the sum of all fees which are neither financed, nor
 added to the finance charge. In essence, they are paid out of the
 borrower's pocket. If no out of pocket fees were requested, then this
 field will not show up in the response.
 
----
-
 🟦 **Moneys.MAPRFees**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 This field holds the sum of all fees which are Military APR fees (including 
 protection products), and will only appear if the Military APR has been
 requested.
-
----
 
 🟦 **Moneys.ConInterest**
 
@@ -3103,20 +3299,18 @@ If the construction interest is disclosed as interest only payments in the amort
 schedule, then the value of this field will be set to `false`. Otherwise,
 the value of this field will be set to `true`.
 
----
-
 🟥 **ConInterest.Amount**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 Discloses the total amount of estimated interest accrued during the construction
 period.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Moneys.ODI**
 
@@ -3137,37 +3331,31 @@ response.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 Discloses the number of odd days computed by the SCE for the requested loan.
-
----
 
 🟦 **ODI.Months**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 This field holds the number of odd months computed by the SCE for the requested
 loan when using odd days accrual method `250`. If the odd days accrual method is
 a value other than `250`, then this field will not be present in the `ODI`
 object of the response.
 
----
-
 🟦 **ODI.DailyCost**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 If the odd days interest fee is computed using a rounded daily cost, then the
 value of this field will hold that value. If the odd days interest is *not*
 computed using a rounded daily cost, then this field will not be present in the
 response.
-
----
 
 🟦 **ODI.AddToPmt**
 
@@ -3180,31 +3368,49 @@ present in the response with a value of `true`. If the odd days interest has bee
 treated as a prepaid finance charge, then this field will not be present and a default
 value of `false` should be assumed.
 
----
-
 🟥 **ODI.Fee**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 Discloses the total amount odd days interest charge.
 
+---
+
 </details>
 
----
+🟦 **Moneys.MinIntChgAdj**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+If a minimum interest charge is configured in the account's setup files and the
+final payment was adjusted to meet this minimum interest charge, then this
+field will be returned in the response and will contain the value of the
+minimum interest charge adjustment.
+
+🟦 **Moneys.MinFinChgAdj**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+If a minimum finance charge is configured in the account's setup files and the
+final payment was adjusted to meet this minimum finance charge, then this
+field will be returned in the response and will contain the value of the
+minimum finance charge adjustment.
 
 🟦 **Moneys.MortInt**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 This field holds the total mortgage insurance fee, if not single premium. If
 mortgage insurance is not requested, or if it is requested but is not treated as
 single premium, then this field will not be included in the response.
-
----
 
 🟦 **Moneys.Advances[]**
 
@@ -3232,19 +3438,17 @@ If all of the loan's advances were specified and not computed, then the
 
 The date on which the advance is made.
 
----
-
 🟥 **Advance.Amount**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 Discloses the computed advance amount.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Moneys.Fees[]**
 
@@ -3268,18 +3472,16 @@ then the `Moneys.Fees[]` array will not be included in the response.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | string |
+| String | no | Text |
 
 If a name was provided for the fee, then it will be included here in the
 disclosure for identification purposes.
-
----
 
 🟥 **Fee.Fee**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 Discloses the computed fee amount.
 
@@ -3314,31 +3516,25 @@ Each array member contains a textual description
 of the interest accrual method used to compute the loan (e.g.
 "Unit Period 365 Simple").
 
----
-
 🟦 **Accrual.YieldPPY**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | integer |
+| String | no | Number - Integer |
 
 If `BusinessRules.YieldPPY` in the loan's request is set to a value other than `0`,
 then this field will be returned in the response with the same value passed into
 the request.
 
----
-
 🟥 **Accrual.Days1Pmt**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 This field contains the number of days between the date of the first
 advance and the date of first payment, computed by one of three
 methods as specified in by `Accrual.DayCount` (below).
-
----
 
 🟥 **Accrual.DayCount**
 
@@ -3350,8 +3546,6 @@ This field specifies the method used to compute the number of days from the date
 of the first advance until the first payment date. `Actual` means that the
 actual number of days between these two dates are used, whereas the `True360`
 and `True365` methods use a 360/365 day calendar, respectively.
-
----
 
 🟥 **Accrual.Maturity**
 
@@ -3414,7 +3608,7 @@ payment stream.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 If the value of `EditOutput.TagPmts` is set to `true` in the loan request, then
 this field will appear for each `PmtStream` object. The value of this field
@@ -3430,52 +3624,42 @@ using whole dollar rounding which can shorten the specified term of the loan, or
 (iii) specifying a minimum payment which also may shorten the specified term of
 the loan.
 
----
-
 🟥 **PmtStream.Term**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The `Term` field holds the number of payments that make up the given payment
 stream.
-
----
 
 🟥 **PmtStream.Pmt**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The `Pmt` field holds the computed payment amount for this payment stream.
-
----
 
 🟦 **PmtStream.IsSplitRate**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| Boolean | no | true, false |
 
 If this payment stream accrued interest using split-rate tiers, then this field
 will be present and set to `true`. Otherwise, this field will not be
 returned and has an assumed default value of `false`.
 
----
-
 🟦 **PmtStream.Rate**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - % |
 
 Contains the interest rate used for the duration of this payment stream. If this
 payment stream accrued interest using split-rate tiers, then this field will
 *not* be returned.
-
----
 
 🟥 **PmtStream.Begin**
 
@@ -3487,13 +3671,11 @@ This field identifies the date on which the first payment for this given payment
 stream is scheduled to be made. All dates are in the form of `YYYY-MM-DD`, and
 must be 10 characters long.
 
----
-
 🟦 **PmtStream.PPY**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 If the value of the `Term` field is greater than one, then the periodic payment
 frequency for this payment stream is also disclosed.
@@ -3535,45 +3717,39 @@ year, and premium per period.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - Floating |
 
 The percentage rate used in the mortgage insurance calculation.
-
----
 
 🟥 **Rate.PremPerYear**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The annual mortgage insurance premium amount.
-
----
 
 🟥 **Rate.PremPerPeriod**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The periodic mortgage insurance premium amount.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **MI.UpFront**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 The value of this field represents the up front fee paid for
 mortgage insurance. If there is no up front fee, then this field
 will not be present in the response.
-
----
 
 🟦 **MI.Periodic**
 
@@ -3595,29 +3771,25 @@ corresponding `Periodic` field is found in the request.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The loan to value ratio of the computed loan, expressed as a percentage.
-
----
 
 🟥 **Periodic.IndexToWarn**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The value of this field indicates the payment index on which the remaining
 principal balance to home value ratio drops below the specified `WarnLTV`
 percentage.
 
----
-
 🟥 **Periodic.IndexToDrop**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The value of this field indicates the payment index on which the remaining
 principal balance to home value ratio drops below the specified `DropLTV`
@@ -3660,20 +3832,16 @@ determines after analyzing on the computed loan. Please see the samples provided
 with this documentation which illustrates how to create JSON requests which will
 fall under these loan repayment classifications.
 
----
-
 🟦 **Protection.Path**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | diretory |
+| String | no | Text |
 
 This optional field will hold the value of the data path used by the
 SCE to find the required setup files for protection calculations. This
 field will only be present if the `Proetcion.ShowDataPath` field of
 the request is set to `true`.
-
----
 
 🟥 **Protection.Products[]**
 
@@ -3700,8 +3868,6 @@ all child fields, refers to. It mirrors the `Product.Code` field defined earlier
 in the request section, with the addition of the `LL` code which indicates a
 level credit life product.
 
----
-
 🟥 **Product.Result**
 
 | Type  | Required | Values |
@@ -3714,29 +3880,23 @@ caps have been exceeded and partial coverage has been extended), or completely
 dropped. If coverage has been dropped, then the `Product` object will not have
 any child objects (e.g. `Product.Notes`, `Product.Notes`, `Product.Cost`, etc.).
 
----
-
 🟥 **Product.Abbrev**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | string |
+| String | yes | Text |
 
 This field holds the protection product's abbreviation, as configured in the
 appropraite setup file.
-
----
 
 🟥 **Product.Name**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | string |
+| String | yes | Text |
 
 This field holds the protection product's name, as configured in the appropraite
 setup file.
-
----
 
 🟦 **Product.IsDP**
 
@@ -3748,31 +3908,25 @@ This field indicates if the product has been set up as debt protection. If this
 field is not present, then the default value of `false` should be used
 (which indicates that the product has been set up as insurance instead).
 
----
-
 🟦 **Product.Table**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - % |
+| String | no | Number - Integer |
 
 The `Table` field will only be present when a product is offered with differing
 tables of rates. If present, the value of this field is the table number used in
 the calculation.
 
----
-
 🟦 **Product.Formula**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | string% |
+| String | no | Text |
 
 The `Formula` field contains an abbreviated description of the formula used to
 compute the desired protection product. The formula codes are for the use of the
 J. L. Sherman and Associates, Inc. support team.
-
----
 
 🟦 **Product.RateType**
 
@@ -3793,13 +3947,11 @@ coverage for one borrower ending while coverage for the other borrower
 continues). If this is the case, then the field will indicate this
 rate change with a value of `Variable`.
 
----
-
 🟦 **Product.DropCode**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - % |
+| String | no | Number - Integer |
 
 If the requested protection was dropped by the SCEX for any reason, then the
 value of this field will be greater than zero. In this case, no child objects of
@@ -3809,13 +3961,11 @@ A value of zero indicates that the requested product was included with the loan,
 and as such, the child objects of `Product` which describe the coverage details,
 should be parsed.
 
----
-
 🟦 **Product.DropReason**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - % |
+| String | no | Number - Integer |
 
 If the requested protection product was successfully included in the loan, then
 the value of this field will be `Valid Calculation` and corresponds to a
@@ -3824,8 +3974,6 @@ the value of this field will be `Valid Calculation` and corresponds to a
 If the requested protection was dropped by the SCE for any reason (and hence,
 `DropCode` > 0, then this field will provide a brief description of why the
 protection was dropped.
-
----
 
 🟦 **Product.Notes[]**
 
@@ -3846,20 +3994,18 @@ return value. Please see the documentation for the Note object below.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The unique integer identifying the protection product `Note` in question.
 This `Code` may be useful if the calling application would like to
 override the default description or check for a given Note's `Code`. Please
 see the list of all codes, notes, and descriptions below.
 
----
-
 🟥 **Note.Note**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | see table |
+| String | yes | Text |
 
 A text description of the `Note`. Please see the list of codes, notes, and descriptions below.
 
@@ -3905,9 +4051,9 @@ A text description of the `Note`. Please see the list of codes, notes, and descr
   It uses the average of all payments over the term of coverage (excluding the loan
   principal amount from the final payment, if covered).
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Product.Cost**
 
@@ -3927,55 +4073,47 @@ payment, and per day. It also provides the rate used to compute the premiums.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The total cost for this protection over the term of the loan.
-
----
 
 🟥 **Cost.PerPmt**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The cost of coverage expressed as an amoun per payment.
-
----
 
 🟥 **Cost.PerDay**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The cost of coverage expressed as an amoun per day.
-
----
 
 🟥 **Cost.Rate**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Floating |
 
 The rate used to compute the premium for the requested protection product.
-
----
 
 🟦 **Cost.Factor**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Floating |
 
 The rate factor used to compute the premium for the requested protection
 product. Note that this field is only present if the `Product.ShowFactor` field
 of the associated protection product `true`.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Product.Coverage**
 
@@ -3995,39 +4133,35 @@ in the fields of this object:
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The aggregate coverage amount for this protection product.
-
----
 
 🟥 **Coverage.Code**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 If the requested protection was capped by the SCE for any reason, then
 the value of this field will be greater than zero. A value of zero
 indicates that the requested product was included with the loan for the
 full coverage amount of the loan.
 
----
-
 🟥 **Coverage.Note**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | text |
+| String | yes | Text |
 
 This field will describe the type of coverage provided. If
 full coverage has been provided on the aggregate coverage, then the note will contain
 `Full Coverage`. Otherwise, the note will describe the type of partial
 coverage used.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Product.Benefit**
 
@@ -4048,48 +4182,42 @@ as well as the benefit coverage code and note.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The computed monthly benefit amount.
-
----
 
 🟥 **Benefit.BenPer**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The computed periodic benefit amount.
-
----
 
 🟥 **Benefit.Code**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 If the benefit for the requested protection was capped by the SCE for any
 reason, then the value of this field will be greater than zero. A value of zero
 indicates that the requested product was included with the loan for the full
 benefit amount of the loan.
 
----
-
 🟥 **Benefit.Note**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | text |
+| String | yes | Text |
 
 This field will describe the type of benefit coverage provided. If full coverage
 has been provided on the benefit, then the note will contain `Full Coverage`.
 Otherwise, the note will describe the type of partial coverage used.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Product.Borrowers[]**
 
@@ -4114,39 +4242,31 @@ coverage for the specified borrower(s), for the requested product.
 The birthday associated with the borrower, as specified in the request. All
 dates are in the form of `YYYY-MM-DD`, and must be 10 characters long.
 
----
-
 🟥 **Borrower.Pmts**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The term of coverage expressed as a number of payments.
-
----
 
 🟥 **Borrower.Months**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The term of coverage expressed as a number of months.
-
----
 
 🟦 **Borrower.AmMonths**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 This field is only be returned when the protection product is
 configured to use CUNA Mutual's single premium formula #5, and contains
 the computed amortization term used in the premium computation. 
-
----
 
 🟥 **Borrower.AgeAtIssue**
 
@@ -4158,8 +4278,6 @@ The value of this field represents the age at issue of the borrower in a special
 date-like format of `YYYY-MM-DD`, where the borrower is YYYY years, MM months,
 and DD days old when coverage begins.
 
----
-
 🟥 **Borrower.AgeAtMaturity**
 
 | Type  | Required | Values |
@@ -4170,8 +4288,6 @@ The value of this field represents the age at maturity of the borrower in a
 special date-like format of `YYYY-MM-DD`, where the borrower is YYYY years, MM
 months, and DD days old when coverage terminates.
 
----
-
 🟥 **Borrower.Maturity**
 
 | Type  | Required | Values |
@@ -4180,33 +4296,29 @@ months, and DD days old when coverage terminates.
 
 The coverage maturity date for this particular borrower.
 
----
-
 🟥 **Borrower.Code**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 If the requested protection was truncated by the SCE for any reason, then the
 value of this field will be greater than zero. A value of zero indicates that
 the requested product was included with the loan for the full term of the loan.
 
----
-
 🟥 **Borrower.Note**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | text |
+| String | yes | Text |
 
 This field will describe the type of coverage provided. If full term coverage
 has been provided, then the note will contain `Full Coverage`. Otherwise, the
 note will describe the type of truncated coverage used.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **Product.Caps**
 
@@ -4226,76 +4338,64 @@ amounts, and ages associated with the requested product.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 Contains the maximum aggregate coverage amount, expressed in dollars. If no cap
 is present or applicable, then this field will not be present.
-
----
 
 🟦 **Caps.Benefit**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 Contains the maximum monthly benefit amount. If no cap is present or applicable,
 then this field will not be present.
-
----
 
 🟦 **Caps.BenPer**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 Contains the maximum periodic benefit amount. If no cap is present or
 applicable, or if the payment frequency of the requested loan is monthly, then
 this field will not be present.
 
----
-
 🟦 **Caps.Term**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 Contains the maximum coverage term, expressed in months. If no cap is present or
 applicable, then this field will not be present.
-
----
 
 🟦 **Caps.TermPer**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 Contains the maximum coverage term, expressed as a number of payments. If no cap
 is present or applicable, or if the payment frequency of the requested loan is
 monthly, then this field will not be present.
 
----
-
 🟦 **Caps.InceptAge**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 Contains the maximum age a borrower may be at loan inception, expressed in
 years. If no cap is present or applicable, then this field will not be
 present.
 
----
-
 🟦 **Caps.AttainAge**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 Contains the maximum age a borrower may attain during the term of the loan,
 expressed in years. If no cap is present or applicable, then then this field
@@ -4328,53 +4428,45 @@ not be found in the response.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number - currency |
+| String | no | Number - Currency |
 
 This field will only appear if a Canadian APR is disclosed for the computed
 loan. The value of this field is the average balance of the loan used in the
 Canadian APR calculation.
 
----
-
 🟦 **AmTable.Months**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 This field will only appear if a Canadian APR is disclosed for the computed
 loan. The value of this field is the whole number of months in the term of the
 loan used in the Canadian APR calculation. Note that the term is expressed in
 monthly or weekly units, but never both.
 
----
-
 🟦 **AmTable.Weeks**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 This field will only appear if a Canadian APR is disclosed for the computed
 loan. The value of this field is the whole number of weeks in the term of the
 loan used in the Canadian APR calculation. Note that the term is expressed in
 monthly or weekly units, but never both.
 
----
-
 🟦 **AmTable.OddDays**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number |
+| String | no | Number - Integer |
 
 This field will only appear if a Canadian APR is disclosed for the computed
 loan. The value of this field is the number of odd days in the term of the loan
 used in the Canadian APR calculation. Odd days are computed by moving backwards
 from the maturity date the number of disclosed months or weeks, and then
 counting the additional number of days required to land on the loan date.
-
----
 
 🟦 **AmTable.GrandTotals**
 
@@ -4395,35 +4487,31 @@ total of payments are all contained in fields of this object.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The total of payments scheduled for the computed loan.
-
----
 
 🟥 **GrandTotals.IntTot**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The total amount paid to interest over the life of the loan, assuming all
 payments are made as scheduled.
-
----
 
 🟥 **GrandTotals.PrinTot**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 This field contains the total amount paid to principal during the loan term,
 assuming all payments are made as scheduled.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **AmTable.SubTotals[]**
 
@@ -4444,67 +4532,57 @@ a `SubTotal` object in the array.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The calendar year for which the subtotal data is applicable.
-
----
 
 🟥 **SubTotal.Start**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 This field defines the index of the first `AmLine` event in the `AmLines[]`
 array which falls in the specified calendar year.
-
----
 
 🟥 **SubTotal.Events**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 This field defines the number of amortization events which belong to this
 calendar year.
-
----
 
 🟥 **SubTotal.PmtSub**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 Contains the total of payments scheduled for the calendar year.
-
----
 
 🟥 **SubTotal.IntSub**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 Holds the total amount paid to interest over the calendar year, assuming all
 payments are made as scheduled.
-
----
 
 🟥 **SubTotal.PrinSub**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 Contains the total amount paid to principal during the calendar year, assuming
 all payments are made as scheduled.
 
-</details>
-
 ---
+
+</details>
 
 🟦 **AmTable.AmLines[]**
 
@@ -4527,25 +4605,21 @@ payments but will show how the loan amortizes.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The index of the amortization event, which is either the payment number, or
 zero. A value of zero designates an event that is either not a payment or is a
 skipped payment.
 
----
-
 🟦 **AmLine.Type**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | text |
+| String | no | Text |
 
 The type of event is recorded in this field, such as `Advance` or `FixedPmt`. If
 any fees are included in the loan, then the value of this field for those fee
 events will be the `Name` of the fee, as specified in the request.
-
----
 
 🟥 **AmLine.Date**
 
@@ -4556,99 +4630,81 @@ events will be the `Name` of the fee, as specified in the request.
 The date on which the amortization event is scheduled to occur. All dates are in
 the form of `YYYY-MM-DD`, and must be 10 characters long.
 
----
-
 🟥 **AmLine.BegBal**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The principal balance before the amortization event occurs.
-
----
 
 🟥 **AmLine.Pmt**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The payment amount for this event.
-
----
 
 🟥 **AmLine.Int**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The amount of interest paid at this event.
-
----
 
 🟥 **AmLine.Prin**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The amount of principal paid at this event.
-
----
 
 🟦  **AmLine.FeeTot**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 The total of all fees paid at this event.
-
----
 
 🟦  **AmLine.ProtUnpaid**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 If the loan includes escrowed True MOB protection products, and if a payment is
 not sufficient to pay the accrued fees, then any unpaid protection fees will be
 carried forward in this field to be paid off as soon as possible in a future
 payment.
 
----
-
 🟦  **AmLine.PmtEsc**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 If the computed loan is an annual rest mortgage, then the sum of escrowed
 payments for each amortization event will appear in this field. If the computed
 loan is *not* an annual rest mortgage, then this field will not be found in the
 response.
 
----
-
 🟦  **AmLine.MI**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Currency |
 
 The amount of mortgage insurance paid at this event.
-
----
 
 🟦  **AmLine.UnpaidInt**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | no | number-currency |
+| String | no | Number - Floating |
 
 Any interest not paid after this event is logged in this field.
 
@@ -4660,13 +4716,11 @@ not yet been rounded, then the unpaid interest will be displayed to four (4)
 decimal placed. If rounded, then the unpaid interest is displayed to two (2)
 decimal places.
 
----
-
 🟥 **AmLine.EndBal**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number-currency |
+| String | yes | Number - Currency |
 
 The principal balance amount, after the amortization event has taken place.
 
@@ -4678,4 +4732,4 @@ The principal balance amount, after the amortization event has taken place.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Version Module](module-version.md) | [SCEJSON Reference Manual](README.md) | [Balloon Payment Loans](module-balloon.md) |
+| [Version Module](module-version.md) | [SCEJSON Reference Manual](README.md) | [Adjustable Rate Mortgages](module-arm.md) |

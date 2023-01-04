@@ -1,6 +1,6 @@
 # SCEJSON Reference Manual
 
-Release 2022-10-0
+Release 2023-01-0
 
 ## Introduction and Overview
 * [Introduction](introduction.md)
@@ -13,6 +13,7 @@ Release 2022-10-0
 * [Loan](module-loan.md)
 
 ## Specific Loan Calculation Modules
+* [Adjustable Rate Mortgages](module-arm.md)
 * [Balloon Payment Loans](module-balloon.md)
 * [Construction Loans](module-construction.md)
 * [Equal Payment Loans](module-equalpmt.md)

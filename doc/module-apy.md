@@ -51,11 +51,81 @@ the deposit compounds continuously, then specify a value of `Daily`.
 The number of decimal places of accuracy for the disclosed APY
 is determined by the value of this field.
 
+### 🟦 Format
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The `Format` object is one of the first objects parsed from a request, as various
+fields affect how date and numeric fields are parsed and validated.
+
+<details><summary><b>Format fields</b></summary>
+---
+
+🟦 **Format.CurrencyDecimals**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 0 or 2 | 2 |
+
+When displaying and parsing Currency fields, this field determines the maximum
+number of decimal places allowed after the `DecimalSeparator`.
+
+🟦 **Format.DateFormat**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | YMD, MDY, or DMY  | YMD |
+
+When displaying and parsing Date fields, this field determines the expected
+format for all Date fields. The following `DateFormat` options are allowed:
+
+* `YMD` - All dates should be formated as YYYY-MM-DD.
+* `MDY` - All dates should be formated as MM-DD-YYYY.
+* `DMY` - All dates should be formated as DD-MM-YYYY.
+
+Note that the character which separates the individual month, day, and year
+portions of the date is configurable via the `DateSeparator` field.
+
+🟦 **Format.DateSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "-" |
+
+When displaying and parsing Date fields, this field determines the character
+used to separate the individual month, day, and year portions of a date field.
+
+🟦 **Format.DecimalSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "." |
+
+When displaying and parsing Currency, Percentage, or Floating numeric fields,
+this field determines the character used to separate the fractional part from
+the whole.
+
+🟦 **Format.ThousandSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "" |
+
+When displaying numeric fields, this field determines the character used to
+separate the thousands places from the hundreds. Note that when parsing
+numeric fields, the value of this field is ignored.
+
+---
+
+</details>
+
 ### 🟥 Interest
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 The total interest earned on the principal
 
@@ -91,7 +161,7 @@ are disclosed monthly, then this element may be omitted.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | yes | number - currency | n/a |
+| String | yes | Number - Currency | n/a |
 
 The value of this field specifies the total amount earning interest.
 
@@ -201,7 +271,7 @@ no warnings will be generated for these unrecognized fields.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - percentage |
+| String | yes | Number - % |
 
 The APY, as defined in Appendix A to Part 1030 of Truth in Savings, and computed
 by the SCE.
@@ -230,7 +300,7 @@ The frequency that interest is compounded.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The value of this field specifies the number of days in each compounding period.
 
@@ -247,7 +317,7 @@ sent to the customer by the deposit institution.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The number of days in each statement period.
 
@@ -255,7 +325,7 @@ The number of days in each statement period.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 The `Term` is the number of unit periods (as specified in the `TermUnits` field)
 between the deposit date and the CD's maturity date.
@@ -290,7 +360,7 @@ The number of days between the investment and maturity dates.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The value of this field specifies the total amount earning interest.
 
@@ -298,7 +368,7 @@ The value of this field specifies the total amount earning interest.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 This field holds the value of the `Interest` field passed into the SCE.
 

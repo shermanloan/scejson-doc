@@ -47,7 +47,7 @@ in alphabetical order below:
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - currency | n/a |
+| String | no | Number - Currency | n/a |
 
 The beginning balance is the amount which is present in the retirment
 account when the annuity starts. Interest will accrue monthly on this 
@@ -68,11 +68,81 @@ In the sample above, the calculation type being requested is `Income` (the month
 income amount). Thus, the `Balance`, and `Term` fields are included in the request,
 whereas the `Income` field is omitted.
 
+### 🟦 Format
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The `Format` object is one of the first objects parsed from a request, as various
+fields affect how date and numeric fields are parsed and validated.
+
+<details><summary><b>Format fields</b></summary>
+---
+
+🟦 **Format.CurrencyDecimals**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 0 or 2 | 2 |
+
+When displaying and parsing Currency fields, this field determines the maximum
+number of decimal places allowed after the `DecimalSeparator`.
+
+🟦 **Format.DateFormat**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | YMD, MDY, or DMY  | YMD |
+
+When displaying and parsing Date fields, this field determines the expected
+format for all Date fields. The following `DateFormat` options are allowed:
+
+* `YMD` - All dates should be formated as YYYY-MM-DD.
+* `MDY` - All dates should be formated as MM-DD-YYYY.
+* `DMY` - All dates should be formated as DD-MM-YYYY.
+
+Note that the character which separates the individual month, day, and year
+portions of the date is configurable via the `DateSeparator` field.
+
+🟦 **Format.DateSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "-" |
+
+When displaying and parsing Date fields, this field determines the character
+used to separate the individual month, day, and year portions of a date field.
+
+🟦 **Format.DecimalSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "." |
+
+When displaying and parsing Currency, Percentage, or Floating numeric fields,
+this field determines the character used to separate the fractional part from
+the whole.
+
+🟦 **Format.ThousandSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "" |
+
+When displaying numeric fields, this field determines the character used to
+separate the thousands places from the hundreds. Note that when parsing
+numeric fields, the value of this field is ignored.
+
+---
+
+</details>
+
 ### 🟦 Income
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number - currency | n/a |
+| String | no | Number - Currency | n/a |
 
 The value of this field specifies the desired monthly income amount. If you are
 computing the monthly income amount (e.g. `"Calculate" : "Income"`), then you
@@ -82,7 +152,7 @@ may omit this field from the request.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 This field dictates the rate at which interest accrues throughout the
 term of the annuity.
@@ -91,7 +161,7 @@ term of the annuity.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | number | n/a |
+| String | no | Number - Integer | n/a |
 
 This field specifies the number of months in the term of the annuity.
 This corresponds to the length of the monthly income stream which is
@@ -194,7 +264,7 @@ no warnings will be generated for these unrecognized fields.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The beginning balance is the amount which is present in the retirment
 account when the annuity starts.
@@ -203,7 +273,7 @@ account when the annuity starts.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - % |
+| String | yes | Number - % |
 
 The rate at which interest will accrue on the balance during the term of the
 annuity.
@@ -212,7 +282,7 @@ annuity.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The amount of the monthly disbursement.
 
@@ -220,7 +290,7 @@ The amount of the monthly disbursement.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number |
+| String | yes | Number - Integer |
 
 This number of months of income provided by the annuity.
 
@@ -228,7 +298,7 @@ This number of months of income provided by the annuity.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The `TotalIncome` is the sum of all monthly disbursements made during
 the term of the annuity.
@@ -237,7 +307,7 @@ the term of the annuity.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | number - currency |
+| String | yes | Number - Currency |
 
 The `Gain` is the difference between the total income and the beginning balance.
 It is the total amount of interest accrued over the term of the annuity.

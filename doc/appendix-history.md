@@ -10,9 +10,10 @@ chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
 ## Release 2023-04-0
-* The `Format` request object has been added to the
-  [High Cost Mortgages (HCM)](module-hcm.md) modules. Please see the
-  documentation in the chapters covering the modules for further information.
+* The `Format` request object has been added to the [High Cost Mortgages
+  (HCM)](module-hcm.md) and [Higher Priced Mortgage Loans
+  (HPML)](module-hpml.md) modules. Please see the documentation in the chapters
+  covering the modules for further information.
 
 ## Release 2023-01-0
 * The [Adjustable Rate Mortgages](module-arm.md) module has been made available

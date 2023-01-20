@@ -11,9 +11,16 @@ changes which may or may not be of interest to you.
 
 ## Release 2023-04-0
 * The `Format` request object has been added to the [High Cost Mortgages
-  (HCM)](module-hcm.md) and [Higher Priced Mortgage Loans
-  (HPML)](module-hpml.md) modules. Please see the documentation in the chapters
-  covering the modules for further information.
+  (HCM)](module-hcm.md), [Higher Priced Mortgage Loans (HPML)](module-hpml.md),
+  and [Loan](module-loan.md) modules. Please see the documentation in the
+  chapters covering the modules for further information.
+* With the inclusion of the new `Format` request object in the
+  [Loan](module-loan.md) module, the `BusinessRules.CurrencyDP` field has been
+  deprecated and the documentation for this field has been removed from this
+  reference manual.
+* The default value of the `ODI.ForceUnitPeriod` field has been changed from
+  `false` to `true` in all loan calculation modules that support the `ODI`
+  request object.
 
 ## Release 2023-01-0
 * The [Adjustable Rate Mortgages](module-arm.md) module has been made available

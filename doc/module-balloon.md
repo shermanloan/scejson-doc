@@ -770,7 +770,7 @@ associated with the payment stream in which the first payment occurs.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | false |
+| Boolean | no | true, false | true |
 
 Some unit period methods will not use a strict unit period interest accrual
 factor in the period to the first payment. For example, code `302` will count

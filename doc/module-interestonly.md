@@ -1297,7 +1297,7 @@ The `Term` field indicates the the number of *payments* to be made at the
 specified payment frequency (see the `PPY` field above), after which the loan is
 scheduled to be paid off.
 
-## Single Payment Note Response Data Object Field Definition
+## Interest Only Loan Response Data Object Field Definition
 
 The following example is the response returned from the SCEJSON for the request
 provided at the beginning of the previous section.
@@ -4680,4 +4680,4 @@ The principal balance amount, after the amortization event has taken place.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Fixed Principal Plus Interest Loans](module-principalplus.md) | [SCEJSON Reference Manual](README.md) | [Single Payment Note](module-singlepmt.md) |
+| [Fixed Principal Plus Interest Loans](module-principalplus.md) | [SCEJSON Reference Manual](README.md) | [Single Payment Notes](module-singlepmt.md) |

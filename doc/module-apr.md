@@ -1520,4 +1520,4 @@ This field is only present when the APR method is US Rule.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [APR Calculation & Verification Module](module-apr.md) | [SCEJSON Reference Manual](README.md) | [High Cost Mortgages Module](module-hcm.md) |
+| [Skip, Pickup and Irregular Payment Loans](module-irregular.md) | [SCEJSON Reference Manual](README.md) | [High Cost Mortgages Module](module-hcm.md) |

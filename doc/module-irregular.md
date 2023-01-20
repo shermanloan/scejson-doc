@@ -4156,4 +4156,4 @@ The principal balance amount, after the amortization event has taken place.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Single Payment Note](module-singlepmt.md) | [SCEJSON Reference Manual](README.md) | [Single Payment Notes Module](module-singlepmt.md) |
+| [Single Payment Note](module-singlepmt.md) | [SCEJSON Reference Manual](README.md) | [APR Calculation & Verification](module-apr.md) |

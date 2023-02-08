@@ -7,6 +7,7 @@ Release 2023-04-0
 * [API Overview](api-overview.md)
 
 ## Utility Modules
+* [Account](module-account.md)
 * [Version](module-version.md)
 
 ## General Loan Calculation Module

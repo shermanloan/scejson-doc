@@ -10,6 +10,11 @@ chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
 ## Release 2023-04-0
+* The [Account](module-account.md) module has been made available in this
+  release. This module allows the calling application to query the account
+  numbers and titles of all accounts defined in the `clients.set` file. If your
+  solution does require setup file configuration services provided by J. L.
+  Sherman and Associates, Inc., then this module will be of minimal use to you.
 * The `Format` request object has been added to the [High Cost Mortgages
   (HCM)](module-hcm.md), [Higher Priced Mortgage Loans (HPML)](module-hpml.md),
   and all loan calculation modules. Please see the documentation in the chapters

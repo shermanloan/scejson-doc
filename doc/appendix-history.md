@@ -26,6 +26,12 @@ changes which may or may not be of interest to you.
 * The default value of the `ODI.ForceUnitPeriod` field has been changed from
   `false` to `true` in all loan calculation modules that support the `ODI`
   request object.
+* Added `APR.Code` `0` to the Loan module. APR Code 0 tells the SCE that no
+  effective rate should be computed or returned in the `APR` object, so a value
+  of `NC` will be returned for `APR.Value`  with the `APR.Type` set to
+  `NotComputed`.  Please see the documentation for the `Code` field of the `APR`
+  object in the [Loan](module-loan.md) module documentation for further
+  information.
 
 ## Release 2023-01-0
 * The [Adjustable Rate Mortgages](module-arm.md) module has been made available

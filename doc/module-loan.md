@@ -365,7 +365,7 @@ in the fields of this object.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | 10, 20, 30, 40, 41, 50, 60, 100, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 320, 321, 330, 331, 340 | Text - See below |
+| String | no | 0, 10, 20, 30, 40, 41, 50, 60, 100, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 320, 321, 330, 331, 340 | Text - See below |
 
 The method of APR computation is defined by this field. If
 this field is not included, the default method depends upon the
@@ -376,6 +376,7 @@ is `60`.
 
 | Apr Code | Description |
 | :---:    |   :---      |
+|   0  | Not computed |
 |   10  | Account opening disclosure of open-end Loan |
 |       | (APR will equal the Interest Rate) |
 |   20  | Microsoft\textregistered Excel extended internal rate of return (XIRR) |

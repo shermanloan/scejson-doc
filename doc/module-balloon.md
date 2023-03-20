@@ -1394,7 +1394,7 @@ loan calculation options.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number - Integer | 1..9999 |
+| String | no | Number - Integer | 1 |
 
 The `Account` field specifies the numeric setup file account number that will be
 used to compute the requested loan. Each account is numbered from 1 to 9,999,

@@ -8,6 +8,7 @@ Release 2023-04-0
 
 ## Utility Modules
 * [Account](module-account.md)
+* [User Interface](module-ui.md)
 * [Version](module-version.md)
 
 ## General Loan Calculation Module

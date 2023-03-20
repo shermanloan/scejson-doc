@@ -47,7 +47,7 @@ The `Begin` field specifies the desired starting account number to return
 information on. If the value of the `Begin` field exceeds the number of accounts
 defined in a given `clients.set` file, then a value of `1` will be used.
 
-🟦 DataPath
+### 🟦 DataPath
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -55,7 +55,7 @@ defined in a given `clients.set` file, then a value of `1` will be used.
 
 If this field is set, the SCE will look for a `/data` folder containing the
 setup files in the path specified. Thus, if the `DataPath` is set to `/etc/sce`
-( as above), the SCE will look for the setup files in `/etc/sce/data`.
+(as above), the SCE will look for the setup files in `/etc/sce/data`.
 
 If the calling application wishes to specify the data directory path in its
 entirety (e.g. the calling app does not want the SCE to append `/data` to the
@@ -237,4 +237,4 @@ Holds the title of this account.
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [API Overview](api-overview.md) | [SCEJSON Reference Manual](README.md) | [Version Module](module-version.md) |
+| [API Overview](api-overview.md) | [SCEJSON Reference Manual](README.md) | [User Interface](module-ui.md) |

@@ -263,7 +263,9 @@ data.
 | :---: |   :---:  |  ---   |
 | String | yes | text |
 
-Discloses the account number associated with this account.
+If the loan setup fil was successfully loaded and parsed, the value of this
+field will be `Loaded`. Any other return value indicates an error has occurred
+while trying to loan the loan setup file for the account number requested.
 
 🟥 **Ls.LoanTypes**
 
@@ -472,6 +474,603 @@ of days in the interest accrual factor's divisor.
 | 360 | 360 day divisor |
 | 365 | 365 day divisor |
 | 366 | 366 day divisor |
+
+</details>
+
+---
+
+</details>
+
+### 🟥 CL
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | yes |
+
+The `Cl` object returns information on life protection configuration setup file
+data.
+
+<details>
+<summary><b>Cl fields</b></summary>
+
+---
+
+🟥 **Cl.Active**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Boolean | yes | true, false |
+
+If life coverage is configured and allowed on one or more loan types, then the
+value of this field will be `true` and the rest of the object should be parsed
+for further details.
+
+A value of `false` indicates that life coverage is not confiured nor allowed for
+this account. Furthermore, no other fields of the `Cl` object will be returned
+to the calling application.
+
+🟥 **Cl.AllowOn**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | yes |
+
+The `AllowOn` object contains fields which inform the calling application the
+loan types which allow for the inclusion of this life product.
+
+<details>
+<summary><b>AllowOn fields</b></summary>
+
+---
+
+🟦 **AllowOn.ARM**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that life coverage is allowed on [Adjustable Rate
+Mortgages](module-arm.md).
+
+🟦 **AllowOn.Balloon**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that life coverage is allowed on [Balloon Payment
+Loans](module-balloon.md).
+
+🟦 **AllowOn.Equal**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that life coverage is allowed on [Equal Payment
+Loans](module-equal.md).
+
+🟦 **AllowOn.IntOnly**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that life coverage is allowed on [Interest Only
+Loans](module-interestonly.md).
+
+🟦 **AllowOn.Irregs**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that life coverage is allowed on [Skip, Pickup and
+Irregular Payment Loans](module-irregular.md).
+
+🟦 **AllowOn.PrinPlus**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that life coverage is allowed on [Fixed Principal
+Plus Interest Loans](module-principalplus.md).
+
+🟦 **AllowOn.SinglePay**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that life coverage is allowed on [Single Payment
+Notes](module-singlepmt.md).
+
+---
+
+</details>
+
+🟦 **Cl.IsDP**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If the life product has been configured as a debt protection product, then the
+value of this attribute will be `true`. A value of `false` indicates that the
+life product is considered insurance.
+
+🟥 **Cl.Method**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | SinglePremium, StandardMob, TrueMOB, CUNASP |
+
+The `Method` field returns the general method used to compute the life products
+premiums/fees. `SinglePremium` indicates that a single premium or fee is
+computed and (usually) financed. The `StandardMob` method computes a premium/fee
+with each payment. The `TrueMOB` method computes a premium/fee on a specified
+day number every month. Finally, `CUNASP` is a single premium method implemented
+specifically for CUNA Mutual.
+
+The value of this field also corresponds to the name of the `Cl` object field
+which will return further information useful for this general method.
+
+As an example, if `Cl.Method` is `SinglePremium`, then there will be a
+`Cl.SinglePremium` object which should be parsed (detailed below) for additional
+information realted to this method.
+
+🟦 **Cl.CUNASP**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The `CUNASP` object will only be returned when `Cl.Method` is `CUNASP`. It
+contains additional information which should be parsed related to this general
+method.
+
+<details>
+<summary><b>CUNASP fields</b></summary>
+
+---
+
+🟥 **CUNASP.Abbrev**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+Like the `Title` field below, this field provides an abbreviation to be used for
+the product associated with the SCE's configured life calculation option. The
+value of this element defaults to `CL`, although customers who wish to customize
+this abbreviation may do so. Customers who offer debt cancellation instead of
+insurance will also usually wish to change the abbreviations of their life
+product for regulatory reasons (e.g. `DCL` for debt cancellation life).
+
+The title may be used for inputs (e.g. `CL Option`) and outputs (e.g. `CL
+Coverage Term`).
+
+🟥 **CUNASP.Title**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+The value of this field holds the product title associated with the SCE's
+configured life product. This title defaults to `Credit Life`, although
+customers who wish to customize the name of this offering may do so. For
+example, it could simply be called `Life`, or `Death`. Customers who offer debt
+cancellation instead of insurance will also usually wish to change the name of
+their life product for regulatory reasons.
+
+The title may be used for inputs (e.g. `Credit Life Option`) and outputs (e.g.
+`Credit Life Premium/Fee`).
+
+---
+
+</details>
+
+🟦 **Cl.SinglePremium**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The `SinglePremium` object will only be returned when `Cl.Method` is
+`SinglePremium`. It contains additional information which should be parsed
+related to this general method.
+
+<details>
+<summary><b>SinglePremium fields</b></summary>
+
+---
+
+🟥 **SinglePremium.DlAbbrev**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+Like the `Title` field below, this field provides an abbreviation to be used for
+the product associated with the SCE's configured decreasing life calculation
+option. The value of this element defaults to `CL`, although customers who wish
+to customize this abbreviation may do so. Customers who offer debt cancellation
+instead of insurance will also usually wish to change the abbreviations of their
+life product for regulatory reasons (e.g. `DCL` for debt cancellation life).
+
+The title may be used for inputs (e.g. `CL Option`) and outputs (e.g. `CL
+Coverage Term`).
+
+🟥 **SinglePremium.DlTitle**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+The value of this field holds the product title associated with the SCE's
+configured decreasing life product. This title defaults to `Credit Life`,
+although customers who wish to customize the name of this offering may do so.
+For example, it could simply be called `Life`, or `Death`. Customers who offer
+debt cancellation instead of insurance will also usually wish to change the name
+of their life product for regulatory reasons.
+
+The title may be used for inputs (e.g. `Credit Life Option`) and outputs (e.g.
+`Credit Life Premium/Fee`).
+
+🟥 **SinglePremium.LlAbbrev**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+Similar to `SinglePremium.DlAbbrev`, except this abbreviation is for the
+configured level life product.
+
+🟥 **SinglePremium.LlTitle**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+Similar to `SinglePremium.DlTitle`, except this abbreviation is for the
+configured level life product.
+
+🟦 **SinglePremium.Gross**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If gross coverage is allowed for the configured life product, then the value of
+this field will be `true`. A value of `false` indicates that gross coverage is
+not supported.
+
+🟦 **SinglePremium.Level**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If level coverage is allowed for the configured life product, then the value of
+this field will be `true`. A value of `false` indicates that level coverage is
+not supported.
+
+🟦 **SinglePremium.Net**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If net coverage is allowed for the configured life product, then the value of
+this field will be `true`. A value of `false` indicates that net coverage is
+not supported.
+
+🟦 **SinglePremium.OrdinaryLife**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If an ordinary life product has been configured for the life product, then the
+value of this field will be `true`. A value of `false` indicates that no odinary
+life product is supported.
+
+🟥 **SinglePremium.Prompts**
+
+| Type  | Required |
+| :---: |  :---: |
+| Object | true |
+
+The `Prompts` object returns information to the calling application about optional
+prompts/inputs that may be allowed for this life product.
+
+<details>
+<summary><b>Prompts fields</b></summary>
+
+---
+
+🟦 **Prompts.CoverageAmount**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If the account has been configured to allow for a coverage amount to be
+specified by the user, then the value of this field will be `true`, which
+indicates that the user interface should prompt the user for a life coverage
+amount. A value of `false` indicates that only the default coverage amount will
+be considered, and hence there is no need to prompt for a user specified
+coverage.
+
+🟦 **Prompts.CoverageTermGross**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` implies that the user may be prompted for a desired term of
+coverage for single premium gross life. A value of `false` indicates that user
+specified coverage term truncation is not allowed and should not be prompted.
+
+🟦 **Prompts.CoverageTermNet**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` implies that the user may be prompted for a desired term of
+coverage for single premium net life. A value of `false` indicates that user
+specified coverage term truncation is not allowed and should not be prompted.
+
+🟦 **Prompts.Dismemberment**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+Some accounts allow for an additional dismemberment option to be written with
+the life policy (with an associated rate increase). If dismemberment is an
+option for this account, then the value of this field will be `true`. Otherwise,
+a value of `false` indicates that no dismemberment option is offered.
+
+🟦 **Prompts.GrossNet**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+Some accounts using single premium life may support both net and gross credit
+life. If this is the case, this element will hold a value of `true` to signal
+the user interface that the user should be prompted for the life method. A value
+of `false` indicates that prompting for the life method is not required, as only
+one method is allowed.
+
+🟦 **Prompts.SingleOnCoborrower**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If single coverage is allowed on the co-borrower, then this field will hold a
+value of `true`. If it holds a value of `false`, then single life is only
+allowed on the primary borrower.
+
+🟦 **Prompts.UseLevelRatesGross**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+In some states, it is legal to compute gross decreasing life using level rates.
+If that is an option for this account, then this value of this field will be
+`true`, which indicates that the user interface should prompt for the option to
+use level rates with gross life. A value of `false` indicates that this option
+is not allowed, and hence the prompt for using level rates should not be
+presented to the user.
+
+🟦 **Prompts.UseLevelRatesNet**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+In some states, it is legal to compute net decreasing life using level rates.
+If that is an option for this account, then this value of this field will be
+`true`, which indicates that the user interface should prompt for the option to
+use level rates with net life. A value of `false` indicates that this option
+is not allowed, and hence the prompt for using level rates should not be
+presented to the user.
+
+</details>
+
+---
+
+</details>
+
+🟦 **Cl.StandardMob**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The `StandardMob` object will only be returned when `Cl.Method` is
+`StandardMob`. It contains additional information which should be parsed related
+to this general method.
+
+<details>
+<summary><b>StandardMob fields</b></summary>
+
+---
+
+🟥 **StandardMob.Abbrev**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+Like the `Title` field below, this field provides an abbreviation to be used for
+the product associated with the SCE's configured life calculation option. The
+value of this element defaults to `CL`, although customers who wish to customize
+this abbreviation may do so. Customers who offer debt cancellation instead of
+insurance will also usually wish to change the abbreviations of their life
+product for regulatory reasons (e.g. `DCL` for debt cancellation life).
+
+The title may be used for inputs (e.g. `CL Option`) and outputs (e.g. `CL
+Coverage Term`).
+
+🟥 **StandardMob.Title**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+The value of this field holds the product title associated with the SCE's
+configured life product. This title defaults to `Credit Life`, although
+customers who wish to customize the name of this offering may do so. For
+example, it could simply be called `Life`, or `Death`. Customers who offer debt
+cancellation instead of insurance will also usually wish to change the name of
+their life product for regulatory reasons.
+
+The title may be used for inputs (e.g. `Credit Life Option`) and outputs (e.g.
+`Credit Life Premium/Fee`).
+
+🟥 **StandardMob.Prompts**
+
+| Type  | Required |
+| :---: |  :---: |
+| Object | true |
+
+The `Prompts` object returns information to the calling application about optional
+prompts/inputs that may be allowed for this life product.
+
+<details>
+<summary><b>Prompts fields</b></summary>
+
+---
+
+🟦 **Prompts.CoverageAmount**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If the account has been configured to allow for a coverage amount to be
+specified by the user, then the value of this field will be `true`, which
+indicates that the user interface should prompt the user for a life coverage
+amount. A value of `false` indicates that only the default coverage amount will
+be considered, and hence there is no need to prompt for a user specified
+coverage.
+
+🟦 **Prompts.CoverageTerm**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` implies that the user may be prompted for a desired term of
+coverage for life. A value of `false` indicates that user specified coverage
+term truncation is not allowed and should not be prompted.
+
+🟦 **Prompts.Dismemberment**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+Some accounts allow for an additional dismemberment option to be written with
+the life policy (with an associated rate increase). If dismemberment is an
+option for this account, then the value of this field will be `true`. Otherwise,
+a value of `false` indicates that no dismemberment option is offered.
+
+🟦 **Prompts.SingleOnCoborrower**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If single coverage is allowed on the co-borrower, then this field will hold a
+value of `true`. If it holds a value of `false`, then single life is only
+allowed on the primary borrower.
+
+</details>
+
+---
+
+</details>
+
+🟦 **Cl.TrueMob**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The `TrueMob` object will only be returned when `Cl.Method` is `TrueMob`. It
+contains additional information which should be parsed related to this general
+method.
+
+<details>
+<summary><b>TrueMob fields</b></summary>
+
+---
+
+🟥 **TrueMob.Abbrev**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+Like the `Title` field below, this field provides an abbreviation to be used for
+the product associated with the SCE's configured life calculation option. The
+value of this element defaults to `CL`, although customers who wish to customize
+this abbreviation may do so. Customers who offer debt cancellation instead of
+insurance will also usually wish to change the abbreviations of their life
+product for regulatory reasons (e.g. `DCL` for debt cancellation life).
+
+The title may be used for inputs (e.g. `CL Option`) and outputs (e.g. `CL
+Coverage Term`).
+
+🟥 **TrueMob.Title**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+The value of this field holds the product title associated with the SCE's
+configured life product. This title defaults to `Credit Life`, although
+customers who wish to customize the name of this offering may do so. For
+example, it could simply be called `Life`, or `Death`. Customers who offer debt
+cancellation instead of insurance will also usually wish to change the name of
+their life product for regulatory reasons.
+
+The title may be used for inputs (e.g. `Credit Life Option`) and outputs (e.g.
+`Credit Life Premium/Fee`).
+
+🟥 **TrueMob.Prompts**
+
+| Type  | Required |
+| :---: |  :---: |
+| Object | true |
+
+The `Prompts` object returns information to the calling application about optional
+prompts/inputs that may be allowed for this life product.
+
+<details>
+<summary><b>Prompts fields</b></summary>
+
+---
+
+🟦 **Prompts.SingleOnCoborrower**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If single coverage is allowed on the co-borrower, then this field will hold a
+value of `true`. If it holds a value of `false`, then single life is only
+allowed on the primary borrower.
+
+</details>
 
 </details>
 

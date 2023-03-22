@@ -1426,7 +1426,7 @@ value of this field will be `true` and the rest of the object should be parsed
 for further details.
 
 A value of `false` indicates that IU coverage is not confiured nor allowed for
-this account. Furthermore, no other fields of the `Ah` object will be returned
+this account. Furthermore, no other fields of the `Iu` object will be returned
 to the calling application.
 
 🟥 **Iu.Abbrev**
@@ -1689,6 +1689,225 @@ IU may be offered independently of any disability product.
 If IU may only be offered on loans that include life coverage, then
 the value of this field will be `true`. A value of `false` means that
 IU may be offered independently of any life product.
+
+</details>
+
+---
+
+</details>
+
+### 🟥 Pp
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | yes |
+
+The `Pp` object returns information on personal property protection (PP)
+configuration setup file data.
+
+<details>
+<summary><b>Pp fields</b></summary>
+
+---
+
+🟥 **Pp.Active**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Boolean | yes | true, false |
+
+If PP coverage is configured and allowed on one or more loan types, then the
+value of this field will be `true` and the rest of the object should be parsed
+for further details.
+
+A value of `false` indicates that PP coverage is not confiured nor allowed for
+this account. Furthermore, no other fields of the `Pp` object will be returned
+to the calling application.
+
+🟥 **Pp.Abbrev**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+Like the `Title` field below, this field provides an abbreviation to be used for
+the product associated with the SCE's configured PP calculation option. The
+value of this element defaults to `PP`, although customers who wish to customize
+this abbreviation may do so. Customers who offer debt cancellation instead of
+insurance will also usually wish to change the abbreviations of their PP product
+for regulatory reasons.
+
+The title may be used for inputs (e.g. `PP Option`) and outputs (e.g. `PP
+Premium/Fee`).
+
+🟥 **Pp.Title**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+The value of this field holds the product title associated with the SCE's
+configured personal property product. This title defaults to `Personal
+Property`, although customers who wish to customize the name of this
+offering may do so. Customers who offer debt cancellation instead of insurance
+may wish to change the name of their unemployment product for
+regulatory reasons.
+
+The title may be used for inputs (e.g. `Personal Property Option`) and
+outputs (e.g. `Personal Property Premium/Fee`).
+
+🟥 **Pp.AllowOn**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | yes |
+
+The `AllowOn` object contains fields which inform the calling application the
+loan types which allow for the inclusion of this product.
+
+<details>
+<summary><b>AllowOn fields</b></summary>
+
+---
+
+🟦 **AllowOn.ARM**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on
+[Adjustable Rate Mortgages](module-arm.md).
+
+🟦 **AllowOn.BalloonGross**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on
+[Balloon Payment Loans](module-balloon.md) covered with single premium gross
+life.
+
+🟦 **AllowOn.BalloonMobNet**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on
+[Balloon Payment Loans](module-balloon.md) covered with single premium net or
+monthly outstanding balance life.
+
+🟦 **AllowOn.Equal**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on [Equal
+Payment Loans](module-equal.md).
+
+🟦 **AllowOn.IntOnly**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on
+[Interest Only Loans](module-interestonly.md).
+
+🟦 **AllowOn.Irregs**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on [Skip,
+Pickup and Irregular Payment Loans](module-irregular.md).
+
+🟦 **AllowOn.PrinPlus**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on [Fixed
+Principal Plus Interest Loans](module-principalplus.md).
+
+🟦 **AllowOn.SinglePay**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on [Single
+Payment Notes](module-singlepmt.md).
+
+---
+
+</details>
+
+🟦 **Pp.IsDP**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If the PP product has been configured as a debt protection product, then the
+value of this attribute will be `true`. A value of `false` indicates that the
+PP product is considered insurance.
+
+🟥 **Pp.Method**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | SinglePremium, StandardMob, TrueMOB, CUNASP |
+
+The `Method` field returns the general method used to compute the PP product
+premiums/fees. `SinglePremium` indicates that a single premium or fee is
+computed and (usually) financed. The `StandardMob` method computes a premium/fee
+with each payment. The `TrueMOB` method computes a premium/fee on a specified
+day number every month. Finally, `CUNASP` is a single premium method implemented
+specifically for CUNA Mutual.
+
+🟥 **Pp.Prompts**
+
+| Type  | Required |
+| :---: |  :---: |
+| Object | true |
+
+The `Prompts` object returns information to the calling application about optional
+prompts/inputs that may be allowed for this PP product.
+
+<details>
+<summary><b>Prompts fields</b></summary>
+
+---
+
+🟥 **Prompts.Coverage**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| String | true | Entered, Principal, TotalOfPayments | n/a |
+
+The value of the `Coverage` field informs the calling application how the
+personal property coverage amount is determined. A value of `Principal` means
+that the property product covers the loan's principal balance. `TotalOfPayments`
+means that the coverage amount is the loan's total of payments.
+
+A value of `Entered` means that the coverage amount is specified by the user,
+and must be prompted and sent in with the loan request.
+
+🟦 **Prompts.Joint**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If joint coverage PP is allowed, then the value of this field will be `true`.
+Otherwise, a value of `false` indicates that no joint coverage option is
+offered.
 
 </details>
 

@@ -1107,6 +1107,37 @@ A value of `false` indicates that A&H coverage is not confiured nor allowed for
 this account. Furthermore, no other fields of the `Ah` object will be returned
 to the calling application.
 
+🟥 **Ah.Abbrev**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+Like the `Title` field below, this field provides an abbreviation to be used for
+the product associated with the SCE's configured A&H calculation option. The
+value of this element defaults to `AH`, although customers who wish to customize
+this abbreviation may do so. Customers who offer debt cancellation instead of
+insurance will also usually wish to change the abbreviations of their A&H
+product for regulatory reasons.
+
+The title may be used for inputs (e.g. `AH Option`) and outputs (e.g. `AH
+Coverage Term`).
+
+🟥 **Ah.Title**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+The value of this field holds the product title associated with the SCE's
+configured disability product. This title defaults to `Accident & Health`, although
+customers who wish to customize the name of this offering may do so. Customers who offer debt
+cancellation instead of insurance will also usually wish to change the name of
+their disability product for regulatory reasons.
+
+The title may be used for inputs (e.g. `Accident & Health Option`) and outputs (e.g.
+`Accident & Health Premium/Fee`).
+
 🟥 **Ah.AllowOn**
 
 | Type  | Required |
@@ -1353,6 +1384,311 @@ payment frequencies, then the value of this field will be `true`.
 
 If A&H is allowed on loans with semimonthly, biweekly, or weekly payment
 frequencies, then the value of this field will be `true`.
+
+---
+
+</details>
+
+🟥 **Ah.Tables**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of String objects | no |
+
+The `Tables[]` array holds the name of each allowed set of A&H rates. If A&H has
+been configured for packaged debt protection (see `Ah.IsPackagedDP`), then this
+array holds the name of each allowed packaged debt protection plan.
+
+</details>
+
+### 🟥 Iu
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | yes |
+
+The `Iu` object returns information on involuntary unemployment protection (IU)
+configuration setup file data.
+
+<details>
+<summary><b>Iu fields</b></summary>
+
+---
+
+🟥 **Iu.Active**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Boolean | yes | true, false |
+
+If IU coverage is configured and allowed on one or more loan types, then the
+value of this field will be `true` and the rest of the object should be parsed
+for further details.
+
+A value of `false` indicates that IU coverage is not confiured nor allowed for
+this account. Furthermore, no other fields of the `Ah` object will be returned
+to the calling application.
+
+🟥 **Iu.Abbrev**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+Like the `Title` field below, this field provides an abbreviation to be used for
+the product associated with the SCE's configured IU calculation option. The
+value of this element defaults to `IU`, although customers who wish to customize
+this abbreviation may do so. Customers who offer debt cancellation instead of
+insurance will also usually wish to change the abbreviations of their IU product
+for regulatory reasons.
+
+The title may be used for inputs (e.g. `IU Option`) and outputs (e.g. `IU
+Coverage Term`).
+
+🟥 **Iu.Title**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | text |
+
+The value of this field holds the product title associated with the SCE's
+configured unemployment product. This title defaults to `Involuntary
+Unemployment`, although customers who wish to customize the name of this
+offering may do so. Customers who offer debt cancellation instead of insurance
+will also usually wish to change the name of their unemployment product for
+regulatory reasons.
+
+The title may be used for inputs (e.g. `Involuntary Unemployment Option`) and
+outputs (e.g. `Involuntary Unemployment Premium/Fee`).
+
+🟥 **Iu.AllowOn**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | yes |
+
+The `AllowOn` object contains fields which inform the calling application the
+loan types which allow for the inclusion of this product.
+
+<details>
+<summary><b>AllowOn fields</b></summary>
+
+---
+
+🟦 **AllowOn.ARM**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on
+[Adjustable Rate Mortgages](module-arm.md).
+
+🟦 **AllowOn.BalloonGross**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on
+[Balloon Payment Loans](module-balloon.md) covered with single premium gross
+life.
+
+🟦 **AllowOn.BalloonMobNet**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on
+[Balloon Payment Loans](module-balloon.md) covered with single premium net or
+monthly outstanding balance life.
+
+🟦 **AllowOn.Equal**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on [Equal
+Payment Loans](module-equal.md).
+
+🟦 **AllowOn.IntOnly**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on
+[Interest Only Loans](module-interestonly.md).
+
+🟦 **AllowOn.Irregs**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on [Skip,
+Pickup and Irregular Payment Loans](module-irregular.md).
+
+🟦 **AllowOn.PrinPlus**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on [Fixed
+Principal Plus Interest Loans](module-principalplus.md).
+
+🟦 **AllowOn.SinglePay**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on [Single
+Payment Notes](module-singlepmt.md).
+
+---
+
+</details>
+
+🟦 **Iu.IsDP**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If the IU product has been configured as a debt protection product, then the
+value of this attribute will be `true`. A value of `false` indicates that the
+IU product is considered insurance.
+
+🟥 **Iu.Method**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | SinglePremium, StandardMob, TrueMOB, CUNASP |
+
+The `Method` field returns the general method used to compute the IU product
+premiums/fees. `SinglePremium` indicates that a single premium or fee is
+computed and (usually) financed. The `StandardMob` method computes a premium/fee
+with each payment. The `TrueMOB` method computes a premium/fee on a specified
+day number every month. Finally, `CUNASP` is a single premium method implemented
+specifically for CUNA Mutual.
+
+🟥 **Iu.Prompts**
+
+| Type  | Required |
+| :---: |  :---: |
+| Object | true |
+
+The `Prompts` object returns information to the calling application about optional
+prompts/inputs that may be allowed for this IU product.
+
+<details>
+<summary><b>Prompts fields</b></summary>
+
+---
+
+🟦 **Prompts.CoverageBenefit**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If the account has been configured to allow for a benefit amount to be specified
+by the user, then the value of this field will be `true`, which indicates that
+the user interface should prompt the user for an IU benefit amount. A value of
+`false` indicates that only the default benefit amount will be considered, and
+hence there is no need to prompt for a user specified benefit.
+
+🟦 **Prompts.CoverageTerm**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` implies that the user may be prompted for a desired term of
+coverage for IU. A value of `false` indicates that user specified coverage term
+truncation is not allowed and should not be prompted.
+
+🟦 **Prompts.Joint**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If joint coverage IU is allowed, then the value of this field will be `true`.
+Otherwise, a value of `false` indicates that no joint coverage option is
+offered.
+
+🟦 **Prompts.SingleOnCoborrower**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If single coverage is allowed on the co-borrower, then this field will hold a
+value of `true`. If it holds a value of `false`, then single coverage is only
+allowed on the primary borrower.
+
+---
+
+</details>
+
+🟥 **Iu.Rules**
+
+| Type  | Required |
+| :---: |  :---: |
+| Object | true |
+
+The `Ruless` object returns information to the calling application about coverage
+rules that may be in effect for this IU product.
+
+<details>
+<summary><b>Rules fields</b></summary>
+
+---
+
+🟦 **Rules.JointMustHaveJointDis**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If joint IU may only be offered on loans that include joint A&H coverage, then
+the value of this field will be `true`. A value of `false` means that joint IU
+may be offered with single A&H.
+
+🟦 **Rules.JointMustHaveJointLife**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If joint IU may only be offered on loans that include joint life coverage, then
+the value of this field will be `true`. A value of `false` means that joint IU
+may be offered with single life.
+
+🟦 **Rules.MustHaveDis**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If IU may only be offered on loans that include A&H coverage, then
+the value of this field will be `true`. A value of `false` means that
+IU may be offered independently of any disability product.
+
+🟦 **Rules.MustHaveLife**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If IU may only be offered on loans that include life coverage, then
+the value of this field will be `true`. A value of `false` means that
+IU may be offered independently of any life product.
 
 </details>
 

@@ -481,7 +481,7 @@ of days in the interest accrual factor's divisor.
 
 </details>
 
-### 🟥 CL
+### 🟥 Cl
 
 | Type  | Required |
 | :---: |   :---:  |
@@ -1071,6 +1071,288 @@ value of `true`. If it holds a value of `false`, then single life is only
 allowed on the primary borrower.
 
 </details>
+
+</details>
+
+---
+
+</details>
+
+### 🟥 Ah
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | yes |
+
+The `Ah` object returns information on accident and health protection (A&H)
+configuration setup file data. Note that packaged debt protection products use
+the `Ah` product for implementation (see `Ah.IsPackagedDP`).
+
+<details>
+<summary><b>Ah fields</b></summary>
+
+---
+
+🟥 **Ah.Active**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Boolean | yes | true, false |
+
+If A&H coverage is configured and allowed on one or more loan types, then the
+value of this field will be `true` and the rest of the object should be parsed
+for further details.
+
+A value of `false` indicates that A&H coverage is not confiured nor allowed for
+this account. Furthermore, no other fields of the `Ah` object will be returned
+to the calling application.
+
+🟥 **Ah.AllowOn**
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | yes |
+
+The `AllowOn` object contains fields which inform the calling application the
+loan types which allow for the inclusion of this product.
+
+<details>
+<summary><b>AllowOn fields</b></summary>
+
+---
+
+🟦 **AllowOn.ARM**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on
+[Adjustable Rate Mortgages](module-arm.md).
+
+🟦 **AllowOn.BalloonGross**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on
+[Balloon Payment Loans](module-balloon.md) covered with single premium gross
+life.
+
+🟦 **AllowOn.BalloonMobNet**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on
+[Balloon Payment Loans](module-balloon.md) covered with single premium net or
+monthly outstanding balance life.
+
+🟦 **AllowOn.Equal**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on [Equal
+Payment Loans](module-equal.md).
+
+🟦 **AllowOn.IntOnly**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on
+[Interest Only Loans](module-interestonly.md).
+
+🟦 **AllowOn.Irregs**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on [Skip,
+Pickup and Irregular Payment Loans](module-irregular.md).
+
+🟦 **AllowOn.PrinPlus**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on [Fixed
+Principal Plus Interest Loans](module-principalplus.md).
+
+🟦 **AllowOn.SinglePay**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` indicates that coverage for this product is allowed on [Single
+Payment Notes](module-singlepmt.md).
+
+---
+
+</details>
+
+🟦 **Ah.IsDP**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If the A&H product has been configured as a debt protection product, then the
+value of this attribute will be `true`. A value of `false` indicates that the
+A&H product is considered insurance.
+
+🟦 **Ah.IsPackagedDP**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If the A&H product has been configured as a packaged debt protection product, then the
+value of this attribute will be `true`. A value of `false` indicates that the
+A&H product is not configured as packaged debt protection.
+
+When A&H is configured as packaged debt protection, the debt protection plans
+offered are all enumerated under `Ah.Tables[]`. As an example, if there are four
+packaged debt protection plans configured, then the `Ah.Tables[]` array will
+return the name of each plan, in order. Thus, if `Ah.Tables` is equal to
+`["Life", "Life and Disability", "Life, Disability, and Unemployment"]` then
+`Table` #1 corresponds to `Life`, etc.
+
+🟥 **Ah.Method**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | SinglePremium, StandardMob, TrueMOB, CUNASP |
+
+The `Method` field returns the general method used to compute the A&H product
+premiums/fees. `SinglePremium` indicates that a single premium or fee is
+computed and (usually) financed. The `StandardMob` method computes a premium/fee
+with each payment. The `TrueMOB` method computes a premium/fee on a specified
+day number every month. Finally, `CUNASP` is a single premium method implemented
+specifically for CUNA Mutual.
+
+🟥 **Ah.Prompts**
+
+| Type  | Required |
+| :---: |  :---: |
+| Object | true |
+
+The `Prompts` object returns information to the calling application about optional
+prompts/inputs that may be allowed for this A&H product.
+
+<details>
+<summary><b>Prompts fields</b></summary>
+
+---
+
+🟦 **Prompts.CoverageBenefit**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If the account has been configured to allow for a benefit amount to be specified
+by the user, then the value of this field will be `true`, which indicates that
+the user interface should prompt the user for an A&H benefit amount. A value of
+`false` indicates that only the default benefit amount will be considered, and
+hence there is no need to prompt for a user specified benefit.
+
+🟦 **Prompts.CoverageTermGross**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` implies that the user may be prompted for a desired term of
+coverage for A&H when the loan is covered with single premium gross life. A
+value of `false` indicates that user specified coverage term truncation is not
+allowed with this life coverage type and should not be prompted.
+
+🟦 **Prompts.CoverageTermMobNet**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+A value of `true` implies that the user may be prompted for a desired term of
+coverage for life when the loan is covered with single premium net or monthly
+outstanding balance life. A value of `false` indicates that user specified
+coverage term truncation is not allowed with this life coverage type and should
+not be prompted.
+
+🟦 **Prompts.Joint**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If joint coverage A&H is allowed, then the value of this field will be `true`.
+Otherwise, a value of `false` indicates that no joint coverage option is
+offered.
+
+🟦 **Prompts.SingleOnCoborrower**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If single coverage is allowed on the co-borrower, then this field will hold a
+value of `true`. If it holds a value of `false`, then single coverage is only
+allowed on the primary borrower.
+
+---
+
+</details>
+
+🟥 **Ah.Rules**
+
+| Type  | Required |
+| :---: |  :---: |
+| Object | true |
+
+The `Ruless` object returns information to the calling application about coverage
+rules that may be in effect for this A&H product.
+
+<details>
+<summary><b>Rules fields</b></summary>
+
+---
+
+🟦 **Rules.MustHaveLife**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If A&H may only be offered on loans that include life coverage, then
+the value of this field will be `true`. A value of `false` means that
+A&H may be offered independently of any life product.
+
+🟦 **Rules.PPYLessThan12**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If A&H is allowed on loans with annual, semiannual, quarterly, or bimonthly
+payment frequencies, then the value of this field will be `true`.
+
+🟦 **Rules.PPYGreaterThan12**
+
+| Type  | Required | Values | Default |
+| :---: |  :---: | ---   | :---: |
+| Boolean | false | true, false | false |
+
+If A&H is allowed on loans with semimonthly, biweekly, or weekly payment
+frequencies, then the value of this field will be `true`.
 
 </details>
 

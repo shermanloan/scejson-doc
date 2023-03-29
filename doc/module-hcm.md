@@ -135,8 +135,6 @@ object should be included in the request with its fields set as appropriate. See
 <details>
 <summary><b>CreditInsurance fields</b></summary>
 
----
-
 🟦 **CreditInsurance.Premiums**
 
 | Type  | Required | Values | Default |
@@ -145,8 +143,6 @@ object should be included in the request with its fields set as appropriate. See
 
 The total of all credit life, credit disability, credit unemployment, or credit
 property insurance premiums.
-
----
 
 🟦 **CreditInsurance.FinanceAmt**
 
@@ -204,8 +200,6 @@ of this object.
 
 The total fee due for the discounted interest rate.
 
----
-
 🟦 **DiscountPoints.FullRate**
 
 | Type  | Required | Values | Default |
@@ -214,8 +208,6 @@ The total fee due for the discounted interest rate.
 
 The value of this field specifies the non-discounted rate, or the interest
 rate without any discount.
-
----
 
 🟦 **DiscountPoints.Points**
 
@@ -261,6 +253,76 @@ premiums and guarantee fees that are included in the Finance Charge (see
 As defined in Regulation Z (*Section 1026.4*), the dollar amount that the credit
 will cost the borrower. As an example, the SCEJSON's Loan module returns the
 loan's Finance Charge in the `Data.FedBox.FinChg` field.
+
+### 🟦 Format
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The `Format` object is one of the first objects parsed from a request, as various
+fields affect how date and numeric fields are parsed and validated.
+
+<details><summary><b>Format fields</b></summary>
+---
+
+🟦 **Format.CurrencyDecimals**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 0 or 2 | 2 |
+
+When displaying and parsing Currency fields, this field determines the maximum
+number of decimal places allowed after the `DecimalSeparator`.
+
+🟦 **Format.DateFormat**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | YMD, MDY, or DMY  | YMD |
+
+When displaying and parsing Date fields, this field determines the expected
+format for all Date fields. The following `DateFormat` options are allowed:
+
+* `YMD` - All dates should be formated as YYYY-MM-DD.
+* `MDY` - All dates should be formated as MM-DD-YYYY.
+* `DMY` - All dates should be formated as DD-MM-YYYY.
+
+Note that the character which separates the individual month, day, and year
+portions of the date is configurable via the `DateSeparator` field.
+
+🟦 **Format.DateSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "-" |
+
+When displaying and parsing Date fields, this field determines the character
+used to separate the individual month, day, and year portions of a date field.
+
+🟦 **Format.DecimalSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "." |
+
+When displaying and parsing Currency, Percentage, or Floating numeric fields,
+this field determines the character used to separate the fractional part from
+the whole.
+
+🟦 **Format.ThousandSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "" |
+
+When displaying numeric fields, this field determines the character used to
+separate the thousands places from the hundreds. Note that when parsing
+numeric fields, the value of this field is ignored.
+
+---
+
+</details>
 
 ### 🟥 InterestCharge
 
@@ -344,8 +406,6 @@ using this object.
 This field specifies the private mortgage insurance premiums payable after
 consummation. See *Section 1026.32(b)(1)(i)(C)(1)*.
 
----
-
 🟦 **PMI.AtOrBefore**
 
 | Type  | Required | Values | Default |
@@ -354,8 +414,6 @@ consummation. See *Section 1026.32(b)(1)(i)(C)(1)*.
 
 The value of this field represents private mortgage insurance premiums paid at
 or before consummation. See *Section 1026.32(b)(1)(i)(C)(2)*.
-
----
 
 🟦 **PMI.MaxAllowedAtOrBefore**
 
@@ -398,8 +456,6 @@ should set the value of this field to `true`.
 Setting this value to `true` will trigger the prepayment penalty test, and his
 classify the specified loan as a HCM.
 
----
-
 🟦 **PrepaymentPenalty.AmountPrepaid**
 
 | Type  | Required | Values | Default |
@@ -408,8 +464,6 @@ classify the specified loan as a HCM.
 
 If the maximum prepayment penalty exceeds 2% of this field's value, then the
 prepayment penalty test will be triggered.
-
----
 
 🟦 **PrepaymentPenalty.FinanceAmt**
 
@@ -420,8 +474,6 @@ prepayment penalty test will be triggered.
 The value of this field specifies the amount of the total prepayment penalty
 which was financed by the creditor.
 
----
-
 🟦 **PrepaymentPenalty.Max**
 
 | Type  | Required | Values | Default |
@@ -430,8 +482,6 @@ which was financed by the creditor.
 
 The maximum prepayment penalty that may be charged or collected under the terms
 of the mortgage loan. See *Section 1026.32(b)(1)(v)*.
-
----
 
 🟦 **PrepaymentPenalty.Total**
 
@@ -492,8 +542,6 @@ fees and other charges which should be included here.
 | String | no | Number - Currency | 0 |
 
 The total fee due for all appropriate real estate fees and other charges.
-
----
 
 🟦 **RealEstate.FinanceAmt**
 
@@ -684,9 +732,6 @@ possible triggers that can cause a loan to be classified as high cost.
 
 If the Apr test was triggered, then the value of this field will be `true`.
 
----
-
-
 🟦 **Triggers.PointsFees**
 
 | Type  | Required | Values |
@@ -695,8 +740,6 @@ If the Apr test was triggered, then the value of this field will be `true`.
 
 If the Points and Fees test was triggered, then the value of this field will be
 `true`.
-
----
 
 
 🟦 **Triggers.Prepayment**
@@ -736,8 +779,6 @@ The Date field contains the date on which the APOR data was effective. As an
 example, if the lock in date was 2013-05-09, then the date returned should be
 2013-05-06 (if the APOR files are up to date).
 
----
-
 🟥 **AprTrigger.Apor**
 
 | Type  | Required | Values |
@@ -748,8 +789,6 @@ The value of this field contains the Average Prime Offer Rate for the submitted
 loan. This value is retrieved from the appropriate APOR file (fixed or
 adjustable).
 
----
-
 🟥 **AprTrigger.Spread**
 
 | Type  | Required | Values |
@@ -758,8 +797,6 @@ adjustable).
 
 The spread value depends upon the type of lien, loan amount, and dwelling type.
 The resulting spread will either be 6.5 or 8.5.
-
----
 
 🟥 **AprTrigger.Difference**
 
@@ -800,8 +837,6 @@ The total loan amount is defined in *Section 1026.32(b)(4)*. It is calculated by
 taking the Regulation Z Amount Financed and deducting some of the financed fees
 and charges which are provided as inputs to the calculation.
 
----
-
 🟥 **PointsFeesTrigger.TotalPointsFees**
 
 | Type  | Required | Values |
@@ -812,8 +847,6 @@ The total points and fees value is defined in *Section 1026.32(b)(1)*. It is
 calculated by taking the Regulation Z Finance Charge and deducting some portions
 of the Finance Charge, and then adding other fees and charges which are provided
 as inputs to the calculation.
-
----
 
 🟥 **PointsFeesTrigger.MaxPointsFees**
 
@@ -852,8 +885,6 @@ interest to the calling application.
 If the creditor can charge a prepayment penalty  more than 36 months after
 consummation, then the loan is a high cost mortgage.
 
----
-
 🟥 **PrepaymentTrigger.Total**
 
 | Type  | Required | Values |
@@ -861,8 +892,6 @@ consummation, then the loan is a high cost mortgage.
 | String | yes | Number - Currency |
 
 This field returns the total potential amount of prepayment penalties.
-
----
 
 🟥 **PrepaymentTrigger.Max**
 

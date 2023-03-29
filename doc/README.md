@@ -1,12 +1,14 @@
 # SCEJSON Reference Manual
 
-Release 2023-01-0
+Release 2023-04-0
 
 ## Introduction and Overview
 * [Introduction](introduction.md)
 * [API Overview](api-overview.md)
 
 ## Utility Modules
+* [Account](module-account.md)
+* [User Interface](module-ui.md)
 * [Version](module-version.md)
 
 ## General Loan Calculation Module
@@ -19,7 +21,7 @@ Release 2023-01-0
 * [Equal Payment Loans](module-equalpmt.md)
 * [Fixed Principal Plus Interest Loans](module-principalplus.md)
 * [Interest Only Loans](module-interestonly.md)
-* [Single Payment Note](module-singlepmt.md)
+* [Single Payment Notes](module-singlepmt.md)
 * [Skip, Pickup and Irregular Payment Loans](module-irregular.md)
 
 ## Compliance Modules

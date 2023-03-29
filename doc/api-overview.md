@@ -6,21 +6,19 @@
 >  them general rules, which might be applicable elsewhere."  
 >                                         --- Rene Descartes
 
-The SCEJSON offers different functionality in distinct *modules*, which are described below:
-
-| Module | Description |
-| ------ | ----------- |
-| [Version](module-version.md) | A simple module which returns the version of the SCEJSON in use, along with a few other userful data fields. |
-| [Loan](module-loan.md)    | The Loan module allows you to build almost any kind of loan you can imagine - one or more advances, adjustable interest rates, overlapping payment schedules, etc.  |
-| [Apr](module-apr.md)     | Our APR calculation and verification module. Note that APRs are returned in the Loan module. However, this module is typically used to calculate and/or verify APRs for loan computed by another calculation methodology. |
-| [Hcm](module-hcm.md)     | A compliance module which implements the logic necessary to determine if a specified mortgage is considered High Cost, per [§ 1026.32 Requirements for high-cost mortgages](https://www.consumerfinance.gov/rules-policy/regulations/1026/32/). |
-| [Hpml](module-hpml.md)    | A compliance module which implements the logic necessary to determine if a specified mortgage is considered a Higher Priced Mortgage Loan, per [§ 1026.35 Requirements for higher-priced mortgage loans](https://www.consumerfinance.gov/rules-policy/regulations/1026/35/).|
-
-Each of the modules listed above has a different format for its input request and output response, which are detailed in the chapters dedicated to each module.  However, the general (or top-level) format of the data sent to the SCEJSON needs to be consistent for correct parsing, and is called the "request envelope".
+The SCEJSON offers different functionality in distinct *modules*, and each
+module is documented separately in the reference manual. Each module has a
+different format for its input request and output response, which is detailed in
+the chapter dedicated to that module.  However, the general (or top-level)
+format of the data sent to the SCEJSON needs to be consistent for correct
+parsing, and is called the "request envelope".
 
 ## The Request Envelope Object
 
-The request envelope is simply a JSON object which identifies the requested `Module`, along with a `Data` object that contains the module specific data fields. The request `Data` object for each module is thoroughly documented in the chapter dedicated to that module.
+The request envelope is simply a JSON object which identifies the requested
+`Module`, along with a `Data` object that contains the module specific data
+fields. The request `Data` object for each module is thoroughly documented in
+the chapter dedicated to that module.
 
 **Example - Request Envelope for Version Module**
 
@@ -47,7 +45,8 @@ The request envelope is simply a JSON object which identifies the requested `Mod
 | :---: |   :---:  |  ---   |  :---:  |
 | String | yes | Apr, Hcm, Hpml, Loan, Version | n/a |
 
-The value of the `Module` field determines which module within the SCEJSON is being requested.
+The value of the `Module` field determines which module within the SCEJSON is
+being requested.
 
 ### 🟥 Data
 
@@ -55,17 +54,30 @@ The value of the `Module` field determines which module within the SCEJSON is be
 | :---: |   :---:  |
 | Object | yes |
 
-The `Data` field contains the module specific request data, and differs depending upon the desired `Module`. Please reference the chapter dedicated to the module for the required format of the `Data` object.
+The `Data` field contains the module specific request data, and differs
+depending upon the desired `Module`. Please reference the chapter dedicated to
+the module for the required format of the `Data` object.
 
 ## Calling the SCEJSON API
 
-Once the request envelope has been created by your application, you will need to send it to the SCEJSON using the appropriate method. Typically, this is done via an HTTP POST request with the body of the request consisting of the request envelope described above. You may also be required to include a specific HTTP header specifyng your API key. These details will be provided by J. L. Sherman and Associates, Inc. and will depend upon how you are accessing the SCEJSON.
+Once the request envelope has been created by your application, you will need to
+send it to the SCEJSON using the appropriate method. Typically, this is done via
+an HTTP POST request with the body of the request consisting of the request
+envelope described above. You may also be required to include a specific HTTP
+header specifyng your API key. These details will be provided by J. L. Sherman
+and Associates, Inc. and will depend upon how you are accessing the SCEJSON.
 
-Once the request envelope has been successfully sent to the SCEJSON, the SCEJSON will attempt to process the request and will then return a response envelope with the results of the request.
+Once the request envelope has been successfully sent to the SCEJSON, the SCEJSON
+will attempt to process the request and will then return a response envelope
+with the results of the request.
 
 ## The Response Envelope Object
 
-The response envelope is simply a JSON object which identifies the numeric `Result` of the call to the SCEJSON, a response `Module`, along with a `Data` object that contains the response module specific data fields. The response `Data` object for each module is thoroughly documented in the chapter dedicated to that module.
+The response envelope is simply a JSON object which identifies the numeric
+`Result` of the call to the SCEJSON, a response `Module`, along with a `Data`
+object that contains the response module specific data fields. The response
+`Data` object for each module is thoroughly documented in the chapter dedicated
+to that module.
 
 **Example - Response Envelope for Version Module**
 
@@ -94,7 +106,10 @@ The response envelope is simply a JSON object which identifies the numeric `Resu
 | :---: |   :---:  |  ---   |
 | Number - Integer | yes | 200, 400, 403 |
 
-The `Result` field indicates the status of the API request. Please see the following table for what the API Result code mean. A successful call will result in a Result field value of 200 (API_OK). Any other value indicates that an error was encountered.
+The `Result` field indicates the status of the API request. Please see the
+following table for what the API Result code mean. A successful call will result
+in a Result field value of 200 (API_OK). Any other value indicates that an error
+was encountered.
 
 | Result | Symbol | Description |
 | :----: | :----: | :---------- |
@@ -108,7 +123,13 @@ The `Result` field indicates the status of the API request. Please see the follo
 | :---: |   :---:  |  ---   |
 | String | yes | Apr, Hcm, Hpml, Loan, Version |
 
-The value of the `Module` field determines which module within the SCEJSON generated the response. If the value of the `Result` field is `200` (API_OK), then the value of `Module` will be the same as the value of the `Module` field in the request envelope. If the value `Result` field is something other than `200` (API_OK), then the SCEJSON has encountered an API ERROR condition, and the value of the this field will be set to `"Error"` to indicate that the `Data` field should be parsed as an [API Error response](#api-error-response).
+The value of the `Module` field determines which module within the SCEJSON
+generated the response. If the value of the `Result` field is `200` (API_OK),
+then the value of `Module` will be the same as the value of the `Module` field
+in the request envelope. If the value `Result` field is something other than
+`200` (API_OK), then the SCEJSON has encountered an API ERROR condition, and the
+value of the this field will be set to `"Error"` to indicate that the `Data`
+field should be parsed as an [API Error response](#api-error-response).
 
 ### 🟥 Data
 
@@ -116,11 +137,16 @@ The value of the `Module` field determines which module within the SCEJSON gener
 | :---: |   :---:  |
 | Object | yes |
 
-The `Data` field contains the module specific response data, and differs depending upon the returned `Module`. Please reference the chapter dedicated to the module for the required format of the `Data` object.
+The `Data` field contains the module specific response data, and differs
+depending upon the returned `Module`. Please reference the chapter dedicated to
+the module for the required format of the `Data` object.
 
 ## API Error Response
 
-As mentioned above, if the SCEJSON was not able to successfully dispatch a request due to one of several possible error conditions, an API Error Response will be returned. Here are a few examples of SCEJSON requests that generate API Error Responses
+As mentioned above, if the SCEJSON was not able to successfully dispatch a
+request due to one of several possible error conditions, an API Error Response
+will be returned. Here are a few examples of SCEJSON requests that generate API
+Error Responses
 
 **Example - Request with invalid JSON and resulting response**
 ```json
@@ -206,8 +232,10 @@ The `Data` object for an API Error Response contains a single field which return
 | :---: |   :---:  |
 | array of String | yes |
 
-The `Errors[]` field contains an array of Strings which describe the error conditions which were encountered. For an API Error Response, the length of the `Errors[]` Array should always be one (1).
+The `Errors[]` field contains an array of Strings which describe the error
+conditions which were encountered. For an API Error Response, the length of the
+`Errors[]` Array should always be one (1).
 
 | ⬅️ Back | ⬆️ Up | Forward ➡️ |
 | :--- | :---: | ---: |
-| [Introduction](introduction.md) | [SCEJSON Reference Manual](README.md) | [Version Module](module-version.md) |
+| [Introduction](introduction.md) | [SCEJSON Reference Manual](README.md) | [Account](module-account.md) |

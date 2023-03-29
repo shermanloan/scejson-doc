@@ -365,7 +365,7 @@ in the fields of this object.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | 10, 20, 30, 40, 41, 50, 60, 100, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 320, 321, 330, 331, 340 | Text - See below |
+| String | no | 0, 10, 20, 30, 40, 41, 50, 60, 100, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 320, 321, 330, 331, 340 | Text - See below |
 
 The method of APR computation is defined by this field. If
 this field is not included, the default method depends upon the
@@ -376,6 +376,7 @@ is `60`.
 
 | Apr Code | Description |
 | :---:    |   :---      |
+|   0  | Not computed |
 |   10  | Account opening disclosure of open-end Loan |
 |       | (APR will equal the Interest Rate) |
 |   20  | Microsoft\textregistered Excel extended internal rate of return (XIRR) |
@@ -566,18 +567,6 @@ The default value of `true` indicates that the closed form equation should be ma
 and interest will be left unrounded during the payment search algorithm. Setting this
 field value to `false` will cause interest to be rounded during the payment search
 algorithm.
-  
-🟦 **BusinessRules.CurrencyDP**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | no | 0, 2 | 2 |
-
-The number of decimal places allowed for currency values is defined by this
-field. If this field is not included, the default value will be 
-determined by the value of the `Country` field. For most countries,
-the default value is `"2"`. If no country code is specified, then the
-default value for this field is `"2"`.
   
 🟦 **BusinessRules.LeapYearRound**
 
@@ -1033,7 +1022,7 @@ will be used. Please see the [Countries Appendix](appendix-countries.md) for
 the list of supported countries and their associated codes.
 
 Specifying the `Country` will also set the default value for the `APR.Code`
-and `BusinessRules.CurrencyDP` fields, as appropriate for the country specified.
+and `Format.CurrencyDecimals` fields, as appropriate for the country specified.
 
 ### 🟦 EditOutput
 
@@ -1677,6 +1666,80 @@ fields work together, please see the documentation for the `Holidays` field.
 
 </details>
 
+### 🟦 Format
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The `Format` object is one of the first objects parsed from a request, as various
+fields affect how date and numeric fields are parsed and validated.
+
+<details><summary><b>Format fields</b></summary>
+---
+
+🟦 **Format.CurrencyDecimals**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 0 or 2 | 2 |
+
+When displaying and parsing Currency fields, this field determines the maximum
+number of decimal places allowed after the `DecimalSeparator`. If this field is
+not included, the default value will be determined by the value of the `Country`
+field. For most countries, the default value is `"2"`. If no country code is
+specified, then the default value for this field is `"2"`.
+
+
+🟦 **Format.DateFormat**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | YMD, MDY, or DMY  | YMD |
+
+When displaying and parsing Date fields, this field determines the expected
+format for all Date fields. The following `DateFormat` options are allowed:
+
+* `YMD` - All dates should be formated as YYYY-MM-DD.
+* `MDY` - All dates should be formated as MM-DD-YYYY.
+* `DMY` - All dates should be formated as DD-MM-YYYY.
+
+Note that the character which separates the individual month, day, and year
+portions of the date is configurable via the `DateSeparator` field.
+
+🟦 **Format.DateSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "-" |
+
+When displaying and parsing Date fields, this field determines the character
+used to separate the individual month, day, and year portions of a date field.
+
+🟦 **Format.DecimalSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "." |
+
+When displaying and parsing Currency, Percentage, or Floating numeric fields,
+this field determines the character used to separate the fractional part from
+the whole.
+
+🟦 **Format.ThousandSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "" |
+
+When displaying numeric fields, this field determines the character used to
+separate the thousands places from the hundreds. Note that when parsing
+numeric fields, the value of this field is ignored.
+
+---
+
+</details>
+
 ### 🟦 Holidays
 
 | Type  | Required |
@@ -2063,7 +2126,7 @@ associated with the payment stream in which the first payment occurs.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | false |
+| Boolean | no | true, false | true |
 
 Some unit period methods will not use a strict unit period interest accrual
 factor in the period to the first payment. For example, code `302` will count

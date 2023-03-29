@@ -260,7 +260,7 @@ will be used. Please see the [Countries Appendix](appendix-countries.md) for
 the list of supported countries and their associated codes.
 
 Specifying the `Country` will also set the default value for the `APR.Method`
-field appropriately for the country specified.
+and `Format.CurrencyDecimals` fields, as appropriate for the country specified.
 
 ### 🟦 Fees
 
@@ -445,6 +445,80 @@ which will be used to compute a regular payment. In the sample at the start of
 this chapter, we are requesting a balloon loan with a specified final payment of
 $7121.15 and the regular payment computed to amortize the balloon loan after 12
 months.
+
+### 🟦 Format
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The `Format` object is one of the first objects parsed from a request, as various
+fields affect how date and numeric fields are parsed and validated.
+
+<details><summary><b>Format fields</b></summary>
+---
+
+🟦 **Format.CurrencyDecimals**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | 0 or 2 | 2 |
+
+When displaying and parsing Currency fields, this field determines the maximum
+number of decimal places allowed after the `DecimalSeparator`. If this field is
+not included, the default value will be determined by the value of the `Country`
+field. For most countries, the default value is `"2"`. If no country code is
+specified, then the default value for this field is `"2"`.
+
+
+🟦 **Format.DateFormat**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | YMD, MDY, or DMY  | YMD |
+
+When displaying and parsing Date fields, this field determines the expected
+format for all Date fields. The following `DateFormat` options are allowed:
+
+* `YMD` - All dates should be formated as YYYY-MM-DD.
+* `MDY` - All dates should be formated as MM-DD-YYYY.
+* `DMY` - All dates should be formated as DD-MM-YYYY.
+
+Note that the character which separates the individual month, day, and year
+portions of the date is configurable via the `DateSeparator` field.
+
+🟦 **Format.DateSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "-" |
+
+When displaying and parsing Date fields, this field determines the character
+used to separate the individual month, day, and year portions of a date field.
+
+🟦 **Format.DecimalSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "." |
+
+When displaying and parsing Currency, Percentage, or Floating numeric fields,
+this field determines the character used to separate the fractional part from
+the whole.
+
+🟦 **Format.ThousandSeparator**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | empty or a single character  | "" |
+
+When displaying numeric fields, this field determines the character used to
+separate the thousands places from the hundreds. Note that when parsing
+numeric fields, the value of this field is ignored.
+
+---
+
+</details>
 
 ### 🟥 IntRate
 
@@ -770,7 +844,7 @@ associated with the payment stream in which the first payment occurs.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | false |
+| Boolean | no | true, false | true |
 
 Some unit period methods will not use a strict unit period interest accrual
 factor in the period to the first payment. For example, code `302` will count
@@ -1320,7 +1394,7 @@ loan calculation options.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Number - Integer | 1..9999 |
+| String | no | Number - Integer | 1 |
 
 The `Account` field specifies the numeric setup file account number that will be
 used to compute the requested loan. Each account is numbered from 1 to 9,999,

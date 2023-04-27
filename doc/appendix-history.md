@@ -9,6 +9,11 @@ in a reverse chronological order, grouped by release. By referencing this
 chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
+## Release 2023-07-0
+* The documentation for the [Loan](module-loan.md) module's `Protection.Formula`
+ field has been updated to include a table of all possible formula codes and a
+ description of each.
+
 ## Release 2023-04-0
 * The [Account](module-account.md) module has been made available in this
   release. This module allows the calling application to query the account

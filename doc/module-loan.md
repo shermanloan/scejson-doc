@@ -3989,7 +3989,48 @@ the calculation.
 
 The `Formula` field contains an abbreviated description of the formula used to
 compute the desired protection product. The formula codes are for the use of the
-J. L. Sherman and Associates, Inc. support team.
+J. L. Sherman and Associates, Inc. support team. Please see the table below which
+lists each formula code and description.
+
+| Formula Code | Description |
+| :--- | :--- |
+| None | No coverage requested |
+| Unknown | Unknown formula code |
+| SP_Gross_Standard              | Single premium standard gross |
+| SP_Gross_AllLevelAsDecreasing  | Single premium gross on each individual payment |
+| SP_Gross_Discounted            | Single premium discounted gross |
+| SP_Gross_RemPmts               | Single premium gross, sum of partial premiums computed on outstanding payments vis a vis actuarial net |
+| SP_Gross_Level                 | Single premium gross using level life |
+| SP_Gross_Level_EachPmt         | Single premium gross, each payment is covered with level life as if each were a single payment note |
+| SP_Gross_Level_AsDecreasing    | Not currently used |
+| SP_Gross_Level_RemPmts         | Single premium gross, balance at truncated term covered with level |
+| SP_Net_Standard                | Single premium standard net |
+| SP_Net_Discounted              | Single premium discounted net |
+| SP_Net_StraightLine            | Single premium straight-line net |
+| SP_Net_MainTruncation          | Single premium net, Maine truncation formula |
+| SP_Net_AmericanBankers         | Single premium net, American Bankers formula |
+| SP_Net_PekinTruncation         | Single premium net, Pekin insurance truncation formula |
+| SP_Net_WarmSprings             | Single premium net, Warm Springs formula |
+| SP_Net_StraightLine_AmerRepub  | Single premium straight-line net, American Republic formula|
+| SP_Net_RemBals                 | Single premium net, sum of partial premiums, each computed as rate times balance |
+| SP_Net_Level                   | Single premium net with level |
+| SP_Net_LevelAtCap              | Single premium net, level at the cap |
+| MOB_Net     | Standard MOB net |
+| MOB_Gross   | Standard MOB gross |
+| MOB_Benefit | Standard MOB on the benefit |
+| TrueMOB_Net   | True MOB net |
+| TrueMOB_Gross | True MOB grosst |
+| Ordinary_ExecTerm_AR   | Southern Pioneer's Executive Term ordinary life product for Arkansas |
+| Ordinary_ProtectAll_AL | Protective Life's (now a part of Life of the South) Protect-All ordinary life product for Alabama |
+| Ordinary_ProtectAll_GA | Protect-All ordinary life product for Georgia |
+| Ordinary_ProtectAll_NC | Protect-All ordinary life product for North Carolina |
+| Ordinary_ProtectAll_LA | Protect-All ordinary life product for Louisiana |
+| Ordinary_ProtectAll_SC | Protect-All ordinary life product for South Carolina |
+| Ordinary_Uniguard_TN   | Uniguard ordinary life product for Tennessee |
+| CUNA_SP_Formula1 | CUNA Mutual's single premium formula \#1 |
+| CUNA_SP_Formula2 | CUNA Mutual's single premium formula \#2 |
+| CUNA_SP_Formula3 | CUNA Mutual's single premium formula \#3 |
+| CUNA_SP_Formula6 | CUNA Mutual's single premium formula \#6 |
 
 🟦 **Product.RateType**
 

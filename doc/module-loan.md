@@ -4065,6 +4065,8 @@ A value of zero indicates that the requested product was included with the loan,
 and as such, the child objects of `Product` which describe the coverage details,
 should be parsed.
 
+Please see the table below which lists all drop codes and reasons.
+
 🟦 **Product.DropReason**
 
 | Type  | Required | Values |
@@ -4077,7 +4079,98 @@ the value of this field will be `Valid Calculation` and corresponds to a
 
 If the requested protection was dropped by the SCE for any reason (and hence,
 `DropCode` > 0, then this field will provide a brief description of why the
-protection was dropped.
+protection was dropped. Please see the table below which lists each drop code
+and reason.
+
+| Drop Code | Drop Reason |
+| :--: | :--- |
+| 0	 |  Successful Calculation |
+| 1	 |  This insurance must be written with CL |
+| 2	 |  No coverage on non-monthly loans |
+| 3	 |  No coverage on Equal Payment Loans |
+| 4	 |  No coverage on Balloon Loans |
+| 5	 |  No coverage on Single Payment Loans |
+| 6	 |  No coverage on Interest Only Loans |
+| 7	 |  No coverage on Principal Plus Loans |
+| 8	 |  No coverage on Skips/Pickups/Irregs |
+| 9	 |  Borrower too old at loan inception |
+| 10	| Co-Borrower too old at loan inception |
+| 11	| Term exceeded cap. |
+| 12	| Borrower became too old during loan |
+| 13	| Co-Borrower became too old during loan |
+| 14	| Loan term is less than minimum allowed |
+| 15	| Computed rate was zero |
+| 16	| An invalid AH Plan was passed |
+| 17	| Truncation term less than the minimum |
+| 18	| Benefit cap was exceeded |
+| 19	| Coverage cap was exceeded |
+| 20	| Windows experienced an error |
+| 21	| The computed coverage is zero |
+| 22	| Windows error reading the setup file |
+| 23	| Equal Payment or Balloons Only |
+| 24	| NOT CURRENTLY USED |
+| 25	| Coverage is not allowed on this loan |
+| 26	| Truncation term isn't a valid multiple |
+| 27	| Keyboard truncation not allowed |
+| 28	| No keyboard truncation with Gross |
+| 29	| No keyboard truncation with Net |
+| 30	| No decreasing life. All coverage level |
+| 31	| Term too big for insurance coverage |
+| 32	| Joint requested, only single allowed |
+| 33	| The age is above the maximum in band |
+| 34	| The term is above the maximum in band |
+| 35	| Balloon is too small for Level Life |
+| 36	| All Coverage allocated to decreasing. |
+| 37	| No keyboard truncation with MOB |
+| 38	| CUNA No Single Pay Terms > 6 Months |
+| 39	| Credit Life not allowed on Annual Loans |
+| 40	| Below the Minimum Insurance Term |
+| 41	| Below the Minimum Loan Term |
+| 42	| CUNA Formula specified is invalid |
+| 43	| AH Requires use of a table of rates |
+| 44	| LR Requires single rates, not tables |
+| 45	| Customer not eligible for Insurance |
+| 46	| The insurance code (e.g. 1=single) was not valid |
+| 47	| Monthly Renewable exception |
+| 48	| Borrower is currently older than the termination age |
+| 49	| CoBorrower is older than the termination age |
+| 50	| Maine Truncation only defined for monthly loans |
+| 51	| Converting SP AHRate to MOB caused an exception |
+| 52	| Non-Monthly not allowed with Ordinary Life |
+| 53	| AH is not allowed with Ordinary Life |
+| 54	| Probably a log calc tripped up an exception |
+| 55	| Entry for Borrower Birthday is zero |
+| 56	| Entry for CoBorrower Birthday is zero |
+| 57	| No coverage for loans < Monthly |
+| 58	| No coverage on construction loans |
+| 59	| The term of coverage must equal CL Term |
+| 60	| Loan Setup is a premium type not Single premium |
+| 61	| No insurance allowed on ARM Loans |
+| 62	| ARM Loans are only covered with MOB Net |
+| 63	| Coverage is not allowed on Coborrower |
+| 64	| Borrower is less than the minimum age |
+| 65	| CoBorrower less than the minimum age |
+| 66	| Loan To Value (** Not Implemented ** ) |
+| 67	| ARM Loans only use MOB Net or MOB on Benefit |
+| 68	| Credit Life does not permit CMOB rollbacks |
+| 69	| Credit Life does not permit CMOB IntOnly Pmts or Construct Cov |
+| 70	| This insurance must be written with AH |
+| 71	| This insurance must be written with Joint AH |
+| 72	| Partial Benefit and Truncation are not allowed with CUNA Level Rate (MOB Net) |
+| 73	| This insurance must be written with Joint CL |
+| 74	| Preceding Interest Only payments do not allow for protection |
+| 75	| Coverage not allowed on Open end loans. |
+| 76	| PrimaFacie rates must be expressed as $/100/Year |
+| 77	| Loans with "Open End=1" must be equal payments |
+| 78	| Premium is zero |
+| 79	| The loan, itself, has an error and therefore reports no protection information. |
+| 80	| Product not available for any loan |
+| 81	| Level cannot be offered if decreasing has been removed |
+| 82	| An unknown ordinary life method has been chosen |
+| 83	| No Keyboard benefit allowed |
+| 84	| TrueMOB protection requested, but no events were logged |
+| 85	| Keyboard truncation is not allowed with gross truncated level insurance |
+| 86	| Needs Loan Setup ini file |
 
 🟦 **Product.Notes[]**
 

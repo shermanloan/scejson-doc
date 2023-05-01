@@ -2207,7 +2207,7 @@ scheduled payment date will be altered in one of the following manners:
 | String | no | Number - Currency, Number - Floating +"%", or Number - Floating + "%B" | 0 |
 
 The value of the `Amount` field has different meanings depending upon the
-`PmtType` selected. Please see the documentation on the `PmtType` field above
+`PmtType` selected. Please see the documentation on the `PmtType` field below
 for more information on how these two fields work together to define a payment
 stream.
 
@@ -2216,10 +2216,6 @@ field may be specified as a flat dollar amount (e.g. `"Amount" : "250.00"`), a
 percentage of the principal balance (e.g. `"Amount" : "5.25%"`), a percentage of
 the outstanding balance at the time the payment is made (e.g. `"Amount" : "8.125%B"`),
 or a percentage of the computed target payment (e.g. `"Amount" : "100%C"`).
-
-balance (e.g. \texttt{Amount="5.25\%"}), a percentage of the outstanding balance
-at the time the payment is made (e.g. \texttt{Amount="8.125\%B"}), or a
-percentage of the computed target payment (e.g. \texttt{Amount="100\%C"}).
 
 If the `PmtType` field is equal to `CalcPmt`, then the value of this field may
 be specified as a flat dollar amount (e.g. `"Amount" : "500.00"`) which will be

@@ -16,6 +16,16 @@ changes which may or may not be of interest to you.
 * The documentation for the [Loan](module-loan.md) module's `Protection.DropCode`
   and `Protection.DropReason` fields has been updated to include a table of all
   possible drop codes and reasons.
+* The `Format` request object recognized by many modules supports a new
+  `StrictDP` field. The default value of this field is `true` and informs the
+  SCE to strictly verify the number of decimal places allowed for currency input
+  values. Thus, if the calling application sends in a loan with a proceeds
+  amount of 1000.005, the SCE will return an error code. If this attribute is
+  set to `false`, then currency values sent in with an invalid number of decimal
+  places will be rounded to the correct number of decimal places by the SCE
+  (using five/four rounding), and a warning message with this information will
+  be returned with the response.
+
 
 ## Release 2023-04-0
 * The [Account](module-account.md) module has been made available in this

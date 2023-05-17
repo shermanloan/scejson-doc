@@ -483,6 +483,22 @@ When displaying and parsing Currency, Percentage, or Floating numeric fields,
 this field determines the character used to separate the fractional part from
 the whole.
 
+🟦 **Format.StrictDP**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false  | true |
+
+If the value of this field is `true`, then the SCE will strictly verify the
+number of decimal places allowed for currency input values. Thus, if the calling
+application sends in a request with a currency amount of 1000.005, the SCE will
+return an error code.
+
+If the value of this attribute is set to `false`, then currency values sent in
+with an invalid number of decimal places will be rounded to the correct number
+of decimal places by the SCE (using five/four rounding), and a warning message
+with this information will be returned with the response.
+
 🟦 **Format.ThousandSeparator**
 
 | Type  | Required | Values | Default |

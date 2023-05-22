@@ -111,7 +111,7 @@ the whole.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false  | true |
+| Boolean | no | true, false  | false |
 
 If the value of this field is `true`, then the SCE will strictly verify the
 number of decimal places allowed for currency input values. Thus, if the calling

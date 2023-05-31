@@ -3744,8 +3744,8 @@ the `BusinessRules.AmError` field of is set to `AdjPmt`).
 If the value of this field is `-2`, then an early payoff event was triggered,
 which is caused by (i) specifying the `EditOutput.EarlyPayoff` field, or (ii)
 using whole dollar rounding which can shorten the specified term of the loan, or
-(iii) specifying a minimum payment which also may shorten the specified term of
-the loan.
+(iii) specifying a fixed or minimum payment amount which also may shorten the
+specified term of the loan.
 
 🟥 **PmtStream.Term**
 

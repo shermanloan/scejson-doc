@@ -25,6 +25,13 @@ changes which may or may not be of interest to you.
   decimal places will be rounded to the correct number of decimal places by the
   SCE (using five/four rounding), and a warning message with this information
   will be returned with the response.
+* The [Loan](module-loan.md) module's `APR` request object now supports a `Max`
+  field which allows the calling application to specify a maximum APR. If a
+  maximum is specified, then this maximum will be included in the `APR` response
+  object in the `Max` field, and a `MaxExceeded` field will also be returned to
+  inform the calling application whether or not the specified maximum was
+  exceeded.
+
 
 ## Release 2023-04-0
 * The [Account](module-account.md) module has been made available in this

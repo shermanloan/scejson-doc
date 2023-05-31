@@ -414,6 +414,19 @@ is `60`.
 The number of decimal places of accuracy for the disclosed APR is determined by
 this field. The default value of this field is `3`.
 
+🟦 **Apr.Max**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - % | n/a |
+
+If the calling application wants the SCE to check the computed APR against a
+specified maximum APR, then specify the maximum APR using this field. If a
+maximum is specified, then this maximum will be included in the `APR` response
+element in the `Max` field, and a `MaxExceeded` field will also be returned to
+inform the calling application whether or not the specified maximum was
+exceeded.
+
 🟦 **Apr.MAPR_Max**
 
 | Type  | Required | Values | Default |
@@ -3159,7 +3172,42 @@ The `APR` object contains fields which return the value and APR method used.
 The computed APR, which is the cost of the extension of credit expressed as a
 yearly rate.
 
-🟥 **APR.Method**
+🟦 **APR.Max**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - % |
+
+This field holds the maximum APR as specified in the input request (see
+`APR.Max`). If not specified, this field (and the associated
+`MaxExceeded` field) will not be present in the response. The value
+of this attribute should be displayed as a percentage. As an example, for
+`"Max" : "24.000"`, you would disclose a maximum APR of 24%.
+
+🟦 **APR.MaxExceeded**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| boolean | no | true, false |
+
+The value of this field indicates whether or not the current
+loan exceeds the specified maximum APR. As an example, if the
+maximum APR has been set to 24% and the Military APR for the
+returned loan was 25.512%, the `APR` object
+would be:
+
+```json
+{
+  "APR" : {
+    "Value" : "25.512",
+    "Max" : "24.000",
+    "MaxExceeded" : true,
+    "Type" : "Actuarial"
+  }
+}
+```
+
+🟥 **APR.Type**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |

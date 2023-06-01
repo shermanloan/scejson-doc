@@ -4087,10 +4087,10 @@ lists each formula code and description.
 | Ordinary_ProtectAll_LA | Protect-All ordinary life product for Louisiana |
 | Ordinary_ProtectAll_SC | Protect-All ordinary life product for South Carolina |
 | Ordinary_Uniguard_TN   | Uniguard ordinary life product for Tennessee |
-| CUNA_SP_Formula1 | CUNA Mutual's single premium formula \#1 |
-| CUNA_SP_Formula2 | CUNA Mutual's single premium formula \#2 |
-| CUNA_SP_Formula3 | CUNA Mutual's single premium formula \#3 |
-| CUNA_SP_Formula6 | CUNA Mutual's single premium formula \#6 |
+| CUNA_SP_Formula1 | TruStage's single premium formula \#1 |
+| CUNA_SP_Formula2 | TruStage's single premium formula \#2 |
+| CUNA_SP_Formula3 | TruStage's single premium formula \#3 |
+| CUNA_SP_Formula6 | TruStage's single premium formula \#6 |
 
 🟦 **Product.RateType**
 
@@ -4182,11 +4182,11 @@ and reason.
 | 35	| Balloon is too small for Level Life |
 | 36	| All Coverage allocated to decreasing. |
 | 37	| No keyboard truncation with MOB |
-| 38	| CUNA No Single Pay Terms > 6 Months |
+| 38	| TruStage No Single Pay Terms > 6 Months |
 | 39	| Credit Life not allowed on Annual Loans |
 | 40	| Below the Minimum Insurance Term |
 | 41	| Below the Minimum Loan Term |
-| 42	| CUNA Formula specified is invalid |
+| 42	| Formula specified is invalid |
 | 43	| AH Requires use of a table of rates |
 | 44	| LR Requires single rates, not tables |
 | 45	| Customer not eligible for Insurance |
@@ -4216,7 +4216,7 @@ and reason.
 | 69	| Credit Life does not permit CMOB IntOnly Pmts or Construct Cov |
 | 70	| This insurance must be written with AH |
 | 71	| This insurance must be written with Joint AH |
-| 72	| Partial Benefit and Truncation are not allowed with CUNA Level Rate (MOB Net) |
+| 72	| Coverage not allowed with partial benefit and truncation |
 | 73	| This insurance must be written with Joint CL |
 | 74	| Preceding Interest Only payments do not allow for protection |
 | 75	| Coverage not allowed on Open end loans. |
@@ -4523,7 +4523,7 @@ The term of coverage expressed as a number of months.
 | String | no | Number - Integer |
 
 This field is only be returned when the protection product is
-configured to use CUNA Mutual's single premium formula #5, and contains
+configured to use TruStage's single premium formula #5, and contains
 the computed amortization term used in the premium computation. 
 
 🟥 **Borrower.AgeAtIssue**

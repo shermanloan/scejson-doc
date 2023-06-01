@@ -1138,7 +1138,7 @@ Otherwise, use the default value of `false`.
 | :---: |   :---:  |  ---   |  :---:  |
 | Boolean | no | true, false | false |
 
-If this is an account using CUNA Mutual's MOB insurance, and if this loan is a
+If this is an account using TruStage's MOB insurance, and if this loan is a
 line of credit where product term caps should be ignored, then set this field to
 `true`. Otherwise, omit this field or set it to `false`.
 
@@ -2619,7 +2619,7 @@ protection falls. The categories are described below:
 | None        | No loan protection products were computed with this loan. |
 | SP          | Financed single premium coverage. |
 | MOB         | Monthly outstanding balance coverage. |
-| TrueMOB     | CUNA Mutual's monthly outstanding balance method. |
+| TrueMOB     | TruStage's monthly outstanding balance method. |
 | PaidSP      | Non-financed single premium coverage. |
 
 🟦 **Protection.IsDP**

@@ -31,7 +31,8 @@ changes which may or may not be of interest to you.
   object in the `Max` field, and a `MaxExceeded` field will also be returned to
   inform the calling application whether or not the specified maximum was
   exceeded.
-
+* In the [Loan](module-loan.md) module documentation, drop code 87 has been
+  added to the ``Drop Codes and Reasons'' table.
 
 ## Release 2023-04-0
 * The [Account](module-account.md) module has been made available in this

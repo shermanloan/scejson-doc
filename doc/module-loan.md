@@ -4231,6 +4231,7 @@ and reason.
 | 84	| TrueMOB protection requested, but no events were logged |
 | 85	| Keyboard truncation is not allowed with gross truncated level insurance |
 | 86	| Needs Loan Setup ini file |
+| 87	| Not allowed on highly irregular loans |
 
 🟦 **Product.Notes[]**
 

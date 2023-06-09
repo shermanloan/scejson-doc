@@ -1198,7 +1198,7 @@ both are set to `true`, then an error will be returned.
 
 </details>
 
-### EndBal
+### 🟦 EndBal
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |

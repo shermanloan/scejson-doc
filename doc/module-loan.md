@@ -1198,6 +1198,30 @@ both are set to `true`, then an error will be returned.
 
 </details>
 
+### EndBal
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - Currency | 0 |
+
+When computing a loan, the usual intention is to compute a payment which
+produces an ending balance of zero at the end of the repayment schedule.
+However, is some international markets (such as Australia / New Zealand), some
+loans are computed with a specified ending balance greater than zero. To support
+these types of loans, the `EndBal` field is provided.
+
+If omitted, the desired ending balance at the end of the repayment schedule is
+defaulted to 0. To specify a desired ending balance greater than zero, simply
+specify the desired ending balance as an appropriately formatted currency value
+as the element's value.
+
+For example, if the desired ending balance is $50,000.00, then you would
+include `"EndBal" : "50000.00"` in your request.
+
+Note that if an ending balance greater than zero has been specified, then no
+protection products are allowed to be written with the loan, and the APR (and
+MAPR if requested) are not computed.
+
 ### 🟦 Fees
 
 | Type  | Required |

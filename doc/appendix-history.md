@@ -33,6 +33,10 @@ changes which may or may not be of interest to you.
   exceeded.
 * In the [Loan](module-loan.md) module documentation, drop code 87 has been
   added to the ``Drop Codes and Reasons'' table.
+* A new `EndBal` request field has been added to the [Loan](module-loan.md)
+  module, which allows for loans to be computed with a specified ending balance
+  greater than zero. Please see the documentation covering this new element in
+  the for more information.
 
 ## Release 2023-04-0
 * The [Account](module-account.md) module has been made available in this

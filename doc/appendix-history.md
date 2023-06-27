@@ -9,6 +9,35 @@ in a reverse chronological order, grouped by release. By referencing this
 chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
+## Release 2023-07-0
+* The documentation for the [Loan](module-loan.md) module's `Protection.Formula`
+  field has been updated to include a table of all possible formula codes and a
+  description of each.
+* The documentation for the [Loan](module-loan.md) module's `Protection.DropCode`
+  and `Protection.DropReason` fields has been updated to include a table of all
+  possible drop codes and reasons.
+* The `Format` request object recognized by many modules supports a new
+  `StrictDP` field. If the value of this field is `true`, it informs the SCE to
+  strictly verify the number of decimal places allowed for currency input
+  values. Thus, if the calling application sends in a loan with a proceeds
+  amount of 1000.005, the SCE will return an error code. If the value of this
+  attribute is `false`, then currency values sent in with an invalid number of
+  decimal places will be rounded to the correct number of decimal places by the
+  SCE (using five/four rounding), and a warning message with this information
+  will be returned with the response.
+* The [Loan](module-loan.md) module's `APR` request object now supports a `Max`
+  field which allows the calling application to specify a maximum APR. If a
+  maximum is specified, then this maximum will be included in the `APR` response
+  object in the `Max` field, and a `MaxExceeded` field will also be returned to
+  inform the calling application whether or not the specified maximum was
+  exceeded.
+* In the [Loan](module-loan.md) module documentation, drop code 87 has been
+  added to the ``Drop Codes and Reasons'' table.
+* A new `EndBal` request field has been added to the [Loan](module-loan.md)
+  module, which allows for loans to be computed with a specified ending balance
+  greater than zero. Please see the documentation covering this new element in
+  the for more information.
+
 ## Release 2023-04-0
 * The [Account](module-account.md) module has been made available in this
   release. This module allows the calling application to query the account

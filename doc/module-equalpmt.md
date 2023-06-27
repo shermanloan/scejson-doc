@@ -483,6 +483,22 @@ When displaying and parsing Currency, Percentage, or Floating numeric fields,
 this field determines the character used to separate the fractional part from
 the whole.
 
+🟦 **Format.StrictDP**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false  | false |
+
+If the value of this field is `true`, then the SCE will strictly verify the
+number of decimal places allowed for currency input values. Thus, if the calling
+application sends in a request with a currency amount of 1000.005, the SCE will
+return an error code.
+
+If the value of this attribute is set to `false`, then currency values sent in
+with an invalid number of decimal places will be rounded to the correct number
+of decimal places by the SCE (using five/four rounding), and a warning message
+with this information will be returned with the response.
+
 🟦 **Format.ThousandSeparator**
 
 | Type  | Required | Values | Default |
@@ -1122,7 +1138,7 @@ Otherwise, use the default value of `false`.
 | :---: |   :---:  |  ---   |  :---:  |
 | Boolean | no | true, false | false |
 
-If this is an account using CUNA Mutual's MOB insurance, and if this loan is a
+If this is an account using TruStage's MOB insurance, and if this loan is a
 line of credit where product term caps should be ignored, then set this field to
 `true`. Otherwise, omit this field or set it to `false`.
 
@@ -2603,7 +2619,7 @@ protection falls. The categories are described below:
 | None        | No loan protection products were computed with this loan. |
 | SP          | Financed single premium coverage. |
 | MOB         | Monthly outstanding balance coverage. |
-| TrueMOB     | CUNA Mutual's monthly outstanding balance method. |
+| TrueMOB     | TruStage's monthly outstanding balance method. |
 | PaidSP      | Non-financed single premium coverage. |
 
 🟦 **Protection.IsDP**

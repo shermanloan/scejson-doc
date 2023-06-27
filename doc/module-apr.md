@@ -491,7 +491,7 @@ ignored, unless it is a replacement payment using the `NNNN-00-00` date format.
 | array of Premium objects | no |
 
 Only loans that have premiums occurring on dates not equal to the payment dates
-should use this element for expressing the premium. In the case of CUNA Mutual,
+should use this element for expressing the premium. In the case of TruStage,
 for example, premiums are paid monthly on the same day of the month, regardless
 of when payments are made. In this case, please use the Premiums array for
 specifying loan premiums.

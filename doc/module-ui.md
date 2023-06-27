@@ -611,7 +611,7 @@ premiums/fees. `SinglePremium` indicates that a single premium or fee is
 computed and (usually) financed. The `StandardMob` method computes a premium/fee
 with each payment. The `TrueMOB` method computes a premium/fee on a specified
 day number every month. Finally, `CUNASP` is a single premium method implemented
-specifically for CUNA Mutual.
+specifically for TruStage.
 
 The value of this field also corresponds to the name of the `Cl` object field
 which will return further information useful for this general method.
@@ -1268,7 +1268,7 @@ premiums/fees. `SinglePremium` indicates that a single premium or fee is
 computed and (usually) financed. The `StandardMob` method computes a premium/fee
 with each payment. The `TrueMOB` method computes a premium/fee on a specified
 day number every month. Finally, `CUNASP` is a single premium method implemented
-specifically for CUNA Mutual.
+specifically for TruStage.
 
 🟥 **Ah.Prompts**
 
@@ -1574,7 +1574,7 @@ premiums/fees. `SinglePremium` indicates that a single premium or fee is
 computed and (usually) financed. The `StandardMob` method computes a premium/fee
 with each payment. The `TrueMOB` method computes a premium/fee on a specified
 day number every month. Finally, `CUNASP` is a single premium method implemented
-specifically for CUNA Mutual.
+specifically for TruStage.
 
 🟥 **Iu.Prompts**
 
@@ -1869,7 +1869,7 @@ premiums/fees. `SinglePremium` indicates that a single premium or fee is
 computed and (usually) financed. The `StandardMob` method computes a premium/fee
 with each payment. The `TrueMOB` method computes a premium/fee on a specified
 day number every month. Finally, `CUNASP` is a single premium method implemented
-specifically for CUNA Mutual.
+specifically for TruStage.
 
 🟥 **Pp.Prompts**
 

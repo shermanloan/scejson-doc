@@ -414,6 +414,19 @@ is `60`.
 The number of decimal places of accuracy for the disclosed APR is determined by
 this field. The default value of this field is `3`.
 
+🟦 **Apr.Max**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - % | n/a |
+
+If the calling application wants the SCE to check the computed APR against a
+specified maximum APR, then specify the maximum APR using this field. If a
+maximum is specified, then this maximum will be included in the `APR` response
+element in the `Max` field, and a `MaxExceeded` field will also be returned to
+inform the calling application whether or not the specified maximum was
+exceeded.
+
 🟦 **Apr.MAPR_Max**
 
 | Type  | Required | Values | Default |
@@ -1185,6 +1198,30 @@ both are set to `true`, then an error will be returned.
 
 </details>
 
+### 🟦 EndBal
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - Currency | 0 |
+
+When computing a loan, the usual intention is to compute a payment which
+produces an ending balance of zero at the end of the repayment schedule.
+However, is some international markets (such as Australia / New Zealand), some
+loans are computed with a specified ending balance greater than zero. To support
+these types of loans, the `EndBal` field is provided.
+
+If omitted, the desired ending balance at the end of the repayment schedule is
+defaulted to 0. To specify a desired ending balance greater than zero, simply
+specify the desired ending balance as an appropriately formatted currency value
+as the element's value.
+
+For example, if the desired ending balance is $50,000.00, then you would
+include `"EndBal" : "50000.00"` in your request.
+
+Note that if an ending balance greater than zero has been specified, then no
+protection products are allowed to be written with the loan, and the APR (and
+MAPR if requested) are not computed.
+
 ### 🟦 Fees
 
 | Type  | Required |
@@ -1726,6 +1763,22 @@ When displaying and parsing Currency, Percentage, or Floating numeric fields,
 this field determines the character used to separate the fractional part from
 the whole.
 
+🟦 **Format.StrictDP**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false  | false |
+
+If the value of this field is `true`, then the SCE will strictly verify the
+number of decimal places allowed for currency input values. Thus, if the calling
+application sends in a request with a currency amount of 1000.005, the SCE will
+return an error code.
+
+If the value of this attribute is set to `false`, then currency values sent in
+with an invalid number of decimal places will be rounded to the correct number
+of decimal places by the SCE (using five/four rounding), and a warning message
+with this information will be returned with the response.
+
 🟦 **Format.ThousandSeparator**
 
 | Type  | Required | Values | Default |
@@ -2207,7 +2260,7 @@ scheduled payment date will be altered in one of the following manners:
 | String | no | Number - Currency, Number - Floating +"%", or Number - Floating + "%B" | 0 |
 
 The value of the `Amount` field has different meanings depending upon the
-`PmtType` selected. Please see the documentation on the `PmtType` field above
+`PmtType` selected. Please see the documentation on the `PmtType` field below
 for more information on how these two fields work together to define a payment
 stream.
 
@@ -2216,10 +2269,6 @@ field may be specified as a flat dollar amount (e.g. `"Amount" : "250.00"`), a
 percentage of the principal balance (e.g. `"Amount" : "5.25%"`), a percentage of
 the outstanding balance at the time the payment is made (e.g. `"Amount" : "8.125%B"`),
 or a percentage of the computed target payment (e.g. `"Amount" : "100%C"`).
-
-balance (e.g. \texttt{Amount="5.25\%"}), a percentage of the outstanding balance
-at the time the payment is made (e.g. \texttt{Amount="8.125\%B"}), or a
-percentage of the computed target payment (e.g. \texttt{Amount="100\%C"}).
 
 If the `PmtType` field is equal to `CalcPmt`, then the value of this field may
 be specified as a flat dollar amount (e.g. `"Amount" : "500.00"`) which will be
@@ -3147,7 +3196,42 @@ The `APR` object contains fields which return the value and APR method used.
 The computed APR, which is the cost of the extension of credit expressed as a
 yearly rate.
 
-🟥 **APR.Method**
+🟦 **APR.Max**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - % |
+
+This field holds the maximum APR as specified in the input request (see
+`APR.Max`). If not specified, this field (and the associated
+`MaxExceeded` field) will not be present in the response. The value
+of this attribute should be displayed as a percentage. As an example, for
+`"Max" : "24.000"`, you would disclose a maximum APR of 24%.
+
+🟦 **APR.MaxExceeded**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| boolean | no | true, false |
+
+The value of this field indicates whether or not the current
+loan exceeds the specified maximum APR. As an example, if the
+maximum APR has been set to 24% and the Military APR for the
+returned loan was 25.512%, the `APR` object
+would be:
+
+```json
+{
+  "APR" : {
+    "Value" : "25.512",
+    "Max" : "24.000",
+    "MaxExceeded" : true,
+    "Type" : "Actuarial"
+  }
+}
+```
+
+🟥 **APR.Type**
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
@@ -3684,8 +3768,8 @@ the `BusinessRules.AmError` field of is set to `AdjPmt`).
 If the value of this field is `-2`, then an early payoff event was triggered,
 which is caused by (i) specifying the `EditOutput.EarlyPayoff` field, or (ii)
 using whole dollar rounding which can shorten the specified term of the loan, or
-(iii) specifying a minimum payment which also may shorten the specified term of
-the loan.
+(iii) specifying a fixed or minimum payment amount which also may shorten the
+specified term of the loan.
 
 🟥 **PmtStream.Term**
 
@@ -3989,7 +4073,48 @@ the calculation.
 
 The `Formula` field contains an abbreviated description of the formula used to
 compute the desired protection product. The formula codes are for the use of the
-J. L. Sherman and Associates, Inc. support team.
+J. L. Sherman and Associates, Inc. support team. Please see the table below which
+lists each formula code and description.
+
+| Formula Code | Description |
+| :--- | :--- |
+| None | No coverage requested |
+| Unknown | Unknown formula code |
+| SP_Gross_Standard              | Single premium standard gross |
+| SP_Gross_AllLevelAsDecreasing  | Single premium gross on each individual payment |
+| SP_Gross_Discounted            | Single premium discounted gross |
+| SP_Gross_RemPmts               | Single premium gross, sum of partial premiums computed on outstanding payments vis a vis actuarial net |
+| SP_Gross_Level                 | Single premium gross using level life |
+| SP_Gross_Level_EachPmt         | Single premium gross, each payment is covered with level life as if each were a single payment note |
+| SP_Gross_Level_AsDecreasing    | Not currently used |
+| SP_Gross_Level_RemPmts         | Single premium gross, balance at truncated term covered with level |
+| SP_Net_Standard                | Single premium standard net |
+| SP_Net_Discounted              | Single premium discounted net |
+| SP_Net_StraightLine            | Single premium straight-line net |
+| SP_Net_MainTruncation          | Single premium net, Maine truncation formula |
+| SP_Net_AmericanBankers         | Single premium net, American Bankers formula |
+| SP_Net_PekinTruncation         | Single premium net, Pekin insurance truncation formula |
+| SP_Net_WarmSprings             | Single premium net, Warm Springs formula |
+| SP_Net_StraightLine_AmerRepub  | Single premium straight-line net, American Republic formula|
+| SP_Net_RemBals                 | Single premium net, sum of partial premiums, each computed as rate times balance |
+| SP_Net_Level                   | Single premium net with level |
+| SP_Net_LevelAtCap              | Single premium net, level at the cap |
+| MOB_Net     | Standard MOB net |
+| MOB_Gross   | Standard MOB gross |
+| MOB_Benefit | Standard MOB on the benefit |
+| TrueMOB_Net   | True MOB net |
+| TrueMOB_Gross | True MOB grosst |
+| Ordinary_ExecTerm_AR   | Southern Pioneer's Executive Term ordinary life product for Arkansas |
+| Ordinary_ProtectAll_AL | Protective Life's (now a part of Life of the South) Protect-All ordinary life product for Alabama |
+| Ordinary_ProtectAll_GA | Protect-All ordinary life product for Georgia |
+| Ordinary_ProtectAll_NC | Protect-All ordinary life product for North Carolina |
+| Ordinary_ProtectAll_LA | Protect-All ordinary life product for Louisiana |
+| Ordinary_ProtectAll_SC | Protect-All ordinary life product for South Carolina |
+| Ordinary_Uniguard_TN   | Uniguard ordinary life product for Tennessee |
+| CUNA_SP_Formula1 | TruStage's single premium formula \#1 |
+| CUNA_SP_Formula2 | TruStage's single premium formula \#2 |
+| CUNA_SP_Formula3 | TruStage's single premium formula \#3 |
+| CUNA_SP_Formula6 | TruStage's single premium formula \#6 |
 
 🟦 **Product.RateType**
 
@@ -4024,6 +4149,8 @@ A value of zero indicates that the requested product was included with the loan,
 and as such, the child objects of `Product` which describe the coverage details,
 should be parsed.
 
+Please see the table below which lists all drop codes and reasons.
+
 🟦 **Product.DropReason**
 
 | Type  | Required | Values |
@@ -4036,7 +4163,99 @@ the value of this field will be `Valid Calculation` and corresponds to a
 
 If the requested protection was dropped by the SCE for any reason (and hence,
 `DropCode` > 0, then this field will provide a brief description of why the
-protection was dropped.
+protection was dropped. Please see the table below which lists each drop code
+and reason.
+
+| Drop Code | Drop Reason |
+| :--: | :--- |
+| 0	 |  Successful Calculation |
+| 1	 |  This insurance must be written with CL |
+| 2	 |  No coverage on non-monthly loans |
+| 3	 |  No coverage on Equal Payment Loans |
+| 4	 |  No coverage on Balloon Loans |
+| 5	 |  No coverage on Single Payment Loans |
+| 6	 |  No coverage on Interest Only Loans |
+| 7	 |  No coverage on Principal Plus Loans |
+| 8	 |  No coverage on Skips/Pickups/Irregs |
+| 9	 |  Borrower too old at loan inception |
+| 10	| Co-Borrower too old at loan inception |
+| 11	| Term exceeded cap. |
+| 12	| Borrower became too old during loan |
+| 13	| Co-Borrower became too old during loan |
+| 14	| Loan term is less than minimum allowed |
+| 15	| Computed rate was zero |
+| 16	| An invalid AH Plan was passed |
+| 17	| Truncation term less than the minimum |
+| 18	| Benefit cap was exceeded |
+| 19	| Coverage cap was exceeded |
+| 20	| Windows experienced an error |
+| 21	| The computed coverage is zero |
+| 22	| Windows error reading the setup file |
+| 23	| Equal Payment or Balloons Only |
+| 24	| NOT CURRENTLY USED |
+| 25	| Coverage is not allowed on this loan |
+| 26	| Truncation term isn't a valid multiple |
+| 27	| Keyboard truncation not allowed |
+| 28	| No keyboard truncation with Gross |
+| 29	| No keyboard truncation with Net |
+| 30	| No decreasing life. All coverage level |
+| 31	| Term too big for insurance coverage |
+| 32	| Joint requested, only single allowed |
+| 33	| The age is above the maximum in band |
+| 34	| The term is above the maximum in band |
+| 35	| Balloon is too small for Level Life |
+| 36	| All Coverage allocated to decreasing. |
+| 37	| No keyboard truncation with MOB |
+| 38	| TruStage No Single Pay Terms > 6 Months |
+| 39	| Credit Life not allowed on Annual Loans |
+| 40	| Below the Minimum Insurance Term |
+| 41	| Below the Minimum Loan Term |
+| 42	| Formula specified is invalid |
+| 43	| AH Requires use of a table of rates |
+| 44	| LR Requires single rates, not tables |
+| 45	| Customer not eligible for Insurance |
+| 46	| The insurance code (e.g. 1=single) was not valid |
+| 47	| Monthly Renewable exception |
+| 48	| Borrower is currently older than the termination age |
+| 49	| CoBorrower is older than the termination age |
+| 50	| Maine Truncation only defined for monthly loans |
+| 51	| Converting SP AHRate to MOB caused an exception |
+| 52	| Non-Monthly not allowed with Ordinary Life |
+| 53	| AH is not allowed with Ordinary Life |
+| 54	| Probably a log calc tripped up an exception |
+| 55	| Entry for Borrower Birthday is zero |
+| 56	| Entry for CoBorrower Birthday is zero |
+| 57	| No coverage for loans < Monthly |
+| 58	| No coverage on construction loans |
+| 59	| The term of coverage must equal CL Term |
+| 60	| Loan Setup is a premium type not Single premium |
+| 61	| No insurance allowed on ARM Loans |
+| 62	| ARM Loans are only covered with MOB Net |
+| 63	| Coverage is not allowed on Coborrower |
+| 64	| Borrower is less than the minimum age |
+| 65	| CoBorrower less than the minimum age |
+| 66	| Loan To Value (** Not Implemented ** ) |
+| 67	| ARM Loans only use MOB Net or MOB on Benefit |
+| 68	| Credit Life does not permit CMOB rollbacks |
+| 69	| Credit Life does not permit CMOB IntOnly Pmts or Construct Cov |
+| 70	| This insurance must be written with AH |
+| 71	| This insurance must be written with Joint AH |
+| 72	| Coverage not allowed with partial benefit and truncation |
+| 73	| This insurance must be written with Joint CL |
+| 74	| Preceding Interest Only payments do not allow for protection |
+| 75	| Coverage not allowed on Open end loans. |
+| 76	| PrimaFacie rates must be expressed as $/100/Year |
+| 77	| Loans with "Open End=1" must be equal payments |
+| 78	| Premium is zero |
+| 79	| The loan, itself, has an error and therefore reports no protection information. |
+| 80	| Product not available for any loan |
+| 81	| Level cannot be offered if decreasing has been removed |
+| 82	| An unknown ordinary life method has been chosen |
+| 83	| No Keyboard benefit allowed |
+| 84	| TrueMOB protection requested, but no events were logged |
+| 85	| Keyboard truncation is not allowed with gross truncated level insurance |
+| 86	| Needs Loan Setup ini file |
+| 87	| Not allowed on highly irregular loans |
 
 🟦 **Product.Notes[]**
 
@@ -4328,7 +4547,7 @@ The term of coverage expressed as a number of months.
 | String | no | Number - Integer |
 
 This field is only be returned when the protection product is
-configured to use CUNA Mutual's single premium formula #5, and contains
+configured to use TruStage's single premium formula #5, and contains
 the computed amortization term used in the premium computation. 
 
 🟥 **Borrower.AgeAtIssue**

@@ -416,9 +416,9 @@ characters long.
 | :---: |   :---:  |
 | Object | no |
 
-If odd days should be treated as a prepaid finance charge *or* added to the
-first payment, then the request needs to define how odd days interest is
-computed and handled using the fields of this object.
+If odd days should be treated as a prepaid finance charge, then the request
+needs to define how odd days interest is computed and handled using the fields
+of this object.
 
 <details>
 <summary><b>ODI fields</b></summary>
@@ -453,17 +453,6 @@ or 348, depending upon whether or not it is a leap year.
 | 230 | Actual/Actual |
 | 231 | Midnight 366 |
 | 250 | Actual/Variable Days Per Year |
-
-🟦 **ODI.AddToPmt**
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | false |
-
-If the calling application wants the odd days interest to be added to the first
-payment, then set the value of this field to `true`. A value of `false`
-indicates that the odd days interest will be treated as a prepaid finance
-charge.
 
 🟦 **ODI.AddToPrin**
 

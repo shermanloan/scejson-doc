@@ -9,6 +9,11 @@ in a reverse chronological order, grouped by release. By referencing this
 chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
+## Release 2023-10-0
+* The `ODI.AddToPmt` field is not supported with pure [Construction
+  Loans](module-construction.md) and the documentation for this field has been
+  removed from the chapter covering pure construction loans.
+
 ## Release 2023-07-0
 * The documentation for the [Loan](module-loan.md) module's `Protection.Formula`
   field has been updated to include a table of all possible formula codes and a

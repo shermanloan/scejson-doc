@@ -2186,6 +2186,16 @@ factor in the period to the first payment. For example, code `302` will count
 the days to the first payment and divide by 365. For a monthly loan, setting
 this field to `true` will use a 1/12 factor instead of Days/365.
 
+🟦 **ODI.NoCap**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | true |
+
+When the odd days interest is financed, setting this field to `true` prevents
+interest from being computed on interest. The default is `false`, which means
+interest will be computed on interest.
+
 🟦 **ODI.UseDailyCost**
 
 | Type  | Required | Values | Default |

@@ -2090,9 +2090,9 @@ The default value of zero means that no up front fee will be computed.
 
 </details>
 
-</details>
-
 ---
+
+</details>
 
 ### 🟦 ODI
 

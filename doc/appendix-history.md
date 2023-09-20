@@ -13,6 +13,12 @@ changes which may or may not be of interest to you.
 * The `ODI.AddToPmt` field is not supported with pure [Construction
   Loans](module-construction.md) and the documentation for this field has been
   removed from the chapter covering pure construction loans.
+* The `ODI` request object recognized by many loan calculation modules supports
+  a new `NoCap` field. If an odd days interest fee is present and financed, the
+  value of this attribute determines if the ODI fee is added to the principal
+  balance for the purposes of computing the ODI fee (e.g. if it is capitalized).
+  Please see the documentatio for this new field in the `ODI` object
+  documentation. 
 
 ## Release 2023-07-0
 * The documentation for the [Loan](module-loan.md) module's `Protection.Formula`

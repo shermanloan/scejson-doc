@@ -650,7 +650,7 @@ this field to `true` will use a 1/12 factor instead of Days/365.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | true |
+| Boolean | no | true, false | false |
 
 When the odd days interest is financed, setting this field to `true` prevents
 interest from being computed on interest. The default is `false`, which means

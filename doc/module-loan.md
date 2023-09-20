@@ -2566,7 +2566,7 @@ to the following rules:
 
 PPY is an abbreviation for "payments per year", and as one might surmise,
 determines the payment frequency for the payment stream. If the value of
-the `Date`` field is not a valid date, then the value of this
+the `Date` field is not a valid date, then the value of this
 field is ignored.
 
 🟦 **PmtStream.SemimonthlyDay**

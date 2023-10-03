@@ -19,6 +19,9 @@ changes which may or may not be of interest to you.
   balance for the purposes of computing the ODI fee (e.g. if it is capitalized).
   Please see the documentatio for this new field in the `ODI` object
   documentation. 
+* The documentation for the `CD_TotPmts` field of the `TILARESPA2015` response
+  object has been updated to include the value of any odd days interest that is
+  prepaid at loan closing.
 
 ## Release 2023-07-0
 * The documentation for the [Loan](module-loan.md) module's `Protection.Formula`

@@ -1910,9 +1910,10 @@ also be a rounded dollar amount.
 | :---: |   :---:  |  ---   |
 | String | yes | Number - Currency |
 
-This field returns the sum of the total of payments and all borrower paid loan
-costs. This value should be disclosed on the Closing Disclosure form in the
-Total of Payments field.
+This field returns the sum of the total of payments, all borrower paid loan
+costs, and any odd days interest that is prepaid at loan closing. This value
+should be disclosed on the Closing Disclosure form in the Total of Payments
+field.
 
 🟥 **TILARESPA2015.In5Years**
 

@@ -9,6 +9,20 @@ in a reverse chronological order, grouped by release. By referencing this
 chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
+## Release 2023-10-0
+* The `ODI.AddToPmt` field is not supported with pure [Construction
+  Loans](module-construction.md) and the documentation for this field has been
+  removed from the chapter covering pure construction loans.
+* The `ODI` request object recognized by many loan calculation modules supports
+  a new `NoCap` field. If an odd days interest fee is present and financed, the
+  value of this attribute determines if the ODI fee is added to the principal
+  balance for the purposes of computing the ODI fee (e.g. if it is capitalized).
+  Please see the documentatio for this new field in the `ODI` object
+  documentation. 
+* The documentation for the `CD_TotPmts` field of the `TILARESPA2015` response
+  object has been updated to include the value of any odd days interest that is
+  prepaid at loan closing.
+
 ## Release 2023-07-0
 * The documentation for the [Loan](module-loan.md) module's `Protection.Formula`
   field has been updated to include a table of all possible formula codes and a

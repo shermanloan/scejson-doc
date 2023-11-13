@@ -2860,13 +2860,13 @@ L. Sherman and Associates when debugging protection calculations.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   | :---: |
-| String | no | Number - Integer | 0 |
+| String | no | Number - Integer | 1 |
 
 When requesting the accident and health product (e.g. the `Code` field is set to
 `AH`), if the specified account has been set up with multiple disability or debt
 cancellation plans, then this attribute determines which plan number will be
-used. If no table number is specified, the first table (table zero) will be
-used.
+used. The value of the `Table` field must be an integer in [1...20]. If no table
+number is specified, the first table will be used.
 
 If the requested product `Code` is not `AH`, then this attribute is ignored.
 

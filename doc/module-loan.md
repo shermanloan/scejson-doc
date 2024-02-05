@@ -344,6 +344,33 @@ of January 2, 2021 would be specified as `"Date" : "2021-01-02"`.
 Increase or decrease the number of days between this event and the next event by
 the value of this field. e.g. `1` will be considered one more day of interest.
 
+🟦 **Advance.NewPmt**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the payment should change to reflect a new advance, set the value of this
+field to `true`; otherwise, the payment will not change after this event. If
+only one `Advance` object is being used, then this attribute should be omitted
+altogether.
+
+🟦 **Advance.Position**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | BeforePmt, AfterPmt | BeforePmt |
+
+If an advance and a payment fall on the same day, the value of this field
+determines which event occurs first in the amortization schedule. Note that
+the first advance of every loan is required to occur before the first scheduled
+payment.
+
+- **BeforePmt** means that when the advance occurs on the same date as a
+payment, the advance is amortized before the payment.
+- **AfterPmt** means that when the advance occurs on the same date as a payment,
+the payment is amortized before the advance.
+
 ---
 </details>
 

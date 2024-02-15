@@ -2203,7 +2203,7 @@ the total of service charges paid during the year.
 | :---: |   :---:  |
 | array of AmLine objects | yes |
 
-There is one `AmLine` objectt for each amortization event which occurs during
+There is one `AmLine` object for each amortization event which occurs during
 the life of a loan. Most of the time, each event will describe a payment, and
 detail how that payment is applied (to interest, principal, loan protection
 products, etc.). Some events, such as capitalizing interest, will not have

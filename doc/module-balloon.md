@@ -577,7 +577,7 @@ characters long.
 | :---: |   :---:  |
 | object | no |
 
-The `MI` objectt determines if this loan includes one of the supported types of
+The `MI` object determines if this loan includes one of the supported types of
 mortgage insurance (MI): PMI or FHA.
 
 <details>
@@ -1234,7 +1234,7 @@ borrower instead of a single `Term` object, then set the value of this field to
 If the calling application would like to have cap information (e.g. maximum
 terms, coverage amounts, ages, etc.) returned for each product offered, set the
 value of this field to `true`. Otherwise, omit this field or set it to `false`.
-See the `Caps` objectt defined in the response section for more information.
+See the `Caps` object defined in the response section for more information.
 
 🟦 **Protection.Unemployment**
 
@@ -3352,8 +3352,8 @@ further information.
 | object | no |
 
 The `Caps` object provides the calling application with data about the maximum
-terms, amounts, and ages associated with the requested product. This objectt
-will only be present if the `ShowCaps` field of the `Protection` request objectt
+terms, amounts, and ages associated with the requested product. This object
+will only be present if the `ShowCaps` field of the `Protection` request object
 is set to `true`.
 
 <details>
@@ -3744,8 +3744,8 @@ further information.
 | object | no |
 
 The `Caps` object provides the calling application with data about the maximum
-terms, amounts, and ages associated with the requested product. This objectt
-will only be present if the `ShowCaps` field of the `Protection` request objectt
+terms, amounts, and ages associated with the requested product. This object
+will only be present if the `ShowCaps` field of the `Protection` request object
 is set to `true`.
 
 <details>
@@ -4160,8 +4160,8 @@ further information.
 | object | no |
 
 The `Caps` object provides the calling application with data about the maximum
-terms, amounts, and ages associated with the requested product. This objectt
-will only be present if the `ShowCaps` field of the `Protection` request objectt
+terms, amounts, and ages associated with the requested product. This object
+will only be present if the `ShowCaps` field of the `Protection` request object
 is set to `true`.
 
 <details>
@@ -4575,8 +4575,8 @@ further information.
 | object | no |
 
 The `Caps` object provides the calling application with data about the maximum
-terms, amounts, and ages associated with the requested product. This objectt
-will only be present if the `ShowCaps` field of the `Protection` request objectt
+terms, amounts, and ages associated with the requested product. This object
+will only be present if the `ShowCaps` field of the `Protection` request object
 is set to `true`.
 
 <details>
@@ -4844,8 +4844,8 @@ coverage used.
 | object | no |
 
 The `Caps` object provides the calling application with data about the maximum
-terms, amounts, and ages associated with the requested product. This objectt
-will only be present if the `ShowCaps` field of the `Protection` request objectt
+terms, amounts, and ages associated with the requested product. This object
+will only be present if the `ShowCaps` field of the `Protection` request object
 is set to `true`.
 
 <details>
@@ -5194,7 +5194,7 @@ the total of service charges paid during the year.
 | :---: |   :---:  |
 | array of AmLine objects | yes |
 
-There is one `AmLine` objectt for each amortization event which occurs during
+There is one `AmLine` object for each amortization event which occurs during
 the life of a loan. Most of the time, each event will describe a payment, and
 detail how that payment is applied (to interest, principal, loan protection
 products, etc.). Some events, such as capitalizing interest, will not have

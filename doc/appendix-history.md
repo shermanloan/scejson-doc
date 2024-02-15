@@ -14,6 +14,10 @@ changes which may or may not be of interest to you.
   `NewPmt` and `Position` fields which are used when the calling application
   wishes to compute a loan with multiple advances, where each advance generates
   a new payment stream.
+* The [Loan](module-loan.md) module now supports a new `BalAdjs` array field
+  which allows the calling application to make one or more balance adjustments
+  during the amortization of a loan to better support the quotation and
+  servicing of open ended lending.
 
 ## Release 2024-01-0
 * No changes made to the reference manual.

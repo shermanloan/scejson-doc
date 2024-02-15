@@ -520,7 +520,7 @@ included in the loan response.
 
 The `BalAdjs` array of `BalAdj` objects allows the calling application to make
 one or more balance adjustments during the amortization of a loan to better
-support the quotation and servicing of open ended lending.
+support the quotation and servicing of open ended lending. 
 
 <details>
 <summary><b>BalAdj fields</b></summary>
@@ -3511,6 +3511,15 @@ field will not show up in the response.
 This field holds the sum of all fees which are Military APR fees (including 
 protection products), and will only appear if the Military APR has been
 requested.
+
+🟦 **Moneys.BalAdjTot**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+This field holds the sum of all balance adjustments occuring during the course of a loan.
+This field holds the sum of all actual dollar adjustment amounts, not Target amounts.
 
 🟦 **Moneys.ConInterest**
 

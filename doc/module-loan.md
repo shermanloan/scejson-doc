@@ -552,6 +552,15 @@ specified payment index using the YYYY--00-00 mask. A date entry of 0018-00-00
 instructs the Loan module to make an adjustment immediately after the 18'th
 payment.
 
+🟦 **BalAdj.NewPmt**
+
+| Type    | Required | Values      | Default |
+| :---:   |   :---:  |  ---        |  :---:  |
+| Boolean | no       | true, false | false   |
+
+If the payment should change to reflect the balance adjustment, set the value of
+this field to `true`; otherwise, the payment will not change after this event.
+
 🟦 **BalAdj.Target**
 
 | Type  | Required | Values | Default |

@@ -344,6 +344,33 @@ of January 2, 2021 would be specified as `"Date" : "2021-01-02"`.
 Increase or decrease the number of days between this event and the next event by
 the value of this field. e.g. `1` will be considered one more day of interest.
 
+🟦 **Advance.NewPmt**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the payment should change to reflect a new advance, set the value of this
+field to `true`; otherwise, the payment will not change after this event. If
+only one `Advance` object is being used, then this attribute should be omitted
+altogether.
+
+🟦 **Advance.Position**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | BeforePmt, AfterPmt | BeforePmt |
+
+If an advance and a payment fall on the same day, the value of this field
+determines which event occurs first in the amortization schedule. Note that
+the first advance of every loan is required to occur before the first scheduled
+payment.
+
+- **BeforePmt** means that when the advance occurs on the same date as a
+payment, the advance is amortized before the payment.
+- **AfterPmt** means that when the advance occurs on the same date as a payment,
+the payment is amortized before the advance.
+
 ---
 </details>
 
@@ -483,6 +510,70 @@ Military APR in addition to the Regulation Z APR. The `MAPR` object will be
 included in the loan response.
 
 ---
+</details>
+
+### 🟦 BalAdjs
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of BalAdj objects | no |
+
+The `BalAdjs` array of `BalAdj` objects allows the calling application to make
+one or more balance adjustments during the amortization of a loan to better
+support the quotation and servicing of open ended lending. 
+
+<details>
+<summary><b>BalAdj fields</b></summary>
+
+---
+
+🟦 **BalAdj.Adjust**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - Currency | 0 |
+
+The Adjust field defines the amount by which to adjust the BegBal amount at the beginning
+of its amortization line. If, for example, the balance were $1500 after the 12'th payment 
+and an Adjust was '500.00' on 0012-00-00, the loan module would adjust the $1500 balance
+by an additional $500, arriving at $2000 as its EndBal.
+
+🟦 **BalAdj.Date**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | YYYY-MM-DD or YYYY-00-00 | No default. Must be entered. |
+
+The date of the balance adjustment. (Note the a balance will adjust after a
+payment that occurs on the same date.) 
+
+A special format allows for the adjustment to be made immediately after a
+specified payment index using the YYYY--00-00 mask. A date entry of 0018-00-00
+instructs the Loan module to make an adjustment immediately after the 18'th
+payment.
+
+🟦 **BalAdj.NewPmt**
+
+| Type    | Required | Values      | Default |
+| :---:   |   :---:  |  ---        |  :---:  |
+| Boolean | no       | true, false | false   |
+
+If the payment should change to reflect the balance adjustment, set the value of
+this field to `true`; otherwise, the payment will not change after this event.
+
+🟦 **BalAdj.Target**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - Currency | 0 |
+
+The Target field defines what the balance should adjust to at the specified date.
+If, for example, the balance were $1500 after the 12'th payment and a Target was
+defined as '2000.00' on 0012-00-00, the loan module would adjust the $1500 balance
+to $2000 as the EndBal of the BalAdj line in the amortization table.
+
+---
+
 </details>
 
 ### 🟦 BusinessRules
@@ -3429,6 +3520,15 @@ field will not show up in the response.
 This field holds the sum of all fees which are Military APR fees (including 
 protection products), and will only appear if the Military APR has been
 requested.
+
+🟦 **Moneys.BalAdjTot**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+This field holds the sum of all balance adjustments occuring during the course of a loan.
+This field holds the sum of all actual dollar adjustment amounts, not Target amounts.
 
 🟦 **Moneys.ConInterest**
 

@@ -9,6 +9,12 @@ in a reverse chronological order, grouped by release. By referencing this
 chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
+## Release 2024-07-0
+* The [Loan](module-loan.md) module's `PmtStream` object now supports the new
+  `ReplaceIdx` field which is used to apply a replacement payment stream to a
+  subset of the payments. Please see the documentation for this new attribute in
+  the Loan chapter.
+
 ## Release 2024-04-0
 * The [Loan](module-loan.md) module's `Advance` request object now supports
   `NewPmt` and `Position` fields which are used when the calling application

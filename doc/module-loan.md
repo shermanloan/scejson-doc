@@ -2660,6 +2660,108 @@ determines the payment frequency for the payment stream. If the value of
 the `Date` field is not a valid date, then the value of this
 field is ignored.
 
+🟦 **PmtStream.ReplaceIdx**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - Integer >= 0 | -1 |
+
+The `ReplaceIdx` field allows applications to restrict the enforcement of a
+replacement payment to a specific `PmtStream`. If specified, the value of
+`ReplaceIdx` must be an integer >= 0. If not included in the request, then
+`ReplaceIdx` will be set internally to a value of -1, which means that this
+replacement payment rule will be applied to all matching payments.
+
+If specified, the value of `ReplaceIdx` represents the numeric index of the
+`PmtStream` object to which the replacement payment will only be applied.
+
+**Example 1:**
+
+```json
+{
+  "PmtStreams" : [
+    {
+    "Date" : "2024-01-01",
+    "PmtType" : "PayInt",
+    "Term" : "36"
+    },
+    {
+    "Date" : "2024-01-01",
+    "PmtType" : "PayPrin",
+    "Amount" : "1000.00",
+    "Term" : "36"
+    },
+    {
+    "Date" : "0000-01-00",
+    "PmtType" : "FixedPmt",
+    "ReplaceIdx" : "1"
+    },
+    {
+    "Date" : "0000-03-00",
+    "PmtType" : "FixedPmt",
+    "ReplaceIdx" : "1"
+    },
+    {
+    "Date" : "0000-04-00",
+    "PmtType" : "FixedPmt",
+    "ReplaceIdx" : "1"
+    }
+  ]
+}
+```
+
+In the example above, the first `PmtStream` with a `PmtType` of `PayInt` has an
+index of 0, with the `PayPrin` payment stream having an index of 1, etc.
+
+All three replacement payment streams (with indexes of 2, 3, and 4) indicate
+that they are targeting the `PayPrin` payment stream only by specifying
+`"ReplaceIdx" : "1"`. Also note that once the replacement payments are applied
+to the applicable payments, those payments will no longer be considered to be a
+part of the original payment stream, but instead will be considered to be a part
+of the replacement payment stream that was applied.
+
+**Example 2:**
+
+Assume we wanted to build a repayment schedule of 24 interest only payments,
+followed by 36 computed equal payments. Also, assume that we wanted to skip the
+interest only payments made in December. Then, we could build a request in the
+following manner:
+
+
+```json
+{
+  "PmtStreams" : [
+    {
+    "Date" : "2024-06-01",
+    "PmtType" : "CalcPmt",
+    "Term" : "60"
+    },
+    {
+    "Date" : "0001-00-00",
+    "PmtType" : "PayInt",
+    "Term" : "24"
+    },
+    {
+    "Date" : "0000-12-00",
+    "PmtType" : "FixedPmt",
+    "ReplaceIdx" : "1"
+    }
+  ]
+}
+```
+
+Above, `PmtStreams[0]` sets up the basic repayment schedule with 60 computed
+equal payments. Then, `PmtStreams[1]` replaces payments 1-24 with interest only
+payments. Finally, `PmtStreams[2]` replaces the December payment in the interest
+only period with a skipped payment.
+
+If you are creating overlapping payment streams with payments that fall on the
+same day, then we recommend that you set the value of the `Merge` field of the
+`EditOutput` object to `false`. If `Merge` is left at its default value of
+`true`, merging of payments occurs before replacement payments are enforced,
+thus making targeting a given payment stream much more difficult if they are
+merged with a payment from a second payment stream. 
+
 🟦 **PmtStream.SemimonthlyDay**
 
 | Type  | Required | Values | Default |

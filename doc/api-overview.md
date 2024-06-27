@@ -121,7 +121,7 @@ was encountered.
 
 | Type  | Required | Values |
 | :---: |   :---:  |  ---   |
-| String | yes | Apr, Hcm, Hpml, Loan, Version |
+| String | yes | Apr, Apy, Arm, Balloon, Cd, Construction, EqualPmt, Hcm, Hpml, IntOnly, Ira, Irregular, Loan, PrincipalPlus, SinglePmt, Ui, Version |
 
 The value of the `Module` field determines which module within the SCEJSON
 generated the response. If the value of the `Result` field is `200` (API_OK),

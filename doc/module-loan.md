@@ -374,7 +374,7 @@ the payment is amortized before the advance.
 ---
 </details>
 
-### 🟦 Apr
+### 🟦 APR
 
 | Type  | Required |
 | :---: |   :---:  |
@@ -384,11 +384,11 @@ Settings related to the computed effective rate returned by the SCE (most
 commonly, the Regulation Z APR in the United States of America) are contained
 in the fields of this object.
 
-<details><summary><b>Apr fields</b></summary>
+<details><summary><b>APR fields</b></summary>
 
 ---
 
-🟦 **Apr.Code**
+🟦 **APR.Code**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -401,7 +401,7 @@ the default value is `100` (Actuarial). For a country in the European Union, the
 default value is `50` (European Union APR). For Canada, the default value
 is `60`.
 
-| Apr Code | Description |
+| APR Code | Description |
 | :---:    |   :---      |
 |   0  | Not computed |
 |   10  | Account opening disclosure of open-end Loan |
@@ -432,7 +432,7 @@ is `60`.
 |  331  | Midnight366 US Rule |
 |  340  | Actual/365.25 US Rule |
 
-🟦 **Apr.Decimals**
+🟦 **APR.Decimals**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -441,7 +441,7 @@ is `60`.
 The number of decimal places of accuracy for the disclosed APR is determined by
 this field. The default value of this field is `3`.
 
-🟦 **Apr.Max**
+🟦 **APR.Max**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -454,7 +454,7 @@ element in the `Max` field, and a `MaxExceeded` field will also be returned to
 inform the calling application whether or not the specified maximum was
 exceeded.
 
-🟦 **Apr.MAPR_Max**
+🟦 **APR.MAPR_Max**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -464,7 +464,7 @@ If you are computing the Military APR (see `UseMAPR` below) and wish to override
 the default maximum APR value of 36%, then specify the desired maximum as the
 value of this field.
 
-🟦 **Apr.SinglePayFraction**
+🟦 **APR.SinglePayFraction**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -476,7 +476,7 @@ value of this field.
  over twelve, or the number of actual 24-hour days in the loan over 365. For the former,
  use "InMonths". For the latter, use "InDays".
 
-🟦 **Apr.StrictTime**
+🟦 **APR.StrictTime**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -499,7 +499,7 @@ A value of `false` instructs the SCE to keep the fraction of a unit period
 constant, equal to the fraction obtained by the time calculated from the date of
 the first payment to the transaction date.
 
-🟦 **Apr.UseMAPR**
+🟦 **APR.UseMAPR**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -3453,7 +3453,7 @@ This field returns the APR method used to compute the reported APR.
 | Object | no |
 
 The `MAPR` (military APR) object is only returned with the response if the
-value of the `Apr.UseMAPR` request field is `true`.
+value of the `APR.UseMAPR` request field is `true`.
 
 <details>
 <summary><b>MAPR fields</b></summary>
@@ -3485,7 +3485,7 @@ etc.
 | String | yes | Number - % |
 
 This field holds the maximum Military APR as specified in the
-input XML (see `Apr.MAPR_Max`). If not specified, a default value
+input XML (see `APR.MAPR_Max`). If not specified, a default value
 of 36% is assumed. The value of this field should be displayed
 as a percentage. As an example, for `"Max" : "36.000"`, you would
 disclose a maximum Military APR of 36%.

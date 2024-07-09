@@ -1420,17 +1420,6 @@ to either 5.0 or 5.125 depending upon the value of the `Round` field specified.
 If no value is specified for this element, then no rounding of the index plus
 margin (nor any other rates) will occur.
 
-### 🟥 TeaserRate
-
-| Type  | Required | Values | Default |
-| :---: |   :---:  |  ---   |  :---:  |
-| String | yes | Number - % | Text - See below |
-
-Determine the interest rate used for the loan.
-The interest rate should be expressed as a percentage. For example,
-a loan computed with a rate of 5.125% would be specified as
-`"IntRate" : "5.125"`.
-
 ### 🟦 Settings
 
 | Type  | Required |

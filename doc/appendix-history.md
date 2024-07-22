@@ -9,6 +9,17 @@ in a reverse chronological order, grouped by release. By referencing this
 chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
+## Release 2024-10-0
+* The [Arm](module-arm.md) module's `TILARESPA2015` field can now be passed in
+  as an object with `MinPnIDetails` and `MaxPnIDetails` boolean child fields.
+  These two new fields allow the calling application to request detailed
+  information about the `MinPnI` and `MaxPnI` payments that may be returned in
+  the amortization schedule for ARM loans with TILARESPA2015 disclosures. If set
+  to `true`, then the amounts to interest and principal for each of these
+  payments may also be returned in the `AmLine` object. Note that previously,
+  the `TILARESPA2015` field was Boolean, and this is still supported.
+  `"TILARESPA2015" : true` is now equivalent to `"TILARESPA2015" : {}`.
+
 ## Release 2024-07-0
 * The [Loan](module-loan.md) module's `PmtStream` object now supports the new
   `ReplaceIdx` field which is used to apply a replacement payment stream to a

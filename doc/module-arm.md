@@ -1583,7 +1583,7 @@ response.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | false |
+| Boolean or Object | no | see below | false |
 
 If the value of this field is `true`, then the SCE will include data for the
 Integrated Mortgage Disclosures under the Real Estate Settlement Procedures Act
@@ -1591,9 +1591,45 @@ Integrated Mortgage Disclosures under the Real Estate Settlement Procedures Act
 required as of August 1st, 2015. If the field is omitted or set to `false`, then
 the TILA RESPA outputs will not be generated.
 
-Note that this field is supported for equal payment loans, balloon payment
-loans, single payment notes, interest only loans, fixed principal plus interest
-loans, skips, pickups and irregulars, and ARMs.
+As of the 2024-10 release, the TILARESPA2015 field may also be passed in as an object,
+with `"TILARESPA2015" : {}` equivalent to `"TILARESPA2015" : true`.
+
+
+<details><summary><b>TILARESPA2015 fields</b></summary>
+
+---
+
+🟦 **TILARESPA2015.MaxPnIDetails**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the ARM loan specified a maximum lifetime interest rate (see `MaxRate`), and
+if the calling application requires the principal and interest breakdown for
+each `MaxPnI` payment returned in the amortization schedule, then set the value
+of this field to `true`.
+
+Doing so will return `MaxInt` and `MaxPrin` fields of the `AmLine` object
+associated with each `MaxPnI` payment.
+
+🟦 **TILARESPA2015.MinPnIDetails**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the ARM loan specified a minimum lifetime interest rate (see `MinRate`), and
+if the calling application requires the principal and interest breakdown for
+each `MinPnI` payment returned in the amortization schedule, then set the value
+of this field to `true`.
+
+Doing so will return `MinInt` and `MinPrin` fields of the `AmLine` object
+associated with each `MinPnI` payment.
+
+---
+
+</details>
 
 🟦 **Settings.YieldPPY**
 
@@ -5086,6 +5122,27 @@ a payment. The value of this field represents the minimum principal and interest
 payment possible, should the index + margin rate trend towards the minimum
 lifetime rate after the teaser term has expired.
 
+🟦  **AmLine.MinInt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+The value of this field represents the amount of the `MinPnI` payment which has
+been used to pay interest. This field will only be present if the `MinPnI` field
+is present and if the request included `"TILARESPA2015.MinPnIDetails" : true`.
+
+🟦  **AmLine.MinPrin**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+The value of this field represents the amount of the `MinPnI` payment which has
+been used to pay down the principal balance. This field will only be present if
+the `MinPnI` field is present and if the request included
+`"TILARESPA2015.MinPnIDetails" : true`.
+
 🟦  **AmLine.MaxPnI**
 
 | Type  | Required | Values |
@@ -5098,6 +5155,27 @@ field), then this field will be present in each `AmLine` object that represents
 a payment. The value of this field represents the maximum principal and interest
 payment possible, should the index + margin rate trend towards the maximum
 lifetime rate after the teaser term has expired.
+
+🟦  **AmLine.MaxInt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+The value of this field represents the amount of the `MaxPnI` payment which has
+been used to pay interest. This field will only be present if the `MaxPnI` field
+is present and if the request included `"TILARESPA2015.MaxPnIDetails" : true`.
+
+🟦  **AmLine.MaxPrin**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+The value of this field represents the amount of the `MaxPnI` payment which has
+been used to pay down the principal balance. This field will only be present if
+the `MaxPnI` field is present and if the request included
+`"TILARESPA2015.MaxPnIDetails" : true`.
 
 </details>
 

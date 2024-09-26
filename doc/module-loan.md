@@ -538,7 +538,7 @@ of its amortization line. If, for example, the balance were $1500 after the 12't
 and an Adjust was '500.00' on 0012-00-00, the loan module would adjust the $1500 balance
 by an additional $500, arriving at $2000 as its EndBal.
 
-🟦 **BalAdj.Date**
+🟥 **BalAdj.Date**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |

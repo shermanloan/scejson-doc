@@ -156,8 +156,8 @@ protection products requested must also be single premium.
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | YYYY-MM-DD or NNNN-00-00 | Date of the last Advance |
 
-Set the date of this event. If the date is omitted, the system will use
-the date of the last `Advance` object in the `Advances` array.
+Set the date of this event. If the `Date` field is not specified, then it will
+default to the earliest specified Advance `Date`.
 
 All dates must be in the form of YYYY-MM-DD, and be 10 characters long.
 Hence, to change the interest rate on January 2, 2021, the field
@@ -1463,7 +1463,7 @@ specific calendar month of the year. Using `0000-MM-00` as a value for `Date`
 instructs the SCE to pay the fee on the MM payment of the payment stream. For
 example, `0000-06-00` instructs the system to pay this fee on June Payments.
 
-If the `Date` field is not specified, then it will default to the last specified
+If the `Date` field is not specified, then it will default to the earliest specified
 Advance `Date`.
 
 🟦 **Fee.EqualServChg**

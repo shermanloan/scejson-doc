@@ -14,6 +14,9 @@ changes which may or may not be of interest to you.
   request field documentation was corrected when no `Date` field is provided. By
   default, if the `Date` field is not provided, the SCE will use the earliest
   `Date` field of all `Advance` objects specified in the `Advances[]` array.
+* The [Loan](module-loan.md) module's `PmtStream.Amount` request field
+  documentation has been updated to document the new options available for fixed
+  payment streams.
 
 ## Release 2024-10-0
 * The [Arm](module-arm.md) module's `Settings.TILARESPA2015` field can now be

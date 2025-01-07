@@ -9,6 +9,15 @@ in a reverse chronological order, grouped by release. By referencing this
 chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
+## Release 2025-01-0
+* The [Loan](module-loan.md) module's `AccrualConfig.Date` and `Fee.Date`
+  request field documentation was corrected when no `Date` field is provided. By
+  default, if the `Date` field is not provided, the SCE will use the earliest
+  `Date` field of all `Advance` objects specified in the `Advances[]` array.
+* The [Loan](module-loan.md) module's `PmtStream.Amount` request field
+  documentation has been updated to document the new options available for fixed
+  payment streams.
+
 ## Release 2024-10-0
 * The [Arm](module-arm.md) module's `Settings.TILARESPA2015` field can now be
   passed in as an object with two supported boolean child fields:

@@ -156,8 +156,8 @@ protection products requested must also be single premium.
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | YYYY-MM-DD or NNNN-00-00 | Date of the last Advance |
 
-Set the date of this event. If the date is omitted, the system will use
-the date of the last `Advance` object in the `Advances` array.
+Set the date of this event. If the `Date` field is not specified, then it will
+default to the earliest specified Advance `Date`.
 
 All dates must be in the form of YYYY-MM-DD, and be 10 characters long.
 Hence, to change the interest rate on January 2, 2021, the field
@@ -1463,7 +1463,7 @@ specific calendar month of the year. Using `0000-MM-00` as a value for `Date`
 instructs the SCE to pay the fee on the MM payment of the payment stream. For
 example, `0000-06-00` instructs the system to pay this fee on June Payments.
 
-If the `Date` field is not specified, then it will default to the last specified
+If the `Date` field is not specified, then it will default to the earliest specified
 Advance `Date`.
 
 🟦 **Fee.EqualServChg**
@@ -2365,11 +2365,25 @@ The value of the `Amount` field has different meanings depending upon the
 for more information on how these two fields work together to define a payment
 stream.
 
+If the `PmtType` field is equal to `CalcPmt`, then the value of this field may
+be specified as a flat dollar amount (e.g. `"Amount" : "250.00"`) which
+represents an additional amount to be added to the computed payment (this is
+also know as a pickup payment), or a percentage of the computed payment (e.g.
+`"Amount" : "200%"`), which allows the calling application to specify a double
+payment, half payment, etc.
+
+If the `PmtType` field is equal to `FixedPmt`, then the value of this field may
+be specified as a flat dollar amount (e.g. `"Amount" : "250.00"`), a percentage
+of the principal balance (e.g. `"Amount" : "5.25%"`), or a percentage of the
+outstanding balance at the time the payment is made (e.g. `"Amount" :
+"8.125%B"`).
+
 If the `PmtType` field is equal to `PayInt` or `PayPrin`, then the value of this
 field may be specified as a flat dollar amount (e.g. `"Amount" : "250.00"`), a
 percentage of the principal balance (e.g. `"Amount" : "5.25%"`), a percentage of
-the outstanding balance at the time the payment is made (e.g. `"Amount" : "8.125%B"`),
-or a percentage of the computed target payment (e.g. `"Amount" : "100%C"`).
+the outstanding balance at the time the payment is made (e.g. `"Amount" :
+"8.125%B"`), or a percentage of the computed target payment (e.g. `"Amount" :
+"100%C"`).
 
 If the `PmtType` field is equal to `CalcPmt`, then the value of this field may
 be specified as a flat dollar amount (e.g. `"Amount" : "500.00"`) which will be

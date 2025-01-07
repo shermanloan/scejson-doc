@@ -1,6 +1,6 @@
 # SCEJSON Reference Manual
 
-Release 2024-10-0
+Release 2025-01-0
 
 ## Introduction and Overview
 * [Introduction](introduction.md)

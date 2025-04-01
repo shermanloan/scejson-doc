@@ -9,6 +9,9 @@ in a reverse chronological order, grouped by release. By referencing this
 chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
+## Release 2025-04-0
+* No changes made to the reference manual.
+
 ## Release 2025-01-0
 * The [Loan](module-loan.md) module's `AccrualConfig.Date` and `Fee.Date`
   request field documentation was corrected when no `Date` field is provided. By

@@ -3149,10 +3149,10 @@ with `"TILARESPA2015" : {}` equivalent to `"TILARESPA2015" : true`.
 | :---: |   :---:  |  ---   |  :---:  |
 | Boolean | no | true, false | false |
 
-If the ARM loan specified a maximum lifetime interest rate (see `MaxRate`), and
-if the calling application requires the principal and interest breakdown for
-each `MaxPnI` payment returned in the amortization schedule, then set the value
-of this field to `true`.
+If the loan is an ARM and has a specified a maximum lifetime interest rate (see
+`ARM.Limits.Ceiling`), and if the calling application requires the principal and
+interest breakdown for each `MaxPnI` payment returned in the amortization
+schedule, then set the value of this field to `true`.
 
 Doing so will return `MaxInt` and `MaxPrin` fields of the `AmLine` object
 associated with each `MaxPnI` payment.
@@ -3163,10 +3163,10 @@ associated with each `MaxPnI` payment.
 | :---: |   :---:  |  ---   |  :---:  |
 | Boolean | no | true, false | false |
 
-If the ARM loan specified a minimum lifetime interest rate (see `MinRate`), and
-if the calling application requires the principal and interest breakdown for
-each `MinPnI` payment returned in the amortization schedule, then set the value
-of this field to `true`.
+If the loan is an ARM and has specified a minimum lifetime interest rate (see
+`ARM.Limits.Floor`), and if the calling application requires the principal and
+interest breakdown for each `MinPnI` payment returned in the amortization
+schedule, then set the value of this field to `true`.
 
 Doing so will return `MinInt` and `MinPrin` fields of the `AmLine` object
 associated with each `MinPnI` payment.

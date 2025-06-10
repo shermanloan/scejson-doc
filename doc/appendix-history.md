@@ -16,6 +16,9 @@ changes which may or may not be of interest to you.
   request for the Integrated Mortgage Disclosures under the Real Estate
   Settlement Procedures Act (Regulation X) and the Truth In Lending Act
   (Regulation Z) rule.
+* The [Loan](module-loan.md) module now supports the calculation and disclosure
+  of adjustable rate mortages via the new `ARM` request field and its associated
+  child fields.
 
 ## Release 2025-04-0
 

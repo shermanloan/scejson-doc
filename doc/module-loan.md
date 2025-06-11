@@ -552,11 +552,11 @@ this rate to be rounded to the nearest 1/8<sup>th</sup> of a percent which would
 produce 7.125%. Use the optional fields `RoundBasis` and `RoundMethod` to round
 the fully indexed rate.
 
-<details><summary><b>FullyIndexRate fields</b></summary>
+<details><summary><b>FullyIndexedRate fields</b></summary>
 
 ---
 
-🟥 **FullyIndexRate.Index**
+🟥 **FullyIndexedRate.Index**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -567,7 +567,7 @@ appropriate for the loan at the time of closing. For the purpose of modeling the
 initial disclosure of the loan, this index rate remains constant through
 maturity.
 
-🟥 **FullyIndexRate.Margin**
+🟥 **FullyIndexedRate.Margin**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -577,7 +577,7 @@ This required attribute holds the value of the margin that adds to the `Index`
 to produce the fully indexed rate. As with the `Index` attribute, this value
 remains constant throughout the loan.
 
-🟦 **FullyIndexRate.RoundBasis**
+🟦 **FullyIndexedRate.RoundBasis**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -588,7 +588,7 @@ indexed rate will be rounded to this amount. Rounding the fully indexed rate to
 the nearest 1/8<sup>th</sup> of one percent is a common practice. Making the `RoundBasis`
 `0.125` will accomplish this objective.
 
-🟦 **FullyIndexRate.RoundMethod**
+🟦 **FullyIndexedRate.RoundMethod**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |

@@ -530,11 +530,11 @@ this field. The existence of this field toggles the rules explained below.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | Payments, Balloon | Payments |
+| String | no | payments, balloon | payments |
 
 This optional field specifies how the loan adjusts for rate changes. The default
-value of `Payments` instructs the SCE to adjust the payment reflect the rate
-change. A value of `Balloon` causes the teaser payment to persist during the
+value of `payments` instructs the SCE to adjust the payment reflect the rate
+change. A value of `balloon` causes the teaser payment to persist during the
 rate cahnges, which results in a final balloon payment.
 
 🟥 **ARM.FullyIndexedRate**

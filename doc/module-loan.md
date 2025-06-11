@@ -823,15 +823,6 @@ values below of this optional attribute.
 This optional object specifies the number of payments between interest rate
 changes after the teaser term has elapsed.
 
-If the value of this element is greater than the number of payments per year,
-then any value is valid and the rate increase per step is equal to the annual
-rate increase.
-
-If the value of this element is less than or equal to the number of payments per
-year, then the value of the `TermStep.Step` field must evenly divide the number
-of payments per year. In this case, the rate increase per step is equal to the
-annual rate increase multiplied by the term step divided by the number of
-payments per year.
 
 <details><summary><b>TermStep fields</b></summary>
 
@@ -852,6 +843,21 @@ If the interest rate of the loan is decreasing, all of the `Limits`
 will be in effect and constrain the loan by their attributes, but in reverse.
 So, for example, a loan with decreasing interest rate can decrease no more than
 the `Limits.Annual` amount over a given year.
+
+🟦 **TermStep.Step**
+
+| Type    | Required | Values      | Default |
+| :---:   |   :---:  |  ---        |  :---:  |
+| Boolean | no       | true, false | true    |
+
+If the value of this field is greater than the number of payments per year, then
+any value is valid and the rate increase per step is equal to the annual rate
+increase.
+
+If the value of this field is less than or equal to the number of payments per
+year, then the it must evenly divide the number of payments per year. In this
+case, the rate increase per step is equal to the annual rate increase multiplied
+by the term step divided by the number of payments per year.
 
 </details>
 

@@ -848,7 +848,7 @@ the `Limits.Annual` amount over a given year.
 
 | Type    | Required | Values      | Default |
 | :---:   |   :---:  |  ---        |  :---:  |
-| Boolean | no       | true, false | true    |
+| Integer | no       | see below   | 12    |
 
 If the value of this field is greater than the number of payments per year, then
 any value is valid and the rate increase per step is equal to the annual rate

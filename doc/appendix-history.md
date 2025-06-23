@@ -19,6 +19,12 @@ changes which may or may not be of interest to you.
 * The [Loan](module-loan.md) module now supports the calculation and disclosure
   of adjustable rate mortages via the new `ARM` request field and its associated
   child fields.
+* The [Loan](module-loan.md) module now supports an updated `Merge` field for
+  the `EditOutput` object. We strongly advise using either the `none` or
+  `ordered` options as they are the most common and easiest to understand. The
+  other two options (`some` and `default`) are provided for backwards
+  compatibility, with `some` behaving as `false` and `default` behaving as
+  `true` in versions of the SCE prior to the 2025-07 release.
 
 ## Release 2025-04-0
 

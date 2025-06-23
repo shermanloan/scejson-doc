@@ -823,7 +823,6 @@ values below of this optional attribute.
 This optional object specifies the number of payments between interest rate
 changes after the teaser term has elapsed.
 
-
 <details><summary><b>TermStep fields</b></summary>
 
 ---
@@ -1536,13 +1535,50 @@ next period's unrounded interest, set the value of this field `true`.
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | true |
+| String | no | none, some, default, ordered | default |
 
-If the value of this field is set to `true`, then payment objects will be
-merged together whenever possible. For example, if one event is of type
-`CalcPmt`, and another on the same day is `PayPrin`, then this field determines
-whether or not these two events will be combined into a single payment event or
-left as separate and distinct events.
+This field determines what should be done when a loan with multiple
+overlapping payment streams causes one or more payments to fall on the same
+calendar date. We strongly advise using either the `none` or `ordered` options
+as they are the most common and easiest to understand. The other two options
+(`some` and `default`) are provided for backwards compatibility, with `some`
+behaving as `false` and `default` behaving as `true` in versions of the SCE
+prior to the 2025-07 release.
+
+**Example:** Two payment streams which generate payments that fall on the same date.
+
+```json
+  "PmtStreams" : [
+    { "Date" : "2025-03-01", "PmtType" : "CalcPmt", "Term" : "12" },
+    { "Date" : "2025-04-01", "PmtType" : "PPY", "Term" : "4", "Term" : "4" }
+  ]
+```
+
+The above JSON creates an array of two payment streams, with all of the
+quarterly interest only payments occurring on payment dates created by the first
+payment stream.
+
+If the value of the `Merge` field is `none`, then payments will not be merged. That
+is, if multiple payments fall on the same date, then they will appear as
+separate payments in the amortization schedule, applied in the order listed in
+the request. In the sample above, this would cause the loan's amortization
+schedule to display two distinct payments in April, July, October, and January.
+Since the `CalcPmt` payments will be amortized first, the following `PayInt`
+payments will be payments of zero as no interest can accrue between the two
+payments on the same date. If the order of the `PmtStream` objects was
+reversed (with the `PayInt` type first and `CalcPmt` type second), then the
+`PayInt` payments would pay all interest due at the time, and the `CalcPmt`
+payments occurring on the same date as the `PayInt` payments would apply purely
+to principal.
+
+If the value of this field is `ordered`, then payments will be merged. If
+multiple payments fall on the same date, then the payment associated with the
+last applicable payment steam listed in the request will take priority. In the
+sample above, this would cause the `PayInt` payments to take precedence over the
+`CalcPmt` payments in April, July, October, and January.
+
+The `some` and `default` values are provided for backwards compatibility, and
+are no longer recommended for use.
 
 🟦 **EditOutput.PmtDollarRound**
 

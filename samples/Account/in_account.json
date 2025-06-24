@@ -1,8 +1,0 @@
-{
-  "Module" : "Account",
-  "Data" : {
-    "DataPath" : "/etc/sce",
-    "Begin" : "1",
-    "End" : "9999"
-  }
-}

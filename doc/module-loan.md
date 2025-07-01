@@ -1,10 +1,10 @@
 # Loan Module
 
 > "Debt is part of the human condition. Civilization  
->  is based on exchanges - on gifts, trades, loans -  
->  and the revenges and insults that come when they  
->  are not paid back"  
->                           --- Margaret Atwood
+> is based on exchanges - on gifts, trades, loans -  
+> and the revenges and insults that come when they  
+> are not paid back"  
+> --- Margaret Atwood
 
 The SCEJSON's loan module may be used to compute almost any loan imaginable -
 from the simplest equal payment loan to loans that have exotic
@@ -14,12 +14,12 @@ this module by a slightly different name - "Loan Builder".
 
 ## Loan Request Data Object Field Definition
 
-**Example - Request Envelope for Loan Module**
-
 The following example is a request for an equal payment loan with an advance
 of $1,000, interest will accrue at a 10% rate using an actual day / 365 U.S.
 Rule accrual method (code `320`), and with a repayment schedule of 12 monthly
 payments. The final payment will be adjusted for perfect amortization.
+
+**Example - Request Envelope for Loan Module**:
 
 ```json
 {
@@ -231,19 +231,19 @@ ensures the total of payments never exceeds the amounts of the loan to pay off
 
 | Type  | Required |
 | :---: |   :---:  |
-| array of Tier objects |
+| array of Tier objects | no |
 
 To compute interest using a split rate method, where different rates are applied
 to different parts of the balance, the calling application will need to specify
 a `Tier` object with its associated `Rate` and `Ceiling`
 fields. Note that the interest rate which is used above the final `Ceiling`
-is the one specified in the `AccrualConfig` object. Furthermore, the 
+is the one specified in the `AccrualConfig` object. Furthermore, the
 `Tier` objects must be ordered in ascending order based upon the
 `Ceiling` amount.
 
-As en example, assume that the calling application needs to charge 20% on the first $100,
-15% up to $250, and 10% for the remaining balance. The AccrualConfig object needed to implement this split
-rate structure is:
+As en example, assume that the calling application needs to charge 20% on the
+first $100, 15% up to $250, and 10% for the remaining balance. The AccrualConfig
+object needed to implement this split rate structure is:
 
 ```json
 {
@@ -470,11 +470,11 @@ value of this field.
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | InDays, InMonths | InDays |
 
- This field only applies to single advance, single payment transactions of term
- less than one year. For these loans, when the term of the loan is a number of months,
- Appendix J allows for the term of the loan to be expressed as either a number of months
- over twelve, or the number of actual 24-hour days in the loan over 365. For the former,
- use "InMonths". For the latter, use "InDays".
+This field only applies to single advance, single payment transactions of term
+less than one year. For these loans, when the term of the loan is a number of
+months, Appendix J allows for the term of the loan to be expressed as either a
+number of months over twelve, or the number of actual 24-hour days in the loan
+over 365. For the former, use "InMonths". For the latter, use "InDays".
 
 🟦 **Apr.StrictTime**
 
@@ -512,6 +512,357 @@ included in the loan response.
 ---
 </details>
 
+### 🟦 ARM
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+The Loan module is alerted to adjustable rate mortgage rules through the inclusion
+and use of this field. If the loan is *not* an ARM loan, do not include
+this field. The existence of this field toggles the rules explained below.
+
+<details><summary><b>ARM fields</b></summary>
+
+---
+
+🟦 **ARM.CalcType**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | payments, balloon | payments |
+
+This optional field specifies how the loan adjusts for rate changes. The default
+value of `payments` instructs the SCE to adjust the payment reflect the rate
+change. A value of `balloon` causes the teaser payment to persist during the
+rate cahnges, which results in a final balloon payment.
+
+🟥 **ARM.FullyIndexedRate**
+
+| Type   | Required |
+| :---:  | :---:    |
+| Object | yes      |
+
+The fields of this required object represent the data necessary to compute
+the fully indexed interest rate; that is, the `Index` + `Margin`.
+
+Some lenders constrain the fully indexed rate to be rounded to the nearest
+*something*. e.g. If the `Index` + `Margin` is 7.123, an institution may require
+this rate to be rounded to the nearest 1/8<sup>th</sup> of a percent which would
+produce 7.125%. Use the optional fields `RoundBasis` and `RoundMethod` to round
+the fully indexed rate.
+
+<details><summary><b>FullyIndexedRate fields</b></summary>
+
+---
+
+🟥 **FullyIndexedRate.Index**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - % | n/a |
+
+This required field holds the value of the published index interest rate
+appropriate for the loan at the time of closing. For the purpose of modeling the
+initial disclosure of the loan, this index rate remains constant through
+maturity.
+
+🟥 **FullyIndexedRate.Margin**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - % | n/a |
+
+This required attribute holds the value of the margin that adds to the `Index`
+to produce the fully indexed rate. As with the `Index` attribute, this value
+remains constant throughout the loan.
+
+🟦 **FullyIndexedRate.RoundBasis**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | Number - % | 0.001 |
+
+If the value of this optional field is greater than zero, then the fully
+indexed rate will be rounded to this amount. Rounding the fully indexed rate to
+the nearest 1/8<sup>th</sup> of one percent is a common practice. Making the `RoundBasis`
+`0.125` will accomplish this objective.
+
+🟦 **FullyIndexedRate.RoundMethod**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | nearest, up, down | nearest |
+
+If rounding of the fully indexed rate is required, the value of this attribute
+instructs the SCEX how to direct the rounding. The settings below assume a
+`RoundBasis` of `0.01` or 1/100<sup>th</sup> of a percent.
+
+- `nearest` - Round to the nearest `RoundBasis`. `4.005` would round to `4.01`.
+- `up` - Round up to the nearest basis. `4.00001` would round to `4.01`.
+- `down` - Round down to the nearest basis. `4.00999` would round to `4.00`.
+
+---
+
+</details>
+
+🟥 **ARM.Limits**
+
+| Type   | Required |
+| :---:  | :---:    |
+| Object | yes      |
+
+The constraints to a changing interest rate are represented as fields of
+this required object.
+
+<details><summary><b>Limits fields</b></summary>
+
+---
+
+🟥 **Limits.Annual**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - % | n/a |
+
+The interest rate can change no more over any given year than the value of this
+required attribute.
+
+🟥 **Limits.Ceiling**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - % | n/a |
+
+The absolute maximum an interest rate can be over the term of the loan is
+represented by the value of this required attribute.
+
+🟥 **Limits.Floor**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - % | n/a |
+
+The absolute minimum an interest rate can be over the term of the loan is
+represented by the value of this required attribute.
+
+🟥 **Limits.Lifetime**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - % | n/a |
+
+The `Lifetime` required attribute represents the maximum the interest rate can
+change over the lifetime of the loan.
+
+---
+
+</details>
+
+🟦 **ARM.PostTeaser**
+
+| Type   | Required |
+| :---:  | :---:    |
+| Object | yes      |
+
+The `PostTeaser` object defines the interest rate immediately following the
+teaser rate (see `Teaser` below).
+
+By default, the post teaser rate will be the lesser of the `FullyIndexedRate`
+and the teaser rate plus the value of `Limits.Annual`. If this default behavior
+needs to be changed, use the fields of this optional object to mirror the
+lender's practices.
+
+Note: The post teaser rate may be specified as either an increase to
+`Teaser.Rate` or an actual interest rate, according to the value of the
+`PostTeaser.Type`.
+
+<details><summary><b>PostTeaser fields</b></summary>
+
+---
+
+🟦 **PostTeaser.Ignore**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | neither, floor, ceiling, both | neither |
+
+The post teaser rate is constrained by default by `Limits.Floor` and
+`LimitsCeiling`. If the post teaser rate ignores either or both of these
+`Limits`, choose one of the values below of this optional attribute.
+
+- `Neither` - Neither the `Limits.Ceiling` rate nor the `Limits.Floor` rate are
+  ignored. Both are active constraints.
+- `Floor` - The `Limits.Floor` rate is ignored.
+- `Ceiling` - The `Limits.Ceiling` rate is ignored.
+- `Both` - Both the `Limits.Ceiling` and `Limits.Floor` rates are ignored.
+
+🟦 **PostTeaser.ProRateInc**
+
+| Type    | Required | Values      | Default |
+| :---:   |   :---:  |  ---        |  :---:  |
+| Boolean | no       | true, false | false   |
+
+The boolean value of this optional field determines whether or not the rate
+increase is pro-rated by the number of payments per year. This attribute
+requires the `PostTeaser.Type` field to be `Increase`.
+
+For example, if the `Teaser.Rate` is 5.0% and the `Limits.Annual` is 2.0% on a
+quarterly loan, setting this attribute to `true` would increase the
+`Teaser.Rate` from 5.0 to 5.0 + 2.0/4 = 5.5% for the post teaser rate. The
+default behavior of `false` would have the post teaser rate be 5.0% + 2.0% =
+7.0%.
+
+🟥 **PostTeaser.Rate**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - % | n/a |
+
+The meaning of this required attribute depends on the value of the
+`PostTeaser.Type` field. Enter the value of the post teaser rate
+`PostTeaser.Type` = `Rate`) or rate increase `PostTeaser.Type` = `Increase`. In
+both cases, the rate is expressed as an annual rate.
+
+🟦 **PostTeaser.Type**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | increase, rate | increase |
+
+The value of this optional field determines if the `PostTeaser.Rate` is treated
+as an interest rate or an adjustment to the teaser rate.
+
+- `Increase` - Increase the  `Teaser.Rate` by the value of the `PostTeaser.Rate`
+  field.
+- `Rate` - The actual rate to be used after the  `Teaser.Rate` is the value of
+  the `PostTeaser.Rate` field.
+
+---
+
+</details>
+
+🟥 **ARM.Teaser**
+
+| Type   | Required |
+| :---:  | :---:    |
+| Object | yes      |
+
+The attributes of this required object define the discount period of the loan.
+
+<details><summary><b>Teaser fields</b></summary>
+
+---
+
+🟦 **Teaser.ForceTerm**
+
+| Type    | Required | Values      | Default |
+| :---:   |   :---:  |  ---        |  :---:  |
+| Boolean | no       | true, false | false   |
+
+If fully indexed rate equals the `Teaser.Rate`, the default behavior would be
+to output a single payment stream for the entire term of the loan. If, however,
+the teaser payment stream should always be displayed as an isolated payment
+stream, setting this optional attribute to `true` forces a teaser period to be
+displayed.
+
+*Example:* A teaser rate of 4% for 36 months on a 120 month loan with a fully
+indexed rate of 4% might have an output similar to the following:
+
+- If `ForceTerm` is `true`:
+
+  ```code
+  36 payments of 920.14 at 4.0%
+  84 payments of 920.14 at 4.0%
+  ```
+
+- If `ForceTerm` is `false`:
+
+  ```code
+  120 payments of 920.14 at 4.0%
+  ```
+
+🟦 **Teaser.Ignore**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | no | neither, floor, ceiling, both | neither |
+
+The teaser rate is constrained by default by `Limits.Floor` and `LimitsCeiling`.
+If the teaser rate ignores either or both of these `Limits`, choose one of the
+values below of this optional attribute.
+
+- `Neither` - Neither the `Limits.Ceiling` rate nor the `Limits.Floor` rate are
+  ignored. Both are active constraints.
+- `Floor` - The `Limits.Floor` rate is ignored.
+- `Ceiling` - The `Limits.Ceiling` rate is ignored.
+- `Both` - Both the `Limits.Ceiling` and `Limits.Floor` rates are ignored.
+
+🟥 **Teaser.Rate**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - % | n/a |
+
+🟥 **Teaser.Term**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| String | yes | Number - Integer | n/a |
+
+---
+
+</details>
+
+🟦 **ARM.TermStep**
+
+| Type   | Required |
+| :---:  | :---:    |
+| Object | yes      |
+
+This optional object specifies the number of payments between interest rate
+changes after the teaser term has elapsed.
+
+<details><summary><b>TermStep fields</b></summary>
+
+---
+
+🟦 **TermStep.StairStepDown**
+
+| Type    | Required | Values      | Default |
+| :---:   |   :---:  |  ---        |  :---:  |
+| Boolean | no       | true, false | true    |
+
+If the fully indexed rate is less than the teaser rate, a
+value of `false` will keep the interest rate at the teaser rate for the duration
+of the loan. If your institution allows the rate to decrease below the teaser
+rate over the term of the loan, set the value of this field to `true`.
+
+If the interest rate of the loan is decreasing, all of the `Limits`
+will be in effect and constrain the loan by their attributes, but in reverse.
+So, for example, a loan with decreasing interest rate can decrease no more than
+the `Limits.Annual` amount over a given year.
+
+🟦 **TermStep.Step**
+
+| Type    | Required | Values      | Default |
+| :---:   |   :---:  |  ---        |  :---:  |
+| Integer | no       | see below   | 12    |
+
+If the value of this field is greater than the number of payments per year, then
+any value is valid and the rate increase per step is equal to the annual rate
+increase.
+
+If the value of this field is less than or equal to the number of payments per
+year, then the it must evenly divide the number of payments per year. In this
+case, the rate increase per step is equal to the annual rate increase multiplied
+by the term step divided by the number of payments per year.
+
+</details>
+
+---
+</details>
+
 ### 🟦 BalAdjs
 
 | Type  | Required |
@@ -520,7 +871,7 @@ included in the loan response.
 
 The `BalAdjs` array of `BalAdj` objects allows the calling application to make
 one or more balance adjustments during the amortization of a loan to better
-support the quotation and servicing of open ended lending. 
+support the quotation and servicing of open ended lending.
 
 <details>
 <summary><b>BalAdj fields</b></summary>
@@ -533,10 +884,11 @@ support the quotation and servicing of open ended lending.
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | Number - Currency | 0 |
 
-The Adjust field defines the amount by which to adjust the BegBal amount at the beginning
-of its amortization line. If, for example, the balance were $1500 after the 12'th payment 
-and an Adjust was '500.00' on 0012-00-00, the loan module would adjust the $1500 balance
-by an additional $500, arriving at $2000 as its EndBal.
+The Adjust field defines the amount by which to adjust the BegBal amount at the
+beginning of its amortization line. If, for example, the balance were $1500
+after the 12'th payment and an Adjust was '500.00' on 0012-00-00, the loan
+module would adjust the $1500 balance by an additional $500, arriving at $2000
+as its EndBal.
 
 🟥 **BalAdj.Date**
 
@@ -545,7 +897,7 @@ by an additional $500, arriving at $2000 as its EndBal.
 | String | yes | YYYY-MM-DD or YYYY-00-00 | No default. Must be entered. |
 
 The date of the balance adjustment. (Note the a balance will adjust after a
-payment that occurs on the same date.) 
+payment that occurs on the same date.)
 
 A special format allows for the adjustment to be made immediately after a
 specified payment index using the YYYY--00-00 mask. A date entry of 0018-00-00
@@ -587,7 +939,7 @@ object.
 
 <details><summary><b>BusinessRules fields</b></summary>
 
----  
+---
 
 🟦 **BusinessRules.AmError**
 
@@ -599,15 +951,15 @@ When amortizing a loan, often times there is a non-zero ending balance due to
 rounding. This field determines what to do (if anything) with a non-zero
 ending balance. This non-zero balance is referred to as the amortization error.
 
-* **Allow** - Do not do anything with the non-zero ending balance.
+- **Allow** - Do not do anything with the non-zero ending balance.
 
-* **AdjPmt** - Adjust the final payment to achieve perfect amortization,
+- **AdjPmt** - Adjust the final payment to achieve perfect amortization,
 which will then result in an ending balance of zero.
 
-* **AdjPrin** - Adjust the final principal reduction amount to achieve
+- **AdjPrin** - Adjust the final principal reduction amount to achieve
 perfect amortization, which will then result in an ending balance of zero.
 
-* **AdjInt** - Adjust the final interest reduction amount to achieve
+- **AdjInt** - Adjust the final interest reduction amount to achieve
 perfect amortization, which will then result in an ending balance of zero.
 
 Note that using `AdjPrin` or `AdjInt` will cause the final payment to not equal
@@ -628,15 +980,15 @@ ending balance.
 
 To use this functionality, there are a few requirements that must be met:
 
-* All specified payment streams must have a `PmtType` of other than `CalcPmt`.
+- All specified payment streams must have a `PmtType` of other than `CalcPmt`.
 In `AmortizeOnly` mode, the Loan Builder will not compute "regular" principal
 and interest payments.
 
-* No protection products may be requested.
+- No protection products may be requested.
 
-* All advances must be specified, and not computed.
+- All advances must be specified, and not computed.
 
-* `AmError` (see above) must be set to `"Allow"`.
+- `AmError` (see above) must be set to `"Allow"`.
 
 Furthermore, the output for an `"AmortizeOnly" : true` Loan request will omit
 the `FedBox` and `Moneys` response objects.
@@ -658,19 +1010,19 @@ The default value of `false` does not allow a skipped first payment.
 
 Set this field to `true` to allow the last payment of a loan to be skipped.
 The default value of `false` does not allow a skipped final payment.
- 
+
 🟦 **BusinessRules.ClosedFormEqn**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
 | Boolean | no | true, false | true |
 
-When searching for the payment that best amortizes the loan to zero, this setting
-determines whether or not interest is rounded during the payment search algorithm.
-The default value of `true` indicates that the closed form equation should be matched,
-and interest will be left unrounded during the payment search algorithm. Setting this
-field value to `false` will cause interest to be rounded during the payment search
-algorithm.
+When searching for the payment that best amortizes the loan to zero, this
+setting determines whether or not interest is rounded during the payment search
+algorithm. The default value of `true` indicates that the closed form equation
+should be matched, and interest will be left unrounded during the payment search
+algorithm. Setting this field value to `false` will cause interest to be rounded
+during the payment search algorithm.
   
 🟦 **BusinessRules.LeapYearRound**
 
@@ -678,7 +1030,7 @@ algorithm.
 | :---: |   :---:  |  ---   |  :---:  |
 | Boolean | no | true, false | false |
 
-If the value of this field is `true` and one of the actual/actual 
+If the value of this field is `true` and one of the actual/actual
 interest accrual calendars (including Midnight366) is used in the requested
 loan, then the interest accrued on a 365 days basis is rounded separately from
 the interest accrued on a 366 days basis. Note that this option is encountered
@@ -765,7 +1117,7 @@ the SCE to only adjust the first payment due to odd days if there are positive
 odd days. Finally, a value of `false` instructs the SCE to not adjust
 the first payment using this method.
 
-Note that you can not specify an odd first payment using this attribute 
+Note that you can not specify an odd first payment using this attribute
 *and* include `ODI` in the same request.
 
 🟦 **BusinessRules.PmtAccrualCode**
@@ -797,7 +1149,7 @@ to be calculated using the accrual code specified.
 
 If the value of this field is set to `true`, then protection premiums/fees
 will be considered to be a part of the Finance Charge, and thus affect the Regulation
-Z APR. 
+Z APR.
 
 🟦 **BusinessRules.UsRuleAprException**
 
@@ -816,7 +1168,7 @@ Charge is equal to the interest charge, and (iv) there is only a single
 `AccrualConfig` object, then the US Rule APR will be disclosed as the interest
 rate.
 
-🟦 **BusinessRules.YieldPPY** 
+🟦 **BusinessRules.YieldPPY**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
@@ -1175,21 +1527,58 @@ coinsides with the 60th payment, the field would be specified as
 | :---: |   :---:  |  ---   |  :---:  |
 | Boolean | no | true, false | false |
 
-Rounding interest each period numerically eliminates values beyond two decimal places. This amount
-is referred to as slush. To keep this amount and add it to next period's unrounded interest, set
-the value of this field `true`.
+Rounding interest each period numerically eliminates values beyond two decimal
+places. This amount is referred to as slush. To keep this amount and add it to
+next period's unrounded interest, set the value of this field `true`.
 
 🟦 **EditOutput.Merge**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| Boolean | no | true, false | true |
+| String | no | none, some, default, ordered | default |
 
-If the value of this field is set to `true`, then payment objects will be
-merged together whenever possible. For example, if one event is of type
-`CalcPmt`, and another on the same day is `PayPrin`, then this field determines
-whether or not these two events will be combined into a single payment event or
-left as separate and distinct events.
+This field determines what should be done when a loan with multiple
+overlapping payment streams causes one or more payments to fall on the same
+calendar date. We strongly advise using either the `none` or `ordered` options
+as they are the most common and easiest to understand. The other two options
+(`some` and `default`) are provided for backwards compatibility, with `some`
+behaving as `false` and `default` behaving as `true` in versions of the SCE
+prior to the 2025-07 release.
+
+**Example:** Two payment streams which generate payments that fall on the same date.
+
+```json
+  "PmtStreams" : [
+    { "Date" : "2025-03-01", "PmtType" : "CalcPmt", "Term" : "12" },
+    { "Date" : "2025-04-01", "PmtType" : "PPY", "Term" : "4", "Term" : "4" }
+  ]
+```
+
+The above JSON creates an array of two payment streams, with all of the
+quarterly interest only payments occurring on payment dates created by the first
+payment stream.
+
+If the value of the `Merge` field is `none`, then payments will not be merged. That
+is, if multiple payments fall on the same date, then they will appear as
+separate payments in the amortization schedule, applied in the order listed in
+the request. In the sample above, this would cause the loan's amortization
+schedule to display two distinct payments in April, July, October, and January.
+Since the `CalcPmt` payments will be amortized first, the following `PayInt`
+payments will be payments of zero as no interest can accrue between the two
+payments on the same date. If the order of the `PmtStream` objects was
+reversed (with the `PayInt` type first and `CalcPmt` type second), then the
+`PayInt` payments would pay all interest due at the time, and the `CalcPmt`
+payments occurring on the same date as the `PayInt` payments would apply purely
+to principal.
+
+If the value of this field is `ordered`, then payments will be merged. If
+multiple payments fall on the same date, then the payment associated with the
+last applicable payment steam listed in the request will take priority. In the
+sample above, this would cause the `PayInt` payments to take precedence over the
+`CalcPmt` payments in April, July, October, and January.
+
+The `some` and `default` values are provided for backwards compatibility, and
+are no longer recommended for use.
 
 🟦 **EditOutput.PmtDollarRound**
 
@@ -1221,12 +1610,13 @@ field to `false`; otherwise, the amortization schedule will be returned.
 | :---: |   :---:  |  ---   |  :---:  |
 | Boolean | no | true, false | false |
 
-If this field is set to `false`, then fees will not explicitly appear in the amortizaton
-schedule, unless they do not occur on the date of an advance or the date of a payment. They will
-also not be individually listed under the `Moneys` object of the response.
+If this field is set to `false`, then fees will not explicitly appear in the
+amortizaton schedule, unless they do not occur on the date of an advance or the
+date of a payment. They will also not be individually listed under the `Moneys`
+object of the response.
 
-A value of `true` means that all fees will be explicitly accounted for, both in the
-`Moneys` response object as child objects and in the amortization table. The
+A value of `true` means that all fees will be explicitly accounted for, both in
+the `Moneys` response object as child objects and in the amortization table. The
 `Type` field will have the name of the fee as its value.
 
 🟦 **EditOutput.ShowGrandTot**
@@ -1235,8 +1625,8 @@ A value of `true` means that all fees will be explicitly accounted for, both in 
 | :---: |   :---:  |  ---   |  :---:  |
 | Boolean | no | true, false | false |
 
-To show the amortization schedule grand totals in the response, set this field's value to `true`;
-otherwise, the grand totals will not be returned.
+To show the amortization schedule grand totals in the response, set this field's
+value to `true`; otherwise, the grand totals will not be returned.
 
 🟦 **EditOutput.ShowSubTot**
 
@@ -1244,8 +1634,8 @@ otherwise, the grand totals will not be returned.
 | :---: |   :---:  |  ---   |  :---:  |
 | Boolean | no | true, false | false |
 
-To show the amortization schedule annual subtotals in the XML output, set this field's value to `true`;
-otherwise, annual subtotals will not be returned.
+To show the amortization schedule annual subtotals in the XML output, set this
+field's value to `true`; otherwise, annual subtotals will not be returned.
 
 🟦 **EditOutput.ShowTap**
 
@@ -1269,10 +1659,11 @@ any way.
 | :---: |   :---:  |  ---   |  :---:  |
 | Boolean | no | true, false | false |
 
-Each line of the amortization schedule is characterized by a type, which describes the particular
-amortization event. An `EditInterest` event is different from a `FixedPmt` event, for example. Set
-this field to `true` to report the `Type` of each amortization event. A value of `false`
-will suppress output of the `Type` field in the amortization schedule.
+Each line of the amortization schedule is characterized by a type, which
+describes the particular amortization event. An `EditInterest` event is
+different from a `FixedPmt` event, for example. Set this field to `true` to
+report the `Type` of each amortization event. A value of `false` will suppress
+output of the `Type` field in the amortization schedule.
 
 🟦 **EditOutput.TagPmts**
 
@@ -1280,10 +1671,11 @@ will suppress output of the `Type` field in the amortization schedule.
 | :---: |   :---:  |  ---   |  :---:  |
 | Boolean | no | true, false | false |
 
-If the value of this field is set to `true`, then each `PmtStream` response object will
-include an `Idx` field which identifies the input payment stream object which gave rise to it.
-If this field is set to `true`, then the `EditOutput.Merge` field must be set to `false`. If
-both are set to `true`, then an error will be returned.
+If the value of this field is set to `true`, then each `PmtStream` response
+object will include an `Idx` field which identifies the input payment stream
+object which gave rise to it. If this field is set to `true`, then the
+`EditOutput.Merge` field must be set to `false`. If both are set to `true`, then
+an error will be returned.
 
 ---
 
@@ -1364,7 +1756,6 @@ affecting fee to be computed by decreasing the amount financed by $2,000,
 and then multiplying this reduced amount by 0.115. The way to accomplish
 this in the SCE is as follows:
 
-
 ```json
 {
   "Fees" : [
@@ -1434,7 +1825,8 @@ fee is to be added on top of the payment.
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | Dollar, OnProceeds, OnPrincipal, OnAmtFin, OnBalance, OnBalanceFlat | Dollar |
 
-This field specifies how the fee is to be computed, as described in the following table.
+This field specifies how the fee is to be computed, as described in the
+following table.
 
 | Fee Calc Type | Description |
 | :--- | :--- |
@@ -1641,12 +2033,13 @@ The value of this field, along with the with the `Fee.RoundBasis`
 field described below, determine how the amount on which the fee is
 based upon is to be rounded.
 
-For fee calculation types of `OnPrincipal`, `OnProceeds`, `OnAmtFin`, `OnBalance`, and
-`OnBalanceFlat`, the amount on which the fee is based is fairly self
-evident: the starting principal balance, proceeds, amount financed, or the outstanding balance at the time
-that the fee is assessed. Thus, if the calling application requires a fee to be
-computed based upon 0.35% of the principal balance rounded to the nearest $100,
-then the fee object would look something like this:
+For fee calculation types of `OnPrincipal`, `OnProceeds`, `OnAmtFin`,
+`OnBalance`, and `OnBalanceFlat`, the amount on which the fee is based is fairly
+self evident: the starting principal balance, proceeds, amount financed, or the
+outstanding balance at the time that the fee is assessed. Thus, if the calling
+application requires a fee to be computed based upon 0.35% of the principal
+balance rounded to the nearest $100, then the fee object would look something
+like this:
 
 ```json
 {
@@ -1746,16 +2139,16 @@ fees, the object should look something like this:
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | None, ByTerm, ByDays | None |
 
-This field dictates whether or not a fee is treated as a service charge, and if so,
-determines how the service charge dollar amount is paid off over the term of the loan.
-If a fee should not be treated as a service charge, then the default value of `None`
-should be specified.
+This field dictates whether or not a fee is treated as a service charge, and if
+so, determines how the service charge dollar amount is paid off over the term of
+the loan. If a fee should not be treated as a service charge, then the default
+value of `None` should be specified.
 
-- **ByTerm** means that the service charge is paid off by dividing the amount by the `Term`
-field of the same `Fee` object.
-- **ByDays** means that the service charge is paid off on payment dates. The amount of the fee
-is calculated as the number of days from the previous payment (or advance) divided by the
-total number of days in the term of the fee.
+- **ByTerm** means that the service charge is paid off by dividing the amount by
+the `Term` field of the same `Fee` object.
+- **ByDays** means that the service charge is paid off on payment dates. The
+amount of the fee is calculated as the number of days from the previous payment
+(or advance) divided by the total number of days in the term of the fee.
 
 🟦 **Fee.Term**
 
@@ -1818,7 +2211,6 @@ not included, the default value will be determined by the value of the `Country`
 field. For most countries, the default value is `"2"`. If no country code is
 specified, then the default value for this field is `"2"`.
 
-
 🟦 **Format.DateFormat**
 
 | Type  | Required | Values | Default |
@@ -1828,9 +2220,9 @@ specified, then the default value for this field is `"2"`.
 When displaying and parsing Date fields, this field determines the expected
 format for all Date fields. The following `DateFormat` options are allowed:
 
-* `YMD` - All dates should be formated as YYYY-MM-DD.
-* `MDY` - All dates should be formated as MM-DD-YYYY.
-* `DMY` - All dates should be formated as DD-MM-YYYY.
+- `YMD` - All dates should be formated as YYYY-MM-DD.
+- `MDY` - All dates should be formated as MM-DD-YYYY.
+- `DMY` - All dates should be formated as DD-MM-YYYY.
 
 Note that the character which separates the individual month, day, and year
 portions of the date is configurable via the `DateSeparator` field.
@@ -1919,9 +2311,9 @@ following descriptions:
 - **0002-NN-NN -** A holiday that occurs annually, but can not be expressed
  using any of the above methods. Currently, the following special holidays are
  recognized by the SCEX:
-   - **0001 -** Good Friday
-   - **0002 -** Easter Sunday
-   - **0003 -** Easter Monday
+  - **0001 -** Good Friday
+  - **0002 -** Easter Sunday
+  - **0003 -** Easter Monday
 
 ### 🟦 MI
 
@@ -1935,7 +2327,6 @@ specify mortgage insurance options.
 
 *NOTE:* Mortgage insurance is only supported on equal, balloon, and interest
 only loan builder requests at this time.
-
 
 <details>
 <summary><b>MI fields</b></summary>
@@ -1994,7 +2385,7 @@ equals or falls below 78%, then you would specify
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | Number - Integer | 0 |
 
-The value of this field represents the the term (in payments) beyond 
+The value of this field represents the the term (in payments) beyond
 which MI will be removed.
 
 As an example, if mortgage insurance must be removed after the
@@ -2021,7 +2412,7 @@ falls below 80%, then you would specify `"WarnLTV" : "80.0"`.
 
 ---
 
-</details> 
+</details>
 
 🟥 **MI.PropertyValue**
 
@@ -2038,9 +2429,9 @@ the calculation of the loan to value ratio.
 | :---: |   :---:  |
 | array of Rate objects | yes |
 
-This array if `Rate` objects defines the rates used to compute MI on the loan. There must
-be at least one `Rate` object in the `Rates[]` array, and there can be more than one if
-rates are set to switch at a specified payment number.
+This array if `Rate` objects defines the rates used to compute MI on the loan.
+There must be at least one `Rate` object in the `Rates[]` array, and there can
+be more than one if rates are set to switch at a specified payment number.
 
 <details>
 <summary><b>Rate fields</b></summary>
@@ -2053,9 +2444,9 @@ rates are set to switch at a specified payment number.
 | :---: |   :---:  |  ---   |
 | String | yes | Number - Floating |
 
-The value of this field specifies the cost of mortgage insurance per $100
-of the loan amount. As an example, a loan computed with a MI rate of $1.50  per $100 would be
-specified as 
+The value of this field specifies the cost of mortgage insurance per $100 of the
+loan amount. As an example, a loan computed with a MI rate of $1.50  per $100
+would be specified as
 
 ```json
 {
@@ -2073,13 +2464,14 @@ specified as
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | Number - Integer | 0 |
 
-This optional attribute defines the payment number beyond which the associated MI rate
-will apply. If not specified, the value will default to zero.
+This optional attribute defines the payment number beyond which the associated
+MI rate will apply. If not specified, the value will default to zero.
 
-Thus, if there is only a single MI rate, one may omit this attribute (see example above).
+Thus, if there is only a single MI rate, one may omit this attribute (see
+example above).
 
-Example of a MI multiple rate structure (use a rate of $1.50 for the first 10 years, with a rate
-of $0.20 for coverage beyond 10 years):
+Example of a MI multiple rate structure (use a rate of $1.50 for the first 10
+years, with a rate of $0.20 for coverage beyond 10 years):
 
 ```json
 {
@@ -2134,11 +2526,12 @@ omitted.
 | :---: |   :---:  |  ---   |  :---:  |
 | String | no | atclosing, bylender, financed | atclosing |
 
-If the value of this field is set to `financed`, then the computed up front
-fee will be added to the principal balance and the finance charge. A value of `atclosing`
-will cause the value of the fee to be added to the finance charge alone. Finally, a value
-of `bylender` means that the up front fee is to be paid by the lender, hence the value
-of the fee is not added to either the principal balance nor the finance charge.
+If the value of this field is set to `financed`, then the computed up front fee
+will be added to the principal balance and the finance charge. A value of
+`atclosing` will cause the value of the fee to be added to the finance charge
+alone. Finally, a value of `bylender` means that the up front fee is to be paid
+by the lender, hence the value of the fee is not added to either the principal
+balance nor the finance charge.
 
 🟦 **UpFront.Reduce**
 
@@ -2192,7 +2585,7 @@ The default value of zero means that no up front fee will be computed.
 | Object | no |
 
 If odd days should be treated as a prepaid finance charge *or* added to the
-first payment in a manner different from how interest is accruing (see 
+first payment in a manner different from how interest is accruing (see
 `BusinessRules.OddFirstPmt`), then the request needs to define how odd days
 interest is computed and handled using the fields of this object.
 
@@ -2741,7 +3134,6 @@ followed by 36 computed equal payments. Also, assume that we wanted to skip the
 interest only payments made in December. Then, we could build a request in the
 following manner:
 
-
 ```json
 {
   "PmtStreams" : [
@@ -2774,7 +3166,7 @@ same day, then we recommend that you set the value of the `Merge` field of the
 `EditOutput` object to `false`. If `Merge` is left at its default value of
 `true`, merging of payments occurs before replacement payments are enforced,
 thus making targeting a given payment stream much more difficult if they are
-merged with a payment from a second payment stream. 
+merged with a payment from a second payment stream.
 
 🟦 **PmtStream.SemimonthlyDay**
 
@@ -3128,12 +3520,63 @@ of the loan will be disclosed in the response as a field of the
 
 </details>
 
+### 🟦 TILARESPA2015
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean or Object | no | see below | false |
+
+If the value of this field is `true`, then the SCE will include data for the
+Integrated Mortgage Disclosures under the Real Estate Settlement Procedures Act
+(Regulation X) and the Truth In Lending Act (Regulation Z) rule, which is
+required as of August 1st, 2015. If the field is omitted or set to `false`, then
+the TILA RESPA outputs will not be generated.
+
+The TILARESPA2015 field may also be passed in as an object,
+with `"TILARESPA2015" : {}` equivalent to `"TILARESPA2015" : true`.
+
+<details><summary><b>TILARESPA2015 fields</b></summary>
+
+---
+
+🟦 **TILARESPA2015.MaxPnIDetails**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the loan is an ARM and has a specified a maximum lifetime interest rate (see
+`ARM.Limits.Ceiling`), and if the calling application requires the principal and
+interest breakdown for each `MaxPnI` payment returned in the amortization
+schedule, then set the value of this field to `true`.
+
+Doing so will return `MaxInt` and `MaxPrin` fields of the `AmLine` object
+associated with each `MaxPnI` payment.
+
+🟦 **TILARESPA2015.MinPnIDetails**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+If the loan is an ARM and has specified a minimum lifetime interest rate (see
+`ARM.Limits.Floor`), and if the calling application requires the principal and
+interest breakdown for each `MinPnI` payment returned in the amortization
+schedule, then set the value of this field to `true`.
+
+Doing so will return `MinInt` and `MinPrin` fields of the `AmLine` object
+associated with each `MinPnI` payment.
+
+---
+
+</details>
+
 ## Loan Response Data Object Field Definition
 
 The following example is the response returned from the SCEJSON for the request
 provided at the beginning of the previous section.
 
-**Example - Response Envelope for Loan Module**
+**Example - Response Envelope for Loan Module**:
 
 ```json
 {
@@ -3200,17 +3643,20 @@ order the fields are returned:
 | :---: |   :---:  |
 | array of String | yes |
 
-The `Errors[]` field contains an array of Strings which describe any errors encountered
-while handling the request. If the length of the `Errors[]` Array is zero (0), then the
-module processed the request successfully, and the Data object can be further processed
-by the calling application for the returned data.
+The `Errors[]` field contains an array of Strings which describe any errors
+encountered while handling the request. If the length of the `Errors[]` Array is
+zero (0), then the module processed the request successfully, and the Data
+object can be further processed by the calling application for the returned
+data.
 
-On the other hand, if the length of the `Errors[]` Array is greater than zero (0), then
-this indicates that an error condition has been detected, and the calling application
-should *not* process the respons Data object further. In this case, the contents of the
-`Errors[]` array will describe the error(s) encountered.
+On the other hand, if the length of the `Errors[]` Array is greater than zero
+(0), then this indicates that an error condition has been detected, and the
+calling application should *not* process the respons Data object further. In
+this case, the contents of the `Errors[]` array will describe the error(s)
+encountered.
 
-Typical errors include the omission of *🟥 required* fields, invalid field values, etc.
+Typical errors include the omission of *🟥 required* fields, invalid field
+values, etc.
 
 ### 🟥 Warnings
 
@@ -3218,14 +3664,16 @@ Typical errors include the omission of *🟥 required* fields, invalid field val
 | :---: |   :---:  |
 | array of String | yes |
 
-The `Warnings[]` field contains an array of Strings which describe any warnings generated
-by the module handling the request. The most common warnings returned by modules inform
-the calling application that the module does not recognize a specified field (which may
-help to isolate a field name spelling error in the calling application's code). Note that
-field names which start with "//" will bre treated as comment fields by the SCEJSON, and
-no warnings will be generated for these unrecognized fields.
+The `Warnings[]` field contains an array of Strings which describe any warnings
+generated by the module handling the request. The most common warnings returned
+by modules inform the calling application that the module does not recognize a
+specified field (which may help to isolate a field name spelling error in the
+calling application's code). Note that field names which start with "//" will
+bre treated as comment fields by the SCEJSON, and no warnings will be generated
+for these unrecognized fields.
 
-**Example - Request and response illustrating warnings when passing unrecognized fields**
+**Example - Request and response illustrating warnings when passing unrecognized
+fields**:
 
 ```json
 {
@@ -3533,6 +3981,378 @@ would be:
 
 </details>
 
+### 🟦 TILARESPA2015
+
+| Type  | Required |
+| :---: |   :---:  |
+| Object | no |
+
+This object contains fields which are of interest to fulfilling the 2015 TILA
+RESPA rule. It will only be present if the `Settings.TILARESPA2015` field in the
+request is set to `true`.
+
+<details>
+<summary><b>TILARESPA2015 fields</b></summary>
+
+---
+
+🟥 **TILARESPA2015.LoanCosts**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of LoanCost objects | yes |
+
+For every object in the `Fees[]` and `ServiceCharges[]` array present in the
+request which has its `IsLoanCost` field set to `true` (and hence, is a borrower
+paid loan cost) and whose amount is greater than zero (except odd days interest
+fee types, as explained in the previous documentation of the `Fee` and
+`ServiceCharge` objects), there will be a corresponding `LoanCost` object.
+
+<details>
+<summary><b>LoanCost fields</b></summary>
+
+---
+
+🟦 **LoanCost.Name**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | String |
+
+If a name was provided for the fee, then it will be included here in the
+disclosure for identification purposes.
+
+🟦 **LoanCost.In5Years**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+If the entire amount of the fee is different from the amount collected over the
+first five years (for example, a service charge), then this field will be
+present and disclose the portion of this loan coast that is accrued during the
+first five years.
+
+🟥 **LoanCost.Value**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Currency |
+
+The value of this field is the numerical value of the fee, rounded to the
+nearest dollar.
+
+---
+
+</details>
+
+🟥 **TILARESPA2015.TotalLoanCost**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Currency |
+
+The value of this field is the sum of all borrower paid loan costs. Since all
+`LoanCost` values are rounded dollar amounts, the value of this element will
+also be a rounded dollar amount.
+
+🟥 **TILARESPA2015.CD_TotPmts**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Currency |
+
+This field returns the sum of the total of payments, all borrower paid loan
+costs, and any odd days interest that is prepaid at loan closing. This value
+should be disclosed on the Closing Disclosure form in the Total of Payments
+field.
+
+🟥 **TILARESPA2015.In5Years**
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | yes |
+
+This object contains all important values required for the new "In 5 Years"
+section of the disclosure.
+
+<details>
+<summary><b>In5Years fields</b></summary>
+
+---
+
+🟥 **In5Years.PaidTotal**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Currency |
+
+This field holds the sum of all "principal, interest, mortgage insurance, and
+borrower paid loan costs scheduled to be paid through the end of the 60th month
+after the due date of the first periodic payment". Note that this value is
+rounded to the nearest whole dollar.
+
+🟥 **In5Years.PaidPrincipal**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Currency |
+
+This field holds "the principal scheduled to be paid through the end of the
+60th month after the due date of the first periodic payment". Note that this
+value is rounded to the nearest whole dollar.
+
+---
+
+</details>
+
+🟥 **TILARESPA2015.TIP**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - % |
+
+The total interest percentage, rounded to three or fewer decimal places - as
+required.
+
+🟥 **TILARESPA2015.MaxPnIPmt**
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | yes |
+
+The fields of this object hold the maximum sceduled principal and interest
+payment during the term of the loan, as well as the date on which that payment
+is made.
+
+<details>
+<summary><b>MaxPnIPmt fields</b></summary>
+
+---
+
+🟥 **MaxPnIPmt.Date**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | YYYY-MM-DD |
+
+The value of this field returns the date on which the maximum scheduled
+principal and interest payment is made. If the maximum scheduled payment occurs
+more than once, then the date returned is that of the first instance.
+
+🟥 **MaxPnIPmt.Amount**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Currency |
+
+The maximum sceduled principal and interest payment during the term of the loan.
+
+---
+
+</details>
+
+🟥 **TILARESPA2015.MinRate**
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | yes |
+
+The fields of this object hold information regarding the minimum possible
+interest rate applied during the term of the loan.
+
+<details>
+<summary><b>MinRate fields</b></summary>
+
+---
+
+🟥 **MinRate.Rate**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - % |
+
+The value of the minimum interest rate applied during the term of the loan.
+
+🟥 **MinRate.Idx**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Integer |
+
+This field returns the payment number for which the minimum rate is
+first applicable.
+
+---
+
+</details>
+
+🟥 **TILARESPA2015.MaxRate**
+
+| Type  | Required |
+| :---: |   :---:  |
+| object | yes |
+
+The fields of this object hold information regarding the maximum possible
+interest rate applied during the term of the loan.
+
+<details>
+<summary><b>MaxRate fields</b></summary>
+
+---
+
+🟥 **MaxRate.Rate**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - % |
+
+The value of the maximum interest rate applied during the term of the loan.
+
+🟥 **MaxRate.Idx**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes |  Number - Integer  |
+
+This field returns the payment number for which the maximum rate is
+first applicable.
+
+---
+
+</details>
+
+🟥 **TILARESPA2015.ProjectedPaymentsTable**
+
+| Type  | Required |
+| :---: |   :---:  |
+| array of PPCols | yes |
+
+This field returns an array of projected payment table columns (`PPCol`), with
+each array member detailing a single column. Per the regulation, there will be a
+minimum of one column and a maximum of four columns, depending upon the
+parameters of the loan.
+
+<details>
+<summary><b>PPCol fields</b></summary>
+
+---
+
+🟥 **PPCol.Num**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Integer |
+
+The value of this field identifies the number of the column to which the
+following fields apply. The value will be from 1 to 4.
+
+🟥 **PPCol.Title**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Text |
+
+The value of this field is the title for the column. Most of the time, it
+will be in the form of "Years X - Y", or "Year X", or "Final Payment" in
+the case of a final balloon payment.
+
+🟥 **PPCol.YearStart**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Integer |
+
+The beginning year number for which this column data applies.
+
+🟥 **PPCol.YearEnd**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Integer |
+
+The ending year number for which this column data applies.
+
+🟥 **PPCol.PnIPmtMin**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Currency |
+
+The minimum principal and interest payment for this column.
+
+🟥 **PPCol.PnIPmtMax**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Currency |
+
+The maximum principal and interest payment for this column.
+
+🟥 **PPCol.IntOnly**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | none, some, all |
+
+If none of the payments associated with this column are interest only payments,
+then the value of this field will be `none`. A value of `some` means that some
+of the payments (but not all) associated with this columnt are interest only.
+Finally, a value of `all` indicates that *all* payments associated with this
+columnt are interest only.
+
+Note that for the purposes of this field, a scheduled payment is considered
+an interest only payment if the payment amount pays off all interest due at the
+time of the payment, with no reduction in the principal balance.
+
+🟥 **PPCol.Balloon**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| Boolean | yes | true, false |
+
+If any of the payments associated with this column are balloon payments (e.g.
+isolated payments that are more than twice the value of a regular periodic
+payment), then the value of this field will be `true`.
+
+🟥 **PPCol.MIPmt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Currency |
+
+The value of this field holds the mortgage insurance premium associated with
+this column, rounded to the nearest dollar. If no mortgage insurance is present
+or coverage has been dropped, a value of zero will be present.
+
+🟥 **PPCol.TotalPmtMin**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Currency |
+
+This field returns the minimum estimated total payment for this column. Note
+that this value does not include any estimated escrow, as the SCEX does not
+support escrow calculations. The calling application will need to increase these
+values by the estimated escrow amounts if any are present.
+
+🟥 **PPCol.TotalPmtMax**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | yes | Number - Currency |
+
+This field returns the maximum estimated total payment for this column. Note
+that this value does not include any estimated escrow, as the SCEX does not
+support escrow calculations. The calling application will need to increase these
+values by the estimated escrow amounts if any are present.
+
+</details>
+
+---
+
+</details>
+
 ### 🟦 Moneys
 
 | Type  | Required |
@@ -3633,7 +4453,7 @@ field will not show up in the response.
 | :---: |   :---:  |  ---   |
 | String | no | Number - Currency |
 
-This field holds the sum of all fees which are Military APR fees (including 
+This field holds the sum of all fees which are Military APR fees (including
 protection products), and will only appear if the Military APR has been
 requested.
 
@@ -3643,8 +4463,9 @@ requested.
 | :---: |   :---:  |  ---   |
 | String | no | Number - Currency |
 
-This field holds the sum of all balance adjustments occuring during the course of a loan.
-This field holds the sum of all actual dollar adjustment amounts, not Target amounts.
+This field holds the sum of all balance adjustments occuring during the course
+of a loan. This field holds the sum of all actual dollar adjustment amounts, not
+Target amounts.
 
 🟦 **Moneys.ConInterest**
 
@@ -3736,10 +4557,10 @@ response.
 | :---: |   :---:  |  ---   |
 | Boolean | no | true, false |
 
-If the odd days interest has been added to the first payment, then this field will be
-present in the response with a value of `true`. If the odd days interest has been 
-treated as a prepaid finance charge, then this field will not be present and a default
-value of `false` should be assumed.
+If the odd days interest has been added to the first payment, then this field
+will be present in the response with a value of `true`. If the odd days interest
+has been treated as a prepaid finance charge, then this field will not be
+present and a default value of `false` should be assumed.
 
 🟥 **ODI.Fee**
 
@@ -3793,7 +4614,8 @@ single premium, then this field will not be included in the response.
 
 If the requested loan computed any advance amounts (see the `Advance.Compute`
 field for more information), then for each advance in the loan there will be an
-Advances object in this array containing the date of the advance and the computed advance amount.
+Advances object in this array containing the date of the advance and the
+computed advance amount.
 
 If all of the loan's advances were specified and not computed, then the
 `Moneys.Advances[]` array will not be included in the response.
@@ -3829,12 +4651,14 @@ Discloses the computed advance amount.
 | :---: |   :---:  |
 | array of Fee objects | no |
 
-If the requested loan computed any requested fees with the loan, and if `EditOutput.ShowFees`
-is set to `true`, then for each fee in the loan there will be a
-Fees object in this array containing the name of the fee and the computed fee amount.
+If the requested loan computed any requested fees with the loan, and if
+`EditOutput.ShowFees` is set to `true`, then for each fee in the loan there will
+be a Fees object in this array containing the name of the fee and the computed
+fee amount.
 
-If there were no fees requested with the loan, or if `EditOutput.ShowFees` is set to `false`,
-then the `Moneys.Fees[]` array will not be included in the response.
+If there were no fees requested with the loan, or if `EditOutput.ShowFees` is
+set to `false`, then the `Moneys.Fees[]` array will not be included in the
+response.
 
 <details>
 <summary><b>Fee fields</b></summary>
@@ -4349,7 +5173,7 @@ lists each formula code and description.
 | String | no | Fixed, Variable |
 
 This field will only be present in the output if the protection
-product has been configured to allow for coverage to switch from 
+product has been configured to allow for coverage to switch from
 joint to single during the term of coverage, should one of the borrowers
 exceed an age at termination cap. If the field is not present, then
 a value of `Fixed` should be assumed as only one rate has been
@@ -4394,94 +5218,94 @@ and reason.
 
 | Drop Code | Drop Reason |
 | :--: | :--- |
-| 0	 |  Successful Calculation |
-| 1	 |  This insurance must be written with CL |
-| 2	 |  No coverage on non-monthly loans |
-| 3	 |  No coverage on Equal Payment Loans |
-| 4	 |  No coverage on Balloon Loans |
-| 5	 |  No coverage on Single Payment Loans |
-| 6	 |  No coverage on Interest Only Loans |
-| 7	 |  No coverage on Principal Plus Loans |
-| 8	 |  No coverage on Skips/Pickups/Irregs |
-| 9	 |  Borrower too old at loan inception |
-| 10	| Co-Borrower too old at loan inception |
-| 11	| Term exceeded cap. |
-| 12	| Borrower became too old during loan |
-| 13	| Co-Borrower became too old during loan |
-| 14	| Loan term is less than minimum allowed |
-| 15	| Computed rate was zero |
-| 16	| An invalid AH Plan was passed |
-| 17	| Truncation term less than the minimum |
-| 18	| Benefit cap was exceeded |
-| 19	| Coverage cap was exceeded |
-| 20	| Windows experienced an error |
-| 21	| The computed coverage is zero |
-| 22	| Windows error reading the setup file |
-| 23	| Equal Payment or Balloons Only |
-| 24	| NOT CURRENTLY USED |
-| 25	| Coverage is not allowed on this loan |
-| 26	| Truncation term isn't a valid multiple |
-| 27	| Keyboard truncation not allowed |
-| 28	| No keyboard truncation with Gross |
-| 29	| No keyboard truncation with Net |
-| 30	| No decreasing life. All coverage level |
-| 31	| Term too big for insurance coverage |
-| 32	| Joint requested, only single allowed |
-| 33	| The age is above the maximum in band |
-| 34	| The term is above the maximum in band |
-| 35	| Balloon is too small for Level Life |
-| 36	| All Coverage allocated to decreasing. |
-| 37	| No keyboard truncation with MOB |
-| 38	| TruStage No Single Pay Terms > 6 Months |
-| 39	| Credit Life not allowed on Annual Loans |
-| 40	| Below the Minimum Insurance Term |
-| 41	| Below the Minimum Loan Term |
-| 42	| Formula specified is invalid |
-| 43	| AH Requires use of a table of rates |
-| 44	| LR Requires single rates, not tables |
-| 45	| Customer not eligible for Insurance |
-| 46	| The insurance code (e.g. 1=single) was not valid |
-| 47	| Monthly Renewable exception |
-| 48	| Borrower is currently older than the termination age |
-| 49	| CoBorrower is older than the termination age |
-| 50	| Maine Truncation only defined for monthly loans |
-| 51	| Converting SP AHRate to MOB caused an exception |
-| 52	| Non-Monthly not allowed with Ordinary Life |
-| 53	| AH is not allowed with Ordinary Life |
-| 54	| Probably a log calc tripped up an exception |
-| 55	| Entry for Borrower Birthday is zero |
-| 56	| Entry for CoBorrower Birthday is zero |
-| 57	| No coverage for loans < Monthly |
-| 58	| No coverage on construction loans |
-| 59	| The term of coverage must equal CL Term |
-| 60	| Loan Setup is a premium type not Single premium |
-| 61	| No insurance allowed on ARM Loans |
-| 62	| ARM Loans are only covered with MOB Net |
-| 63	| Coverage is not allowed on Coborrower |
-| 64	| Borrower is less than the minimum age |
-| 65	| CoBorrower less than the minimum age |
-| 66	| Loan To Value (** Not Implemented ** ) |
-| 67	| ARM Loans only use MOB Net or MOB on Benefit |
-| 68	| Credit Life does not permit CMOB rollbacks |
-| 69	| Credit Life does not permit CMOB IntOnly Pmts or Construct Cov |
-| 70	| This insurance must be written with AH |
-| 71	| This insurance must be written with Joint AH |
-| 72	| Coverage not allowed with partial benefit and truncation |
-| 73	| This insurance must be written with Joint CL |
-| 74	| Preceding Interest Only payments do not allow for protection |
-| 75	| Coverage not allowed on Open end loans. |
-| 76	| PrimaFacie rates must be expressed as $/100/Year |
-| 77	| Loans with "Open End=1" must be equal payments |
-| 78	| Premium is zero |
-| 79	| The loan, itself, has an error and therefore reports no protection information. |
-| 80	| Product not available for any loan |
-| 81	| Level cannot be offered if decreasing has been removed |
-| 82	| An unknown ordinary life method has been chosen |
-| 83	| No Keyboard benefit allowed |
-| 84	| TrueMOB protection requested, but no events were logged |
-| 85	| Keyboard truncation is not allowed with gross truncated level insurance |
-| 86	| Needs Loan Setup ini file |
-| 87	| Not allowed on highly irregular loans |
+| 0  |  Successful Calculation |
+| 1  |  This insurance must be written with CL |
+| 2  |  No coverage on non-monthly loans |
+| 3  |  No coverage on Equal Payment Loans |
+| 4  |  No coverage on Balloon Loans |
+| 5  |  No coverage on Single Payment Loans |
+| 6  |  No coverage on Interest Only Loans |
+| 7  |  No coverage on Principal Plus Loans |
+| 8  |  No coverage on Skips/Pickups/Irregs |
+| 9  |  Borrower too old at loan inception |
+| 10 | Co-Borrower too old at loan inception |
+| 11 | Term exceeded cap. |
+| 12 | Borrower became too old during loan |
+| 13 | Co-Borrower became too old during loan |
+| 14 | Loan term is less than minimum allowed |
+| 15 | Computed rate was zero |
+| 16 | An invalid AH Plan was passed |
+| 17 | Truncation term less than the minimum |
+| 18 | Benefit cap was exceeded |
+| 19 | Coverage cap was exceeded |
+| 20 | Windows experienced an error |
+| 21 | The computed coverage is zero |
+| 22 | Windows error reading the setup file |
+| 23 | Equal Payment or Balloons Only |
+| 24 | NOT CURRENTLY USED |
+| 25 | Coverage is not allowed on this loan |
+| 26 | Truncation term isn't a valid multiple |
+| 27 | Keyboard truncation not allowed |
+| 28 | No keyboard truncation with Gross |
+| 29 | No keyboard truncation with Net |
+| 30 | No decreasing life. All coverage level |
+| 31 | Term too big for insurance coverage |
+| 32 | Joint requested, only single allowed |
+| 33 | The age is above the maximum in band |
+| 34 | The term is above the maximum in band |
+| 35 | Balloon is too small for Level Life |
+| 36 | All Coverage allocated to decreasing. |
+| 37 | No keyboard truncation with MOB |
+| 38 | TruStage No Single Pay Terms > 6 Months |
+| 39 | Credit Life not allowed on Annual Loans |
+| 40 | Below the Minimum Insurance Term |
+| 41 | Below the Minimum Loan Term |
+| 42 | Formula specified is invalid |
+| 43 | AH Requires use of a table of rates |
+| 44 | LR Requires single rates, not tables |
+| 45 | Customer not eligible for Insurance |
+| 46 | The insurance code (e.g. 1=single) was not valid |
+| 47 | Monthly Renewable exception |
+| 48 | Borrower is currently older than the termination age |
+| 49 | CoBorrower is older than the termination age |
+| 50 | Maine Truncation only defined for monthly loans |
+| 51 | Converting SP AHRate to MOB caused an exception |
+| 52 | Non-Monthly not allowed with Ordinary Life |
+| 53 | AH is not allowed with Ordinary Life |
+| 54 | Probably a log calc tripped up an exception |
+| 55 | Entry for Borrower Birthday is zero |
+| 56 | Entry for CoBorrower Birthday is zero |
+| 57 | No coverage for loans < Monthly |
+| 58 | No coverage on construction loans |
+| 59 | The term of coverage must equal CL Term |
+| 60 | Loan Setup is a premium type not Single premium |
+| 61 | No insurance allowed on ARM Loans |
+| 62 | ARM Loans are only covered with MOB Net |
+| 63 | Coverage is not allowed on Coborrower |
+| 64 | Borrower is less than the minimum age |
+| 65 | CoBorrower less than the minimum age |
+| 66 | Loan To Value (**Not Implemented** ) |
+| 67 | ARM Loans only use MOB Net or MOB on Benefit |
+| 68 | Credit Life does not permit CMOB rollbacks |
+| 69 | Credit Life does not permit CMOB IntOnly Pmts or Construct Cov |
+| 70 | This insurance must be written with AH |
+| 71 | This insurance must be written with Joint AH |
+| 72 | Coverage not allowed with partial benefit and truncation |
+| 73 | This insurance must be written with Joint CL |
+| 74 | Preceding Interest Only payments do not allow for protection |
+| 75 | Coverage not allowed on Open end loans. |
+| 76 | PrimaFacie rates must be expressed as $/100/Year |
+| 77 | Loans with "Open End=1" must be equal payments |
+| 78 | Premium is zero |
+| 79 | The loan, itself, has an error and therefore reports no protection information. |
+| 80 | Product not available for any loan |
+| 81 | Level cannot be offered if decreasing has been removed |
+| 82 | An unknown ordinary life method has been chosen |
+| 83 | No Keyboard benefit allowed |
+| 84 | TrueMOB protection requested, but no events were logged |
+| 85 | Keyboard truncation is not allowed with gross truncated level insurance |
+| 86 | Needs Loan Setup ini file |
+| 87 | Not allowed on highly irregular loans |
 
 🟦 **Product.Notes[]**
 
@@ -4515,49 +5339,53 @@ see the list of all codes, notes, and descriptions below.
 | :---: |   :---:  |  ---   |
 | String | yes | Text |
 
-A text description of the `Note`. Please see the list of codes, notes, and descriptions below.
+A text description of the `Note`. Please see the list of codes, notes, and
+descriptions below.
 
-0. **Benefit is Minimum Payment over term of coverage.**
+1. **Benefit is Minimum Payment over term of coverage.**
 
-  When computing a loan with skipped, pickup, or irregular payments,
-  there are a few different ways one can compute a benefit amount.
-  This method uses the minimum non-zero payment as the benefit.
+  When computing a loan with skipped, pickup, or irregular payments, there are a
+  few different ways one can compute a benefit amount. This method uses the
+  minimum non-zero payment as the benefit.
 
-1. **Benefit is Average Payment over term of coverage (excludes zero payments).**
+1. **Benefit is Average Payment over term of coverage (excludes zero
+   payments).**
 
-  Similar to above, this method uses the average of all non-zero
-  payments over the term of coverage as the benefit.
+  Similar to above, this method uses the average of all non-zero payments over
+  the term of coverage as the benefit.
 
-2. **Benefit is the Computed Payment.**
+1. **Benefit is the Computed Payment.**
 
-	Similar to above, this method uses the computed payment as the benefit.
+ Similar to above, this method uses the computed payment as the benefit.
 
-3. **Benefit is True Average Payment over term of coverage (includes zero payments).**
+1. **Benefit is True Average Payment over term of coverage (includes zero
+   payments).**
 
-  Similar to above, this method uses the average of all payments over the
-  term of coverage, including skips, as the benefit.
+  Similar to above, this method uses the average of all payments over the term
+  of coverage, including skips, as the benefit.
 
-4. **Protection factor uses days per period conversion.**
+1. **Protection factor uses days per period conversion.**
 
-	The protection calculation has converted the periodic rate to a daily rate.
+ The protection calculation has converted the periodic rate to a daily rate.
 
-5. **Switch to Rate Set two.**
+1. **Switch to Rate Set two.**
 
-	The protection calculation has switched to the second set of rates.
+ The protection calculation has switched to the second set of rates.
 
-6. **Switch method to Net.**
+1. **Switch method to Net.**
 
   The protection calculation has switched to net coverage.
 
-7. **Switch method to Ordinary Life.**
+1. **Switch method to Ordinary Life.**
 
-	The protection calculation has switched to ordinary life coverage.
+ The protection calculation has switched to ordinary life coverage.
 
-8. **Benefit is Average Payment over term of coverage (excludes loan principal from final payment).**
+1. **Benefit is Average Payment over term of coverage (excludes loan principal
+   from final payment).**
 
-	This average benefit calculation method is most commonly seen with interest only loans.
-  It uses the average of all payments over the term of coverage (excluding the loan
-  principal amount from the final payment, if covered).
+ This average benefit calculation method is most commonly seen with interest
+  only loans. It uses the average of all payments over the term of coverage
+  (excluding the loan principal amount from the final payment, if covered).
 
 ---
 
@@ -4774,7 +5602,7 @@ The term of coverage expressed as a number of months.
 
 This field is only be returned when the protection product is
 configured to use TruStage's single premium formula #5, and contains
-the computed amortization term used in the premium computation. 
+the computed amortization term used in the premium computation.
 
 🟥 **Borrower.AgeAtIssue**
 
@@ -4982,9 +5810,10 @@ counting the additional number of days required to land on the loan date.
 | :---: |   :---:  |
 | object | no |
 
-This object describes the total amounts of various categories throughout the life of the loan.
-As an example, the total amount paid to interest and principal, as well as the
-total of payments are all contained in fields of this object.
+This object describes the total amounts of various categories throughout the
+life of the loan. As an example, the total amount paid to interest and
+principal, as well as the total of payments are all contained in fields of this
+object.
 
 <details>
 <summary><b>GrandTotals fields</b></summary>
@@ -5231,6 +6060,74 @@ decimal places.
 | String | yes | Number - Currency |
 
 The principal balance amount, after the amortization event has taken place.
+
+🟦  **AmLine.MinPnI**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+If the Loan is an ARM loan which specified a minimum lifetime interest rate (see
+`ARM.Limits.Floor`), and if TILA RESPA data has been requested (using the
+`TILARESPA2015` field), then this field will be present in each `AmLine` object
+that represents a payment. The value of this field represents the minimum
+principal and interest payment possible, should the index + margin rate trend
+towards the minimum lifetime rate after the teaser term has expired.
+
+🟦  **AmLine.MinInt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+The value of this field represents the amount of the `MinPnI` payment which has
+been used to pay interest. This field will only be present if the `MinPnI` field
+is present and if the request included `"TILARESPA2015.MinPnIDetails" : true`.
+
+🟦  **AmLine.MinPrin**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+The value of this field represents the amount of the `MinPnI` payment which has
+been used to pay down the principal balance. This field will only be present if
+the `MinPnI` field is present and if the request included
+`"TILARESPA2015.MinPnIDetails" : true`.
+
+🟦  **AmLine.MaxPnI**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+If the Loan is an ARM loan which specified a maximum lifetime interest rate (see
+`ARM.Limits.Ceiling`), and if TILA RESPA data has been requested (using the
+`TILARESPA2015` field), then this field will be present in each `AmLine` object
+that represents a payment. The value of this field represents the maximum
+principal and interest payment possible, should the index + margin rate trend
+towards the maximum lifetime rate after the teaser term has expired.
+
+🟦  **AmLine.MaxInt**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+The value of this field represents the amount of the `MaxPnI` payment which has
+been used to pay interest. This field will only be present if the `MaxPnI` field
+is present and if the request included `"TILARESPA2015.MaxPnIDetails" : true`.
+
+🟦  **AmLine.MaxPrin**
+
+| Type  | Required | Values |
+| :---: |   :---:  |  ---   |
+| String | no | Number - Currency |
+
+The value of this field represents the amount of the `MaxPnI` payment which has
+been used to pay down the principal balance. This field will only be present if
+the `MaxPnI` field is present and if the request included
+`"TILARESPA2015.MaxPnIDetails" : true`.
 
 </details>
 

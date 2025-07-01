@@ -1,18 +1,37 @@
 # Appendix - History
 
 > "History will be kind to me  
->  for I intend to write it."  
->  --- Winston Churchill
+> for I intend to write it."  
+> --- Winston Churchill
 
 This appendix provides a history of modifications made to this reference manual
 in a reverse chronological order, grouped by release. By referencing this
 chapter when a new release arrives, you may quickly discern any documentation
 changes which may or may not be of interest to you.
 
+## Release 2025-07-0
+
+* The [Loan](module-loan.md) module now supports the `TILARESPA2015` request
+  field, which instructs the SCE to analyze the loan and include data in the
+  request for the Integrated Mortgage Disclosures under the Real Estate
+  Settlement Procedures Act (Regulation X) and the Truth In Lending Act
+  (Regulation Z) rule.
+* The [Loan](module-loan.md) module now supports the calculation and disclosure
+  of adjustable rate mortages via the new `ARM` request field and its associated
+  child fields.
+* The [Loan](module-loan.md) module now supports an updated `Merge` field for
+  the `EditOutput` object. We strongly advise using either the `none` or
+  `ordered` options as they are the most common and easiest to understand. The
+  other two options (`some` and `default`) are provided for backwards
+  compatibility, with `some` behaving as `false` and `default` behaving as
+  `true` in versions of the SCE prior to the 2025-07 release.
+
 ## Release 2025-04-0
+
 * No changes made to the reference manual.
 
 ## Release 2025-01-0
+
 * The [Loan](module-loan.md) module's `AccrualConfig.Date` and `Fee.Date`
   request field documentation was corrected when no `Date` field is provided. By
   default, if the `Date` field is not provided, the SCE will use the earliest
@@ -22,6 +41,7 @@ changes which may or may not be of interest to you.
   payment streams.
 
 ## Release 2024-10-0
+
 * The [Arm](module-arm.md) module's `Settings.TILARESPA2015` field can now be
   passed in as an object with two supported boolean child fields:
   `MinPnIDetails` and `MaxPnIDetails`. These two new fields allow the calling
@@ -34,12 +54,14 @@ changes which may or may not be of interest to you.
   `"TILARESPA2015" : {}`.
 
 ## Release 2024-07-0
+
 * The [Loan](module-loan.md) module's `PmtStream` object now supports the new
   `ReplaceIdx` field which is used to apply a replacement payment stream to a
   subset of the payments. Please see the documentation for this new attribute in
   the Loan chapter.
 
 ## Release 2024-04-0
+
 * The [Loan](module-loan.md) module's `Advance` request object now supports
   `NewPmt` and `Position` fields which are used when the calling application
   wishes to compute a loan with multiple advances, where each advance generates
@@ -50,9 +72,11 @@ changes which may or may not be of interest to you.
   servicing of open ended lending.
 
 ## Release 2024-01-0
+
 * No changes made to the reference manual.
 
 ## Release 2023-10-0
+
 * The `ODI.AddToPmt` field is not supported with pure [Construction
   Loans](module-construction.md) and the documentation for this field has been
   removed from the chapter covering pure construction loans.
@@ -61,12 +85,13 @@ changes which may or may not be of interest to you.
   value of this attribute determines if the ODI fee is added to the principal
   balance for the purposes of computing the ODI fee (e.g. if it is capitalized).
   Please see the documentatio for this new field in the `ODI` object
-  documentation. 
+  documentation.
 * The documentation for the `CD_TotPmts` field of the `TILARESPA2015` response
   object has been updated to include the value of any odd days interest that is
   prepaid at loan closing.
 
 ## Release 2023-07-0
+
 * The documentation for the [Loan](module-loan.md) module's `Protection.Formula`
   field has been updated to include a table of all possible formula codes and a
   description of each.
@@ -96,6 +121,7 @@ changes which may or may not be of interest to you.
   the for more information.
 
 ## Release 2023-04-0
+
 * The [Account](module-account.md) module has been made available in this
   release. This module allows the calling application to query the account
   numbers and titles of all accounts defined in the `clients.set` file. If your
@@ -127,6 +153,7 @@ changes which may or may not be of interest to you.
   information.
 
 ## Release 2023-01-0
+
 * The [Adjustable Rate Mortgages](module-arm.md) module has been made available
   in this release.
 * The [Loan](module-loan.md) module's `BusinessRules` request object supports
@@ -186,6 +213,7 @@ changes which may or may not be of interest to you.
   covering the modules for further information.
 
 ## Release 2022-10-0
+
 * The [Balloon Payment Loans](module-construction.md) module has been made
   available in this release.
 * The [Construction Loans](module-construction.md) module has been made
@@ -202,6 +230,7 @@ changes which may or may not be of interest to you.
   been made available in this release.
 
 ## Release 2022-07-0
+
 * The [APY Calculation](module-apy.md) module has been made available in this
   release.
 * The [Certificates of Deposit](module-cd.md) module has been made available in
@@ -219,7 +248,6 @@ changes which may or may not be of interest to you.
   is the 30th, then the field would be specified as `"Date" : "2022-02-30"`.
   The `Date` field of the `Fee` object behaves in the same manner when defining
   a stream of fees.
-
 
 ## Release 2022-04-0
 

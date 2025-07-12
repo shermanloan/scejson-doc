@@ -301,11 +301,11 @@ computed with this field set as `true`.
 
 The total amount of construction interest.
 
-🟥 **Construction.PermanentAttached**
+🟦 **Construction.PermanentAttached**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| Boolean | true | true, false | n/a |
+| Boolean | true | true, false | false |
 
 Construction loans may be computed on their own, or they may be attached to a
 permanent loan which begins at the conclusion of the construction loan. If a

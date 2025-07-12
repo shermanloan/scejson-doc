@@ -155,14 +155,28 @@ For instance, if payments were intended to be made on the end of the month, and
 the first payment is in April, making this setting `31` causes the fed calendar to compute
 time as if the day of the payment was 31, rather than 30.
 
-🟦 **AmTableOpts.RoundInt**
+🟦 **AmTableOpts.StrictTime**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |
-| String | no | None, Down, Nearest, Up | None |
+| Boolean | no | true, false | false |
 
-If interest is rounded within the amortization schedule for US Rule APRs, set the
-rounding method here.
+Loans that have used an Odd Days Prepaid charge, common with mortgage loans, may use this
+attribute to adjust the APR to assume one unit period to the first payment. Otherwise,
+choose `false`.
+
+When monthly payments are intended for the 29th or 30th of the month, how should the number
+of unit periods and fraction be calculated in February, when the day of the payment cannot
+be the intended day? (e.g. A non-leap year February where payments are meant for the 29th,
+but end up on the 28th). `StrictTime` acknowledges and disambiguates the calculation. Regular
+payments generally hold the fraction of a unit period constant, based on the date of the
+first payment. The SCE allows for a constant fraction of a unit period or a strict time
+accounting, acknowledging that in February, the fraction of a unit period changes.
+
+When the value of this attribute it `true`, the SCE will calculate the fraction of a unit
+period strictly according to the rules of Appendix J of Regulation Z. A value of `false`
+instructs the SCE to keep the fraction of a unit period constant, equal to the fraction
+obtained by the time calculated from the date of the first payment to the transaction date.
 
 ---
 

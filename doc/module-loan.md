@@ -88,7 +88,7 @@ is used to specify how interest is calculated.
 If interest due is to be added to principal (capitalized) on the specified
 `Date`, then set this field's value to `true`.
 
-🟦 **AccrualConfig.Code**
+🟦 **AccrualConfig.AccrualCode**
 
 | Type  | Required | Values | Default |
 | :---: |   :---:  |  ---   |  :---:  |

@@ -1911,6 +1911,20 @@ following steps:
      adjust the target date in the same direction as in 4(a) above.
     4. Step 4 is repeated until the target date is not adjusted.
 
+🟦 **Fee.IsLoanCost**
+
+| Type  | Required | Values | Default |
+| :---: |   :---:  |  ---   |  :---:  |
+| Boolean | no | true, false | false |
+
+When requesting TILA RESPA outputs (via the
+`TILARESPA2015` field), the SCEX needs to know which fees need
+to be considered "borrower paid loan costs", as defined in the rule. Please note
+that if the fee is paid by a lender or other third party, then the fee does not
+affect the loan calculation and should not be sent to the SCEX. If it is sent,
+then the value of this attribute should be set to `false`.
+
+
 🟦 **Fee.LastDay**
 
 | Type  | Required | Values | Default |
